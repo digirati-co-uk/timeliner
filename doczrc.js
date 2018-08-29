@@ -7,12 +7,20 @@ export default {
   dest: './dist/docs',
   base: '/docs/',
   hashRouter: true,
-  debug: false,
+  debug: true,
   port: 5001,
   protocol: 'http',
   plugins: [
-    // css({
-    //   preprocessor: 'sass',
-    // }),
+    css({
+      preprocessor: 'sass',
+    }),
   ],
+  modifyBundlerConfig: (config, ...args) => {
+    config.module.rules = config.module.rules.map(rule => {
+      console.log(rule.use);
+      rule.exclude = [/node_modules/];
+      return rule;
+    });
+    return config;
+  },
 };
