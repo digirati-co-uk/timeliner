@@ -13,14 +13,16 @@
     "watch": "fesk-watch"
   },
   "devDependencies": {
-    "@fesk/webpack-config": "^1.1.1",
     "@fesk/scripts": "^1.1.1",
+    "@fesk/webpack-config": "^1.1.1",
     "docz": "^0.10.3"
   },
   "dependencies": {
+    "date-fns": "^1.29.0",
     "prop-types": "^15.6.2",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
+    "react-sound": "^1.2.0",
     "webpack-config": "^7.5.0"
   }
 }
