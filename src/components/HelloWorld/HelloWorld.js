@@ -12,7 +12,7 @@ class HelloWorld extends Component {
   };
 
   render() {
-    return <h1>Hello {this.props.name}!</h1>;
+    return <h1 className="hello-world">Hello {this.props.name}!</h1>;
   }
 }
 
