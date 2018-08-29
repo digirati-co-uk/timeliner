@@ -14,7 +14,8 @@
   },
   "devDependencies": {
     "@fesk/scripts": "^1.1.1",
-    "docz": "^0.10.3"
+    "docz": "^0.10.3",
+    "docz-plugin-css": "^0.10.3"
   },
   "dependencies": {
     "prop-types": "^15.6.2",
