@@ -11,8 +11,8 @@ export default {
   port: 5001,
   protocol: 'http',
   plugins: [
-    css({
-      preprocessor: 'sass',
-    }),
+    // css({
+    //   preprocessor: 'sass',
+    // }),
   ],
 };
