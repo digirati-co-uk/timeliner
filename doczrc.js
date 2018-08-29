@@ -16,6 +16,11 @@ export default {
     }),
   ],
   modifyBundlerConfig: (config, ...args) => {
+    config.resolve.modules = [
+      'node_modules',
+      config.resolve.modules[0],
+      config.resolve.modules[3],
+    ];
     config.module.rules = config.module.rules.map(rule => {
       rule.exclude = [/node_modules/];
       return rule;
@@ -23,8 +28,10 @@ export default {
 
     config.plugins[0].config.threads = 1;
     config.plugins[1].config.threads = 1;
-    config.watchOptions = config.watchOptions || {};
-    config.watchOptions.ignored = /node_modules/;
+    config.watchOptions = {
+      poll: 100000,
+      ignored: /node_modules/,
+    };
 
     return config;
   },
