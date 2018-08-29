@@ -19,6 +19,7 @@
   "devDependencies": {
     "@fesk/scripts": "^1.1.1",
     "docz": "^0.10.3",
+    "docz-core": "^0.10.3",
     "docz-plugin-css": "^0.10.3",
     "lint-staged": "^6.0.0",
     "webpack-config": "^7.5.0",
