@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start": "fesk-start",
-    "build": "fesk-build && docz build",
+    "build": "NODE_ENV=production fesk-build",
     "docz:dev": "docz dev",
     "docz:build": "docz build",
     "watch": "fesk-watch"
