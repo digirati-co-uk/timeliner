@@ -15,11 +15,4 @@ export default {
       preprocessor: 'sass',
     }),
   ],
-  modifyBundlerConfig: config => {
-    // Taking too long to optimize.
-    config.optimization = {
-      minimize: false,
-    };
-    return config;
-  },
 };
