@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import './HelloWorld.scss';
 
 class HelloWorld extends Component {
   static propTypes = {

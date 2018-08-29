@@ -13,6 +13,7 @@
     "watch": "fesk-watch"
   },
   "devDependencies": {
+    "@fesk/webpack-config": "^1.1.1",
     "@fesk/scripts": "^1.1.1",
     "docz": "^0.10.3"
   },

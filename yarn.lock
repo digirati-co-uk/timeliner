@@ -1165,7 +1165,7 @@
     webpack-manifest-parser "1.0.2"
     webpack-manifest-plugin "^2.0.2"
 
-"@fesk/webpack-config@1.1.1":
+"@fesk/webpack-config@1.1.1", "@fesk/webpack-config@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@fesk/webpack-config/-/webpack-config-1.1.1.tgz#d48f1c8960fd196ff7b9ca1fb1680f197a756790"
   dependencies:
