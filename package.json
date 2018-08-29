@@ -21,7 +21,8 @@
     "docz": "^0.10.3",
     "docz-plugin-css": "^0.10.3",
     "lint-staged": "^6.0.0",
-    "webpack-config": "^7.5.0"
+    "webpack-config": "^7.5.0",
+    "husky": "^0.14.3"
   },
   "lint-staged": {
     "*.js": ["eslint --fix", "git add"],
