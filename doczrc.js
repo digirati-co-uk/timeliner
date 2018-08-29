@@ -17,10 +17,12 @@ export default {
   ],
   modifyBundlerConfig: (config, ...args) => {
     config.module.rules = config.module.rules.map(rule => {
-      console.log(rule.use);
       rule.exclude = [/node_modules/];
       return rule;
     });
+
+    config.plugins[0].config.threads = 1;
+    config.plugins[1].config.threads = 1;
     return config;
   },
 };
