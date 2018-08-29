@@ -1,0 +1,32 @@
+{
+  "name": "timeliner",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:digirati-co-uk/timeliner.git",
+  "license": "MIT",
+  "scripts": {
+    "start": "fesk-start",
+    "build": "NODE_ENV=production fesk-build",
+    "docz:dev": "docz dev",
+    "docz:build": "docz build",
+    "watch": "fesk-watch"
+  },
+  "dependencies": {
+    "prop-types": "^15.6.2",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2"
+  },
+  "devDependencies": {
+    "@fesk/scripts": "^1.1.1",
+    "docz": "^0.10.3",
+    "docz-core": "^0.10.3",
+    "docz-plugin-css": "^0.10.3",
+    "lint-staged": "^6.0.0",
+    "webpack-config": "^7.5.0",
+    "husky": "^0.14.3"
+  },
+  "lint-staged": {
+    "*.js": ["eslint --fix", "git add"],
+    "*.{js,json,scss,md,mdx}": ["prettier --write", "git add"]
+  }
+}
