@@ -1,0 +1,25 @@
+*, *:before, *:after { box-sizing: border-box; }
+body, html {
+  font-family: sans-serif;
+}
+.container { 
+  max-width: 500px; 
+  margin: 100px auto;
+  h1 {
+    color: #005cc5;
+  }
+  code {
+    border: 1px solid #ddd;
+    background: #eee;
+  }
+}
+.documentation {
+  position: fixed;
+  top: 0;
+  right: 0;
+  background: #000;
+  color: #fff;
+  border-radius: 0 0 0 3px;
+  text-decoration: none;
+  padding: 10px;
+}

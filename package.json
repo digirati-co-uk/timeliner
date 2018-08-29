@@ -1,0 +1,26 @@
+{
+  "name": "timeliner",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:digirati-co-uk/timeliner.git",
+  "author": "Stephen Fraser <stephen.fraser@digirati.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "fesk-start",
+    "build": "NODE_ENV=production fesk-build && docz build",
+    "docz:dev": "docz dev",
+    "docz:build": "docz build",
+    "watch": "fesk-watch"
+  },
+  "devDependencies": {
+    "@fesk/webpack-config": "^1.1.1",
+    "@fesk/scripts": "^1.1.1",
+    "docz": "^0.10.3"
+  },
+  "dependencies": {
+    "prop-types": "^15.6.2",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "webpack-config": "^7.5.0"
+  }
+}
