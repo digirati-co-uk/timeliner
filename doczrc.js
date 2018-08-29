@@ -23,6 +23,9 @@ export default {
 
     config.plugins[0].config.threads = 1;
     config.plugins[1].config.threads = 1;
+    config.watchOptions = config.watchOptions || {};
+    config.watchOptions.ignored = /node_modules/;
+
     return config;
   },
 };
