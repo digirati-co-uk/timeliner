@@ -17,48 +17,53 @@ These user stories focus around the interactions with the audio on the timeline.
 * [ ] I can see the playhead moving accordingly along the timeline
 
 **Technical details**
-* Behaviours
-  * AudioTransport
-    * Load audio from the manifest
-      * we assume the audio is preloaded and
-    * controls playback state
-  * Bubbles
-    * handle timeline user interactions 
-      * skip to time
-      * drag current time indicator
-    * handle individual bubble's user interactions
-      * Skip to range
-* Components
-  * Bubbles
-    * Indicates current time on the timeline under the bubbles
-  * AudioTransport
-    * display playback controls
-        * play/pause button
-        * previous range(bubble) button
-        * previous next(bubble) button
-        * skip five seconds ahead button
-        * skip five seconds backwards button
-    * Indicates current time in mm:ss (maybe for longer compositions hh:mm:ss)
-* Data model
-  * Bubbles
-    * ranges:[IIIFRange]
-    * selectedRange:IIIFRange
-    * currentTime:Number(in milliseconds)
-    * onRangeClicked(IIIFRange)
-    * onTrackClicked()
-  * AudioTransport
-    * audioURI:string
-    * isLoaded:boolean
-    * currentTime:Number(in milliseconds)
-    * audio:react-sound.Sound
-    * onSkipForwardClicked()
-    * onSkipBackwardClicked()
-    * onPreviousRangeClicked()
-    * onNextRangeClicked()
 
-TODO: error handling? e.g. Audio doesn't load. Format doesn't supported.
-    
-    
+* Behaviours
+    * Play/pause state reflected on the Audio Transport Bar's Play Pause Button
+* Components
+    * Timeline Scrubber
+        * Need emit a click event with the timeline position to update the playhead position
+    * Play head
+        * Indicates current time on the timeline under the bubbles
+        * Drag and Drop Events to move the playhead on the Timeline Scrubber
+    * Single Bubble
+        * Need emit a click event in order to be able to select the bubble
+    * Audio Transport Bar
+        * display playback controls
+            * PlayPause Button
+            * Next Bubble Button
+            * Previous Bubble Button
+            * Skip Ahead Button
+            * Skip Backwards Button
+            * Volume Slider
+    * PlayPause Button
+        * Click event starts/stops playback
+        * Display Play/Pause icon with regards to the playback prop/state passed to the component.
+    * Next Bubble Button
+        * moves the playhead to the next bubble marker
+        * Displays >| icon
+        * disabled state
+    * Previous Bubble Button
+        * moves the playhead to the previous bubble marker
+        * Displays >| icon
+        * changes to disabled state if there is bubbles before the current 
+    * Skip Ahead Button
+        * moves the playhead 5 seconds forward
+        * Displays >> icon
+    * Skip Backwards Button
+        * moves the playhead 5 seconds forward
+        * Displays << icon
+    * Current Time Indicator
+        * Indicates current time in mm:ss (maybe for longer compositions hh:mm:ss)
+    * Volume Slider
+    * Keyboard Controls Provider
+        * Global component to capture keyboard events
+        * Keyboard mappings for audio transport controls
+            * WhiteSpace -> play/pause
+            * Left Arrow,Right Arrow  skipping forwards and backwards
+            * <,> Previous next bubble 
+
+
 ## As a user, I can control the volume of the audio playback so that it’s at a comfortable level
 **Acceptance Criteria**
 * [ ] I can increase the audio volume
@@ -68,12 +73,11 @@ TODO: error handling? e.g. Audio doesn't load. Format doesn't supported.
 * Behaviours
     * Control audio volume via slider
 * Components
-  * AudioTransport
-    * displays a slider
-* Data model
-  *  AudioTransport
-     * volume
-     * onVolumeSlide()
+    * Volume Slider
+        * displays a horizontal slider to set the volume
+    * Keyboard Controls Provider
+        * Event handlers to +/- keys in order to control the volume with keyboard
+
 
 ## As a user, I want to be able to scrub along the current track playing to navigate to the section I want to hear.
 
@@ -83,22 +87,17 @@ TODO: error handling? e.g. Audio doesn't load. Format doesn't supported.
 
 **Technical details**
 * Behaviours
-  * Bubbles
-    * handle timeline user interactions 
-      * Skip to time
-      * drag current time indicator
+    * Able to click on a specific point on the Timeline in order to change the playhead position
+    * Drag the played to update the current playback position, (NOTE: the playback position doesn't update until the playhead released)
 * Components
-  * Bubbles
-    * Indicates current time on the timeline under the bubbles
-* Data model
-  * Bubbles
-    * currentTime:Number(in milliseconds)
-    * onTrackClicked()
-  * AudioTransport
-    * currentTime:Number(in milliseconds)
-TBC...    
+    * Timeline Scrubber
+        * Need emit a click event with the timeline position to update the playhead position
+    * Play head
+        * Indicates current time on the timeline under the bubbles
+        * Drag and Drop Events to move the playhead on the Timeline Scrubber
+    * Current Time Indicator
+        * Indicates current time in mm:ss (maybe for longer compositions hh:mm:ss)
 
-**Q**: What is the difference between this scrub and the one described on top?
 
 ## As a user, I want to be able to hear the section of music relating to the bubble I have selected so that I can form my annotation. 
 **Acceptance criteria**
@@ -107,15 +106,30 @@ TBC...
 
 **Technical details**
 * Behaviours
-    * If a range(bubble) is selected, switches to looping mode 
+    * If a range(bubble) is selected, switches to looping mode
+    * When the currently selected range ended the playhead jumps back to the  start of the bubble.
+    * **Q**: what triggers the deselect?
 * Components
-  * Bubbles
-   * onRangeClicked(IIIFRange)
-* Data model
-  * Bubbles
-    * selectedRange:IIIFRange
-**Q**: what triggers the deselect?
+    * Single Bubble
+        * Emit a click event in order to be able to select the bubble
+    * Play head
+
 
 **Dev tasks**
-* Bubbles
-* AudioTransport
+
+* Transport Bar Button
+    * iconCls:string
+    * title:string
+    * disabled:boolean
+* Timeline Scrubber
+* Play head
+* Single Bubble
+* Audio Transport Bar
+* PlayPause Button extends Transport Bar Button
+* Next Bubble Button extends Transport Bar Button
+* Previous Bubble Button extends Transport Bar Button
+* Skip Ahead Button extends Transport Bar Button
+* Skip Backwards Button extends Transport Bar Button
+* Current Time Indicator
+* Volume Slider
+* Keyboard Controls Provider
