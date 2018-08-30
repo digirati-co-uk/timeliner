@@ -1,0 +1,15 @@
+.audio-transport-bar {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background: #ebebeb;
+  &__buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+}
