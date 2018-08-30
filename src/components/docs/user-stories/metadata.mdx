@@ -12,8 +12,14 @@ menu: User stories
 * [ ] I can edit the existing label on a canvas
 * [ ] I can edit the existing summary on a canvas
 
-**Dev tasks**
-* [ todo ]
+**Technical details**
+* Behaviours
+    * Saving label field to original manifest
+    * Saving summary field to original manifest
+* Components
+    * Metadata Editor
+        * Label text field
+        * Summary text area
 
 
 ## As a user, I want to be able to see and create labels and descriptions for the bubbles that I have created
@@ -23,12 +29,60 @@ menu: User stories
 * [ ] I can edit an existing label
 * [ ] I can edit and existing summary
 
-**Dev tasks**
-* [ todo ]
+**Technical details**
+* Behaviours
+    * Saving label field to range
+    * Saving summary field to range
+* Components
+    * Reuse Metadata editor from above
 
 ## As a user, I want to see all of the descriptions written about the piece of music at the current time
 **Acceptance criteria**
 * [ ] I can see all descriptions for a given bubble, including parent bubbles
 
-**Dev tasks**
-* [ todo ]
+**Technical details**
+* Behaviours
+    * Display metadata for a single range
+    * Calculate all ranges and their parents for a given time stamp
+    * Display multiple levels of metadata
+* Components
+    * MetadataDisplay
+        * label display
+        * summary display
+    * TimeMetadata
+        * filter ranges by time
+        * display MetadataDisplay
+        * Indent levels according to structure
+
+## Technical details
+### Dev tasks
+* [ ] Create Metadata editor component
+* [ ] Create MetadataDisplay component
+* [ ] Create TimeMetadata component
+
+
+### Components
+
+import { PropsTable } from 'docz';
+
+#### Metadata Editor
+Allows for the editing of metadata, from either a range or a manifest.
+
+import MetadataEditor from '../../MetadataEditor/MetadataEditor';
+
+<PropsTable of={MetadataEditor} />
+
+#### Metadata Display
+Displays labels and summaries for ranges and manifests.
+
+import MetadataDisplay from '../../MetadataDisplay/MetadataDisplay';
+
+<PropsTable of={MetadataDisplay} />
+
+#### Time Metadata
+Displays all of the metadata for a given at the current timestamp for both the manifest
+and also the ranges.
+
+import TimeMetadata from '../../TimeMetadata/TimeMetadata';
+
+<PropsTable of={TimeMetadata} />
