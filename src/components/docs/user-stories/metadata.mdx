@@ -12,8 +12,18 @@ menu: User stories
 * [ ] I can edit the existing label on a canvas
 * [ ] I can edit the existing summary on a canvas
 
-**Dev tasks**
-* [ todo ]
+**Technical details**
+* Behaviours
+    * Saving label field to original manifest
+    * Saving summary field to original manifest
+* Components
+    * Metadata Editor
+        * Label text field
+        * Summary text area
+* Data model / props
+    * label (string)
+    * summary (string)
+    * onSave (function)
 
 
 ## As a user, I want to be able to see and create labels and descriptions for the bubbles that I have created
@@ -23,12 +33,46 @@ menu: User stories
 * [ ] I can edit an existing label
 * [ ] I can edit and existing summary
 
-**Dev tasks**
-* [ todo ]
+**Technical details**
+* Behaviours
+    * Saving label field to range
+    * Saving summary field to range
+* Components
+    * Reuse Metadata editor from above
+* Data model
+    * Reuse Metadata editor from above
 
 ## As a user, I want to see all of the descriptions written about the piece of music at the current time
 **Acceptance criteria**
 * [ ] I can see all descriptions for a given bubble, including parent bubbles
 
-**Dev tasks**
-* [ todo ]
+**Technical details**
+* Behaviours
+    * Display metadata for a single range
+    * Calculate all ranges and their parents for a given time stamp
+    * Display multiple levels of metadata
+* Components
+    * MetadataDisplay
+        * label display
+        * summary display
+    * TimeMetadata
+        * filter ranges by time
+        * display MetadataDisplay
+        * Indent levels according to structure
+* Data model
+    * Metadata Display
+        * IIIF Range (object)
+            * label (string)
+            * summary (string)
+            * startTime (number)
+            * endTime (number)
+    * TimeMetadata
+        * all ranges (array of IIIF Range)
+        * currentTime (number)
+        * indent (boolean)
+        
+
+## Dev tasks
+* [ ] Create Metadata editor component
+* [ ] Create MetadataDisplay component
+* [ ] Create TimeMetadata component
