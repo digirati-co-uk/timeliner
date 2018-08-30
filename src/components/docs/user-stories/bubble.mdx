@@ -9,32 +9,86 @@ menu: User stories
 * [ ] I can can use IIIF Canvas files to form new timeline diagrams
 * [ ] I can see a single big bubble representing the top level hierarchy
 
-**Dev tasks**
-* [todo]
-
+**Technical details**
+* Behaviours
+    * Present user with an Import IIIF document from URL
+    * Present user with an Import audio file from URL
+    * Will fetch IIIF document once loaded, providing feedback to use
+    * Will wrap audio file in "fake" manifest wrapper
+    * Will pass the manifest json back to caller
+    * Will create a default range if one does not exist
+* Components
+    * Audio Importer
+        * IIIF Url field
+        * Audio file field
+        * Select/choose button
+    * Loading Indicator
+    * Primary Button
+    * Bubble Display
+        * Needs to be able to be fed in list of points (data model at the bottom of this page)
+    * Single Bubble
+        * Needs to be able to render semi-circle at specified height and width
+    
 ## As a user, I can add bubbles to the timeline so that I can divide the timeline into sections
 **Acceptance criteria**
 * [ ] Clicking on existing bubbles generate 2 bubbles inside the bubble on the X-axis 
 * [ ] When I finish adding the new bubbles, I am back where I started 
 
-**Dev tasks**
-* [ todo ]
+**Technical details**
+* Behaviours
+    * Button to add new time point
+    * Will activate the scrubber at the bottom of the bubbles 
+    * Clicking on the bottom scrubber will create a point
+    * Calculate current time from X position of click
+    * Splits parent range into 2 child ranges and adds them to the parent
+    * Click same button to disable this editing mode.
+    * Hit box of line is larger than line itself.
+* Components
+    * Timeline Scrubber
+        * Knows the current time and runtime to calculate widths
+        * Gets list of times to plot on line
+        * Line background
+        * Editing/not-editing state
+        * Passes point list back to parent
+    * Play head
+    * Timeline Marker
 
 ## As a user I can change the size of the bubbles so they correspond to the right audio ranges
 **Acceptance criteria**
 * [ ] When I hover over an existing point, I can see that I can drag it
 * [ ] When I drag the point, the bubble changes size accordingly
 
-**Dev tasks**
-* [ todo ]
+**Technical details**
+* Behaviours
+    * Dragging a point will use the X position to calculate a new time
+    * Updating the point will pass the list of points to parent with modifications
+    * List updates will be immutable, but shallow, copy on write
+    * Updated point list will update bubble display
+* Components
+    * Timeline Scrubber
+        * Drag events on the timeline marker will update their positions
+        * Point list callback needed
+    * Bubble Display
+        * List of points displayed as bubbles need to be reactive to new points list
+    * Single Bubble
+        * Needs to be reactive to width changes
 
 ## As a user I want to be able to select multiple bubbles and group them into a logical grouping with another bubble around them
 **Acceptance criteria**
 * [ ] I can select multiple bubbles
 * [ ] I can choose to group multiple bubbles, surrounding them in a new bubble
 
-**Dev tasks**
-* [ todo ]
+**Technical details**
+* Behaviours
+    * **Unknown**: interaction of selecting multiple bubbles (shift key?)
+    * **Unknown**: where to display merge button
+    * **Unknown**: When selecting more ranges, sometime the merging logic may not always be the same and sometimes bubbles may not be able to be merged.
+* Components
+    * Single Bubble
+        * Need to be able to display active/inactive colours
+        * Need click events to select bubbles
+    * Merge button
+        * Should only appear when 2 or more ranges are selected
 
 ## As a user, I want to be able to assign a different colour to a bubble to distinguish it from the rest.
 **Acceptance criteria**
@@ -42,8 +96,22 @@ menu: User stories
 * [ ] User can change the colour of the select bubble
 * [ ] User can select multiple bubbles and change the colour
 
-**Dev tasks**
-* [ todo ]
+**Technical details**
+* Behaviours
+    * Selecting colour from a preset range of colours
+    * Will change the current bubbles colour
+    * Bubbles will have default colours based on depth of range
+    * Selecting multiple bubbles to change colour is allowed, outside of restrictions of merging
+* Components
+    * BubbleDisplay
+        * Selecting single and multiple bubbles
+    * Single Bubble
+        * Configurable background colour
+    * Swatch colour picker
+        * Display configured set of colours to choose from
+        * Selecting a range will show the current colour
+        * Choosing different coloured ranges will show an unknown colour state
+        * Choosing a colour will callback to parent
 
 
 ## As a user I want to be able to narrow down a section of the music to work on so that I can see the sections clearer
@@ -51,13 +119,135 @@ menu: User stories
 * [ ] User can zoom into a section
 * [ ] User can zoom out
 
-**Dev tasks**
-* [ todo ]
+**Technical details**
+* Behaviours
+    * Zoom in buttons and a reset view button
+    * When zoomed in bubbles will scale in the X dimension, but not the Y so the height will stay the same
+    * When zoomed in, user can drag the bubble display to move left and right (view box)
+* Components
+    * BubbleDisplay
+        * Need concept of cropping for bubbles displayed
+        * Could be fed subset of bubbles to display (perf?)
+    * Single bubble
+        * Scaling bubbles should not distort display
+    * ZoomControls
+        * Zoom in
+        * Zoom out
+        * Home
 
 ## As a user, I want to be able to hear the section of music relating to the bubble I have selected so that I can form my annotation.
 **Acceptance criteria**
 * [ ] User can hear section of audio when a bubble is selected
 * [ ] Audio snippet loops when getting to the end of the snippet
 
+**Technical details**
+* [ todo, waiting for audio spec ]
+
+## As I user I want to be able to remove bubbles 
+**Acceptance Criteria**
+* [ ] I should be able to select a single bubble to remove it
+* [ ] I should be able to select multiple bubbles and remove them
+* [ ] I should see the bubbles around the bubble I deleted resize to fit
+
 **Dev tasks**
-* [ todo ]
+- [ todo, waiting on [outstanding questions](https://github.com/digirati-co-uk/timeliner/issues/23) ]
+
+
+## Technical details
+
+### Components
+* Bubble Display
+* Single Bubble
+* Audio Importer
+* Loading Indicator
+* Primary Button
+* Timeline Scrubber
+* Play head
+* Timeline marker
+* Merge button
+* Zoom Controls
+* Swatch colour picker
+
+### Data model of points
+Since we will be posting update events on points and a tree of points, I think it makes sense that the structure stays 
+quite flat. Something like:
+```js
+const points = {
+    root: {
+        from: 0,
+        to: 1000,
+        children: ['bubble1', 'bubble4'], 
+    },
+    bubble1: {
+        from: 0,
+        to: 500,
+        children: ['bubble2', 'bubble3'],
+    },
+    bubble2: {
+        from: 0,
+        to: 150,
+    },
+    bubble3: {
+        from: 151,
+        to: 500,
+    },
+    bubble4: {
+        from: 500,
+        to: 1000,
+    },
+};
+```
+
+This would allow the full tree of points to be resolved using something like:
+```js
+function mapPoint(points, pointId) {
+  const point = points[pointId];
+  if (point.children) {
+    return {...point, children: point.children.map(childId => mapPoint(points, childId)) }
+  }
+  return point;
+}
+const fullPoints = mapPoint(points, 'root');
+
+// or in a render
+
+function RenderPoint({ points, pointId = 'root' }) {
+  const point = points[pointId];
+  return (
+    <Point {...point}>
+      {point.children 
+        ? point.children.map(childId => (
+          <RenderPoint points={points} pointId={childId} key={childId} />
+        ))
+        : null
+      }
+    </Point>
+  );
+}
+```
+
+While still allowing the points to be updated:
+```js
+function editPoint(points, pointId, from, to) {
+  return {
+    ...points,
+    [pointId]: {...points[pointId], from, to }
+  };
+}
+
+const newPoints = editPoint(points, 'root', 0, 1500);
+```
+
+The full state of a point, based on the current requirements:
+```js
+const point = {
+  id: 'id-1',
+  from: 0,
+  to: 1000,
+  children: ['id-3', 'id-2'],
+  label: 'some label',
+  summary: 'some summary',
+  isSelected: false,
+  colour: '#ff0000',
+};
+```
