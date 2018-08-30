@@ -4,3 +4,9 @@
 [Build]
   Publish = "dist"
   Functions = ""
+
+[[redirects]]
+  from = "docs/*"
+  to = "docs/index.html"
+  status = 200
+  force = false
