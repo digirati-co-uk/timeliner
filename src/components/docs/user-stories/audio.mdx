@@ -16,18 +16,64 @@ These user stories focus around the interactions with the audio on the timeline.
 * [ ] I can skip to the previous bubble point
 * [ ] I can see the playhead moving accordingly along the timeline
 
+**Technical details**
+* Behaviours
+  * AudioTransport
+    * Load audio from the manifest
+      * we assume the audio is preloaded and
+    * controls playback state
+  * Bubbles
+    * handle timeline user interactions 
+      * skip to time
+      * drag current time indicator
+    * handle individual bubble's user interactions
+      * Skip to range
+* Components
+  * Bubbles
+    * Indicates current time on the timeline under the bubbles
+  * AudioTransport
+    * display playback controls
+        * play/pause button
+        * previous range(bubble) button
+        * previous next(bubble) button
+        * skip five seconds ahead button
+        * skip five seconds backwards button
+    * Indicates current time in mm:ss (maybe for longer compositions hh:mm:ss)
+* Data model
+  * Bubbles
+    * ranges:[IIIFRange]
+    * selectedRange:IIIFRange
+    * currentTime:Number(in milliseconds)
+    * onRangeClicked(IIIFRange)
+    * onTrackClicked()
+  * AudioTransport
+    * audioURI:string
+    * isLoaded:boolean
+    * currentTime:Number(in milliseconds)
+    * audio:react-sound.Sound
+    * onSkipForwardClicked()
+    * onSkipBackwardClicked()
+    * onPreviousRangeClicked()
+    * onNextRangeClicked()
 
-**Dev tasks**
-* [ todo ]
-
-
+TODO: error handling? e.g. Audio doesn't load. Format doesn't supported.
+    
+    
 ## As a user, I can control the volume of the audio playback so that it’s at a comfortable level
 **Acceptance Criteria**
 * [ ] I can increase the audio volume
 * [ ] I can decrease the audio volume
 
-**Dev tasks**
-* [ todo ]
+**Technical details**
+* Behaviours
+    * Control audio volume via slider
+* Components
+  * AudioTransport
+    * displays a slider
+* Data model
+  *  AudioTransport
+     * volume
+     * onVolumeSlide()
 
 ## As a user, I want to be able to scrub along the current track playing to navigate to the section I want to hear.
 
@@ -35,13 +81,41 @@ These user stories focus around the interactions with the audio on the timeline.
 * [ ] User can see where the current audio track is
 * [ ] User can change where the current audio track is
 
-**Dev tasks**
-* [ todo ] 
+**Technical details**
+* Behaviours
+  * Bubbles
+    * handle timeline user interactions 
+      * Skip to time
+      * drag current time indicator
+* Components
+  * Bubbles
+    * Indicates current time on the timeline under the bubbles
+* Data model
+  * Bubbles
+    * currentTime:Number(in milliseconds)
+    * onTrackClicked()
+  * AudioTransport
+    * currentTime:Number(in milliseconds)
+TBC...    
+
+**Q**: What is the difference between this scrub and the one described on top?
 
 ## As a user, I want to be able to hear the section of music relating to the bubble I have selected so that I can form my annotation. 
 **Acceptance criteria**
 * [ ] User can hear section of audio when a bubble is selected
 * [ ] Audio snippet loops when getting to the end of the snippet
 
+**Technical details**
+* Behaviours
+    * If a range(bubble) is selected, switches to looping mode 
+* Components
+  * Bubbles
+   * onRangeClicked(IIIFRange)
+* Data model
+  * Bubbles
+    * selectedRange:IIIFRange
+**Q**: what triggers the deselect?
+
 **Dev tasks**
-* [ todo ]
+* Bubbles
+* AudioTransport
