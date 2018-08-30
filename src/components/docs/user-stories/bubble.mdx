@@ -44,7 +44,7 @@ menu: User stories
     * Click same button to disable this editing mode.
     * Hit box of line is larger than line itself.
 * Components
-    * TimelineScrubber
+    * Timeline Scrubber
         * Knows the current time and runtime to calculate widths
         * Gets list of times to plot on line
         * Line background
@@ -65,10 +65,10 @@ menu: User stories
     * List updates will be immutable, but shallow, copy on write
     * Updated point list will update bubble display
 * Components
-    * TimelineScrubber
+    * Timeline Scrubber
         * Drag events on the timeline marker will update their positions
         * Point list callback needed
-    * BubbleDisplay
+    * Bubble Display
         * List of points displayed as bubbles need to be reactive to new points list
     * Single Bubble
         * Needs to be reactive to width changes
@@ -145,6 +145,19 @@ menu: User stories
 
 
 ## Technical details
+
+### Components
+* Bubble Display
+* Single Bubble
+* Audio Importer
+* Loading Indicator
+* Primary Button
+* Timeline Scrubber
+* Play head
+* Timeline marker
+* Merge button
+* Zoom Controls
+* Swatch colour picker
 
 ### Data model of points
 Since we will be posting update events on points and a tree of points, I think it makes sense that the structure stays 
