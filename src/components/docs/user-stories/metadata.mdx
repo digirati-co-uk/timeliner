@@ -20,10 +20,6 @@ menu: User stories
     * Metadata Editor
         * Label text field
         * Summary text area
-* Data model / props
-    * label (string)
-    * summary (string)
-    * onSave (function)
 
 
 ## As a user, I want to be able to see and create labels and descriptions for the bubbles that I have created
@@ -38,8 +34,6 @@ menu: User stories
     * Saving label field to range
     * Saving summary field to range
 * Components
-    * Reuse Metadata editor from above
-* Data model
     * Reuse Metadata editor from above
 
 ## As a user, I want to see all of the descriptions written about the piece of music at the current time
@@ -59,20 +53,37 @@ menu: User stories
         * filter ranges by time
         * display MetadataDisplay
         * Indent levels according to structure
-* Data model
-    * Metadata Display
-        * IIIF Range (object)
-            * label (string)
-            * summary (string)
-            * startTime (number)
-            * endTime (number)
-    * TimeMetadata
-        * all ranges (array of IIIF Range)
-        * currentTime (number)
-        * indent (boolean)
         
 
-## Dev tasks
+## Technical details
+### Dev tasks
 * [ ] Create Metadata editor component
 * [ ] Create MetadataDisplay component
 * [ ] Create TimeMetadata component
+
+
+### Components
+
+import { PropsTable } from 'docz';
+
+#### Metadata Editor
+Allows for the editing of metadata, from either a range or a manifest.
+
+import MetadataEditor from '../../MetadataEditor/MetadataEditor';
+
+<PropsTable of={MetadataEditor} />
+
+#### Metadata Display
+Displays labels and summaries for ranges and manifests.
+
+import MetadataDisplay from '../../MetadataDisplay/MetadataDisplay';
+
+<PropsTable of={MetadataDisplay} />
+
+#### Time Metadata
+Displays all of the metadata for a given at the current timestamp for both the manifest
+and also the ranges.
+
+import TimeMetadata from '../../TimeMetadata/TimeMetadata';
+
+<PropsTable of={TimeMetadata} />
