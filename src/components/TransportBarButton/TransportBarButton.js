@@ -4,8 +4,6 @@ import './TransportBarButton.scss';
 
 class TransportBarButton extends Component {
   static propTypes = {
-    /** Icon class to use @todo change to SVG icons */
-    iconClass: PropTypes.string.isRequired,
     /** Title of button, for accessibility */
     title: PropTypes.string.isRequired,
     /** Disabled state of button */
@@ -24,9 +22,9 @@ class TransportBarButton extends Component {
         className="transport-bar-button"
         disabled={this.props.disabled}
         title={this.props.title}
-        onClick={this.props.onClick}
+        onClick={this.props.disabled ? () => {} : this.props.onClick}
       >
-        <i className={this.props.iconClass} />
+        {this.props.children}
       </button>
     );
   }
