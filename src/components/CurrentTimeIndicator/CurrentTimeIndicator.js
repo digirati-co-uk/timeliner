@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import './CurrentTimeIndicator.scss';
 
-export class CurrentTimeIndicator extends Component {
+class CurrentTimeIndicator extends Component {
   static propTypes = {
     currentTime: PropTypes.number.isRequired,
   };
@@ -9,3 +10,5 @@ export class CurrentTimeIndicator extends Component {
     return <div>CurrentTimeIndicator</div>;
   }
 }
+
+export default CurrentTimeIndicator;

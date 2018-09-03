@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import './MetadataEditor.scss';
 
 class MetadataEditor extends Component {
   static propTypes = {
