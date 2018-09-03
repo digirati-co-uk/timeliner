@@ -1023,6 +1023,10 @@
     babel-plugin-module-resolver "^3.1.1"
     babel-preset-react-app "^4.0.0-next.b2fd8db8"
 
+"@fesk/bem-js@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@fesk/bem-js/-/bem-js-1.0.1.tgz#ac7c74351e34835274aef0506146709d3046cef1"
+
 "@fesk/eslint-config-standard@1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@fesk/eslint-config-standard/-/eslint-config-standard-1.0.2.tgz#75bab6c0474e990ef171bed872c26fb96afd1084"
