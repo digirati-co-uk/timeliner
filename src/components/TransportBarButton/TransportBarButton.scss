@@ -1,0 +1,20 @@
+// temp icons :D
+@import url("https://use.fontawesome.com/releases/v5.3.1/css/all.css");
+
+.transport-bar-button {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 0 none;
+  outline: none;
+  i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+  }
+}
