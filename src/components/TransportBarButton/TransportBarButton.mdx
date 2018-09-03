@@ -9,6 +9,48 @@ import TransportBarButton from './TransportBarButton';
 # Transport Bar Button component
 <PropsTable of={TransportBarButton}/>
 
+## Transport bar button with icon
 <Playground>
-    <TransportBarButton />
+    <TransportBarButton title="Play" onClick={()=>{alert('Play button clicked.')}}>
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            version="1.2"
+            overflow="visible"
+            preserveAspectRatio="none"
+            viewBox="0 0 24 24"
+            width="45"
+            height="45">
+            <g>
+                <path 
+                    d="M10 16.5l6-4.5-6-4.5v9zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" 
+                    style={{
+                        fill: 'rgb(0, 0, 0)'
+                    }}
+                    vector-effect="non-scaling-stroke" />
+            </g>
+        </svg>
+    </TransportBarButton>
+</Playground>
+
+## Disabled transport bar button
+<Playground>
+    <TransportBarButton disabled={true} onClick={()=>{alert('This shouldn\'t render.')}}>
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            version="1.2"
+            overflow="visible"
+            preserveAspectRatio="none"
+            viewBox="0 0 24 24"
+            width="45"
+            height="45">
+            <g>
+                <path 
+                    d="M10 16.5l6-4.5-6-4.5v9zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" 
+                    style={{
+                        fill: 'rgb(0, 0, 0)'
+                    }}
+                    vector-effect="non-scaling-stroke" />
+            </g>
+        </svg>
+    </TransportBarButton>
 </Playground>

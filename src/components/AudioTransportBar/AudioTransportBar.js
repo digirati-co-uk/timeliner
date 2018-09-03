@@ -28,28 +28,15 @@ class AudioTransportBar extends Component {
       <div className="audio-transport-bar">
         <CurrentTimeIndicator />
         <div className="audio-transport-bar__buttons">
+          <TransportBarButton onClick={this.props.onPreviousBubble} />
+          <TransportBarButton onClick={this.props.onScrubBackwards} />
           <TransportBarButton
-            onClick={this.props.onPreviousBubble}
-            iconClass="fas fa-caret-left"
-          />
-          <TransportBarButton
-            onClick={this.props.onScrubBackwards}
-            iconClass="fas fa-angle-double-left"
-          />
-          <TransportBarButton
-            iconClass={this.props.isPlaying ? 'fas fa-pause' : 'fas fa-play'}
             onClick={
               this.props.isPlaying ? this.props.onPlay : this.props.onPause
             }
           />
-          <TransportBarButton
-            onClick={this.props.onScrubAhead}
-            iconClass="fas fa-angle-double-right"
-          />
-          <TransportBarButton
-            onClick={this.props.onNextBubble}
-            iconClass="fas fa-caret-right"
-          />
+          <TransportBarButton onClick={this.props.onScrubAhead} />
+          <TransportBarButton onClick={this.props.onNextBubble} />
         </div>
         <VolumeSlider />
       </div>
