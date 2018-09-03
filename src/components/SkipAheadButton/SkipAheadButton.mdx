@@ -1,0 +1,20 @@
+---
+name: Skip Ahead Button
+menu: Components
+---
+
+import { Playground, PropsTable } from 'docz';
+import SkipAheadButton from './SkipAheadButton';
+
+# Skip Ahead Button Component
+<PropsTable of={SkipAheadButton}/>
+
+## Skip Ahead Button Default State
+<Playground>
+    <SkipAheadButton onClick={()=>{alert('Play button clicked.')}} />
+</Playground>
+
+## Skip Ahead Button Disabled State
+<Playground>
+    <SkipAheadButton disabled={true} onClick={()=>{alert('This shouldn\'t render.')}} />
+</Playground>

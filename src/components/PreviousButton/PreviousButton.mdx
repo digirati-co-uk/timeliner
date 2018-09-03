@@ -1,0 +1,20 @@
+---
+name: Previous Button
+menu: Components
+---
+
+import { Playground, PropsTable } from 'docz';
+import PreviousButton from './PreviousButton';
+
+# Previous Button Component
+<PropsTable of={PreviousButton}/>
+
+## Previous Button
+<Playground>
+    <PreviousButton onClick={()=>{alert('Play button clicked.')}} />
+</Playground>
+
+## Previous Button Disabled State
+<Playground>
+    <PreviousButton disabled={true} onClick={()=>{alert('This shouldn\'t render.')}} />
+</Playground>

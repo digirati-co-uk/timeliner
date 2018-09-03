@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import VolumeSlider from '../VolumeSlider/VolumeSlider';
-import TransportBarButton from '../TransportBarButton/TransportBarButton';
 import CurrentTimeIndicator from '../CurrentTimeIndicator/CurrentTimeIndicator';
+import NextButton from '../NextButton/NextButton';
+import PreviousButton from '../PreviousButton/PreviousButton';
+import SkipAheadButton from '../SkipAheadButton/SkipAheadButton';
+import SkipBackwardsButton from '../SkipBackwardsButton/SkipBackwardsButton';
+import PlayPauseButton from '../PlayPauseButton/PlayPauseButton';
 import './AudioTransportBar.scss';
 
 class AudioTransportBar extends Component {
@@ -26,17 +30,17 @@ class AudioTransportBar extends Component {
   render() {
     return (
       <div className="audio-transport-bar">
-        <CurrentTimeIndicator />
+        <CurrentTimeIndicator currentTime={43 * 1000} runtime={180 * 1000} />
         <div className="audio-transport-bar__buttons">
-          <TransportBarButton onClick={this.props.onPreviousBubble} />
-          <TransportBarButton onClick={this.props.onScrubBackwards} />
-          <TransportBarButton
-            onClick={
-              this.props.isPlaying ? this.props.onPlay : this.props.onPause
-            }
+          <PreviousButton onClick={this.props.onPreviousBubble} />
+          <SkipBackwardsButton onClick={this.props.onScrubBackwards} />
+          <PlayPauseButton
+            isPlaying={this.props.isPlaying}
+            onPlay={this.props.onPlay}
+            onPause={this.props.onPause}
           />
-          <TransportBarButton onClick={this.props.onScrubAhead} />
-          <TransportBarButton onClick={this.props.onNextBubble} />
+          <SkipAheadButton onClick={this.props.onScrubAhead} />
+          <NextButton onClick={this.props.onNextBubble} />
         </div>
         <VolumeSlider />
       </div>
