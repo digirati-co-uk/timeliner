@@ -1,0 +1,25 @@
+---
+name: Play/Pause Button
+menu: Components
+---
+
+import { Playground, PropsTable } from 'docz';
+import PlayPauseButton from './PlayPauseButton';
+
+# Play/Pause Button Component
+<PropsTable of={PlayPauseButton}/>
+
+## Play/Pause Button (Not Playing)
+<Playground>
+    <PlayPauseButton isPlaying={false} />
+</Playground>
+
+## Play/Pause Button (Playing)
+<Playground>
+    <PlayPauseButton isPlaying={true} />
+</Playground>
+
+## Play/Pause Button  Disabled State
+<Playground>
+    <PlayPauseButton disabled={true} isPlaying={false} />
+</Playground>
