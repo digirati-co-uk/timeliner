@@ -2,13 +2,22 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './TransportBarButton.scss';
 
-export class TransportBarButton extends Component {
+class TransportBarButton extends Component {
   static propTypes = {
-    iconCls: PropTypes.string.isRequired,
+    /** Icon class to use @todo change to SVG icons */
+    iconClass: PropTypes.string.isRequired,
+    /** Title of button, for accessibility */
     title: PropTypes.string.isRequired,
+    /** Disabled state of button */
     disabled: PropTypes.bool,
+    /** Handler for when button is clicked */
     onClick: PropTypes.func.isRequired,
   };
+
+  static defaultProps = {
+    disabled: false,
+  };
+
   render() {
     return (
       <button
@@ -17,8 +26,10 @@ export class TransportBarButton extends Component {
         title={this.props.title}
         onClick={this.props.onClick}
       >
-        <i className={this.props.iconCls} />
+        <i className={this.props.iconClass} />
       </button>
     );
   }
 }
+
+export default TransportBarButton;
