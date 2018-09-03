@@ -1,3 +1,7 @@
 .current-time-indicator {
+  color: #777;
 
+  &--error {
+    color: darkred;
+  }
 }
