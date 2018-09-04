@@ -1,3 +1,33 @@
 .volume-slider {
-
+  width: 294px;
+  position: relative;
+  font-size: 0;
+  &__background { 
+    fill:#E6E6E6; 
+  }
+  &__foreground { 
+    clip-path:url(#CurrentVolumeMask_1_);
+    fill:#666666;
+  }
+  &__range {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    appearance: none;
+    background: transparent;
+    outline: 0 none;
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      border: 0;
+      height: 24px;
+      width: 8px;
+      border-radius: 0px;
+      background: #000;
+      outline: 0 none;
+      cursor: pointer;
+      margin-top: 0px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+      box-shadow: none; /* Add cool effects to your sliders! */
+    }
+  }
 }

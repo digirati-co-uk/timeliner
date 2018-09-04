@@ -5,10 +5,16 @@ menu: Components
 
 import { Playground, PropsTable } from 'docz';
 import VolumeSlider from './VolumeSlider';
+import VolumeSliderDemo from './VolumeSlider.DemoContainer';
 
 # Volume Slider component
 <PropsTable of={VolumeSlider}/>
 
+# Volume Slider Demo
+
+VolumeSliderDemo component passes the volume to the child components and provides a callback to set the volume.
 <Playground>
-    <VolumeSlider />
+    <VolumeSliderDemo>
+        <VolumeSlider />
+    </VolumeSliderDemo>
 </Playground>
