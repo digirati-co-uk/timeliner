@@ -7,7 +7,51 @@ Handles the rendering of many bubbles and the scrubber. You need to pass a rende
 
 **Still some unknowns with how this will work, and its responsibilities**
 
-import { PropsTable } from 'docz';
+import { Playground, PropsTable } from 'docz';
 import BubbleDisplay from './BubbleDisplay';
+import DEMO_POINTS from './BubbleDisplay.DemoPoints';
+import SingleBubble from '../SingleBubble/SingleBubble';
+
+
 
 <PropsTable of={BubbleDisplay} /> 
+
+# Bubble Display Demo
+<Playground>
+  <BubbleDisplay 
+    points={DEMO_POINTS}
+    width={600}
+    height={100}
+    x={0}
+    zoom={1}
+  >
+    {points=>points.map(bubble => <SingleBubble {...bubble}/>)}
+  </BubbleDisplay>
+</Playground>
+
+# Bubble Display Zoomed Demo
+<Playground>
+  <BubbleDisplay 
+    points={DEMO_POINTS}
+    width={600}
+    height={100}
+    x={400}
+    zoom={2.0}
+  >
+    {points=>points.map(bubble => <SingleBubble {...bubble}/>)}
+  </BubbleDisplay>
+</Playground>
+
+# Bubble Display Click Event Demo
+<Playground>
+  <BubbleDisplay 
+    points={DEMO_POINTS}
+    width={600}
+    height={100}
+    x={0}
+    zoom={1}
+  >
+    {points=>points.map(bubble => <SingleBubble {...bubble} onClick={(point, ev) => {alert(JSON.stringify(point));}}/>)}
+  </BubbleDisplay>
+</Playground>
+

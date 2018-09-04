@@ -3,10 +3,39 @@ title: Single bubble
 menu: Components
 ---
 
-import { PropsTable } from 'docz'; 
+import { Playground, PropsTable } from 'docz'; 
 import SingleBubble from './SingleBubble';
 
 # Single bubble
 SVG React component that will render a single bubble shape when given a height, width and style.
 
 <PropsTable of={SingleBubble} />
+
+
+<Playground>
+  <svg width="400" height="50" viewBox="0 0 400 50">
+    <g 
+      style={{
+        transform: 'scale(1, -1)',
+        transformOrigin: '50% 50%',
+      }}
+    >
+      <rect 
+        width="400" 
+        height="50" 
+        style={{
+          fill: '#f6f6f6', 
+          strokeWidth: 0,
+          stroke:'rgb(0,0,0,0)'
+        }}
+      />
+      <SingleBubble 
+        x={100} 
+        width={300} 
+        height={50} 
+        colour="#ff3311"
+        label="asd"
+      />
+    </g>
+  </svg>
+</Playground>
