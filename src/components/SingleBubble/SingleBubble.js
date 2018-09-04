@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import './SingleBubble.scss';
 
 class SingleBubble extends Component {
-  // NOTE: Changed the specification, the component doesn't really requires the y co-ordinate
   static propTypes = {
     /** Width of the bubble */
     width: PropTypes.number.isRequired,
