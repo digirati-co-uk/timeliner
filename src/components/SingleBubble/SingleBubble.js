@@ -14,6 +14,8 @@ class SingleBubble extends Component {
     colour: PropTypes.string,
     /** Active colour */
     activeColour: PropTypes.string,
+    /** Bubble label text colour */
+    labelColour: PropTypes.string,
     /** Click handler for the bubble */
     onClick: PropTypes.func,
     /** Label for the bubble */
@@ -26,6 +28,7 @@ class SingleBubble extends Component {
     onClick: () => {},
     x: 0,
     y: 0,
+    labelColour: '#fff',
   };
 
   onBubbleClick = ev => {
@@ -36,7 +39,15 @@ class SingleBubble extends Component {
   };
 
   render() {
-    const { onClick, height, x, width, colour, label } = this.props;
+    const {
+      onClick,
+      height,
+      x,
+      width,
+      colour,
+      label,
+      labelColour,
+    } = this.props;
     const d = `M${x},0a${width / 2},${height} 0 0,0 ${width},0`;
     return (
       <g
@@ -48,7 +59,7 @@ class SingleBubble extends Component {
         <path d={d} fill={colour} />
         <text
           textAnchor="middle"
-          fill="white"
+          fill={labelColour}
           x={width / 2 + x}
           y={0}
           transform={`scale(1,-1) translate(0,${-(2 / 3) * height})`}
