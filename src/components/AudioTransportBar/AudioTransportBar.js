@@ -42,7 +42,10 @@ class AudioTransportBar extends Component {
           <SkipAheadButton onClick={this.props.onScrubAhead} />
           <NextButton onClick={this.props.onNextBubble} />
         </div>
-        <VolumeSlider />
+        <VolumeSlider
+          volume={this.props.volume}
+          onVolumeChanged={this.props.onVolumeChanged}
+        />
       </div>
     );
   }

@@ -9,6 +9,15 @@ class VolumeSlider extends Component {
     /** Handler for when volume is changed */
     onVolumeChanged: PropTypes.func.isRequired,
   };
+  static defaultProps = {
+    volume: 100,
+  };
+  static instances = 0;
+  constructor(props) {
+    super(props);
+    this.instanceId = VolumeSlider.instances++;
+  }
+
   render() {
     const { volume, onVolumeChanged } = this.props;
     const width = 294;
@@ -35,14 +44,14 @@ class VolumeSlider extends Component {
           <g>
             <defs>
               <rect
-                id="CurrentVolumeMask"
+                id={`CurrentVolumeMask_${this.instanceId}`}
                 width={currentVolumeWidth}
                 height="24"
               />
             </defs>
-            <clipPath id="CurrentVolumeMask_1_">
+            <clipPath id={`CurrentVolumeMask_${this.instanceId}_`}>
               <use
-                xlinkHref="#CurrentVolumeMask"
+                xlinkHref={`#CurrentVolumeMask_${this.instanceId}`}
                 style={{
                   overflow: 'visible',
                 }}
@@ -51,6 +60,7 @@ class VolumeSlider extends Component {
             <polygon
               className="volume-slider__foreground"
               points={`0,24 ${width},0 ${width},24`}
+              clipPath={`url("#CurrentVolumeMask_${this.instanceId}_")`}
             />
           </g>
         </svg>
