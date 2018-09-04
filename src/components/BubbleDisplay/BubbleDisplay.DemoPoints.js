@@ -1,5 +1,5 @@
-const DEMO_POINTS = [
-  {
+const DEMO_POINTS = {
+  root: {
     id: 'id-1',
     from: 0,
     to: 1000,
@@ -10,7 +10,7 @@ const DEMO_POINTS = [
     isSelected: false,
     colour: '#ff0000',
   },
-  {
+  bubble1: {
     id: 'id-2',
     from: 0,
     to: 400,
@@ -20,7 +20,7 @@ const DEMO_POINTS = [
     isSelected: false,
     colour: '#00ff00',
   },
-  {
+  bubble2: {
     id: 'id-3',
     from: 400,
     to: 1000,
@@ -30,6 +30,6 @@ const DEMO_POINTS = [
     isSelected: false,
     colour: '#0000ff',
   },
-];
+};
 
 export default DEMO_POINTS;
