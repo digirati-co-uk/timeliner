@@ -22,6 +22,18 @@ class BubbleDisplay extends Component {
     renderBubble: null,
   };
 
+  shouldComponentUpdate(nextProps) {
+    const { width, height, zoom, x, points } = this.props;
+    const { nextWidth, nextHeight, nextZoom, nextX, nextPoints } = nextProps;
+    return (
+      width !== nextWidth ||
+      height !== nextHeight ||
+      zoom !== nextZoom ||
+      x !== nextX ||
+      JSON.stringify(points) !== JSON.stringify(nextPoints)
+    );
+  }
+
   render() {
     const { width, height, zoom, x, points, children } = this.props;
     const realWidth = width * zoom;
