@@ -4,11 +4,24 @@ menu: Components
 ---
 
 import { Playground, PropsTable } from 'docz';
+import Component from "@reach/component-component";
 import VolumeSlider from './VolumeSlider';
 
 # Volume Slider component
 <PropsTable of={VolumeSlider}/>
 
+# Volume Slider Demo
+
+VolumeSliderDemo component passes the volume to the child components and provides a callback to set the volume.
 <Playground>
-    <VolumeSlider />
+  <Component initialState={{ volume: 70 }}>
+  {({ setState, state }) => (
+    <VolumeSlider 
+      volume={state.volume} 
+      onVolumeChanged={(volume) => {
+        setState({ volume });
+      }}
+    />
+  )}
+  </Component>
 </Playground>

@@ -4,15 +4,36 @@ menu: Components
 ---
 
 import { Playground, PropsTable } from 'docz';
+import Component from "@reach/component-component";
 import AudioTransportBar from './AudioTransportBar';
 
 # Audio Transport Bar component
 <PropsTable of={AudioTransportBar}/>
 
 <Playground>
-    <AudioTransportBar />
+  <Component initialState={{ volume: 70 }}>
+  {({ setState, state }) => (
+    <AudioTransportBar 
+      isPlaying={false}
+      volume={state.volume}
+      onVolumeChanged={volume => {
+        setState({ volume });
+      }}
+    />
+  )}
+  </Component>
 </Playground>
 
 <Playground>
-    <AudioTransportBar playbackState={1}/>
+  <Component initialState={{ volume: 70 }}>
+  {({ setState, state }) => (
+    <AudioTransportBar 
+      isPlaying={true}
+      volume={state.volume}
+      onVolumeChanged={volume => {
+        setState({volume});
+      }}
+    />
+  )}
+  </Component>
 </Playground>
