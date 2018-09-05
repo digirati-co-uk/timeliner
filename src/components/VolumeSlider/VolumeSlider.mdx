@@ -18,8 +18,8 @@ VolumeSliderDemo component passes the volume to the child components and provide
   {({ setState, state }) => (
     <VolumeSlider 
       volume={state.volume} 
-      onVolumeChanged={(ev) => {
-        setState({volume: parseInt(ev.target.value, 10)});
+      onVolumeChanged={(volume) => {
+        setState({ volume });
       }}
     />
   )}

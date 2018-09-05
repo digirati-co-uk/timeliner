@@ -16,8 +16,8 @@ import AudioTransportBar from './AudioTransportBar';
     <AudioTransportBar 
       isPlaying={false}
       volume={state.volume}
-      onVolumeChanged={(ev) => {
-        setState({volume: parseInt(ev.target.value, 10)});
+      onVolumeChanged={volume => {
+        setState({ volume });
       }}
     />
   )}
@@ -30,8 +30,8 @@ import AudioTransportBar from './AudioTransportBar';
     <AudioTransportBar 
       isPlaying={true}
       volume={state.volume}
-      onVolumeChanged={(ev) => {
-        setState({volume: parseInt(ev.target.value, 10)});
+      onVolumeChanged={volume => {
+        setState({volume});
       }}
     />
   )}

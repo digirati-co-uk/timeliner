@@ -13,13 +13,21 @@ class VolumeSlider extends Component {
     volume: 100,
   };
   static instances = 0;
+
   constructor(props) {
     super(props);
     this.instanceId = VolumeSlider.instances++;
   }
 
+  onVolumeInputChange = ev => {
+    const { onVolumeChanged } = this.props;
+    if (onVolumeChanged) {
+      onVolumeChanged(parseInt(ev.target.value, 10));
+    }
+  };
+
   render() {
-    const { volume, onVolumeChanged } = this.props;
+    const { volume } = this.props;
     const width = 294;
     const maxVolume = 100;
     const currentVolumeWidth = (volume / maxVolume) * width;
@@ -70,7 +78,7 @@ class VolumeSlider extends Component {
           min="0"
           max={maxVolume}
           value={volume}
-          onChange={onVolumeChanged}
+          onChange={this.onVolumeInputChange}
         />
       </div>
     );
