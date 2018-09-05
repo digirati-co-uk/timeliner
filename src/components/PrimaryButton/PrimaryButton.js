@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import './PrimaryButton.scss';
+import Button from '@material-ui/core/Button';
 
 class PrimaryButton extends Component {
   static propTypes = {
@@ -19,7 +19,12 @@ class PrimaryButton extends Component {
   };
 
   render() {
-    return <div />;
+    const { children, style } = this.props;
+    return (
+      <Button variant="contained" color="primary" style={style}>
+        {children}
+      </Button>
+    );
   }
 }
 
