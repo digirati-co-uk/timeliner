@@ -87,7 +87,9 @@ const MaterialUI = props => {
         <AppBar position="static">
           <Toolbar>
             <div className={classes.toolbarLeft}>
-              <Typography color="inherit">Variations&nbsp;</Typography>
+              <Typography variant="title" color="inherit">
+                Variations&nbsp;
+              </Typography>
               <TextField id="name-simple" value={'title'} color="primary" />
               <IconButton color="inherit">
                 <Info />

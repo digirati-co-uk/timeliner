@@ -1,11 +1,9 @@
 .audio-transport-bar {
-  width: 100%;
-  height: 80px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  background: #ebebeb;
+  background: #ebebeb; //TODO: remove this
   &__buttons {
     display: flex;
     flex-direction: row;

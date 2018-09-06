@@ -21,7 +21,7 @@ class PrimaryButton extends Component {
   render() {
     const { children, style } = this.props;
     return (
-      <Button variant="contained" color="primary" style={style}>
+      <Button variant="contained" color="primary">
         {children}
       </Button>
     );
