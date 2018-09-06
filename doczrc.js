@@ -7,7 +7,7 @@ module.exports = {
   src: './src/components',
   dest: './dist/docs',
   base: '/docs/',
-  debug: false,
+  debug: true,
   port: 5001,
   protocol: 'http',
   modifyBundlerConfig: config => {
