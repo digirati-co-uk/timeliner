@@ -15,7 +15,7 @@
   "devDependencies": {
     "@fesk/scripts": "^1.1.1",
     "@fesk/webpack-config": "^1.1.1",
-    "docz": "^0.10.2",
+    "docz": "^0.10.3",
     "@reach/component-component": "^0.1.1"
   },
   "dependencies": {
