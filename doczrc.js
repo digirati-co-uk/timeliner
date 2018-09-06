@@ -9,13 +9,9 @@ module.exports = {
   src: './src/components',
   dest: './dist/docs',
   base: '/docs/',
-  debug: true,
+  debug: false,
   port: 5001,
   protocol: 'http',
-  modifyBabelRc: babelrc => ({
-    ...babelrc,
-    babelrc: true,
-  }),
   modifyBundlerConfig: config => {
     config.module.rules.push(sass);
     config.plugins[0].config.threadPool = happyThreadPool;
