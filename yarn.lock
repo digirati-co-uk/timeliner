@@ -1019,9 +1019,9 @@
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/@emotion/utils/-/utils-0.8.1.tgz#f3a81587ad8d0ef33cdad6f3b4310774fcc1053e"
 
-"@fesk/babel-config@1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@fesk/babel-config/-/babel-config-1.1.1.tgz#d2bb9b2e4522deceea87ea495c062517b0a55d18"
+"@fesk/babel-config@1.2.0-pr.a5a51a2b":
+  version "1.2.0-pr.a5a51a2b"
+  resolved "https://registry.yarnpkg.com/@fesk/babel-config/-/babel-config-1.2.0-pr.a5a51a2b.tgz#fa3efafd7b9d9b3a4a92d39b5a765abe70c2baf6"
   dependencies:
     "@babel/plugin-transform-react-constant-elements" "^7.0.0"
     "@babel/plugin-transform-react-jsx-source" "^7.0.0"
@@ -1033,9 +1033,9 @@
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@fesk/bem-js/-/bem-js-1.0.1.tgz#ac7c74351e34835274aef0506146709d3046cef1"
 
-"@fesk/eslint-config-standard@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@fesk/eslint-config-standard/-/eslint-config-standard-1.0.2.tgz#75bab6c0474e990ef171bed872c26fb96afd1084"
+"@fesk/eslint-config-standard@1.2.0-pr.a5a51a2b":
+  version "1.2.0-pr.a5a51a2b"
+  resolved "https://registry.yarnpkg.com/@fesk/eslint-config-standard/-/eslint-config-standard-1.2.0-pr.a5a51a2b.tgz#3eb68077c7a500394d7d22b29a7475d874b672da"
   dependencies:
     babel-eslint "^8.2.5"
     eslint "^3.19.0"
@@ -1044,35 +1044,35 @@
     eslint-plugin-flowtype "^2.49.3"
     eslint-plugin-prettier "^2.6.1"
 
-"@fesk/live-server-plugin@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@fesk/live-server-plugin/-/live-server-plugin-1.1.0.tgz#c816c0d225356c6d1af0be00fdc11eb18bc68b3c"
+"@fesk/live-server-plugin@1.2.0-pr.a5a51a2b":
+  version "1.2.0-pr.a5a51a2b"
+  resolved "https://registry.yarnpkg.com/@fesk/live-server-plugin/-/live-server-plugin-1.2.0-pr.a5a51a2b.tgz#056c80d694eca19f0fcfcb57e290eb8a29dd0e67"
   dependencies:
     live-server "^1.2.0"
     wait-on "^2.0.2"
     webpack-manifest-plugin "2.0.3"
 
-"@fesk/metalsmith-nunjucks@1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@fesk/metalsmith-nunjucks/-/metalsmith-nunjucks-1.1.1.tgz#ca09b1354ebeafba7cd8938d05270b576263d337"
+"@fesk/metalsmith-nunjucks@1.2.0-pr.a5a51a2b":
+  version "1.2.0-next.fa64e41d"
+  resolved "https://registry.yarnpkg.com/@fesk/metalsmith-nunjucks/-/metalsmith-nunjucks-1.2.0-next.fa64e41d.tgz#5d7dd9104807e1a5dcf498807714fc2bda74c1d3"
   dependencies:
     metalsmith "^2.3.0"
     multimatch "^2.1.0"
     nunjucks "^3.1.3"
 
-"@fesk/module-install@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@fesk/module-install/-/module-install-1.0.2.tgz#6180f2a9c10095faf2a10b9971aa543024fe481b"
+"@fesk/module-install@1.2.0-pr.a5a51a2b":
+  version "1.2.0-pr.a5a51a2b"
+  resolved "https://registry.yarnpkg.com/@fesk/module-install/-/module-install-1.2.0-pr.a5a51a2b.tgz#1c2bc25c27626bf8828ed2e3dc275d91bc0a043b"
   dependencies:
     glob-fs "^0.1.7"
     ora "^1.3.0"
     parse-package-name "^0.1.0"
 
-"@fesk/plugin-documentation@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@fesk/plugin-documentation/-/plugin-documentation-1.0.2.tgz#d005968d40f58949f157692bd2f53b1f3b480bc9"
+"@fesk/plugin-documentation@1.2.0-pr.a5a51a2b":
+  version "1.2.0-pr.a5a51a2b"
+  resolved "https://registry.yarnpkg.com/@fesk/plugin-documentation/-/plugin-documentation-1.2.0-pr.a5a51a2b.tgz#f7a046d11eaec12a580c58c1734d8859deb90623"
   dependencies:
-    metalsmith-atomic-design "1.0.2"
+    metalsmith-atomic-design "1.2.0-pr.a5a51a2b"
     metalsmith-collections "^0.9.0"
     metalsmith-directory-hierarchy "^1.0.1"
     metalsmith-headings-identifier "^0.0.11"
@@ -1080,13 +1080,13 @@
     metalsmith-paths "^3.0.1"
     metalsmith-permalinks "^0.5.0"
     metalsmith-prism "^3.1.1"
-    webpack-manifest-parser "1.0.2"
+    webpack-manifest-parser "1.2.0-pr.a5a51a2b"
 
-"@fesk/plugin-markdown@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@fesk/plugin-markdown/-/plugin-markdown-1.1.0.tgz#5c4dbd669083d82d94c035d37ceeb99510c7deb7"
+"@fesk/plugin-markdown@1.2.0-pr.a5a51a2b":
+  version "1.2.0-pr.a5a51a2b"
+  resolved "https://registry.yarnpkg.com/@fesk/plugin-markdown/-/plugin-markdown-1.2.0-pr.a5a51a2b.tgz#48b27f4131b12b69d1b81e7150ad0c21f397a6f2"
   dependencies:
-    metalsmith-atomic-design "1.0.2"
+    metalsmith-atomic-design "1.2.0-pr.a5a51a2b"
     metalsmith-collections "^0.9.0"
     metalsmith-directory-hierarchy "^1.0.1"
     metalsmith-headings-identifier "^0.0.11"
@@ -1094,76 +1094,76 @@
     metalsmith-paths "^3.0.1"
     metalsmith-permalinks "^0.5.0"
     metalsmith-prism "^3.1.1"
-    metalsmith-webpack-manifest "1.1.0"
-    webpack-manifest-parser "1.0.2"
+    metalsmith-webpack-manifest "1.2.0-pr.a5a51a2b"
+    webpack-manifest-parser "1.2.0-pr.a5a51a2b"
 
-"@fesk/plugin-metalsmith@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@fesk/plugin-metalsmith/-/plugin-metalsmith-1.1.0.tgz#0e281e0f84f45f7d5342dffa3787979dcdbe8760"
+"@fesk/plugin-metalsmith@1.2.0-pr.a5a51a2b":
+  version "1.2.0-pr.a5a51a2b"
+  resolved "https://registry.yarnpkg.com/@fesk/plugin-metalsmith/-/plugin-metalsmith-1.2.0-pr.a5a51a2b.tgz#4f05c7f35187aae89a51cf4bb2d548d05692907d"
   dependencies:
     chalk "^2.3.0"
     jsonfile "^4.0.0"
     metalsmith "^2.3.0"
-    metalsmith-atomic-design "1.0.2"
+    metalsmith-atomic-design "1.2.0-pr.a5a51a2b"
     metalsmith-debug-ui "^0.3.0"
-    metalsmith-twig-transform "1.0.2"
-    metalsmith-webpack-manifest "1.1.0"
+    metalsmith-twig-transform "1.2.0-pr.a5a51a2b"
+    metalsmith-webpack-manifest "1.2.0-pr.a5a51a2b"
     optimist "^0.6.1"
     pretty-error "^2.1.1"
-    webpack-manifest-parser "1.0.2"
+    webpack-manifest-parser "1.2.0-pr.a5a51a2b"
 
-"@fesk/plugin-micro-site@1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@fesk/plugin-micro-site/-/plugin-micro-site-1.1.0.tgz#bfd1f4c1f619a6de611ade3526983a13e1fa446b"
+"@fesk/plugin-micro-site@1.2.0-pr.a5a51a2b":
+  version "1.2.0-pr.a5a51a2b"
+  resolved "https://registry.yarnpkg.com/@fesk/plugin-micro-site/-/plugin-micro-site-1.2.0-pr.a5a51a2b.tgz#282fead3fd70a8bc022dea0c325d22f42bec1c60"
   dependencies:
-    "@fesk/plugin-markdown" "1.1.0"
+    "@fesk/plugin-markdown" "1.2.0-pr.a5a51a2b"
     foundation-sites "6.4.3"
     jquery "^3.3.1"
 
-"@fesk/plugin-nunjucks@1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@fesk/plugin-nunjucks/-/plugin-nunjucks-1.1.1.tgz#e56c74bf89ef7aab733dd70763652db16e2ac90c"
+"@fesk/plugin-nunjucks@1.2.0-pr.a5a51a2b":
+  version "1.2.0-pr.a5a51a2b"
+  resolved "https://registry.yarnpkg.com/@fesk/plugin-nunjucks/-/plugin-nunjucks-1.2.0-pr.a5a51a2b.tgz#bc267f03dda06829d6e117d439ed3b9adcab5f05"
   dependencies:
-    "@fesk/metalsmith-nunjucks" "1.1.1"
+    "@fesk/metalsmith-nunjucks" "1.2.0-pr.a5a51a2b"
     metalsmith-collections "^0.9.0"
     metalsmith-copy "^0.4.0"
     metalsmith-data-loader "^1.1.2"
     metalsmith-filemetadata "^1.0.0"
     metalsmith-paths "^3.0.1"
     metalsmith-plugin-kit "^1.0.1"
-    metalsmith-view-model "1.0.2"
+    metalsmith-view-model "1.2.0-pr.a5a51a2b"
 
-"@fesk/plugin-twig-templates@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@fesk/plugin-twig-templates/-/plugin-twig-templates-1.0.2.tgz#1755a7d5d2d8ff7142c402763274323996c71e8f"
+"@fesk/plugin-twig-templates@1.2.0-pr.a5a51a2b":
+  version "1.2.0-pr.a5a51a2b"
+  resolved "https://registry.yarnpkg.com/@fesk/plugin-twig-templates/-/plugin-twig-templates-1.2.0-pr.a5a51a2b.tgz#e9a9ea9943781c2a3760b8edb4297ec85b7774a4"
   dependencies:
     metalsmith-collections "^0.9.0"
     metalsmith-copy "^0.4.0"
     metalsmith-data-loader "^1.1.2"
     metalsmith-filemetadata "^1.0.0"
-    metalsmith-json-schema "1.0.2"
+    metalsmith-json-schema "1.2.0-pr.a5a51a2b"
     metalsmith-paths "^3.0.1"
     metalsmith-plugin-kit "^1.0.1"
-    metalsmith-twig-transform "1.0.2"
-    metalsmith-view-model "1.0.2"
+    metalsmith-twig-transform "1.2.0-pr.a5a51a2b"
+    metalsmith-view-model "1.2.0-pr.a5a51a2b"
 
-"@fesk/scripts@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@fesk/scripts/-/scripts-1.1.1.tgz#a4fb56fac0300ea4cf1af84970a6bf17b342b977"
+"@fesk/scripts@^1.2.0-next.fa64e41d":
+  version "1.2.0-pr.a5a51a2b"
+  resolved "https://registry.yarnpkg.com/@fesk/scripts/-/scripts-1.2.0-pr.a5a51a2b.tgz#d1c27c57b01cd11f2285957c1f8964bb15085e0a"
   dependencies:
-    "@fesk/eslint-config-standard" "1.0.2"
-    "@fesk/live-server-plugin" "1.1.0"
-    "@fesk/module-install" "1.0.2"
-    "@fesk/plugin-documentation" "1.0.2"
-    "@fesk/plugin-metalsmith" "1.1.0"
-    "@fesk/webpack-config" "1.1.1"
+    "@fesk/eslint-config-standard" "1.2.0-pr.a5a51a2b"
+    "@fesk/live-server-plugin" "1.2.0-pr.a5a51a2b"
+    "@fesk/module-install" "1.2.0-pr.a5a51a2b"
+    "@fesk/plugin-documentation" "1.2.0-pr.a5a51a2b"
+    "@fesk/plugin-metalsmith" "1.2.0-pr.a5a51a2b"
+    "@fesk/webpack-config" "1.2.0-pr.a5a51a2b"
     chalk "^2.4.1"
     clear "^0.1.0"
     exit-hook "^2.0.0"
     live-server "^1.2.0"
     metalsmith "^2.3.0"
-    metalsmith-config-fesk "1.1.1"
-    metalsmith-twig-transform "1.0.2"
+    metalsmith-config-fesk "1.2.0-pr.a5a51a2b"
+    metalsmith-twig-transform "1.2.0-pr.a5a51a2b"
     metalsmith-watch "^1.0.3"
     node-emoji "^1.8.1"
     npm-run-all "^4.1.2"
@@ -1172,14 +1172,14 @@
     webpack "4.8.3"
     webpack-cli "^2.1.2"
     webpack-config "^7.5.0"
-    webpack-manifest-parser "1.0.2"
+    webpack-manifest-parser "1.2.0-pr.a5a51a2b"
     webpack-manifest-plugin "^2.0.2"
 
-"@fesk/webpack-config@1.1.1", "@fesk/webpack-config@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@fesk/webpack-config/-/webpack-config-1.1.1.tgz#d48f1c8960fd196ff7b9ca1fb1680f197a756790"
+"@fesk/webpack-config@1.2.0-pr.a5a51a2b", "@fesk/webpack-config@^1.2.0-next.fa64e41d":
+  version "1.2.0-pr.a5a51a2b"
+  resolved "https://registry.yarnpkg.com/@fesk/webpack-config/-/webpack-config-1.2.0-pr.a5a51a2b.tgz#c448b25d4d2702d61f73963405a6e687cb2a9ba6"
   dependencies:
-    "@fesk/babel-config" "1.1.1"
+    "@fesk/babel-config" "1.2.0-pr.a5a51a2b"
     autoprefixer "^8.4.1"
     babel-loader "^8.0.0-beta"
     clean-webpack-plugin "^0.1.19"
@@ -1195,7 +1195,7 @@
     imagemin-optipng "^5.2.1"
     imagemin-svgo "^6.0.0"
     img-loader "^3.0.0"
-    metalsmith-config-fesk "1.1.1"
+    metalsmith-config-fesk "1.2.0-pr.a5a51a2b"
     mini-css-extract-plugin "^0.4.0"
     node-sass "^4.9.0"
     optimize-css-assets-webpack-plugin "^4.0.1"
@@ -8776,9 +8776,9 @@ merge2@^1.2.1:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/merge2/-/merge2-1.2.2.tgz#03212e3da8d86c4d8523cebd6318193414f94e34"
 
-metalsmith-atomic-design@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/metalsmith-atomic-design/-/metalsmith-atomic-design-1.0.2.tgz#2d433a542456797f7962d03173ec5b98bd08fe76"
+metalsmith-atomic-design@1.2.0-pr.a5a51a2b:
+  version "1.2.0-pr.a5a51a2b"
+  resolved "https://registry.yarnpkg.com/metalsmith-atomic-design/-/metalsmith-atomic-design-1.2.0-pr.a5a51a2b.tgz#c3a01e34a701640959459cb155deb7155b837d4d"
   dependencies:
     metalsmith-collections "^0.9.0"
     metalsmith-copy "^0.4.0"
@@ -8786,7 +8786,7 @@ metalsmith-atomic-design@1.0.2:
     metalsmith-filemetadata "^1.0.0"
     metalsmith-paths "^3.0.1"
     metalsmith-plugin-kit "^1.0.1"
-    metalsmith-twig-transform "1.0.2"
+    metalsmith-twig-transform "1.2.0-pr.a5a51a2b"
 
 metalsmith-collections@^0.9.0:
   version "0.9.0"
@@ -8798,20 +8798,20 @@ metalsmith-collections@^0.9.0:
     read-metadata "^1.0.0"
     uniq "^1.0.1"
 
-metalsmith-config-fesk@1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/metalsmith-config-fesk/-/metalsmith-config-fesk-1.1.1.tgz#f50d8fadaa6515162049f7dafd01e53e814b02ad"
+metalsmith-config-fesk@1.2.0-pr.a5a51a2b:
+  version "1.2.0-pr.a5a51a2b"
+  resolved "https://registry.yarnpkg.com/metalsmith-config-fesk/-/metalsmith-config-fesk-1.2.0-pr.a5a51a2b.tgz#2fb64e1aac53257a70a78d3e83c13e6d09233d9e"
   dependencies:
-    "@fesk/plugin-markdown" "1.1.0"
-    "@fesk/plugin-metalsmith" "1.1.0"
-    "@fesk/plugin-micro-site" "1.1.0"
-    "@fesk/plugin-nunjucks" "1.1.1"
-    "@fesk/plugin-twig-templates" "1.0.2"
+    "@fesk/plugin-markdown" "1.2.0-pr.a5a51a2b"
+    "@fesk/plugin-metalsmith" "1.2.0-pr.a5a51a2b"
+    "@fesk/plugin-micro-site" "1.2.0-pr.a5a51a2b"
+    "@fesk/plugin-nunjucks" "1.2.0-pr.a5a51a2b"
+    "@fesk/plugin-twig-templates" "1.2.0-pr.a5a51a2b"
     metalsmith "^2.3.0"
     metalsmith-filter "^1.0.2"
-    metalsmith-twig-transform "1.0.2"
+    metalsmith-twig-transform "1.2.0-pr.a5a51a2b"
     metalsmith-watch "^1.0.3"
-    webpack-manifest-parser "1.0.2"
+    webpack-manifest-parser "1.2.0-pr.a5a51a2b"
 
 metalsmith-copy@^0.4.0:
   version "0.4.0"
@@ -8889,9 +8889,9 @@ metalsmith-in-place@^3.0.1:
     metalsmith-engine-jstransformer "^0.1.2"
     multimatch "^2.1.0"
 
-metalsmith-json-schema@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/metalsmith-json-schema/-/metalsmith-json-schema-1.0.2.tgz#9714d57aaba7085875e20d047026ff89e4493838"
+metalsmith-json-schema@1.2.0-pr.a5a51a2b:
+  version "1.2.0-pr.a5a51a2b"
+  resolved "https://registry.yarnpkg.com/metalsmith-json-schema/-/metalsmith-json-schema-1.2.0-pr.a5a51a2b.tgz#5869c11d22c19f93c6e769adf5c254f2d910981b"
   dependencies:
     ajv "^5.5.2"
     chalk "^2.4.1"
@@ -8938,9 +8938,9 @@ metalsmith-prism@^3.1.1:
     metalsmith "^2.3.0"
     prismjs "^1.6.0"
 
-metalsmith-twig-transform@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/metalsmith-twig-transform/-/metalsmith-twig-transform-1.0.2.tgz#59ec108532a33e1fabb4fc6baa75751df414d4d4"
+metalsmith-twig-transform@1.2.0-pr.a5a51a2b:
+  version "1.2.0-pr.a5a51a2b"
+  resolved "https://registry.yarnpkg.com/metalsmith-twig-transform/-/metalsmith-twig-transform-1.2.0-pr.a5a51a2b.tgz#489d1c904edae864462e29fcae14a5e73c0e17ef"
   dependencies:
     jstransformer-nunjucks-node "^0.6.7"
     metalsmith-in-place "^3.0.1"
@@ -8948,9 +8948,9 @@ metalsmith-twig-transform@1.0.2:
     stephenwf-fork-metalsmith-engine-jstransformer "^0.1.2"
     stephenwf-fork-metalsmith-jstransformer "^0.12.1"
 
-metalsmith-view-model@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/metalsmith-view-model/-/metalsmith-view-model-1.0.2.tgz#c414c2b4294c04b91e3bd72c9640c79aed73eba4"
+metalsmith-view-model@1.2.0-pr.a5a51a2b:
+  version "1.2.0-pr.a5a51a2b"
+  resolved "https://registry.yarnpkg.com/metalsmith-view-model/-/metalsmith-view-model-1.2.0-pr.a5a51a2b.tgz#c28d650c189a32f9d860b5e68aea85bb8337887f"
   dependencies:
     metalsmith-plugin-kit "^1.0.1"
 
@@ -8966,13 +8966,13 @@ metalsmith-watch@^1.0.3:
     tiny-lr "^0.1.5"
     unyield "0.0.1"
 
-metalsmith-webpack-manifest@1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/metalsmith-webpack-manifest/-/metalsmith-webpack-manifest-1.1.0.tgz#d3fa04432a4f8c451de3f55a53dfbb9487b4634c"
+metalsmith-webpack-manifest@1.2.0-pr.a5a51a2b:
+  version "1.2.0-pr.a5a51a2b"
+  resolved "https://registry.yarnpkg.com/metalsmith-webpack-manifest/-/metalsmith-webpack-manifest-1.2.0-pr.a5a51a2b.tgz#0c6b109e6d91d8dc6ade56e3e0ab1f63382f4892"
   dependencies:
     jsonfile "^4.0.0"
     metalsmith-plugin-kit "^1.0.1"
-    webpack-manifest-parser "1.0.2"
+    webpack-manifest-parser "1.2.0-pr.a5a51a2b"
 
 metalsmith@^2.3.0:
   version "2.3.0"
@@ -9035,7 +9035,7 @@ micromatch@^3.0.3, micromatch@^3.1.10, micromatch@^3.1.4, micromatch@^3.1.8:
     snapdragon "^0.8.1"
     to-regex "^3.0.2"
 
-"micromatch@github:jonschlinkert/micromatch#2.2.0":
+micromatch@jonschlinkert/micromatch#2.2.0:
   version "2.2.0"
   resolved "https://codeload.github.com/jonschlinkert/micromatch/tar.gz/5017fd78202e04c684cc31d3c2fb1f469ea222ff"
   dependencies:
@@ -13562,9 +13562,9 @@ webpack-log@^2.0.0:
     ansi-colors "^3.0.0"
     uuid "^3.3.2"
 
-webpack-manifest-parser@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/webpack-manifest-parser/-/webpack-manifest-parser-1.0.2.tgz#6b2a4624a58299acf5c339b6bb66113dcab4081d"
+webpack-manifest-parser@1.2.0-pr.a5a51a2b:
+  version "1.2.0-pr.a5a51a2b"
+  resolved "https://registry.yarnpkg.com/webpack-manifest-parser/-/webpack-manifest-parser-1.2.0-pr.a5a51a2b.tgz#dcb7bbafd5e3969cbcbdb9cffe0f96345414dded"
 
 webpack-manifest-plugin@2.0.3, webpack-manifest-plugin@^2.0.2, webpack-manifest-plugin@^2.0.3:
   version "2.0.3"

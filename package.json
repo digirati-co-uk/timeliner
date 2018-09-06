@@ -7,14 +7,14 @@
   "license": "MIT",
   "scripts": {
     "start": "fesk-start",
-    "build": "rm -R dist/ && NODE_ENV=production fesk-build && docz build",
+    "build": "NODE_ENV=production fesk-build && docz build",
     "docz:dev": "docz dev",
     "docz:build": "docz build",
     "watch": "fesk-watch"
   },
   "devDependencies": {
-    "@fesk/scripts": "^1.1.1",
-    "@fesk/webpack-config": "^1.1.1",
+    "@fesk/scripts": "^1.2.0",
+    "@fesk/webpack-config": "^1.2.0",
     "docz": "^0.10.3",
     "@reach/component-component": "^0.1.1"
   },
