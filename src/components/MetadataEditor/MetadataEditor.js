@@ -4,9 +4,13 @@ import { TextField, Button } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
 import bem from '@fesk/bem-js';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
+import ColourSwatchPicker from '../ColourSwatchPicker/ColourSwatchPicker';
 import './MetadataEditor.scss';
 
 const metadataEditor = bem.block('metadata-editor');
+
+//TODO: implement themes
+const getSelectedThemeColours = () => ['red', 'blue', 'green'];
 
 class MetadataEditor extends Component {
   static propTypes = {
@@ -14,6 +18,8 @@ class MetadataEditor extends Component {
     label: PropTypes.string.isRequired,
     /** Current summary of the manifest or range */
     summary: PropTypes.string.isRequired,
+    /** Selected theme colour */
+    colour: PropTypes.number.isRequired,
     /** Call back when save button is clicked, gets passed an object with label and summary */
     onSave: PropTypes.func.isRequired,
     /** Call back when delete button is clicked, gets passed an object with label and summary */
@@ -26,26 +32,35 @@ class MetadataEditor extends Component {
     isNew: true,
     label: 'Untitled',
     summary: '',
+    colour: 0,
   };
 
   constructor(props) {
     super(props);
-    const { label, summary } = props;
+    const { label, summary, colour } = props;
     this.state = {
       label,
       summary,
+      colour,
     };
   }
 
   handleChange = name => ev => {
     this.setState({
-      [name]: event.target.value,
+      [name]: ev.target.value,
     });
   };
 
+  onSelectColour = colour => {
+    this.setState({ colour });
+  };
+
+  onSave = () => this.props.onSave(this.state);
+
   render() {
-    const { isNew, onSave, onDelete } = this.props;
-    const { label, summary } = this.state;
+    const { isNew, onDelete } = this.props;
+    const { label, summary, colour } = this.state;
+    const colours = getSelectedThemeColours();
     return (
       <form className={metadataEditor}>
         <TextField
@@ -74,11 +89,16 @@ class MetadataEditor extends Component {
           value={summary}
           onChange={this.handleChange('summary')}
         />
+        <ColourSwatchPicker
+          swatch={colours}
+          currentColour={colour}
+          onSelectColour={this.onSelectColour}
+        />
         <div className={metadataEditor.element('button-bar')}>
           <Button disabled={isNew} onClick={!isNew && onDelete}>
             <Delete /> Delete
           </Button>
-          <PrimaryButton onClick={onSave}>Save</PrimaryButton>
+          <PrimaryButton onClick={this.onSave}>Save</PrimaryButton>
         </div>
       </form>
     );

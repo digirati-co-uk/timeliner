@@ -11,5 +11,16 @@ Allows for the editing of metadata, from either a range or a manifest.
 <PropsTable of={MetadataEditor} />
 
 <Playground>
-    <MetadataEditor />
+  <MetadataEditor 
+    onSave={
+      result => {
+        alert(JSON.stringify(result))
+      }
+    }
+    onDelete={
+      ()=>{ 
+        alert('deleted');
+      }
+    }
+  />
 </Playground>

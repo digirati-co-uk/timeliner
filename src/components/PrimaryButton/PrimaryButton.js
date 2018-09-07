@@ -6,22 +6,14 @@ class PrimaryButton extends Component {
   static propTypes = {
     /** Content of the button */
     children: PropTypes.node.isRequired,
-    /** Additional styles */
-    style: PropTypes.shape(),
-    /** Modifiers, should be a map, where the key is the modifier
-     * and the value is true/false for an active state */
-    modifiers: PropTypes.shape(),
-  };
-
-  static defaultProps = {
-    style: {},
-    modifiers: {},
+    /** On click */
+    onClick: PropTypes.func,
   };
 
   render() {
-    const { children, style } = this.props;
+    const { children, onClick } = this.props;
     return (
-      <Button variant="contained" color="primary">
+      <Button variant="contained" color="primary" onClick={onClick}>
         {children}
       </Button>
     );
