@@ -3,10 +3,15 @@ title: Colour swatch picker
 menu: Components
 ---
 
-import { PropsTable } from 'docz';
+import { Playground, PropsTable } from 'docz';
 import ColourSwatchPicker from './ColourSwatchPicker';
 
 # Colour swatch picker
 Allows you to select a colour from a configured swatch of colours.
 
 <PropsTable of={ColourSwatchPicker} />
+
+
+<Playground>
+    <ColourSwatchPicker swatch={['red', 'blue', 'green']}/>
+</Playground>

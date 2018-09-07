@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './ColourSwatchPicker.scss';
 
+import { Select, MenuItem } from '@material-ui/core';
+
 class ColourSwatchPicker extends Component {
   static propTypes = {
     /** Array of colours to display as choices */
@@ -17,8 +19,48 @@ class ColourSwatchPicker extends Component {
     onSelectColour: () => {},
   };
 
+  state = {
+    currentColour: null,
+  };
+
+  onSelect = (ev, child) => {
+    this.setState({
+      currentColour: child.props.value,
+    });
+    this.props.onSelectColour(child.props.value);
+  };
+
   render() {
-    return <div />;
+    const { swatch } = this.props;
+    const { currentColour } = this.state;
+    return (
+      <Select
+        displayEmpty={true}
+        native={false}
+        value={currentColour}
+        onChange={this.onSelect}
+        renderValue={colourIndex => (
+          <div
+            className="colour-swatch-picker__option"
+            style={{
+              backgroundColor: swatch[colourIndex],
+            }}
+          />
+        )}
+      >
+        {swatch.map((colour, index) => (
+          <MenuItem value={index}>
+            <div
+              selected={currentColour === index}
+              className="colour-swatch-picker__option"
+              style={{
+                backgroundColor: colour,
+              }}
+            />
+          </MenuItem>
+        ))}
+      </Select>
+    );
   }
 }
 
