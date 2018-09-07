@@ -12,7 +12,7 @@ Imports either a IIIF manifest, or audio source. Always returns a valid IIIF Pre
 <PropsTable of={AudioImporter} />
 
 <Playground>
-  <Component initialState={{ isImporterOpen: false }}>
+  <Component initialState={{ isImporterOpen: false, importedJSON: '' }}>
   {({ setState, state }) => (
     <div>
       <button 
@@ -36,13 +36,16 @@ Imports either a IIIF manifest, or audio source. Always returns a valid IIIF Pre
         }
         onImport={
           (manifest) => {
-            alert(JSON.stringify(manifest, null, 2));
             setState({
               isImporterOpen:false,
+              importedJSON: JSON.stringify(manifest, null, 2),
             });
           }
         }
       />
+      <pre>
+        {state.importedJSON}
+      </pre>
     </div>
   )}
   </Component>
