@@ -1,16 +1,24 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import './LoadingIndicator.scss';
 
-class LoadingIndicator extends Component {
-  static propTypes = {
-    /** Optional progress between 0-1 */
-    loadingPercent: PropTypes.number,
-  };
+const LoadingIndicator = props => (
+  <CircularProgress
+    value={
+      typeof props.loadingPercent === 'number'
+        ? props.loadingPercent
+        : undefined
+    }
+    variant={
+      typeof props.loadingPercent === 'number' ? 'static' : 'indeterminate'
+    }
+  />
+);
 
-  render() {
-    return <div />;
-  }
-}
+LoadingIndicator.propTypes = {
+  /** Optional progress between 0-100 */
+  loadingPercent: PropTypes.number,
+};
 
 export default LoadingIndicator;
