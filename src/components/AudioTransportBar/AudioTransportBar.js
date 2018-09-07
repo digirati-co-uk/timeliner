@@ -8,6 +8,7 @@ import PreviousButton from '../PreviousButton/PreviousButton';
 import SkipAheadButton from '../SkipAheadButton/SkipAheadButton';
 import SkipBackwardsButton from '../SkipBackwardsButton/SkipBackwardsButton';
 import PlayPauseButton from '../PlayPauseButton/PlayPauseButton';
+import MergeButton from '../MergeButton/MergeButton';
 
 import './AudioTransportBar.scss';
 
@@ -33,6 +34,7 @@ class AudioTransportBar extends Component {
     return (
       <Toolbar className="audio-transport-bar">
         <CurrentTimeIndicator currentTime={43 * 1000} runtime={180 * 1000} />
+        <MergeButton />
         <div className="audio-transport-bar__buttons">
           <PreviousButton onClick={this.props.onPreviousBubble} />
           <SkipBackwardsButton onClick={this.props.onScrubBackwards} />
