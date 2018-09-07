@@ -1,18 +1,28 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import './MergeButton.scss';
+import { IconButton } from '@material-ui/core';
+import { MergeType } from '@material-ui/icons';
 
-class MergeButton extends Component {
-  static propTypes = {
-    /** Contents of the button */
-    children: PropTypes.node.isRequired,
-    /** Handler for when the button is clicked */
-    onClick: PropTypes.func.isRequired,
-  };
+const MergeButton = props => (
+  <IconButton
+    color="inherit"
+    disabled={props.disabled}
+    title="Merge Bubbles"
+    onClick={props.disabled ? () => {} : props.onClick}
+  >
+    <MergeType />
+  </IconButton>
+);
 
-  render() {
-    return <div />;
-  }
-}
+MergeButton.propTypes = {
+  /** Handler for when the button is clicked */
+  onClick: PropTypes.func.isRequired,
+  /** Handler for when the button is clicked */
+  disabled: PropTypes.bool.isRequired,
+};
+
+MergeButton.defaultProps = {
+  disabled: true,
+};
 
 export default MergeButton;

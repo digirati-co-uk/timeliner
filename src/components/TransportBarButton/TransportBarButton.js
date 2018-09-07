@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import './TransportBarButton.scss';
+import { IconButton } from '@material-ui/core';
 
 class TransportBarButton extends Component {
   static propTypes = {
@@ -18,14 +18,14 @@ class TransportBarButton extends Component {
 
   render() {
     return (
-      <button
-        className="transport-bar-button"
+      <IconButton
+        color="inherit"
         disabled={this.props.disabled}
         title={this.props.title}
         onClick={this.props.disabled ? () => {} : this.props.onClick}
       >
         {this.props.children}
-      </button>
+      </IconButton>
     );
   }
 }

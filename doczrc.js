@@ -7,6 +7,7 @@ module.exports = {
   src: './src/components',
   dest: './dist/docs',
   base: '/docs/',
+  files: 'src/components/**/*.mdx',
   debug: false,
   port: 5001,
   protocol: 'http',

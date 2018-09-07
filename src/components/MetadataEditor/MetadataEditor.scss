@@ -1,3 +1,8 @@
 .metadata-editor {
-
+  &__button-bar {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+  }
 }

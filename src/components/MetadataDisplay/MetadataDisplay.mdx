@@ -2,10 +2,14 @@
 title: Metadata Display
 menu: Components
 ---
-import { PropsTable } from 'docz';
+import { Playground, PropsTable } from 'docz';
 import MetadataDisplay from './MetadataDisplay';
 
 # Metadata Display
 Displays labels and summaries for ranges and manifests.
 
 <PropsTable of={MetadataDisplay} />
+
+<Playground>
+    <MetadataDisplay label="Intro" summary="Slowly evolving into the first breakdown." startTime={0} endTime={1000*51}/>
+</Playground>
