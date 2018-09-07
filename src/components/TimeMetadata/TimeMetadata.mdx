@@ -3,11 +3,23 @@ title: Time metadata
 menu: Components
 ---
 
+import { Playground, PropsTable } from 'docz';
 import TimeMetadata from './TimeMetadata';
-import { PropsTable } from 'docz';
+import DEMO_DATA from './TimeMetadata.Demo';
+
 
 # Time metadata
 Displays all of the metadata for a given at the current timestamp for both the manifest
 and also the ranges.
 
 <PropsTable of={TimeMetadata} />
+
+<Playground>
+  <TimeMetadata
+    ranges={DEMO_DATA}
+    currentTime={300}
+    runtime={1000}
+    manifestLabel="Manifest label"
+    manifestSummary="Manifest Summary"
+  />
+</Playground>
