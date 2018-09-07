@@ -2,10 +2,48 @@
 title: Audio importer
 menu: Components
 ---
-import { PropsTable } from 'docz';
+import { Playground, PropsTable } from 'docz';
+import Component from "@reach/component-component";
 import AudioImporter from './AudioImporter';
 
 # Audio importer
 Imports either a IIIF manifest, or audio source. Always returns a valid IIIF Presentation 3 manifest.
 
 <PropsTable of={AudioImporter} />
+
+<Playground>
+  <Component initialState={{ isImporterOpen: false }}>
+  {({ setState, state }) => (
+    <div>
+      <button 
+        onClick={
+          ()=>{
+            setState({
+              isImporterOpen:true
+            });
+          }}
+      >
+        Open Importer
+      </button>
+      <AudioImporter 
+        open={state.isImporterOpen}
+        onClose={
+          ()=>{
+            setState({
+              isImporterOpen:false,
+            });
+          }
+        }
+        onImport={
+          (manifest) => {
+            alert(JSON.stringify(manifest, null, 2));
+            setState({
+              isImporterOpen:false,
+            });
+          }
+        }
+      />
+    </div>
+  )}
+  </Component>
+</Playground>
