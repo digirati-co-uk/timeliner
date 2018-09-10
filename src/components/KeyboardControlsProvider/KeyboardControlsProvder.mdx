@@ -1,0 +1,27 @@
+---
+title: Keyboard Controls Provider 
+menu: Components
+---
+
+import { Playground, PropsTable } from 'docz';
+import Component from "@reach/component-component";
+import KeyboardControlsProvider from './KeyboardControlsProvider';
+
+# Keyboard Controls Provider
+Handles the keyboard events
+
+<PropsTable of={KeyboardControlsProvider} />
+
+<Playground>
+  <Component initialState={{ lastKey: '' }}>
+  {({ setState, state }) => {
+    return (
+      <div>
+        <KeyboardControlsProvider commands={{'all': (key) => setState({lastKey: key})}} />
+        <p>Last Key Pressed<span>{state.lastKey}</span></p>
+      </div>
+    );
+  }}
+  </Component>
+</Playground>
+
