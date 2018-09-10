@@ -2,3 +2,17 @@ node_modules
 dist
 .docz
 *.log
+
+# Thumbnail and folder options
+# OSX
+.DS_Store
+# Windows
+Thumbs.db
+
+# IDE files
+# vi
+*~
+# WebStorm
+.idea/
+#VScode
+.vscode/
