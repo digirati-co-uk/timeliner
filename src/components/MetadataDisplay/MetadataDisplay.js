@@ -20,7 +20,7 @@ const MetadataDisplay = props => (
     <CardHeader
       title={`${props.label} [from ${displayTime(
         props.startTime
-      )} to ${displayTime(props.endTime)}`}
+      )} to ${displayTime(props.endTime)}]`}
       action={
         <IconButton>
           <Edit />
