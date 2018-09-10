@@ -24,6 +24,7 @@
     "@material-ui/icons": "^3.0.1",
     "@material-ui/lab": "^3.0.0-alpha.14",
     "date-fns": "^1.29.0",
+    "docz-theme-default": "^0.11.1",
     "prop-types": "^15.6.2",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
