@@ -36,7 +36,6 @@ const KeyboardControlsProvider = props => (
     )}
     onKeyEvent={(key, ev) => {
       const keyCombo = getKeyCombinationPressed(key, ev);
-      console.log(props.commands[keyCombo], props.commands.default);
       (props.commands[keyCombo] || props.commands.default || emptyFn)(
         keyCombo,
         key,
