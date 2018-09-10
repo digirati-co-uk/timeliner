@@ -31,10 +31,13 @@ const getKeyCombinationPressed = (key, ev) => {
 
 const KeyboardControlsProvider = props => (
   <KeyboardEventHandler
-    handleKeys={Object.keys(props.commands)}
+    handleKeys={Object.keys(props.commands).map(
+      key => (key === 'default' ? 'all' : key)
+    )}
     onKeyEvent={(key, ev) => {
       const keyCombo = getKeyCombinationPressed(key, ev);
-      (props.commands[keyCombo] || props.commands.all || emptyFn)(
+      console.log(props.commands[keyCombo], props.commands.default);
+      (props.commands[keyCombo] || props.commands.default || emptyFn)(
         keyCombo,
         key,
         ev

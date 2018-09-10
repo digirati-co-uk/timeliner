@@ -17,7 +17,12 @@ Handles the keyboard events
   {({ setState, state }) => {
     return (
       <div>
-        <KeyboardControlsProvider commands={{'all': (keyCombo, key, ev) => setState({lastKey: keyCombo})}} />
+        <KeyboardControlsProvider
+          commands={{
+            'default': (keyCombo, key, ev) => setState({lastKey: keyCombo}),
+            'alt+a': () => setState({lastKey: 'special alt a handler'}),
+          }}
+        />
         <p>Last key pressed:<b>{state.lastKey}</b></p>
       </div>
     );
