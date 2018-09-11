@@ -9,24 +9,24 @@ import CurrentTimeIndicator from './CurrentTimeIndicator';
 # Current Time Indicator component
 <PropsTable of={CurrentTimeIndicator}/>
 
-### Example of minutes and seconds
+## Example of minutes and seconds
 <Playground>
     <CurrentTimeIndicator currentTime={43 * 1000} runtime={180 * 1000} />
 </Playground>
 
 
-### Example of hours, minutes and seconds
+## Example of hours, minutes and seconds
 <Playground>
     <CurrentTimeIndicator currentTime={5124000} runtime={12424000} />
 </Playground>
 
-### Example with custom separator
+## Example with custom separator
 <Playground>
     <CurrentTimeIndicator currentTime={43 * 1000} runtime={180 * 1000} separator=" ----- "/>
 </Playground>
 
 
-### Example with invalid times
+## Example with invalid times
 <Playground>
     <CurrentTimeIndicator currentTime={10 * 1000} runtime={5 * 1000}/>
     <br />

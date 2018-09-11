@@ -16,7 +16,7 @@
     "@fesk/scripts": "^1.1.1",
     "@fesk/webpack-config": "^1.1.1",
     "@reach/component-component": "^0.1.1",
-    "docz": "^0.10.3"
+    "docz": "0.11.1"
   },
   "dependencies": {
     "@fesk/bem-js": "^1.0.1",
@@ -24,6 +24,7 @@
     "@material-ui/icons": "^3.0.1",
     "@material-ui/lab": "^3.0.0-alpha.14",
     "date-fns": "^1.29.0",
+    "docz-theme-default": "^0.11.1",
     "prop-types": "^15.6.2",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",

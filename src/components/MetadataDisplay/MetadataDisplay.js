@@ -20,7 +20,7 @@ const MetadataDisplay = props => (
     <CardHeader
       title={`${props.label} [from ${displayTime(
         props.startTime
-      )} to ${displayTime(props.endTime)}`}
+      )} to ${displayTime(props.endTime)}]`}
       action={
         <IconButton>
           <Edit />
@@ -40,9 +40,9 @@ MetadataDisplay.propTypes = {
   label: PropTypes.string.isRequired,
   /** Summary of the manifest or range */
   summary: PropTypes.string.isRequired,
-  /** Time when metadata should be displayed from */
+  /** Time (ms) when metadata should be displayed from */
   startTime: PropTypes.number.isRequired,
-  /** Time when metadata should be displayed until */
+  /** Time (ms) when metadata should be displayed until */
   endTime: PropTypes.number.isRequired,
 };
 

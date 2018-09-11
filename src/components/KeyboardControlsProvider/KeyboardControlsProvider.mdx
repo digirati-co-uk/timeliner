@@ -4,13 +4,18 @@ menu: Components
 ---
 
 import { Playground, PropsTable } from 'docz';
-import Component from "@reach/component-component";
+import Component from '@reach/component-component';
 import KeyboardControlsProvider from './KeyboardControlsProvider';
 
 # Keyboard Controls Provider
 Handles the keyboard events
 
 <PropsTable of={KeyboardControlsProvider} />
+
+## Keyboard Controls Provider Demo
+
+This demonstration shows how to configure the key commands for the Keyboard Controls Provider. 
+The `default` is the default fallback for all key combinations not defined in the commands config object.
 
 <Playground>
   <Component initialState={{ lastKey: '' }}>
