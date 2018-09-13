@@ -1,0 +1,25 @@
+.table {
+  border: 1px solid #ddd;
+  width: 100%;
+
+  &__header {
+    background: #eee;
+
+    & .table__row {
+      font-weight: 600;
+
+      & .table__cell {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+
+  &__row {
+
+  }
+
+  &__cell {
+    padding: 5px 10px;
+  }
+}

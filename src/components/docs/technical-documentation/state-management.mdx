@@ -11,69 +11,48 @@ The state that will drive the timeliner application.
 
 Local entities represented in the application, and their relation to each other. The selected column indicates if in the application how many can be selected at once (0, 1, or n). Depending on this value, a new action can be created for selecting one or many.
 
+import Table from '../components/Table/Table';
 
-<table>
-  <tr>
-   <td>Name
-   </td>
-   <td>One or many
-   </td>
-   <td>Parent
-   </td>
-   <td>Selected (0, 1, n)
-   </td>
-  </tr>
-  <tr>
-   <td>Bubble
-   </td>
-   <td>many
-   </td>
-   <td>Canvas, Bubble
-   </td>
-   <td>1 or n?<sup>(1)</sup>
-   </td>
-  </tr>
-  <tr>
-   <td>TimeMarker
-   </td>
-   <td>many
-   </td>
-   <td>Canvas
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr>
-   <td>Manifest
-   </td>
-   <td>one
-   </td>
-   <td>none
-   </td>
-   <td>1
-   </td>
-  </tr>
-  <tr>
-   <td>Canvas
-   </td>
-   <td>many
-   </td>
-   <td>Manifest
-   </td>
-   <td>1
-   </td>
-  </tr>
-  <tr>
-   <td>ViewState
-   </td>
-   <td>one
-   </td>
-   <td>Canvas
-   </td>
-   <td>1
-   </td>
-  </tr>
-</table>
+<Table>
+  <Table.Header>
+    <Table.Row>
+        <Table.Cell>Name</Table.Cell>
+        <Table.Cell>One or many</Table.Cell>
+        <Table.Cell>Parent</Table.Cell>
+        <Table.Cell>Selected (0, 1, n)</Table.Cell>
+      </Table.Row>
+  </Table.Header>
+  <Table.Row>
+    <Table.Cell>Bubble</Table.Cell>
+    <Table.Cell>many</Table.Cell>
+    <Table.Cell>Canvas, Bubble</Table.Cell>
+    <Table.Cell>1 or n?<sup>(1)</sup></Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>TimeMarker</Table.Cell>
+    <Table.Cell>many</Table.Cell>
+    <Table.Cell>Canvas</Table.Cell>
+    <Table.Cell></Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>Manifest</Table.Cell>
+    <Table.Cell>one</Table.Cell>
+    <Table.Cell>none</Table.Cell>
+    <Table.Cell>1</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>Canvas</Table.Cell>
+    <Table.Cell>many</Table.Cell>
+    <Table.Cell>Manifest</Table.Cell>
+    <Table.Cell>1</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>ViewState</Table.Cell>
+    <Table.Cell>one</Table.Cell>
+    <Table.Cell>Canvas</Table.Cell>
+    <Table.Cell>1</Table.Cell>
+  </Table.Row>
+</Table>
 
 
 
@@ -91,141 +70,89 @@ The properties that make up each conceptual entity. This will be used to create 
 The project represents a Manifest presentation v3 object.
 
 
-<table>
-  <tr>
-   <td>Property
-   </td>
-   <td>Type
-   </td>
-   <td>Required
-   </td>
-   <td>Will change
-   </td>
-   <td>Details
-   </td>
-  </tr>
-  <tr>
-   <td>bubblesStyle
-   </td>
-   <td>string
-   </td>
-   <td>no
-   </td>
-   <td>yes
-   </td>
-   <td>Values: ['rounded','square']
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.Cell>Property</Table.Cell>
+      <Table.Cell>Type</Table.Cell>
+      <Table.Cell>Required</Table.Cell>
+      <Table.Cell>Will change</Table.Cell>
+      <Table.Cell>Details</Table.Cell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Row>
+    <Table.Cell>bubblesStyle</Table.Cell>
+    <Table.Cell>string</Table.Cell>
+    <Table.Cell>no</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>Values: ['rounded','square']
 Maps to IIIF behaviour for the rounded or square bubbles setting 
-</td>
-  </tr>
-  <tr>
-   <td>blackAndWhite
-   </td>
-   <td>bool
-   </td>
-   <td>no
-   </td>
-   <td>yes
-   </td>
-   <td>Maps to IIIF behaviour for the black and white settings flag.
-   </td>
-  </tr>
-  <tr>
-   <td>showTimes
-   </td>
-   <td>bool
-   </td>
-   <td>no
-   </td>
-   <td>yes
-   </td>
-   <td>Maps to IIIF behaviour for the "show times" settings flag.
-   </td>
-  </tr>
-  <tr>
-   <td>autoScaleHeightOnResize
-   </td>
-   <td>bool
-   </td>
-   <td>no
-   </td>
-   <td>yes
-   </td>
-   <td>Maps to IIIF behaviour for the "auto scale height on resize" setting flag.
-   </td>
-  </tr>
-  <tr>
-   <td>startPlayingWhenBubbleIsClicked
-   </td>
-   <td>bool
-   </td>
-   <td>no
-   </td>
-   <td>yes
-   </td>
-   <td>Maps to IIIF behaviour for the "Start playing when bubble is clicked." flag.
-   </td>
-  </tr>
-  <tr>
-   <td>stopPlayingAtTheEndOfSection
-   </td>
-   <td>bool
-   </td>
-   <td>no
-   </td>
-   <td>yes
-   </td>
-   <td>Maps to Iiif-behaviour for "Stop Playing at the end of the section." flag.
-   </td>
-  </tr>
-  <tr>
-   <td>bubbleHeight
-   </td>
-   <td>number
-   </td>
-   <td>no
-   </td>
-   <td>yes
-   </td>
-   <td>Bubble scale factor, a real number. 
-   </td>
-  </tr>
-  <tr>
-   <td>laguage
-   </td>
-   <td>string
-   </td>
-   <td>yes
-   </td>
-   <td>yes
-   </td>
-   <td>The language code, it will be used to indicate the language of the strings stored in the project. This serves as a shortcut. It leads to a better user experience when entering texts.
-   </td>
-  </tr>
-  <tr>
-   <td>title
-   </td>
-   <td>string
-   </td>
-   <td>yes
-   </td>
-   <td>yes
-   </td>
-   <td>Represents the manifest top level label.
-   </td>
-  </tr>
-  <tr>
-   <td>description
-   </td>
-   <td>string 
-   </td>
-   <td>yes
-   </td>
-   <td>yes
-   </td>
-   <td>Maps to metadata
-   </td>
-  </tr>
-</table>
+</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>blackAndWhite</Table.Cell>
+    <Table.Cell>bool</Table.Cell>
+    <Table.Cell>no</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>Maps to IIIF behaviour for the black and white settings flag.</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>showTimes</Table.Cell>
+    <Table.Cell>bool</Table.Cell>
+    <Table.Cell>no</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>Maps to IIIF behaviour for the "show times" settings flag.</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>autoScaleHeightOnResize</Table.Cell>
+    <Table.Cell>bool</Table.Cell>
+    <Table.Cell>no</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>Maps to IIIF behaviour for the "auto scale height on resize" setting flag.</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>startPlayingWhenBubbleIsClicked</Table.Cell>
+    <Table.Cell>bool</Table.Cell>
+    <Table.Cell>no</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>Maps to IIIF behaviour for the "Start playing when bubble is clicked." flag.</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>stopPlayingAtTheEndOfSection</Table.Cell>
+    <Table.Cell>bool</Table.Cell>
+    <Table.Cell>no</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>Maps to Iiif-behaviour for "Stop Playing at the end of the section." flag.</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>bubbleHeight</Table.Cell>
+    <Table.Cell>number</Table.Cell>
+    <Table.Cell>no</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>Bubble scale factor, a real number.</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>laguage</Table.Cell>
+    <Table.Cell>string</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>The language code, it will be used to indicate the language of the strings stored in the project. This serves as a shortcut. It leads to a better user experience when entering texts.</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>title</Table.Cell>
+    <Table.Cell>string</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>Represents the manifest top level label.</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>description</Table.Cell>
+    <Table.Cell>string</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>Maps to metadata</Table.Cell>
+  </Table.Row>
+</Table>
 
 
 **TODO:** 
@@ -245,169 +172,111 @@ Maps to IIIF behaviour for the rounded or square bubbles setting
 ### Audio (Annotation on Canvas)
 
 
-<table>
-  <tr>
-   <td>Property
-   </td>
-   <td>Type
-   </td>
-   <td>Required
-   </td>
-   <td>Will change
-   </td>
-   <td>Details
-   </td>
-  </tr>
-  <tr>
-   <td>url
-   </td>
-   <td>string
-   </td>
-   <td>yes
-   </td>
-   <td>no
-   </td>
-   <td>Audio file's url 
-   </td>
-  </tr>
-  <tr>
-   <td>duration
-   </td>
-   <td>number
-   </td>
-   <td>yes
-   </td>
-   <td>no
-   </td>
-   <td>Duration in ms
-   </td>
-  </tr>
-  <tr>
-   <td>isPlaying
-   </td>
-   <td>bool
-   </td>
-   <td>yes
-   </td>
-   <td>yes
-   </td>
-   <td>Audio file is playing
-   </td>
-  </tr>
-  <tr>
-   <td>currentTime
-   </td>
-   <td>number
-   </td>
-   <td>yes
-   </td>
-   <td>yes
-   </td>
-   <td>Audio file relative current time
-   </td>
-  </tr>
-</table>
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.Cell>Property</Table.Cell>
+      <Table.Cell>Type</Table.Cell>
+      <Table.Cell>Required</Table.Cell>
+      <Table.Cell>Will change</Table.Cell>
+      <Table.Cell>Details</Table.Cell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Row>
+    <Table.Cell>url</Table.Cell>
+    <Table.Cell>string</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>no</Table.Cell>
+    <Table.Cell>Audio file's url</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>duration</Table.Cell>
+    <Table.Cell>number</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>no</Table.Cell>
+    <Table.Cell>Duration in ms</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>isPlaying</Table.Cell>
+    <Table.Cell>bool</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>Audio file is playing</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>currentTime</Table.Cell>
+    <Table.Cell>number</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>Audio file relative current time</Table.Cell>
+  </Table.Row>
+</Table>
 
 
 **TODO:** 
 
 
 
-*   Keep the structure open for scenarios like:
-    *   Multiple audio on a single canvas (may overlap, also could be sequential) 
-    *   Multiple canvases with audio.
+*   Keep the structure open for scenarios like: *   Multiple audio on a single canvas (may overlap, also could be sequential)  *   Multiple canvases with audio.
 *   Multi source audio? - IIIF AV service 
 
 
 ### Bubble (Range)
 
 
-<table>
-  <tr>
-   <td>Property
-   </td>
-   <td>Type
-   </td>
-   <td>Required
-   </td>
-   <td>Will change
-   </td>
-   <td>Details
-   </td>
-  </tr>
-  <tr>
-   <td>startTime
-   </td>
-   <td>number
-   </td>
-   <td>yes
-   </td>
-   <td>yes
-   </td>
-   <td>In ms
-   </td>
-  </tr>
-  <tr>
-   <td>endTime
-   </td>
-   <td>number
-   </td>
-   <td>yes
-   </td>
-   <td>yes
-   </td>
-   <td>In ms
-   </td>
-  </tr>
-  <tr>
-   <td>label 
-   </td>
-   <td>string
-   </td>
-   <td>yes
-   </td>
-   <td>yes
-   </td>
-   <td>Bubble label displays on the bubble itself. This is stored in the IIIF mandatory label property.
-   </td>
-  </tr>
-  <tr>
-   <td>description
-   </td>
-   <td>string
-   </td>
-   <td>no
-   </td>
-   <td>yes
-   </td>
-   <td>Bubble description is visible in the range displays
-   </td>
-  </tr>
-  <tr>
-   <td>colour
-   </td>
-   <td>int<sup>(1)(2)</sup>
-   </td>
-   <td>yes
-   </td>
-   <td>yes
-   </td>
-   <td>Maybe represent it as a CSS class?
-   </td>
-  </tr>
-  <tr>
-   <td>isSelected
-   </td>
-   <td>bool
-   </td>
-   <td>yes
-   </td>
-   <td>yes
-   </td>
-   <td>Is the bubble selected.
-   </td>
-  </tr>
-</table>
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.Cell>Property</Table.Cell>
+      <Table.Cell>Type</Table.Cell>
+      <Table.Cell>Required</Table.Cell>
+      <Table.Cell>Will change</Table.Cell>
+      <Table.Cell>Details</Table.Cell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Row>
+    <Table.Cell>startTime</Table.Cell>
+    <Table.Cell>number</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>In ms</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>endTime</Table.Cell>
+    <Table.Cell>number</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>In ms</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>label</Table.Cell>
+    <Table.Cell>string</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>Bubble label displays on the bubble itself. This is stored in the IIIF mandatory label property.</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>description</Table.Cell>
+    <Table.Cell>string</Table.Cell>
+    <Table.Cell>no</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>Bubble description is visible in the range displays</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>colour</Table.Cell>
+    <Table.Cell>int<sup>(1)(2)</sup></Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>Maybe represent it as a CSS class?</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>isSelected</Table.Cell>
+    <Table.Cell>bool</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>Is the bubble selected.</Table.Cell>
+  </Table.Row>
+</Table>
 
 
 
@@ -421,105 +290,67 @@ Maps to IIIF behaviour for the rounded or square bubbles setting
 The view state stores the editor UI's current state. The view state is not getting saved or updated during the import and export transformations. 
 
 
-<table>
-  <tr>
-   <td>Property
-   </td>
-   <td>Type
-   </td>
-   <td>Required
-   </td>
-   <td>Will change
-   </td>
-   <td>Details
-   </td>
-  </tr>
-  <tr>
-   <td>isPlaying
-   </td>
-   <td>bool
-   </td>
-   <td>yes
-   </td>
-   <td>yes
-   </td>
-   <td>Project is playing
-   </td>
-  </tr>
-  <tr>
-   <td>currentTime
-   </td>
-   <td>number
-   </td>
-   <td>yes
-   </td>
-   <td>yes
-   </td>
-   <td>Project relative current time
-   </td>
-  </tr>
-  <tr>
-   <td>zoom
-   </td>
-   <td>number
-   </td>
-   <td>yes
-   </td>
-   <td>yes
-   </td>
-   <td>Floating point number.  \
-<strong>TODO: </strong>Need to figure out an equation for the min max zoom levels.
-   </td>
-  </tr>
-  <tr>
-   <td>x
-   </td>
-   <td>number
-   </td>
-   <td>yes
-   </td>
-   <td>yes
-   </td>
-   <td>x is the horizontal viewport position.
-   </td>
-  </tr>
-  <tr>
-   <td>isImportOpen
-   </td>
-   <td>bool
-   </td>
-   <td>yes
-   </td>
-   <td>yes
-   </td>
-   <td>Is Import Modal Open.
-   </td>
-  </tr>
-  <tr>
-   <td>isSettingsOpen
-   </td>
-   <td>bool
-   </td>
-   <td>yes
-   </td>
-   <td>yes
-   </td>
-   <td>Is Settings Modal Open.
-   </td>
-  </tr>
-  <tr>
-   <td>volume
-   </td>
-   <td>number
-   </td>
-   <td>yes
-   </td>
-   <td>yes
-   </td>
-   <td>The volume is global and the value is between 0..100.
-   </td>
-  </tr>
-</table>
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.Cell>Property</Table.Cell>
+      <Table.Cell>Type</Table.Cell>
+      <Table.Cell>Required</Table.Cell>
+      <Table.Cell>Will change</Table.Cell>
+      <Table.Cell>Details</Table.Cell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Row>
+    <Table.Cell>isPlaying</Table.Cell>
+    <Table.Cell>bool</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>Project is playing</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>currentTime</Table.Cell>
+    <Table.Cell>number</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>Project relative current time</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>zoom</Table.Cell>
+    <Table.Cell>number</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>Floating point number.  \
+<strong>TODO: </strong>Need to figure out an equation for the min max zoom levels.</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>x</Table.Cell>
+    <Table.Cell>number</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>x is the horizontal viewport position.</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>isImportOpen</Table.Cell>
+    <Table.Cell>bool</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>Is Import Modal Open.</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>isSettingsOpen</Table.Cell>
+    <Table.Cell>bool</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>Is Settings Modal Open.</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>volume</Table.Cell>
+    <Table.Cell>number</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>yes</Table.Cell>
+    <Table.Cell>The volume is global and the value is between 0..100.</Table.Cell>
+  </Table.Row>
+</Table>
 
 
 
@@ -528,172 +359,114 @@ The view state stores the editor UI's current state. The view state is not getti
 Any behaviours that happen that are not mutations. These could be multiple values changing, changing based on the value of another entity or local flows (step 1 then step 2 etc.). These will be the foundation for redux-sagas which will handle cross-store communications and flows.
 
 
-<table>
-  <tr>
-   <td>Behaviour
-   </td>
-   <td>Description
-   </td>
-   <td>Affected entities
-   </td>
-  </tr>
-  <tr>
-   <td colspan="3" >General behaviours
-   </td>
-  </tr>
-  <tr>
-   <td>Open Import Modal 
-   </td>
-   <td>Opens the import modal and stops the playback.
-   </td>
-   <td>Viewport
-   </td>
-  </tr>
-  <tr>
-   <td>Open Settings Modal 
-   </td>
-   <td>Opens the settings modal and stops the playback.
-   </td>
-   <td>Viewport
-   </td>
-  </tr>
-  <tr>
-   <td>Import Document
-   </td>
-   <td>Loads all data from the specified json, transforms it to the internal representation and preloads audio. 
-   </td>
-   <td>Project, Audio, Bubbles, Viewport
-   </td>
-  </tr>
-  <tr>
-   <td>Export Document
-   </td>
-   <td>Saves a snapshot of the Project, Bubbles
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr>
-   <td>Manifest loaded
-   </td>
-   <td>ViewState resets itself to totally zoomed out, not playing, current time 0, no modal open state. All bubble selected states are getting false value.
-   </td>
-   <td>Viewport, Bubbles
-   </td>
-  </tr>
-  <tr>
-   <td colspan="3" >Playback related behaviours
-   </td>
-  </tr>
-  <tr>
-   <td>Play/pause 
-   </td>
-   <td>With regards to the current isPlaying state the actions start and stops the audio playback, sets the state of the Play Pause button.
-   </td>
-   <td>
-   </td>
-  </tr>
-  <tr>
-   <td>Next Bubble 
-   </td>
-   <td>Updates the selected state, and checks that if there's no more bubbles after the new one it disables the Next Bubble button.
-   </td>
-   <td>Viewport, Bubble
-   </td>
-  </tr>
-  <tr>
-   <td>Previous Bubble 
-   </td>
-   <td>Updates the selected state, and checks that if there's no more bubbles before the new one it disables the Previous Bubble button.
-   </td>
-   <td>Viewport, Bubble
-   </td>
-  </tr>
-  <tr>
-   <td>Fast Forward 5s 
-   </td>
-   <td>
-   </td>
-   <td>Viewport
-   </td>
-  </tr>
-  <tr>
-   <td>Fast Reward 5s
-   </td>
-   <td>
-   </td>
-   <td>Viewport
-   </td>
-  </tr>
-  <tr>
-   <td>Goto time 
-   </td>
-   <td>Immediately updates the viewport global current time regardless of the playback state.
-   </td>
-   <td>Viewport
-   </td>
-  </tr>
-  <tr>
-   <td>Update Volume
-   </td>
-   <td>Updates global volume, and the currently playing audio volume. 
-   </td>
-   <td>Viewport, Audio
-   </td>
-  </tr>
-  <tr>
-   <td colspan="3" >Editing related behaviours
-   </td>
-  </tr>
-  <tr>
-   <td>Update Bubble constraints
-   </td>
-   <td>Updates startTime or endTime. And the playback was in loop mode restarts from  the beginning of the selected bubble. 
-   </td>
-   <td>Viewport, Bubble
-   </td>
-  </tr>
-  <tr>
-   <td>Save Metadata/Bubble
-   </td>
-   <td>Updates the Range any params.
-   </td>
-   <td>Viewport, Bubble
-   </td>
-  </tr>
-  <tr>
-   <td>Delete Metadata/Bubble
-   </td>
-   <td>Deletes the selected range.
-   </td>
-   <td>Viewport, Bubble
-   </td>
-  </tr>
-  <tr>
-   <td>Update/Save Project Settings
-   </td>
-   <td>Updates the settings, and apply the settings on the project
-   </td>
-   <td>Project, Viewport, Bubble
-   </td>
-  </tr>
-  <tr>
-   <td>Zoom to bubble
-   </td>
-   <td>Clicking on a bubble zooms the viewport in to fill the bubble in space
-   </td>
-   <td>Viewport, Bubble
-   </td>
-  </tr>
-  <tr>
-   <td>Reset document
-   </td>
-   <td>Removes all bubbles, stops the playback, moves the played to zero, resets the button states
-   </td>
-   <td>Project, Viewport, Bubble
-   </td>
-  </tr>
-</table>
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.Cell>Behaviour</Table.Cell>
+      <Table.Cell>Description</Table.Cell>
+      <Table.Cell>Affected entities</Table.Cell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Row>
+    <Table.Cell colspan="3">General behaviours</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>Open Import Modal</Table.Cell>
+    <Table.Cell>Opens the import modal and stops the playback.</Table.Cell>
+    <Table.Cell>Viewport</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>Open Settings Modal</Table.Cell>
+    <Table.Cell>Opens the settings modal and stops the playback.</Table.Cell>
+    <Table.Cell>Viewport</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>Import Document</Table.Cell>
+    <Table.Cell>Loads all data from the specified json, transforms it to the internal representation and preloads audio.</Table.Cell>
+    <Table.Cell>Project, Audio, Bubbles, Viewport</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>Export Document</Table.Cell>
+    <Table.Cell>Saves a snapshot of the Project, Bubbles</Table.Cell>
+    <Table.Cell></Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>Manifest loaded</Table.Cell>
+    <Table.Cell>ViewState resets itself to totally zoomed out, not playing, current time 0, no modal open state. All bubble selected states are getting false value.</Table.Cell>
+    <Table.Cell>Viewport, Bubbles</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell colspan="3">Playback related behaviours</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>Play/pause</Table.Cell>
+    <Table.Cell>With regards to the current isPlaying state the actions start and stops the audio playback, sets the state of the Play Pause button.</Table.Cell>
+    <Table.Cell></Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>Next Bubble</Table.Cell>
+    <Table.Cell>Updates the selected state, and checks that if there's no more bubbles after the new one it disables the Next Bubble button.</Table.Cell>
+    <Table.Cell>Viewport, Bubble</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>Previous Bubble</Table.Cell>
+    <Table.Cell>Updates the selected state, and checks that if there's no more bubbles before the new one it disables the Previous Bubble button.</Table.Cell>
+    <Table.Cell>Viewport, Bubble</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>Fast Forward 5s</Table.Cell>
+    <Table.Cell></Table.Cell>
+    <Table.Cell>Viewport</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>Fast Reward 5s</Table.Cell>
+    <Table.Cell></Table.Cell>
+    <Table.Cell>Viewport</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>Goto time</Table.Cell>
+    <Table.Cell>Immediately updates the viewport global current time regardless of the playback state.</Table.Cell>
+    <Table.Cell>Viewport</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>Update Volume</Table.Cell>
+    <Table.Cell>Updates global volume, and the currently playing audio volume.</Table.Cell>
+    <Table.Cell>Viewport, Audio</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell colspan="3" >Editing related behaviours</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>Update Bubble constraints</Table.Cell>
+    <Table.Cell>Updates startTime or endTime. And the playback was in loop mode restarts from  the beginning of the selected bubble.</Table.Cell>
+    <Table.Cell>Viewport, Bubble</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>Save Metadata/Bubble</Table.Cell>
+    <Table.Cell>Updates the Range any params.</Table.Cell>
+    <Table.Cell>Viewport, Bubble</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>Delete Metadata/Bubble</Table.Cell>
+    <Table.Cell>Deletes the selected range.</Table.Cell>
+    <Table.Cell>Viewport, Bubble</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>Update/Save Project Settings</Table.Cell>
+    <Table.Cell>Updates the settings, and apply the settings on the project</Table.Cell>
+    <Table.Cell>Project, Viewport, Bubble</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>Zoom to bubble</Table.Cell>
+    <Table.Cell>Clicking on a bubble zooms the viewport in to fill the bubble in space</Table.Cell>
+    <Table.Cell>Viewport, Bubble</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>Reset document</Table.Cell>
+    <Table.Cell>Removes all bubbles, stops the playback, moves the played to zero, resets the button states</Table.Cell>
+    <Table.Cell>Project, Viewport, Bubble</Table.Cell>
+  </Table.Row>
+</Table>
 
 
 
@@ -702,80 +475,55 @@ Any behaviours that happen that are not mutations. These could be multiple value
 A value that is derived from the models, but is not stored in state. Will probably be for values based on other values. Like bubble width, given a zoom value of X and a browser window width of Y. These can be converted into selectors that we can use when connecting containers.
 
 
-<table>
-  <tr>
-   <td>Computed value
-   </td>
-   <td>Description
-   </td>
-   <td>Affected entities
-   </td>
-  </tr>
-  <tr>
-   <td>Formatted Current Time
-   </td>
-   <td>Formatted version of the current playhead position in `mm:ss` and `hh:mm:ss` formats.
-   </td>
-   <td>Audio
-   </td>
-  </tr>
-  <tr>
-   <td>Formatted Audio duration
-   </td>
-   <td>Formatted version of the currently loaded audio file duration `mm:ss` and `hh:mm:ss` formats.
-   </td>
-   <td>Audio<sup>(1)</sup>
-   </td>
-  </tr>
-  <tr>
-   <td>Formatted Bubble start/end times 
-   </td>
-   <td>Formatted version of the bubble boundaries `mm:ss` and `hh:mm:ss` formats.
-   </td>
-   <td>Bubble
-   </td>
-  </tr>
-  <tr>
-   <td>Bubble viewer state
-   </td>
-   <td>Position x and zoom (note that here the x is not the same as ViewState x)
-   </td>
-   <td>Bubble, Audio
-   </td>
-  </tr>
-  <tr>
-   <td>Bubble depth
-   </td>
-   <td>Determines the bubble height, side product of the flattening process in order to able to quickly recall the bubbles vertical position in the original recursive structure. Also it is used to compute the height. 
-   </td>
-   <td>Bubble
-   </td>
-  </tr>
-  <tr>
-   <td>Bubble height
-   </td>
-   <td>Computed from the bubble depth using the sizing strategy selected in the settings multiplied by the bubble height slider value form the settings.
-   </td>
-   <td>Bubble
-   </td>
-  </tr>
-  <tr>
-   <td>Current audio track
-   </td>
-   <td>From the annotations on the canvas, finds out the current audio source file and the timestamp it should be playing at
-   </td>
-   <td>audio
-   </td>
-  </tr>
-  <tr>
-   <td>Transport Bar Button States
-   </td>
-   <td>With regards the current time, the 'current Bubbles', 'duration' and 'is playing' the transport bar buttons will be updated on the disabled/enabled state and the play/pause buttons icon.
-   </td>
-   <td>ViewState, Bubble
-   </td>
-  </tr>
-</table>
+<Table>
+  <Table.Header>
+    <Table.Row>
+      <Table.Cell>Computed value</Table.Cell>
+      <Table.Cell>Description</Table.Cell>
+      <Table.Cell>Affected entities</Table.Cell>
+    </Table.Row>
+  </Table.Header>
+  <Table.Row>
+    <Table.Cell>Formatted Current Time</Table.Cell>
+    <Table.Cell>Formatted version of the current playhead position in `mm:ss` and `hh:mm:ss` formats.</Table.Cell>
+    <Table.Cell>Audio</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>Formatted Audio duration</Table.Cell>
+    <Table.Cell>Formatted version of the currently loaded audio file duration `mm:ss` and `hh:mm:ss` formats.</Table.Cell>
+    <Table.Cell>Audio<sup>(1)</sup></Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>Formatted Bubble start/end times</Table.Cell>
+    <Table.Cell>Formatted version of the bubble boundaries `mm:ss` and `hh:mm:ss` formats.</Table.Cell>
+    <Table.Cell>Bubble</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>Bubble viewer state</Table.Cell>
+    <Table.Cell>Position x and zoom (note that here the x is not the same as ViewState x)</Table.Cell>
+    <Table.Cell>Bubble, Audio</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>Bubble depth</Table.Cell>
+    <Table.Cell>Determines the bubble height, side product of the flattening process in order to able to quickly recall the bubbles vertical position in the original recursive structure. Also it is used to compute the height.</Table.Cell>
+    <Table.Cell>Bubble</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>Bubble height</Table.Cell>
+    <Table.Cell>Computed from the bubble depth using the sizing strategy selected in the settings multiplied by the bubble height slider value form the settings.</Table.Cell>
+    <Table.Cell>Bubble</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>Current audio track</Table.Cell>
+    <Table.Cell>From the annotations on the canvas, finds out the current audio source file and the timestamp it should be playing at</Table.Cell>
+    <Table.Cell>audio</Table.Cell>
+  </Table.Row>
+  <Table.Row>
+    <Table.Cell>Transport Bar Button States</Table.Cell>
+    <Table.Cell>With regards the current time, the 'current Bubbles', 'duration' and 'is playing' the transport bar buttons will be updated on the disabled/enabled state and the play/pause buttons icon.</Table.Cell>
+    <Table.Cell>ViewState, Bubble</Table.Cell>
+  </Table.Row>
+</Table>
 
 
 
