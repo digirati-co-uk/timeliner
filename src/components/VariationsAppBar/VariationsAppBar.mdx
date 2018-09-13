@@ -1,0 +1,20 @@
+---
+title: App Bar 
+menu: Components
+---
+
+import { Playground, PropsTable } from 'docz';
+import Component from "@reach/component-component";
+import VariationsAppBar from './VariationsAppBar';
+
+
+<PropsTable of={VariationsAppBar} />
+
+
+<Playground>
+  <Component initialState={{ title: 'test title' }}>
+  {({ setState, state }) => (
+    <VariationsAppBar title={state.title} onTitleChange={title=>setState({title})}/>
+  )}
+  </Component>
+</Playground>

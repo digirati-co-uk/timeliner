@@ -65,6 +65,7 @@ class BubbleDisplay extends Component {
         width={width}
         height={height}
         viewBox={viewBox}
+        className="bubble-display"
         xmlns="http://www.w3.org/2000/svg"
         version="1.1"
       >
