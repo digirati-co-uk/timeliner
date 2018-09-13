@@ -1,3 +1,13 @@
 .timeline-marker {
-
+  width: 10px;
+  height: 10px;
+  margin-left:-5px;
+  border-radius: 50%;
+  background: #aaa;
+  cursor: ew-resize;
+  position: absolute;
+  &:hover {
+    transition: background 0.7s linear;
+    background: red;
+  }
 }
