@@ -48,7 +48,7 @@ class BubbleDisplay extends Component {
       x: point.startTime * projectionFactor,
       width: (point.endTime - point.startTime) * projectionFactor,
       colour: point.colour,
-      height: Math.pow(2 / 3, point.depth - 1) * height,
+      height: (maxDepth - point.depth) * 70, //Math.pow(2 / 3, point.depth - 1) * height,
       label: point.label,
       point: point,
     }));

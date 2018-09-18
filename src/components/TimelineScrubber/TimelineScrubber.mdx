@@ -32,10 +32,9 @@ Interactions with the timeline, dragging and clicking to add points.
     editorWidth: 700,
   }}>
   {({ setState, state }) => {
-    const _points = state.points;
-    const timePoints = Array.from(Object.values(_points).reduce((_timePoints, bubble) => {
-      _timePoints.add(bubble.from);
-      _timePoints.add(bubble.to);
+    const timePoints = Array.from(Object.values(state.points).reduce((_timePoints, bubble) => {
+      _timePoints.add(bubble.startTime);
+      _timePoints.add(bubble.endTime);
       return _timePoints;
     }, new Set()));
     return (
@@ -45,7 +44,7 @@ Interactions with the timeline, dragging and clicking to add points.
         }}
       >
         <BubbleDisplay 
-          points={_points}
+          points={state.points}
           width={state.editorWidth}
           height={200}
           x={0}

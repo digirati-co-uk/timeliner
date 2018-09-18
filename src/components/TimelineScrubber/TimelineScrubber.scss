@@ -1,13 +1,7 @@
 .timeline-scrubber {
-  height: 10px;
-  background: #efefef;
-  border-radius: 5px;
   position: relative;
-  cursor: pointer;
-  border: 2px solid transparent;
+  height: 10px;
+  z-index: 10;
+  background: #efefef;
   box-sizing: content-box;
-  &:hover {
-    border: 2px solid #888;
-    transition: border-color 1.5s linear;
-  }
 }

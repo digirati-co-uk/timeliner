@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
+import Measure from 'react-measure';
 
 import VariationsAppBar from '../VariationsAppBar/VariationsAppBar';
 import BubbleDisplay from '../BubbleDisplay/BubbleDisplay';
@@ -9,7 +10,7 @@ import SingleBubble from '../SingleBubble/SingleBubble';
 import AudioTransportBar from '../AudioTransportBar/AudioTransportBar';
 import ZoomControls from '../ZoomControls/ZoomControls';
 import TimelineMetadata from '../TimeMetadata/TimeMetadata';
-import Measure from 'react-measure';
+import TimelineScrubber from '../TimelineScrubber/TimelineScrubber';
 
 export default class VariationsMainView extends React.Component {
   constructor(props) {
@@ -29,8 +30,8 @@ export default class VariationsMainView extends React.Component {
       dimensions: {
         width: -1,
         height: -1,
-      }
-    }
+      },
+    };
   }
   render() {
     const _points = this.props.points;
@@ -43,6 +44,13 @@ export default class VariationsMainView extends React.Component {
       manifestLabel,
       manifestSummary,
     } = this.props;
+    const timePoints = Array.from(
+      Object.values(this.props.points).reduce((_timePoints, bubble) => {
+        _timePoints.add(bubble.startTime);
+        _timePoints.add(bubble.endTime);
+        return _timePoints;
+      }, new Set())
+    );
     return (
       <div>
         <MuiThemeProvider theme={this.theme}>
@@ -81,6 +89,11 @@ export default class VariationsMainView extends React.Component {
                       ))
                     }
                   </BubbleDisplay>
+                  <TimelineScrubber
+                    runTime={runTime}
+                    currentTime={currentTime}
+                    timePoints={timePoints}
+                  />
                 </div>
               )}
             </Measure>

@@ -4,7 +4,6 @@ import './TimelineScrubber.scss';
 import TimelineMarker from '../TimelineMarker/TimelineMarker';
 import PlayHead from '../Playhead/Playhead';
 
-
 class TimelineScrubber extends Component {
   static propTypes = {
     /** Current time of the audio in milliseconds */

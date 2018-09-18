@@ -28,7 +28,7 @@ class SingleBubble extends Component {
     onClick: () => {},
     x: 0,
     y: 0,
-    labelColour: '#fff',
+    labelColour: '#000',
   };
 
   onBubbleClick = ev => {
@@ -60,9 +60,14 @@ class SingleBubble extends Component {
         <text
           textAnchor="middle"
           fill={labelColour}
+          stroke="#fff"
+          strokeWidth="1.9"
+          strokeLinecap="butt"
+          strokeLinejoin="miter"
+          paintOrder="stroke"
           x={width / 2 + x}
           y={0}
-          transform={`scale(1,-1) translate(0,${-(2 / 3) * height})`}
+          transform={`scale(1,-1) translate(0,${70 / 2 - height})`}
         >
           {label}
         </text>
