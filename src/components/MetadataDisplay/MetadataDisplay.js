@@ -9,6 +9,7 @@ import {
   Typography,
   CardActions,
   IconButton,
+  Grid,
 } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
 
@@ -19,19 +20,27 @@ const MetadataDisplay = props => (
   <Card
     style={{
       borderLeft: `4px solid ${props.colour}`,
+      marginLeft: `${(props.depth - 1) * 24}px`,
     }}
   >
-    <CardHeader
-      title={`${props.label} [from ${displayTime(
-        props.startTime
-      )} to ${displayTime(props.endTime)}]`}
-      action={
-        <IconButton>
-          <Edit />
-        </IconButton>
-      }
-    />
     <CardContent>
+      <Grid
+        container
+        direction="row"
+        justify="space-between"
+        alignItems="center"
+      >
+        <Grid item>
+          <Typography variant="title" component="h3">
+            {props.label}
+          </Typography>
+        </Grid>
+        <Grid>
+          <IconButton>
+            <Edit />
+          </IconButton>
+        </Grid>
+      </Grid>
       <Typography variant="body1" component="pre">
         {props.summary}
       </Typography>

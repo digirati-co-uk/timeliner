@@ -12,20 +12,6 @@ const TimeMetadata = props => (
     alignItems="stretch"
     spacing={16}
   >
-    <Grid item>
-      <Card raised={false}>
-        <CardHeader
-          title={props.manifestLabel}
-          variant="display1"
-          component="h3"
-        />
-        <CardContent>
-          <Typography variant="body1" component="pre">
-            {props.manifestSummary}
-          </Typography>
-        </CardContent>
-      </Card>
-    </Grid>
     {props.ranges
       .filter(
         range =>
