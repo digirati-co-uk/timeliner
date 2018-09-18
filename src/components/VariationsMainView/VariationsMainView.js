@@ -72,6 +72,8 @@ export default class VariationsMainView extends React.Component {
             isPlaying={isPlaying}
             volume={volume}
             onVolumeChanged={onVolumeChanged}
+            currentTime={currentTime}
+            runTime={runTime}
           />
           <div
             style={{
