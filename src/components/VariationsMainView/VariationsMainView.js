@@ -73,13 +73,19 @@ export default class VariationsMainView extends React.Component {
             volume={volume}
             onVolumeChanged={onVolumeChanged}
           />
-          <TimelineMetadata
-            ranges={_points}
-            currentTime={currentTime}
-            runtime={runTime}
-            manifestLabel={manifestLabel}
-            manifestSummary={manifestSummary}
-          />
+          <div
+            style={{
+              padding: 8,
+            }}
+          >
+            <TimelineMetadata
+              ranges={_points}
+              currentTime={currentTime}
+              runtime={runTime}
+              manifestLabel={manifestLabel}
+              manifestSummary={manifestSummary}
+            />
+          </div>
         </MuiThemeProvider>
       </div>
     );
