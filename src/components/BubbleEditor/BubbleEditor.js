@@ -123,7 +123,6 @@ class BubbleDisplay extends React.Component {
         },
         { from: 0, to: this.state.runTime }
       );
-    console.log(bubbleToSplit);
     const newBubble = JSON.parse(JSON.stringify(bubbleToSplit));
     bubbleToSplit.to = splitpoint;
     newBubble.from = splitpoint;
@@ -323,7 +322,7 @@ class BubbleDisplay extends React.Component {
             viewBox={[0, 0, editorWidth, (maxDepth + 1) * 70].join(',')}
             style={{
               verticalAlign: 'top',
-              display: 'block'
+              display: 'block',
             }}
             xmlns="http://www.w3.org/2000/svg"
             version="1.1"
@@ -331,7 +330,7 @@ class BubbleDisplay extends React.Component {
             <g
               style={{
                 transform: 'scale(1, -1)',
-                transformOrigin: '50% 50%'
+                transformOrigin: '50% 50%',
               }}
             >
               {bubblesList.map(bubble => {
@@ -390,7 +389,7 @@ class BubbleDisplay extends React.Component {
               className="point-marker"
               style={{
                 left: (point / runTime) * editorWidth,
-                backgroundColor: selectedPoint === index ? 'red' : ''
+                backgroundColor: selectedPoint === index ? 'red' : '',
               }}
               onMouseDown={this.dragStart}
               // onClick={ev => ev.stopPropagation()}
