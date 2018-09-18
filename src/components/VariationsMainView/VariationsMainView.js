@@ -9,6 +9,7 @@ import SingleBubble from '../SingleBubble/SingleBubble';
 import AudioTransportBar from '../AudioTransportBar/AudioTransportBar';
 import ZoomControls from '../ZoomControls/ZoomControls';
 import TimelineMetadata from '../TimeMetadata/TimeMetadata';
+import Measure from 'react-measure';
 
 export default class VariationsMainView extends React.Component {
   constructor(props) {
@@ -24,6 +25,12 @@ export default class VariationsMainView extends React.Component {
         danger: 'orange',
       },
     });
+    this.state = {
+      dimensions: {
+        width: -1,
+        height: -1,
+      }
+    }
   }
   render() {
     const _points = this.props.points;
@@ -45,27 +52,38 @@ export default class VariationsMainView extends React.Component {
               position: 'relative',
             }}
           >
-            <BubbleDisplay
-              points={_points.reduce((acc, el) => {
-                acc[el.id] = el;
-                return acc;
-              }, {})}
-              width={764}
-              height={300}
-              x={0}
-              zoom={1}
+            <Measure
+              bounds
+              onResize={contentRect => {
+                this.setState({ dimensions: contentRect.bounds });
+              }}
             >
-              {points =>
-                points.map(bubble => (
-                  <SingleBubble
-                    {...bubble}
-                    onClick={(point, ev) => {
-                      alert(JSON.stringify(point));
-                    }}
-                  />
-                ))
-              }
-            </BubbleDisplay>
+              {({ measureRef }) => (
+                <div ref={measureRef}>
+                  <BubbleDisplay
+                    points={_points.reduce((acc, el) => {
+                      acc[el.id] = el;
+                      return acc;
+                    }, {})}
+                    width={this.state.dimensions.width}
+                    height={300}
+                    x={0}
+                    zoom={1}
+                  >
+                    {points =>
+                      points.map(bubble => (
+                        <SingleBubble
+                          {...bubble}
+                          onClick={(point, ev) => {
+                            alert(JSON.stringify(point));
+                          }}
+                        />
+                      ))
+                    }
+                  </BubbleDisplay>
+                </div>
+              )}
+            </Measure>
             <ZoomControls />
           </div>
           <AudioTransportBar

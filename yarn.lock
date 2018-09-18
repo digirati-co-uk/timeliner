@@ -6390,6 +6390,10 @@ get-caller-file@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-1.0.3.tgz#f978fa4c90d1dfe7ff2d6beda2a515e713bdcf4a"
 
+get-node-dimensions@^1.2.0:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/get-node-dimensions/-/get-node-dimensions-1.2.1.tgz#fb7b4bb57060fb4247dd51c9d690dfbec56b0823"
+
 get-pkg-repo@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/get-pkg-repo/-/get-pkg-repo-2.0.0.tgz#afe80c3370b2576bbe69aa78aedbfb96d2d025f1"
@@ -10887,7 +10891,7 @@ prompts@^0.1.10:
     kleur "^2.0.1"
     sisteransi "^0.1.1"
 
-prop-types@*, prop-types@15.6.2, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2:
+prop-types@*, prop-types@15.6.2, prop-types@^15.5.10, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2:
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.2.tgz#05d5ca77b4453e985d60fc7ff8c859094a497102"
   dependencies:
@@ -11204,6 +11208,14 @@ react-live@^1.11.0:
     prismjs "1.6"
     prop-types "^15.5.8"
     unescape "^0.2.0"
+
+react-measure@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/react-measure/-/react-measure-2.1.2.tgz#2fa690cc657d1e7a1271902b7a5937e0055338d5"
+  dependencies:
+    get-node-dimensions "^1.2.0"
+    prop-types "^15.5.10"
+    resize-observer-polyfill "^1.4.2"
 
 react-perfect-scrollbar@^1.2.0:
   version "1.2.0"
@@ -11845,6 +11857,10 @@ requires-port@^1.0.0:
 reselect@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/reselect/-/reselect-3.0.1.tgz#efdaa98ea7451324d092b2b2163a6a1d7a9a2147"
+
+resize-observer-polyfill@^1.4.2:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/resize-observer-polyfill/-/resize-observer-polyfill-1.5.0.tgz#660ff1d9712a2382baa2cad450a4716209f9ca69"
 
 resolve-cwd@^2.0.0:
   version "2.0.0"
