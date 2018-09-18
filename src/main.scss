@@ -1,6 +1,8 @@
 *, *:before, *:after { box-sizing: border-box; }
 body, html {
   font-family: sans-serif;
+  margin: 0;
+  padding: 0;
 }
 .container { 
   max-width: 500px; 

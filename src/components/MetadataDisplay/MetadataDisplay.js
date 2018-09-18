@@ -16,7 +16,11 @@ const displayTime = time =>
   formatDate(time, time >= 3600000 ? 'hh:mm:ss' : 'mm:ss');
 
 const MetadataDisplay = props => (
-  <Card>
+  <Card
+    style={{
+      borderLeft: `4px solid ${props.colour}`,
+    }}
+  >
     <CardHeader
       title={`${props.label} [from ${displayTime(
         props.startTime

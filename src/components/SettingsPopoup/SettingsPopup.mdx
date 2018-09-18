@@ -1,0 +1,63 @@
+---
+title: Settings Popup
+menu: Components
+---
+import { Playground, PropsTable } from 'docz';
+import Component from '@reach/component-component';
+import SettingsPopup from './SettingsPopup';
+import { Button } from '@material-ui/core';
+
+# Settings Popup
+
+<PropsTable of={SettingsPopup} />
+
+## Settings Popup Demo
+
+
+<Playground>
+  <Component initialState={{ isSettingsOpen: false, settingsJSON: null, }}>
+  {({ setState, state }) => (
+    <div>
+      <Button 
+        onClick={
+          ()=>{
+            setState({
+              isSettingsOpen:true
+            });
+          }}
+        variant="primary"
+      >
+        Open Settings
+      </Button>
+      <SettingsPopup 
+        open={state.isSettingsOpen}
+        onClose={
+          ()=>{
+            setState({
+              isSettingsOpen:false,
+            });
+          }
+        }
+        onSave={
+          (manifest) => {
+            setState({
+              isSettingsOpen:false,
+              settingsJSON: JSON.stringify(manifest, null, 2),
+            });
+          }
+        }
+      />
+      {
+        state.settingsJSON && (
+          <div>
+            <b>Manifest:</b>
+            <pre>
+              {state.settingsJSON}
+            </pre>
+          </div>
+        ) 
+      }
+    </div>
+  )}
+  </Component>
+</Playground>

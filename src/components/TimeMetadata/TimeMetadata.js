@@ -2,15 +2,30 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Typography } from '@material-ui/core';
 import MetadataDisplay from '../MetadataDisplay/MetadataDisplay';
+import { Grid, Card, CardContent, CardHeader } from '@material-ui/core';
 
 const TimeMetadata = props => (
-  <div>
-    <Typography variant="display1" component="h3">
-      {props.manifestLabel}
-    </Typography>
-    <Typography variant="body1" component="pre">
-      {props.manifestSummary}
-    </Typography>
+  <Grid
+    container
+    direction="column"
+    justify="flex-start"
+    alignItems="stretch"
+    spacing={16}
+  >
+    <Grid item>
+      <Card raised={false}>
+        <CardHeader
+          title={props.manifestLabel}
+          variant="display1"
+          component="h3"
+        />
+        <CardContent>
+          <Typography variant="body1" component="pre">
+            {props.manifestSummary}
+          </Typography>
+        </CardContent>
+      </Card>
+    </Grid>
     {props.ranges
       .filter(
         range =>
@@ -18,9 +33,11 @@ const TimeMetadata = props => (
           range.endTime >= props.currentTime
       )
       .map(range => (
-        <MetadataDisplay {...range} />
+        <Grid item>
+          <MetadataDisplay {...range} />
+        </Grid>
       ))}
-  </div>
+  </Grid>
 );
 
 TimeMetadata.propTypes = {
