@@ -65,14 +65,7 @@ class BubbleDisplay extends Component {
         width={width}
         height={height}
         viewBox={viewBox}
-<<<<<<< HEAD
-        style={{
-          verticalAlign: 'top',
-          display: 'block',
-        }}
-=======
         className="bubble-display"
->>>>>>> master
         xmlns="http://www.w3.org/2000/svg"
         version="1.1"
       >
