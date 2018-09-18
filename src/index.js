@@ -2,9 +2,12 @@ import './main.scss';
 import React from 'react';
 import { render } from 'react-dom';
 
+import VariationsMainView from './components/VariationsMainView/VariationsMainView';
+import DEMO_POINTS from './components/TimeMetadata/TimeMetadata.Demo';
+
 render(
   <div>
-    <a
+    {/* <a
       className="documentation"
       href={
         process.env.NODE_ENV === 'production'
@@ -13,8 +16,18 @@ render(
       }
     >
       Go to docs
-    </a>
-    <h1>Timeliner</h1>
+    </a> */}
+    <VariationsMainView
+      points={DEMO_POINTS}
+      {...{
+        volume: 70,
+        isPlaying: true,
+        currentTime: 30 * 1000,
+        runTime: 60 * 1000,
+        manifestLabel: 'Manifest label',
+        manifestSummary: 'Manifest Summary',
+      }}
+    />
   </div>,
   document.getElementById('app')
 );

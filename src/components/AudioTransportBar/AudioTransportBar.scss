@@ -1,13 +1,9 @@
 .audio-transport-bar {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
   background: #ebebeb; //TODO: remove this
   &__buttons {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: center;
   }
 }

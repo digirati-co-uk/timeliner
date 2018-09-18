@@ -1,0 +1,34 @@
+---
+title: Variations Main View 
+menu: Proof of concepts
+---
+# Variations Main View 
+
+import { Playground, PropsTable } from 'docz';
+import VariationsMainView from './VariationsMainView';
+import DEMO_POINTS from '../TimeMetadata/TimeMetadata.Demo';
+import Component from "@reach/component-component";
+
+<Playground>
+  <Component 
+    initialState={{ 
+      volume: 70,
+      isPlaying: true,
+      currentTime: 30 * 1000,
+      runTime: 60 * 1000,
+      manifestLabel: 'Manifest label',
+      manifestSummary: 'Manifest Summary',
+    }}
+  >
+    {({ setState, state }) => (
+      <VariationsMainView 
+        points={DEMO_POINTS}
+        onVolumeChanged={volume => {
+          setState({volume});
+        }}
+        {...state}
+        />
+    )}
+  </Component>
+</Playground>
+

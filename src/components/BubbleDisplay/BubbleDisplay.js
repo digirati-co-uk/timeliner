@@ -39,14 +39,14 @@ class BubbleDisplay extends Component {
     const realWidth = width * zoom;
     const maxWidth = Math.max.apply(
       null,
-      Object.values(points).map(point => point.to)
+      Object.values(points).map(point => point.endTime)
     );
     const maxDepth = 3; //TODO: compute max depth
     const projectionFactor = realWidth / maxWidth;
     const viewBox = [x * projectionFactor, 0, width, height].join(' ');
     const bubbles = Object.values(points).map(point => ({
-      x: point.from * projectionFactor,
-      width: (point.to - point.from) * projectionFactor,
+      x: point.startTime * projectionFactor,
+      width: (point.endTime - point.startTime) * projectionFactor,
       colour: point.colour,
       height: Math.pow(2 / 3, point.depth - 1) * height,
       label: point.label,
@@ -65,6 +65,7 @@ class BubbleDisplay extends Component {
         width={width}
         height={height}
         viewBox={viewBox}
+        className="bubble-display"
         xmlns="http://www.w3.org/2000/svg"
         version="1.1"
       >
