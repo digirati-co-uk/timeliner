@@ -11,28 +11,28 @@ import AudioTransportBar from './AudioTransportBar';
 <PropsTable of={AudioTransportBar}/>
 
 <Playground>
-  <Component initialState={{ volume: 70 }}>
+  <Component initialState={{ volume: 70, currentTime: 30000, runTime: 120000 }}>
   {({ setState, state }) => (
     <AudioTransportBar 
       isPlaying={false}
-      volume={state.volume}
       onVolumeChanged={volume => {
         setState({ volume });
       }}
+      {...state}
     />
   )}
   </Component>
 </Playground>
 
 <Playground>
-  <Component initialState={{ volume: 70 }}>
+  <Component initialState={{ volume: 70, currentTime: 30000, runTime: 120000  }}>
   {({ setState, state }) => (
     <AudioTransportBar 
       isPlaying={true}
-      volume={state.volume}
       onVolumeChanged={volume => {
         setState({volume});
       }}
+      {...state}
     />
   )}
   </Component>

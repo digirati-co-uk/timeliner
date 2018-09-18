@@ -9,6 +9,7 @@ import SkipAheadButton from '../SkipAheadButton/SkipAheadButton';
 import SkipBackwardsButton from '../SkipBackwardsButton/SkipBackwardsButton';
 import PlayPauseButton from '../PlayPauseButton/PlayPauseButton';
 import MergeButton from '../MergeButton/MergeButton';
+import { Grid } from '@material-ui/core';
 
 import './AudioTransportBar.scss';
 
@@ -28,28 +29,48 @@ class AudioTransportBar extends Component {
     onScrubAhead: PropTypes.func.isRequired,
     /** Handler for scrubbing backwards button */
     onScrubBackwards: PropTypes.func.isRequired,
+    /** Current time */
+    currentTime: PropTypes.number.isRequired,
+    /** Runtime time */
+    runTime: PropTypes.number.isRequired,
   };
 
   render() {
     return (
       <Toolbar className="audio-transport-bar">
-        <CurrentTimeIndicator currentTime={43 * 1000} runtime={180 * 1000} />
-        <MergeButton />
-        <div className="audio-transport-bar__buttons">
-          <PreviousButton onClick={this.props.onPreviousBubble} />
-          <SkipBackwardsButton onClick={this.props.onScrubBackwards} />
-          <PlayPauseButton
-            isPlaying={this.props.isPlaying}
-            onPlay={this.props.onPlay}
-            onPause={this.props.onPause}
-          />
-          <SkipAheadButton onClick={this.props.onScrubAhead} />
-          <NextButton onClick={this.props.onNextBubble} />
-        </div>
-        <VolumeSlider
-          volume={this.props.volume}
-          onVolumeChanged={this.props.onVolumeChanged}
-        />
+        <Grid
+          container
+          direction="row"
+          justify="space-between"
+          alignItems="center"
+        >
+          <Grid item>
+            <CurrentTimeIndicator
+              currentTime={this.props.currentTime}
+              runtime={this.props.runTime}
+            />
+            <MergeButton />
+          </Grid>
+          <Grid item>
+            <div className="audio-transport-bar__buttons">
+              <PreviousButton onClick={this.props.onPreviousBubble} />
+              <SkipBackwardsButton onClick={this.props.onScrubBackwards} />
+              <PlayPauseButton
+                isPlaying={this.props.isPlaying}
+                onPlay={this.props.onPlay}
+                onPause={this.props.onPause}
+              />
+              <SkipAheadButton onClick={this.props.onScrubAhead} />
+              <NextButton onClick={this.props.onNextBubble} />
+            </div>
+          </Grid>
+          <Grid item>
+            <VolumeSlider
+              volume={this.props.volume}
+              onVolumeChanged={this.props.onVolumeChanged}
+            />
+          </Grid>
+        </Grid>
       </Toolbar>
     );
   }
