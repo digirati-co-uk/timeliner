@@ -30,11 +30,7 @@
     "react-color": "^2.14.1",
     "react-dom": "^16.4.2",
     "react-keyboard-event-handler": "^1.3.1",
-<<<<<<< HEAD
-    "react-pose": "^3.3.0",
-=======
     "react-measure": "^2.1.2",
->>>>>>> master
     "react-sound": "^1.2.0",
     "redux-saga": "^0.16.0",
     "webpack-config": "^7.5.0"
