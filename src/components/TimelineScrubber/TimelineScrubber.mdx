@@ -3,10 +3,62 @@ title: Timeline scrubber
 menu: Components
 ---
 
-import { PropsTable } from 'docz';
+import { Playground, PropsTable } from 'docz';
+import Component from '@reach/component-component';
 import TimelineScrubber from './TimelineScrubber';
+import DEMO_POINTS from '../BubbleDisplay/BubbleDisplay.DemoPoints';
+import BubbleDisplay from '../BubbleDisplay/BubbleDisplay';
+import SingleBubble from '../SingleBubble/SingleBubble';
 
 # Timeline scrubber
 Interactions with the timeline, dragging and clicking to add points.
 
 <PropsTable of={TimelineScrubber} />
+
+# Simple Scrobber Demo
+<Playground>
+  <TimelineScrubber
+    runTime={60000}
+    currentTime={30000}
+    timePoints={[0, 10000,25000,32000,60000]}
+  />
+</Playground>
+
+## Scrobber with Bubbles Demo
+<Playground>
+  <Component initialState={{ 
+    currentTime: 0, 
+    points: DEMO_POINTS,
+    editorWidth: 700,
+  }}>
+  {({ setState, state }) => {
+    const timePoints = Array.from(Object.values(state.points).reduce((_timePoints, bubble) => {
+      _timePoints.add(bubble.startTime);
+      _timePoints.add(bubble.endTime);
+      return _timePoints;
+    }, new Set()));
+    return (
+      <div 
+        style={{
+          width: state.editorWidth,
+        }}
+      >
+        <BubbleDisplay 
+          points={state.points}
+          width={state.editorWidth}
+          height={200}
+          x={0}
+          zoom={1.0}
+        >
+          {points=>points.map(bubble => <SingleBubble {...bubble}/>)}
+        </BubbleDisplay>
+        <TimelineScrubber
+          runTime={Math.max.apply(null,timePoints)}
+          currentTime={state.currentTime}
+          timePoints={timePoints}
+        />
+      </div>
+    );
+  }}
+  </Component>
+</Playground>

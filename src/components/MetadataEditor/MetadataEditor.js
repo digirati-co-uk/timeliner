@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextField, Button } from '@material-ui/core';
+import { TextField, Button, Grid } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
 import bem from '@fesk/bem-js';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import ColourSwatchPicker from '../ColourSwatchPicker/ColourSwatchPicker';
+
 import './MetadataEditor.scss';
 
 const metadataEditor = bem.block('metadata-editor');
@@ -37,13 +38,20 @@ class MetadataEditor extends Component {
 
   constructor(props) {
     super(props);
-    const { label, summary, colour } = props;
+    const { label, summary, colour, startTime, endTime } = props;
     this.state = {
       label,
       summary,
       colour,
+      startTime,
+      endTime,
     };
   }
+
+  defaultProps = {
+    startTime: 0,
+    endTime: 1,
+  };
 
   handleChange = name => ev => {
     this.setState({
@@ -59,7 +67,7 @@ class MetadataEditor extends Component {
 
   render() {
     const { isNew, onDelete } = this.props;
-    const { label, summary, colour } = this.state;
+    const { label, summary, colour, startTime, endTime } = this.state;
     const colours = getSelectedThemeColours();
     return (
       <form className={metadataEditor}>
@@ -89,11 +97,50 @@ class MetadataEditor extends Component {
           value={summary}
           onChange={this.handleChange('summary')}
         />
-        <ColourSwatchPicker
-          swatch={colours}
-          currentColour={colour}
-          onSelectColour={this.onSelectColour}
-        />
+        <Grid
+          container
+          spacing={16}
+          direction="row"
+          justify="flex-start"
+          alignItems="center"
+        >
+          <Grid item>
+            <TextField
+              id="startTime"
+              label="Start Time"
+              type="time"
+              defaultValue="00:00"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              inputProps={{
+                step: 1, // 5 min
+              }}
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              id="endTime"
+              label="End Time"
+              type="time"
+              defaultValue="00:01"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              inputProps={{
+                step: 1, // 5 min
+              }}
+            />
+          </Grid>
+          <Grid item>
+            <ColourSwatchPicker
+              swatch={colours}
+              label="Colour"
+              currentColour={colour}
+              onSelectColour={this.onSelectColour}
+            />
+          </Grid>
+        </Grid>
         <div className={metadataEditor.element('button-bar')}>
           <Button disabled={isNew} onClick={!isNew && onDelete}>
             <Delete /> Delete

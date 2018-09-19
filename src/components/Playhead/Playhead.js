@@ -3,10 +3,20 @@ import PropTypes from 'prop-types';
 import './Playhead.scss';
 
 class Playhead extends Component {
-  propTypes = {};
+  propTypes = {
+    x: PropTypes.number.isRequired,
+  };
 
   render() {
-    return <div />;
+    const { x } = this.props;
+    return (
+      <div
+        className="playhead"
+        style={{
+          left: x,
+        }}
+      />
+    );
   }
 }
 

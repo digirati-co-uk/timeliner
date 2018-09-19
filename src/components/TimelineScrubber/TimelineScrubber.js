@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './TimelineScrubber.scss';
+import TimelineMarker from '../TimelineMarker/TimelineMarker';
+import PlayHead from '../Playhead/Playhead';
 
 class TimelineScrubber extends Component {
   static propTypes = {
@@ -33,8 +35,22 @@ class TimelineScrubber extends Component {
     renderTimelineHover: () => null,
   };
 
+  timeToPercent = time => (time / this.props.runTime) * 100 + '%';
+
   render() {
-    return <div />;
+    const { runTime, currentTime, timePoints } = this.props;
+
+    return (
+      <div className="timeline-scrubber">
+        {timePoints.map(timePoint => (
+          <TimelineMarker
+            x={this.timeToPercent(timePoint)}
+            isUpdating={false}
+          />
+        ))}
+        <PlayHead x={this.timeToPercent(currentTime)} isUpdating={false} />
+      </div>
+    );
   }
 }
 
