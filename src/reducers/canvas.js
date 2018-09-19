@@ -1,3 +1,4 @@
+import update from 'immutability-helper';
 import {
   DEFAULT_CANVAS_STATE,
   SET_CURRENT_TIME,
