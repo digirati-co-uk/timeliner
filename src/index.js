@@ -1,9 +1,9 @@
 import './main.scss';
 import React from 'react';
 import { render } from 'react-dom';
-
-import VariationsMainView from './components/VariationsMainView/VariationsMainView';
-import DEMO_POINTS from './components/TimeMetadata/TimeMetadata.Demo';
+import Root from './containers/Root/Root';
+import store from './store/main';
+//import DEMO_POINTS from './components/TimeMetadata/TimeMetadata.Demo';
 
 render(
   <div>
@@ -17,17 +17,7 @@ render(
     >
       Go to docs
     </a> */}
-    <VariationsMainView
-      points={DEMO_POINTS}
-      {...{
-        volume: 70,
-        isPlaying: true,
-        currentTime: 30 * 1000,
-        runTime: 60 * 1000,
-        manifestLabel: 'Manifest label',
-        manifestSummary: 'Manifest Summary',
-      }}
-    />
+    <Root store={store} />
   </div>,
   document.getElementById('app')
 );

@@ -4,15 +4,16 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
 import Measure from 'react-measure';
 
-import VariationsAppBar from '../VariationsAppBar/VariationsAppBar';
-import BubbleDisplay from '../BubbleDisplay/BubbleDisplay';
-import SingleBubble from '../SingleBubble/SingleBubble';
-import AudioTransportBar from '../AudioTransportBar/AudioTransportBar';
-import ZoomControls from '../ZoomControls/ZoomControls';
-import TimelineMetadata from '../TimeMetadata/TimeMetadata';
-import TimelineScrubber from '../TimelineScrubber/TimelineScrubber';
+import VariationsAppBar from '../../components/VariationsAppBar/VariationsAppBar';
+import BubbleDisplay from '../../components/BubbleDisplay/BubbleDisplay';
+import SingleBubble from '../../components/SingleBubble/SingleBubble';
+import AudioTransportBar from '../../components/AudioTransportBar/AudioTransportBar';
+import ZoomControls from '../../components/ZoomControls/ZoomControls';
+import TimelineMetadata from '../../components/TimeMetadata/TimeMetadata';
+import TimelineScrubber from '../../components/TimelineScrubber/TimelineScrubber';
+import { connect } from 'react-redux';
 
-export default class VariationsMainView extends React.Component {
+class VariationsMainView extends React.Component {
   constructor(props) {
     super(props);
     this.theme = createMuiTheme({
@@ -54,7 +55,14 @@ export default class VariationsMainView extends React.Component {
     return (
       <div>
         <MuiThemeProvider theme={this.theme}>
-          <VariationsAppBar />
+          <VariationsAppBar
+            title={manifestLabel}
+            onImportButtonClicked={() => {}}
+            onEraseButtonClicked={() => {}}
+            onSaveButtonClicked={() => {}}
+            onSettingsButtonClicked={() => {}}
+            onTitleChange={() => {}}
+          />
           <div
             style={{
               position: 'relative',
@@ -93,6 +101,7 @@ export default class VariationsMainView extends React.Component {
                     runTime={runTime}
                     currentTime={currentTime}
                     timePoints={timePoints}
+                    points={_points}
                   />
                 </div>
               )}
@@ -102,9 +111,15 @@ export default class VariationsMainView extends React.Component {
           <AudioTransportBar
             isPlaying={isPlaying}
             volume={volume}
-            onVolumeChanged={onVolumeChanged}
+            onVolumeChanged={() => {}}
             currentTime={currentTime}
             runTime={runTime}
+            onPlay={() => {}}
+            onPause={() => {}}
+            onNextBubble={() => {}}
+            onPreviousBubble={() => {}}
+            onScrubAhead={() => {}}
+            onScrubBackwards={() => {}}
           />
           <div
             style={{
@@ -124,3 +139,19 @@ export default class VariationsMainView extends React.Component {
     );
   }
 }
+
+const mapStateProps = state => ({
+  volume: state.project.volume,
+  isPlaying: state.viewState.isPlaying,
+  currentTime: state.canvas.currentTime,
+  runTime: state.canvas.duration,
+  manifestLabel: state.project.title,
+  manifestSummary: state.project.description,
+  points: Object.values(state.range),
+});
+
+const mapDispatchToProps = dispatch => {
+
+};
+
+export default connect(mapStateProps)(VariationsMainView);

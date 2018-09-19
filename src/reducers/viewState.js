@@ -16,8 +16,9 @@ import {
   PREVIOUS_BUBBLE,
   FAST_FORWARD,
   FAST_REWARD,
-  SET_VOLUME,
 } from '../constants/viewState';
+
+import { SET_VOLUME } from '../constants/canvas';
 
 const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
   switch (action) {
