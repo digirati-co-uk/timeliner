@@ -14,6 +14,7 @@ import {
   PREVIOUS_BUBBLE,
   FAST_FORWARD,
   FAST_REWARD,
+  SET_VOLUME,
 } from '../constants/viewState';
 
 export const play = () => ({
@@ -80,4 +81,11 @@ export const fastForward = () => ({
 
 export const fastReward = () => ({
   action: FAST_REWARD,
+});
+
+export const setVolume = volume => ({
+  action: SET_VOLUME,
+  payload: {
+    volume,
+  },
 });

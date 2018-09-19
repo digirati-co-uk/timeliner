@@ -41,4 +41,5 @@ export default {
   PREVIOUS_BUBBLE,
   FAST_FORWARD,
   FAST_REWARD,
+  SET_VOLUME,
 };

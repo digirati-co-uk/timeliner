@@ -1,3 +1,4 @@
+import update from 'immutability-helper';
 import {
   DEFAULT_VIEWSTATE_STATE,
   PLAY_AUDIO,
@@ -15,65 +16,83 @@ import {
   PREVIOUS_BUBBLE,
   FAST_FORWARD,
   FAST_REWARD,
+  SET_VOLUME,
 } from '../constants/viewState';
 
 const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
   switch (action) {
     case PLAY_AUDIO:
-      return {
-        ...state,
-        isPlaying: true,
-      };
+      return update(state, {
+        isPlaying: {
+          $set: true,
+        },
+      });
     case STOP_AUDIO:
-      return {
-        ...state,
-        isPlaying: false,
-      };
+      return update(state, {
+        isPlaying: {
+          $set: false,
+        },
+      });
     case UPDATE_CURRENT_TIME:
-      return {
-        ...state,
-        currentTime: action.payload.currentTime,
-      };
+      return update(state, {
+        currentTime: {
+          $set: action.payload.currentTime,
+        },
+      });
     case ZOOM_IN:
-      return {
-        ...state,
-        zoom: state.zoom * 1.2,
-      };
+      return update(state, {
+        zoom: {
+          $set: state.zoom * 1.2,
+        },
+      });
     case ZOOM_OUT:
-      return {
-        ...state,
-        zoom: state.zoom * 0.8,
-      };
+      return update(state, {
+        zoom: {
+          $set: state.zoom * 0.8,
+        },
+      });
     case RESET_ZOOM:
-      return {
-        ...state,
-        zoom: 1.0,
-      };
+      return update(state, {
+        zoom: {
+          $set: 1.0,
+        },
+      });
     case PAN_TO_POSITION:
-      return {
-        ...state,
-        x: action.payload.x,
-      };
+      return update(state, {
+        x: {
+          $set: action.payload.x,
+        },
+      });
     case SHOW_IMPORT_MODAL:
-      return {
-        ...state,
-        isImportOpen: true,
-      };
+      return update(state, {
+        isImportOpen: {
+          $set: true,
+        },
+      });
     case DISMISS_IMPORT_MODAL:
-      return {
-        ...state,
-        isImportOpen: false,
-      };
+      return update(state, {
+        isImportOpen: {
+          $set: false,
+        },
+      });
     case SHOW_SETTINGS_MODAL:
-      return {
-        ...state,
-        isSettingsOpen: true,
-      };
+      return update(state, {
+        isSettingsOpen: {
+          $set: true,
+        },
+      });
     case DISMISS_SETTINGS_MODAL:
-      return {
-        ...state,
-        isSettingsOpen: false,
-      };
+      return update(state, {
+        isSettingsOpen: {
+          $set: false,
+        },
+      });
+    case SET_VOLUME:
+      return update(state, {
+        volume: {
+          $set: action.payload.volume,
+        },
+      });
     case NEXT_BUBBLE:
     case PREVIOUS_BUBBLE:
     case FAST_FORWARD:

@@ -1389,7 +1389,7 @@
   version "0.6.5"
   resolved "https://registry.yarnpkg.com/@emotion/hash/-/hash-0.6.5.tgz#097729b84a5164f71f9acd2570ecfd1354d7b360"
 
-"@emotion/is-prop-valid@^0.6.1", "@emotion/is-prop-valid@^0.6.5":
+"@emotion/is-prop-valid@^0.6.1":
   version "0.6.7"
   resolved "https://registry.yarnpkg.com/@emotion/is-prop-valid/-/is-prop-valid-0.6.7.tgz#1767d39c29ba786b7afc3d8d727a2896995f01eb"
   dependencies:
@@ -1700,10 +1700,6 @@
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.2.tgz#54c5a964462be3d4d78af631363c18d6fa91ac26"
 
-"@popmotion/easing@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@popmotion/easing/-/easing-1.0.1.tgz#48336aea29542113df10aeb81b4fd10f0b95f937"
-
 "@reach/component-component@^0.1.1":
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@reach/component-component/-/component-component-0.1.1.tgz#62ea2ec290da32f5e3a9872fb51f9a3ae4370cc4"
@@ -1747,20 +1743,12 @@
   dependencies:
     commander "*"
 
-"@types/invariant@^2.2.29":
-  version "2.2.29"
-  resolved "https://registry.yarnpkg.com/@types/invariant/-/invariant-2.2.29.tgz#aa845204cd0a289f65d47e0de63a6a815e30cc66"
-
 "@types/jss@^9.5.3":
   version "9.5.5"
   resolved "https://registry.yarnpkg.com/@types/jss/-/jss-9.5.5.tgz#57ed99ae768c203677cd64e0ce0df02c74075bf8"
   dependencies:
     csstype "^2.0.0"
     indefinite-observable "^1.0.1"
-
-"@types/node@^10.0.5":
-  version "10.9.4"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.9.4.tgz#0f4cb2dc7c1de6096055357f70179043c33e9897"
 
 "@types/prop-types@*":
   version "15.5.5"
@@ -6257,10 +6245,6 @@ fragment-cache@^0.2.1:
   dependencies:
     map-cache "^0.2.2"
 
-framesync@^3.1.8, framesync@^3.1.9:
-  version "3.1.9"
-  resolved "https://registry.yarnpkg.com/framesync/-/framesync-3.1.9.tgz#f65f815c711cf876f343b1f63da6e18b1384172f"
-
 fresh@0.5.2, fresh@~0.5.2:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/fresh/-/fresh-0.5.2.tgz#3d8cadd90d976569fa835ab1f8e4b23a105605a7"
@@ -7026,10 +7010,6 @@ he@1.1.x, he@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/he/-/he-1.1.1.tgz#93410fd21b009735151f8868c2f271f3427e23fd"
 
-hey-listen@^1.0.4, hey-listen@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/hey-listen/-/hey-listen-1.0.5.tgz#6d0a3a2f60177f65bc4404d571a00025bf5dc20e"
-
 history@^4.7.2:
   version "4.7.2"
   resolved "https://registry.yarnpkg.com/history/-/history-4.7.2.tgz#22b5c7f31633c5b8021c7f4a8a954ac139ee8d5b"
@@ -7282,6 +7262,12 @@ img-loader@^3.0.0:
 immer@^1.2.1:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/immer/-/immer-1.6.0.tgz#4e41801272d64bff12d4b58ada0276bb2f4ead81"
+
+immutability-helper@^2.8.1:
+  version "2.8.1"
+  resolved "https://registry.yarnpkg.com/immutability-helper/-/immutability-helper-2.8.1.tgz#3c5ec05fcd83676bfae7146f319595243ad904f4"
+  dependencies:
+    invariant "^2.2.0"
 
 import-cwd@^2.0.0:
   version "2.1.0"
@@ -10546,40 +10532,9 @@ polished@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/polished/-/polished-2.0.3.tgz#54bb5f474bebe149e760d4015ed04207817fd38e"
 
-popmotion-pose@^3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/popmotion-pose/-/popmotion-pose-3.3.0.tgz#6df7843cbb5fee81f8d8977b0233b051247c2f4d"
-  dependencies:
-    "@popmotion/easing" "^1.0.1"
-    hey-listen "^1.0.5"
-    popmotion "^8.3.7"
-    pose-core "^2.0.0"
-    style-value-types "^3.0.6"
-    tslib "^1.9.1"
-
-popmotion@^8.3.7:
-  version "8.3.8"
-  resolved "https://registry.yarnpkg.com/popmotion/-/popmotion-8.3.8.tgz#af2b9ba00d4be089461043b60ea82c1709352a27"
-  dependencies:
-    "@popmotion/easing" "^1.0.1"
-    framesync "^3.1.9"
-    hey-listen "^1.0.5"
-    style-value-types "^3.0.6"
-    stylefire "^2.0.7"
-    tslib "^1.9.1"
-
 popper.js@^1.14.1:
   version "1.14.4"
   resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.14.4.tgz#8eec1d8ff02a5a3a152dd43414a15c7b79fd69b6"
-
-pose-core@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/pose-core/-/pose-core-2.0.0.tgz#1a1497a18a25ed2556d92dd728e909e96df6d67e"
-  dependencies:
-    "@types/invariant" "^2.2.29"
-    "@types/node" "^10.0.5"
-    hey-listen "^1.0.5"
-    tslib "^1.9.1"
 
 posix-character-classes@^0.1.0:
   version "0.1.1"
@@ -11290,15 +11245,6 @@ react-perfect-scrollbar@^1.2.0:
     prop-types "*"
     react "^16.3.1"
     react-dom "^16.3.1"
-
-react-pose@^3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/react-pose/-/react-pose-3.3.0.tgz#b3f213e49b7d6a58e3525dd8ef30b8d97acbee68"
-  dependencies:
-    "@emotion/is-prop-valid" "^0.6.5"
-    hey-listen "^1.0.5"
-    popmotion-pose "^3.3.0"
-    tslib "^1.9.1"
 
 react-powerplug@^1.0.0-rc.1:
   version "1.0.0-rc.1"
@@ -12803,19 +12749,6 @@ style-loader@^0.21.0:
     loader-utils "^1.1.0"
     schema-utils "^0.4.5"
 
-style-value-types@^3.0.6:
-  version "3.0.7"
-  resolved "https://registry.yarnpkg.com/style-value-types/-/style-value-types-3.0.7.tgz#6e7a22cc8b1a4465193268ed66ad5f2a82579054"
-
-stylefire@^2.0.7:
-  version "2.0.7"
-  resolved "https://registry.yarnpkg.com/stylefire/-/stylefire-2.0.7.tgz#ccb121dbd7e96fb92c311413639830cc2d4c7eab"
-  dependencies:
-    framesync "^3.1.8"
-    hey-listen "^1.0.4"
-    style-value-types "^3.0.6"
-    tslib "^1.9.1"
-
 stylis-rule-sheet@^0.0.10:
   version "0.0.10"
   resolved "https://registry.yarnpkg.com/stylis-rule-sheet/-/stylis-rule-sheet-0.0.10.tgz#44e64a2b076643f4b52e5ff71efc04d8c3c4a430"
@@ -13244,7 +13177,7 @@ trough@^1.0.0:
   dependencies:
     glob "^7.1.2"
 
-tslib@^1.9.0, tslib@^1.9.1:
+tslib@^1.9.0:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.3.tgz#d7e4dd79245d85428c4d7e4822a79917954ca286"
 
