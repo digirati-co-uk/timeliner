@@ -1,17 +1,89 @@
-import { DEFAULT_PROJECT_STATE } from '../constants/project';
+import update from 'immutability-helper';
+import {
+  DEFAULT_PROJECT_STATE,
+  UPDATE_SETTINGS,
+  SET_LANGUAGE,
+  SET_TITLE,
+  SET_DESCRIPTION,
+  RESET_DOCUMENT,
+  EXPORT_DOCUMENT,
+  IMPORT_DOCUMENT,
+} from '../constants/project';
 import canvas from './canvas';
 import range from './range';
 import { combineReducers } from 'redux';
 
 const project = (state = DEFAULT_PROJECT_STATE, action) => {
   switch (action) {
-    case 'UPDATE_SETTINGS':
-    case 'SET_LANGUAGE':
-    case 'SET_TITLE':
-    case 'SET_DESCRIPTION':
-    case 'RESET_DOCUMENT':
-    case 'EXPORT_DOCUMENT':
-    case 'IMPORT_DOCUMENT':
+    case UPDATE_SETTINGS:
+      return update(state, {
+        bubblesStyle: {
+          $set: action.payload.bubblesStyle,
+        },
+        blackAndWhite: {
+          $set: action.payload.blackAndWhite,
+        },
+        showTimes: {
+          $set: action.payload.showTimes,
+        },
+        autoScaleHeightOnResize: {
+          $set: action.payload.autoScaleHeightOnResize,
+        },
+        startPlayingWhenBubbleIsClicked: {
+          $set: action.payload.startPlayingWhenBubbleIsClicked,
+        },
+        stopPlayingAtTheEndOfSection: {
+          $set: action.payload.stopPlayingAtTheEndOfSection,
+        },
+        bubbleHeight: {
+          $set: action.payload.bubbleHeight,
+        },
+      });
+    case SET_LANGUAGE:
+      return update(state, {
+        language: action.payload.language,
+      });
+    case SET_TITLE:
+      return update(state, {
+        title: action.payload.title,
+      });
+
+    case SET_DESCRIPTION:
+      return update(state, {
+        title: action.payload.description,
+      });
+    case RESET_DOCUMENT:
+      return update(state, {
+        bubblesStyle: {
+          $set: DEFAULT_PROJECT_STATE.bubblesStyle,
+        },
+        blackAndWhite: {
+          $set: DEFAULT_PROJECT_STATE.blackAndWhite,
+        },
+        showTimes: {
+          $set: DEFAULT_PROJECT_STATE.showTimes,
+        },
+        autoScaleHeightOnResize: {
+          $set: DEFAULT_PROJECT_STATE.autoScaleHeightOnResize,
+        },
+        startPlayingWhenBubbleIsClicked: {
+          $set: DEFAULT_PROJECT_STATE.startPlayingWhenBubbleIsClicked,
+        },
+        stopPlayingAtTheEndOfSection: {
+          $set: DEFAULT_PROJECT_STATE.stopPlayingAtTheEndOfSection,
+        },
+        bubbleHeight: {
+          $set: DEFAULT_PROJECT_STATE.bubbleHeight,
+        },
+        title: {
+          $set: DEFAULT_PROJECT_STATE.title,
+        },
+        description: {
+          $set: DEFAULT_PROJECT_STATE.description,
+        },
+      });
+    case EXPORT_DOCUMENT:
+    case IMPORT_DOCUMENT:
     default:
       return state;
   }
