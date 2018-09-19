@@ -21,7 +21,7 @@ import {
 import { SET_VOLUME } from '../constants/canvas';
 
 const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
-  switch (action) {
+  switch (action.type) {
     case PLAY_AUDIO:
       return update(state, {
         isPlaying: {

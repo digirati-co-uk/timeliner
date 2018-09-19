@@ -11,7 +11,16 @@ import AudioTransportBar from '../../components/AudioTransportBar/AudioTransport
 import ZoomControls from '../../components/ZoomControls/ZoomControls';
 import TimelineMetadata from '../../components/TimeMetadata/TimeMetadata';
 import TimelineScrubber from '../../components/TimelineScrubber/TimelineScrubber';
+import AudioImporter from '../../components/AudioImporter/AudioImporter';
+import SettingsPopup from '../../components/SettingsPopoup/SettingsPopup';
+
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import * as canvasActions from '../../actions/canvas';
+import * as projectActions from '../../actions/project';
+import * as rangeActions from '../../actions/range';
+import * as viewStateActions from '../../actions/viewState';
 
 class VariationsMainView extends React.Component {
   constructor(props) {
@@ -35,6 +44,7 @@ class VariationsMainView extends React.Component {
     };
   }
   render() {
+    console.log(this.props);
     const _points = this.props.points;
     const {
       isPlaying,
@@ -44,6 +54,8 @@ class VariationsMainView extends React.Component {
       runTime,
       manifestLabel,
       manifestSummary,
+      isImportOpen,
+      isSettingsOpen,
     } = this.props;
     const timePoints = Array.from(
       Object.values(this.props.points).reduce((_timePoints, bubble) => {
@@ -57,10 +69,12 @@ class VariationsMainView extends React.Component {
         <MuiThemeProvider theme={this.theme}>
           <VariationsAppBar
             title={manifestLabel}
-            onImportButtonClicked={() => {}}
+            onImportButtonClicked={this.props.viewSateActions.showImportModal}
             onEraseButtonClicked={() => {}}
             onSaveButtonClicked={() => {}}
-            onSettingsButtonClicked={() => {}}
+            onSettingsButtonClicked={
+              this.props.viewSateActions.showSettingsModal
+            }
             onTitleChange={() => {}}
           />
           <div
@@ -101,7 +115,7 @@ class VariationsMainView extends React.Component {
                     runTime={runTime}
                     currentTime={currentTime}
                     timePoints={timePoints}
-                    points={_points}
+                    points={timePoints}
                   />
                 </div>
               )}
@@ -134,6 +148,16 @@ class VariationsMainView extends React.Component {
               manifestSummary={manifestSummary}
             />
           </div>
+          <AudioImporter
+            open={isImportOpen}
+            onClose={this.props.viewSateActions.dismissImportModal}
+            onImport={manifest => {}}
+          />
+          <SettingsPopup
+            open={isSettingsOpen}
+            onClose={this.props.viewSateActions.dismissSettingsModal}
+            onImport={manifest => {}}
+          />
         </MuiThemeProvider>
       </div>
     );
@@ -148,10 +172,18 @@ const mapStateProps = state => ({
   manifestLabel: state.project.title,
   manifestSummary: state.project.description,
   points: Object.values(state.range),
+  isImportOpen: state.viewState.isImportOpen,
+  isSettingsOpen: state.viewState.isSettingsOpen,
 });
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = dispatch => ({
+  canvasActions: bindActionCreators(canvasActions, dispatch),
+  projectActions: bindActionCreators(projectActions, dispatch),
+  rangeActions: bindActionCreators(rangeActions, dispatch),
+  viewSateActions: bindActionCreators(viewStateActions, dispatch),
+});
 
-};
-
-export default connect(mapStateProps)(VariationsMainView);
+export default connect(
+  mapStateProps,
+  mapDispatchToProps
+)(VariationsMainView);

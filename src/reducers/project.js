@@ -11,7 +11,7 @@ import {
 } from '../constants/project';
 
 const project = (state = DEFAULT_PROJECT_STATE, action) => {
-  switch (action) {
+  switch (action.type) {
     case UPDATE_SETTINGS:
       return update(state, {
         bubblesStyle: {

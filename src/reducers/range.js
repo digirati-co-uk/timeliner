@@ -39,7 +39,7 @@ const groupBubbles = selectedBubbles => {
 };
 
 const range = (state = DEFAULT_RANGES_STATE, action) => {
-  switch (action) {
+  switch (action.type) {
     case SPLIT_RANGE_AT:
       const newId = generateNewId();
       const splitTime = action.payload.time;

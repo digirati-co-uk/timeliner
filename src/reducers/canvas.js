@@ -11,7 +11,7 @@ import {
 } from '../constants/canvas';
 
 const canvas = (state = DEFAULT_CANVAS_STATE, action) => {
-  switch (action) {
+  switch (action.type) {
     case SET_VOLUME:
       return update(state, {
         volume: {

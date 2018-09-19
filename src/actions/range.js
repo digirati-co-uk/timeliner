@@ -8,18 +8,18 @@ import {
 } from '../constants/range';
 
 export const splitRangeAt = time => ({
-  action: SPLIT_RANGE_AT,
+  type: SPLIT_RANGE_AT,
   payload: {
     time,
   },
 });
 
 export const groupSelectedRanges = () => ({
-  action: GROUP_RANGES,
+  type: GROUP_RANGES,
 });
 
 export const selectRange = (id, isSelected) => ({
-  action: ON_SELECT_RANGE,
+  type: ON_SELECT_RANGE,
   payload: {
     id,
     isSelected,
@@ -30,7 +30,7 @@ export const updateRange = (
   id,
   { label, summary, startTime, endTime, colour }
 ) => ({
-  action: UPDATE_RANGE,
+  type: UPDATE_RANGE,
   payload: {
     id,
     label,
@@ -42,7 +42,7 @@ export const updateRange = (
 });
 
 export const movePoint = (x, originalX) => ({
-  action: MOVE_POINT,
+  type: MOVE_POINT,
   payload: {
     x,
     originalX,
@@ -50,7 +50,7 @@ export const movePoint = (x, originalX) => ({
 });
 
 export const deleteRange = id => ({
-  action: DELETE_RAGE,
+  type: DELETE_RAGE,
   payload: {
     id,
   },

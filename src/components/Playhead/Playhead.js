@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './Playhead.scss';
 
 class Playhead extends Component {
-  propTypes = {
+  static propTypes = {
     x: PropTypes.number.isRequired,
   };
 

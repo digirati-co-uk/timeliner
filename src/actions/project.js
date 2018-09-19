@@ -7,31 +7,31 @@ import {
 } from '../constants/project';
 
 export const updateSettings = form => ({
-  action: UPDATE_SETTINGS,
+  type: UPDATE_SETTINGS,
   payload: from,
 });
 
 export const setLanguage = language => ({
-  action: SET_LANGUAGE,
+  type: SET_LANGUAGE,
   payload: {
     language,
   },
 });
 
 export const setTitle = title => ({
-  action: SET_TITLE,
+  type: SET_TITLE,
   payload: {
     title,
   },
 });
 
 export const setDescrition = description => ({
-  action: SET_DESCRIPTION,
+  type: SET_DESCRIPTION,
   payload: {
     description,
   },
 });
 
 export const resetDocument = () => ({
-  action: RESET_DOCUMENT,
+  type: RESET_DOCUMENT,
 });

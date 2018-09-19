@@ -17,6 +17,10 @@ class AudioImporter extends Component {
     /** On close */
     onClose: PropTypes.func.isRequired,
     /** is the dialog open */
+    open: PropTypes.bool,
+  };
+
+  static defaultProps = {
     open: false,
   };
 
