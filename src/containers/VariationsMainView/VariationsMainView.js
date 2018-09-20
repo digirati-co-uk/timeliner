@@ -116,7 +116,7 @@ class VariationsMainView extends React.Component {
 }
 
 const mapStateProps = state => ({
-  volume: state.project.volume,
+  volume: state.viewState.volume,
   isPlaying: state.viewState.isPlaying,
   currentTime: state.canvas.currentTime,
   runTime: state.canvas.duration,

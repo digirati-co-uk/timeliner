@@ -41,52 +41,58 @@ class BubbleEditor extends React.Component {
     return (
       <div
         style={{
-          position: 'relative',
-          margin: '9px 24px',
+          overflow: 'hidden',
         }}
       >
-        <Measure
-          bounds
-          onResize={contentRect => {
-            this.setState({ dimensions: contentRect.bounds });
+        <div
+          style={{
+            position: 'relative',
+            margin: '9px 24px',
           }}
         >
-          {({ measureRef }) => (
-            <div ref={measureRef}>
-              <BubbleDisplay
-                points={_points}
-                width={this.state.dimensions.width}
-                height={300}
-                x={0}
-                zoom={zoom}
-              >
-                {points =>
-                  points.map(bubble => (
-                    <SingleBubble
-                      key={`bk-${bubble.id}`}
-                      {...bubble}
-                      onClick={(point, ev) => {
-                        alert(JSON.stringify(point));
-                      }}
-                    />
-                  ))
-                }
-              </BubbleDisplay>
-              <TimelineScrubber
-                runTime={runTime}
-                currentTime={currentTime}
-                zoom={zoom}
-                timePoints={timePoints}
-                points={_points}
-              />
-            </div>
-          )}
-        </Measure>
-        <ZoomControls
-          onZoomIn={this.props.zoomIn}
-          onZoomOut={zoom > 1 && this.props.zoomOut}
-          onResetView={this.props.resetZoom}
-        />
+          <Measure
+            bounds
+            onResize={contentRect => {
+              this.setState({ dimensions: contentRect.bounds });
+            }}
+          >
+            {({ measureRef }) => (
+              <div ref={measureRef}>
+                <BubbleDisplay
+                  points={_points}
+                  width={this.state.dimensions.width}
+                  height={300}
+                  x={0}
+                  zoom={zoom}
+                >
+                  {points =>
+                    points.map(bubble => (
+                      <SingleBubble
+                        key={`bk-${bubble.id}`}
+                        {...bubble}
+                        onClick={(point, ev) => {
+                          alert(JSON.stringify(point));
+                        }}
+                      />
+                    ))
+                  }
+                </BubbleDisplay>
+                <TimelineScrubber
+                  runTime={runTime}
+                  currentTime={currentTime}
+                  zoom={zoom}
+                  timePoints={timePoints}
+                  points={_points}
+                />
+              </div>
+            )}
+          </Measure>
+          <ZoomControls
+            onZoomIn={this.props.zoomIn}
+            onZoomOut={zoom > 1 && this.props.zoomOut}
+            onResetView={this.props.resetZoom}
+          />
+        </div>
       </div>
     );
   }
