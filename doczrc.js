@@ -4,7 +4,7 @@ const miniCss = require('@fesk/webpack-config/lib/plugins/mini-css');
 module.exports = {
   title: 'Timeliner',
   description: 'IIIF Timeliner application',
-  src: './src/components',
+  src: './src/',
   dest: './dist/docs',
   base: '/docs/',
   debug: false,

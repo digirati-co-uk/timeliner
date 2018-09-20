@@ -10,10 +10,12 @@ class TimelineScrubber extends Component {
     currentTime: PropTypes.number.isRequired,
     /** Total time of the audio in milliseconds */
     runTime: PropTypes.number.isRequired,
+    /** the current zoom level */
+    zoom: PropTypes.number.isRequired,
     /** Map of points @todo custom validator */
     points: PropTypes.object.isRequired,
     /** Time points */
-    timePoints: PropTypes.arrayOf(PropTypes.shape()),
+    timePoints: PropTypes.arrayOf(PropTypes.number),
     /** Handler for when a point is clicked on the timeline */
     onClickPoint: PropTypes.func,
     /** Handler for when the currentTime is updated */
@@ -35,15 +37,16 @@ class TimelineScrubber extends Component {
     renderTimelineHover: () => null,
   };
 
-  timeToPercent = time => (time / this.props.runTime) * 100 + '%';
+  timeToPercent = time => (time / this.props.runTime) * 100 * this.props.zoom;
 
   render() {
-    const { runTime, currentTime, timePoints } = this.props;
+    const { currentTime, timePoints } = this.props;
 
     return (
       <div className="timeline-scrubber">
         {timePoints.map(timePoint => (
           <TimelineMarker
+            key={`tp-${timePoint}`}
             x={this.timeToPercent(timePoint)}
             isUpdating={false}
           />

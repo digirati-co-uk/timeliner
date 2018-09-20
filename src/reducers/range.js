@@ -1,6 +1,6 @@
 import update from 'immutability-helper';
 import {
-  DEFAULT_RANGE_STATE,
+  DEFAULT_RANGES_STATE,
   SPLIT_RANGE_AT,
   GROUP_RANGES,
   ON_SELECT_RANGE,
@@ -38,8 +38,8 @@ const groupBubbles = selectedBubbles => {
   return group;
 };
 
-const range = (state = DEFAULT_RANGE_STATE, action) => {
-  switch (action) {
+const range = (state = DEFAULT_RANGES_STATE, action) => {
+  switch (action.type) {
     case SPLIT_RANGE_AT:
       const newId = generateNewId();
       const splitTime = action.payload.time;

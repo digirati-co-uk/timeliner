@@ -5,7 +5,7 @@ import './BubbleDisplay.scss';
 class BubbleDisplay extends Component {
   static propTypes = {
     /** Map of points @todo custom validator */
-    points: PropTypes.array.isRequired,
+    points: PropTypes.object.isRequired,
     /** Width to display bubble UI */
     width: PropTypes.number.isRequired,
     /** Height to display bubble UI */

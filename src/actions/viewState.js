@@ -18,73 +18,73 @@ import {
 } from '../constants/viewState';
 
 export const play = () => ({
-  action: PLAY_AUDIO,
+  type: PLAY_AUDIO,
 });
 
 export const pause = () => ({
-  action: STOP_AUDIO,
+  type: STOP_AUDIO,
 });
 
 export const updateCurrentTime = time => ({
-  action: UPDATE_CURRENT_TIME,
+  type: UPDATE_CURRENT_TIME,
   payload: {
     currentTime: time,
   },
 });
 
 export const zoomIn = () => ({
-  action: ZOOM_IN,
+  type: ZOOM_IN,
 });
 
 export const zoomOut = () => ({
-  action: ZOOM_OUT,
+  type: ZOOM_OUT,
 });
 
 export const resetZoom = () => ({
-  action: RESET_ZOOM,
+  type: RESET_ZOOM,
 });
 
 export const panToPosition = time => ({
-  action: PAN_TO_POSITION,
+  type: PAN_TO_POSITION,
   payload: {
     x: time,
   },
 });
 
 export const showImportModal = () => ({
-  action: SHOW_IMPORT_MODAL,
+  type: SHOW_IMPORT_MODAL,
 });
 
 export const dismissImportModal = () => ({
-  action: DISMISS_IMPORT_MODAL,
+  type: DISMISS_IMPORT_MODAL,
 });
 
 export const showSettingsModal = () => ({
-  action: SHOW_SETTINGS_MODAL,
+  type: SHOW_SETTINGS_MODAL,
 });
 
 export const dismissSettingsModal = () => ({
-  action: DISMISS_SETTINGS_MODAL,
+  type: DISMISS_SETTINGS_MODAL,
 });
 
 export const nextBubble = () => ({
-  action: NEXT_BUBBLE,
+  type: NEXT_BUBBLE,
 });
 
 export const previousBubble = () => ({
-  action: PREVIOUS_BUBBLE,
+  type: PREVIOUS_BUBBLE,
 });
 
 export const fastForward = () => ({
-  action: FAST_FORWARD,
+  type: FAST_FORWARD,
 });
 
 export const fastReward = () => ({
-  action: FAST_REWARD,
+  type: FAST_REWARD,
 });
 
 export const setVolume = volume => ({
-  action: SET_VOLUME,
+  type: SET_VOLUME,
   payload: {
     volume,
   },

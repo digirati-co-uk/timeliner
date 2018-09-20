@@ -16,11 +16,12 @@ import {
   PREVIOUS_BUBBLE,
   FAST_FORWARD,
   FAST_REWARD,
-  SET_VOLUME,
 } from '../constants/viewState';
 
+import { SET_VOLUME } from '../constants/canvas';
+
 const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
-  switch (action) {
+  switch (action.type) {
     case PLAY_AUDIO:
       return update(state, {
         isPlaying: {
@@ -48,7 +49,7 @@ const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
     case ZOOM_OUT:
       return update(state, {
         zoom: {
-          $set: state.zoom * 0.8,
+          $set: Math.max(state.zoom * 0.8, 1.0),
         },
       });
     case RESET_ZOOM:

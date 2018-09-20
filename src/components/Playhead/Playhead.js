@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import './Playhead.scss';
 
 class Playhead extends Component {
-  propTypes = {
+  static propTypes = {
+    /** percentage position of the playhead */
     x: PropTypes.number.isRequired,
   };
 
@@ -13,7 +14,7 @@ class Playhead extends Component {
       <div
         className="playhead"
         style={{
-          left: x,
+          left: `${x}%`,
         }}
       />
     );

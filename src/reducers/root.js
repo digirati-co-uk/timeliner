@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux';
 
-import viewState from './viewStateReducer';
+import viewState from './viewState';
 import project from './project';
+import canvas from './canvas';
+import range from './range';
 
-const rootReducer = combineReducers({
-  viewState: viewState(state.viewState, action),
-  project: project(state.project, action),
+export default combineReducers({
+  viewState,
+  project,
+  canvas,
+  range,
 });
-
-export default rootReducer;

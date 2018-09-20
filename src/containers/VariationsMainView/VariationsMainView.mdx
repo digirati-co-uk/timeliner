@@ -1,0 +1,25 @@
+---
+title: Variations Main View 
+menu: Containers
+---
+# Variations Main View 
+
+The main application view 
+
+import { Playground, PropsTable } from 'docz';
+import VariationsMainView from './VariationsMainView';
+import { Provider } from 'react-redux';
+import DEMO_POINTS from '../../components/TimeMetadata/TimeMetadata.Demo';
+import { createStore } from 'redux';
+import rootReducer from '../../reducers/root';
+
+
+TODO: props table doesn't render for connected components.
+<PropsTable of={VariationsMainView} />
+
+<Playground>
+    <Provider store={createStore(rootReducer)}>
+      <VariationsMainView/>
+    </Provider>
+</Playground>
+

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { IconButton } from '@material-ui/core';
 import { ZoomIn, ZoomOut, YoutubeSearchedFor } from '@material-ui/icons';
@@ -6,13 +6,25 @@ import './ZoomControls.scss';
 
 const ZoomControls = props => (
   <div className="zoom-controls">
-    <IconButton onClick={props.onZoomIn} title="Zoom In">
+    <IconButton
+      onClick={props.onZoomIn}
+      disabled={!props.onZoomIn}
+      title="Zoom In"
+    >
       <ZoomIn />
     </IconButton>
-    <IconButton onClick={props.onResetView} title="Reset View">
+    <IconButton
+      onClick={props.onResetView}
+      disabled={!props.onResetView}
+      title="Reset View"
+    >
       <YoutubeSearchedFor />
     </IconButton>
-    <IconButton onClick={props.onZoomOut} title="Zoom Out">
+    <IconButton
+      onClick={props.onZoomOut}
+      disabled={!props.onZoomOut}
+      title="Zoom Out"
+    >
       <ZoomOut />
     </IconButton>
   </div>

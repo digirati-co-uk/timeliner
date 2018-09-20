@@ -19,7 +19,7 @@ const TimeMetadata = props => (
           range.endTime >= props.currentTime
       )
       .map(range => (
-        <Grid item>
+        <Grid item key={`${range.id}`}>
           <MetadataDisplay {...range} />
         </Grid>
       ))}
@@ -42,6 +42,7 @@ TimeMetadata.propTypes = {
       summary: PropTypes.string.isRequired,
       startTime: PropTypes.number.isRequired,
       endTime: PropTypes.number.isRequired,
+      colour: PropTypes.string.isRequired,
     }).isRequired
   ).isRequired,
 };

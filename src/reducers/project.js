@@ -9,12 +9,9 @@ import {
   EXPORT_DOCUMENT,
   IMPORT_DOCUMENT,
 } from '../constants/project';
-import canvas from './canvas';
-import range from './range';
-import { combineReducers } from 'redux';
 
 const project = (state = DEFAULT_PROJECT_STATE, action) => {
-  switch (action) {
+  switch (action.type) {
     case UPDATE_SETTINGS:
       return update(state, {
         bubblesStyle: {
@@ -89,8 +86,4 @@ const project = (state = DEFAULT_PROJECT_STATE, action) => {
   }
 };
 
-export default combineReducers({
-  project,
-  canvas,
-  range,
-});
+export default project;

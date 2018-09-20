@@ -49,7 +49,7 @@ class AudioTransportBar extends Component {
               currentTime={this.props.currentTime}
               runtime={this.props.runTime}
             />
-            <MergeButton />
+            <MergeButton onClick={() => console.log('TODO: temp')} />
           </Grid>
           <Grid item>
             <div className="audio-transport-bar__buttons">
