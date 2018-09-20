@@ -49,7 +49,7 @@ const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
     case ZOOM_OUT:
       return update(state, {
         zoom: {
-          $set: state.zoom * 0.8,
+          $set: Math.max(state.zoom * 0.8, 1.0),
         },
       });
     case RESET_ZOOM:

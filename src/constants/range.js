@@ -1,4 +1,14 @@
-export const DEFAULT_RANGES_STATE = {};
+export const DEFAULT_RANGES_STATE = {
+  'id-0': {
+    id: 'id-0',
+    startTime: 0,
+    endTime: 57.103563 * 1000,
+    label: '',
+    summary: '',
+    colour: 'skyblue',
+    depth: 1,
+  },
+};
 
 export const SPLIT_RANGE_AT = 'SPLIT_RANGE_AT';
 export const GROUP_RANGES = 'GROUP_RANGES';

@@ -2,20 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
-import Measure from 'react-measure';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import VariationsAppBar from '../../components/VariationsAppBar/VariationsAppBar';
-import BubbleDisplay from '../../components/BubbleDisplay/BubbleDisplay';
-import SingleBubble from '../../components/SingleBubble/SingleBubble';
 import AudioTransportBar from '../../components/AudioTransportBar/AudioTransportBar';
-import ZoomControls from '../../components/ZoomControls/ZoomControls';
 import TimelineMetadata from '../../components/TimeMetadata/TimeMetadata';
-import TimelineScrubber from '../../components/TimelineScrubber/TimelineScrubber';
 import AudioImporter from '../../components/AudioImporter/AudioImporter';
 import SettingsPopup from '../../components/SettingsPopoup/SettingsPopup';
 
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import BubbleEditor from '../BubbleEditor/BubbleEditor';
 
 import * as canvasActions from '../../actions/canvas';
 import * as projectActions from '../../actions/project';
@@ -44,7 +40,6 @@ class VariationsMainView extends React.Component {
     };
   }
   render() {
-    console.log(this.props);
     const _points = this.props.points;
     const {
       isPlaying,
@@ -69,67 +64,23 @@ class VariationsMainView extends React.Component {
         <MuiThemeProvider theme={this.theme}>
           <VariationsAppBar
             title={manifestLabel}
-            onImportButtonClicked={this.props.viewSateActions.showImportModal}
+            onImportButtonClicked={this.props.viewStateActions.showImportModal}
             onEraseButtonClicked={() => {}}
             onSaveButtonClicked={() => {}}
             onSettingsButtonClicked={
-              this.props.viewSateActions.showSettingsModal
+              this.props.viewStateActions.showSettingsModal
             }
             onTitleChange={() => {}}
           />
-          <div
-            style={{
-              position: 'relative',
-            }}
-          >
-            <Measure
-              bounds
-              onResize={contentRect => {
-                this.setState({ dimensions: contentRect.bounds });
-              }}
-            >
-              {({ measureRef }) => (
-                <div ref={measureRef}>
-                  <BubbleDisplay
-                    points={_points.reduce((acc, el) => {
-                      acc[el.id] = el;
-                      return acc;
-                    }, {})}
-                    width={this.state.dimensions.width}
-                    height={300}
-                    x={0}
-                    zoom={1}
-                  >
-                    {points =>
-                      points.map(bubble => (
-                        <SingleBubble
-                          {...bubble}
-                          onClick={(point, ev) => {
-                            alert(JSON.stringify(point));
-                          }}
-                        />
-                      ))
-                    }
-                  </BubbleDisplay>
-                  <TimelineScrubber
-                    runTime={runTime}
-                    currentTime={currentTime}
-                    timePoints={timePoints}
-                    points={timePoints}
-                  />
-                </div>
-              )}
-            </Measure>
-            <ZoomControls />
-          </div>
+          <BubbleEditor />
           <AudioTransportBar
             isPlaying={isPlaying}
             volume={volume}
-            onVolumeChanged={() => {}}
+            onVolumeChanged={this.props.viewStateActions.setVolume}
             currentTime={currentTime}
             runTime={runTime}
-            onPlay={() => {}}
-            onPause={() => {}}
+            onPlay={this.props.viewStateActions.play}
+            onPause={this.props.viewStateActions.pause}
             onNextBubble={() => {}}
             onPreviousBubble={() => {}}
             onScrubAhead={() => {}}
@@ -150,13 +101,13 @@ class VariationsMainView extends React.Component {
           </div>
           <AudioImporter
             open={isImportOpen}
-            onClose={this.props.viewSateActions.dismissImportModal}
+            onClose={this.props.viewStateActions.dismissImportModal}
             onImport={manifest => {}}
           />
           <SettingsPopup
             open={isSettingsOpen}
-            onClose={this.props.viewSateActions.dismissSettingsModal}
-            onImport={manifest => {}}
+            onClose={this.props.viewStateActions.dismissSettingsModal}
+            onSave={this.props.projectActions.updateSettings}
           />
         </MuiThemeProvider>
       </div>
@@ -180,7 +131,7 @@ const mapDispatchToProps = dispatch => ({
   canvasActions: bindActionCreators(canvasActions, dispatch),
   projectActions: bindActionCreators(projectActions, dispatch),
   rangeActions: bindActionCreators(rangeActions, dispatch),
-  viewSateActions: bindActionCreators(viewStateActions, dispatch),
+  viewStateActions: bindActionCreators(viewStateActions, dispatch),
 });
 
 export default connect(

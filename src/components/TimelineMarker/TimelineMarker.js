@@ -4,6 +4,7 @@ import './TimelineMarker.scss';
 
 class TimelineMarker extends Component {
   static propTypes = {
+    /** percentage position for the marker */
     x: PropTypes.number.isRequired,
   };
 
@@ -12,7 +13,7 @@ class TimelineMarker extends Component {
       <div
         className="timeline-marker"
         style={{
-          left: this.props.x,
+          left: `${this.props.x}%`,
         }}
       />
     );

@@ -47,6 +47,11 @@ export default class SettingsPopup extends React.Component {
     });
   };
 
+  onSaveClicked = () => {
+    this.props.onSave(this.state);
+    this.props.onClose();
+  };
+
   render() {
     return (
       <Dialog
@@ -255,7 +260,7 @@ export default class SettingsPopup extends React.Component {
           <Button onClick={this.props.onClose} color="secondary">
             Cancel
           </Button>
-          <Button onClick={this.props.onSave} color="primary">
+          <Button onClick={this.onSaveClicked} color="primary">
             Apply
           </Button>
         </DialogActions>

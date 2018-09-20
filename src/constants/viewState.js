@@ -23,3 +23,4 @@ export const NEXT_BUBBLE = 'NEXT_BUBBLE';
 export const PREVIOUS_BUBBLE = 'PREVIOUS_BUBBLE';
 export const FAST_FORWARD = 'FAST_FORWARD';
 export const FAST_REWARD = 'FAST_REWARD';
+export const SET_VOLUME = 'SET_VOLUME';

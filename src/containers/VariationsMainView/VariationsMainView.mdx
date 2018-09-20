@@ -1,34 +1,23 @@
 ---
 title: Variations Main View 
-menu: Proof of concepts
+menu: Containers
 ---
 # Variations Main View 
 
+The main application view 
+
 import { Playground, PropsTable } from 'docz';
 import VariationsMainView from './VariationsMainView';
-import DEMO_POINTS from '../TimeMetadata/TimeMetadata.Demo';
-import Component from "@reach/component-component";
+import { Provider } from 'react-redux';
+import DEMO_POINTS from '../../components/TimeMetadata/TimeMetadata.Demo';
+import { createStore } from 'redux';
+import rootReducer from '../../reducers/root';
+
+<PropsTable of={VariationsMainView}/>
 
 <Playground>
-  <Component 
-    initialState={{ 
-      volume: 70,
-      isPlaying: true,
-      currentTime: 30 * 1000,
-      runTime: 60 * 1000,
-      manifestLabel: 'Manifest label',
-      manifestSummary: 'Manifest Summary',
-    }}
-  >
-    {({ setState, state }) => (
-      <VariationsMainView 
-        points={DEMO_POINTS}
-        onVolumeChanged={volume => {
-          setState({volume});
-        }}
-        {...state}
-        />
-    )}
-  </Component>
+    <Provider store={createStore(rootReducer)}>
+      <VariationsMainView/>
+    </Provider>
 </Playground>
 

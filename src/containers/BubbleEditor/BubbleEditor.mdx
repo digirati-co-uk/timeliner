@@ -1,0 +1,26 @@
+---
+title: Bubble Editor 
+menu: Containers
+---
+
+# Bubble Editor view 
+
+The bubble editor is a composite view. It glues together 
+the Timeline and Bubble displays with stores andactions required 
+to create the experinece.
+
+
+import { Playground, PropsTable } from 'docz';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import rootReducer from '../../reducers/root';
+import BubbleEditor from './BubbleEditor';
+
+<Playground>
+  <Provider store={createStore(
+      rootReducer,
+      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    )}>
+    <BubbleEditor />
+  </Provider>
+</Playground>

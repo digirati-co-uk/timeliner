@@ -8,7 +8,7 @@ import {
 
 export const updateSettings = form => ({
   type: UPDATE_SETTINGS,
-  payload: from,
+  payload: form,
 });
 
 export const setLanguage = language => ({
