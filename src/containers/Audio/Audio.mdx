@@ -1,0 +1,20 @@
+---
+title: Audio 
+menu: Containers
+---
+# Audio 
+
+Represents the audio playing.
+
+import { Playground } from 'docz';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import rootReducer from '../../reducers/root';
+import AudioDemo from './Audio.Demo';
+
+<Playground>
+    <Provider store={createStore(rootReducer)}>
+      <AudioDemo />
+    </Provider>
+</Playground>
+

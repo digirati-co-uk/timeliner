@@ -9,7 +9,7 @@ import {
 export const audioLoading = (bytesLoaded, bytesTotal, duration) => ({
   type: AUDIO_LOADING,
   payload: {
-    percentLoaded: (bytesLoaded / bytesTotal) * 100,
+    percentLoaded: parseInt((bytesLoaded / bytesTotal) * 100, 10),
     duration,
   },
 });

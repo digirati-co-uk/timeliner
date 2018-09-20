@@ -33,9 +33,9 @@ const canvas = (state = DEFAULT_CANVAS_STATE, action) => {
     case AUDIO_LOADING:
       return update(state, {
         loadingPercent: {
-          $set: action.payload.loadingPercent,
+          $set: action.payload.percentLoaded,
         },
-        duration: {
+        runTime: {
           $set: action.payload.duration,
         },
       });

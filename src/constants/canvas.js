@@ -3,7 +3,7 @@ const DEFAULT_AUDIO_DURATION = 57.103563 * 1000;
 
 export const DEFAULT_CANVAS_STATE = {
   url: DEFAULT_AUDIO,
-  duration: DEFAULT_AUDIO_DURATION,
+  runTime: DEFAULT_AUDIO_DURATION,
   isPlaying: false,
   currentTime: 0,
   isLoaded: false,

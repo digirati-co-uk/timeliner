@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+
 
 import VariationsAppBar from '../../components/VariationsAppBar/VariationsAppBar';
 import AudioTransportBar from '../../components/AudioTransportBar/AudioTransportBar';
@@ -149,6 +149,8 @@ const mapStateProps = state => ({
   points: Object.values(state.range),
   isImportOpen: state.viewState.isImportOpen,
   isSettingsOpen: state.viewState.isSettingsOpen,
+  audioUrl: state.canvas.url,
+
 });
 
 const mapDispatchToProps = {
