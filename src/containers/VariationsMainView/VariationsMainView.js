@@ -13,10 +13,16 @@ import SettingsPopup from '../../components/SettingsPopoup/SettingsPopup';
 
 import BubbleEditor from '../BubbleEditor/BubbleEditor';
 
-import * as canvasActions from '../../actions/canvas';
-import * as projectActions from '../../actions/project';
-import * as rangeActions from '../../actions/range';
-import * as viewStateActions from '../../actions/viewState';
+import { updateSettings } from '../../actions/project';
+import {
+  showImportModal,
+  showSettingsModal,
+  setVolume,
+  play,
+  pause,
+  dismissImportModal,
+  dismissSettingsModal,
+} from '../../actions/viewState';
 
 class VariationsMainView extends React.Component {
   constructor(props) {
@@ -64,23 +70,21 @@ class VariationsMainView extends React.Component {
         <MuiThemeProvider theme={this.theme}>
           <VariationsAppBar
             title={manifestLabel}
-            onImportButtonClicked={this.props.viewStateActions.showImportModal}
+            onImportButtonClicked={this.props.showImportModal}
             onEraseButtonClicked={() => {}}
             onSaveButtonClicked={() => {}}
-            onSettingsButtonClicked={
-              this.props.viewStateActions.showSettingsModal
-            }
+            onSettingsButtonClicked={this.props.showSettingsModal}
             onTitleChange={() => {}}
           />
           <BubbleEditor />
           <AudioTransportBar
             isPlaying={isPlaying}
             volume={volume}
-            onVolumeChanged={this.props.viewStateActions.setVolume}
+            onVolumeChanged={this.props.setVolume}
             currentTime={currentTime}
             runTime={runTime}
-            onPlay={this.props.viewStateActions.play}
-            onPause={this.props.viewStateActions.pause}
+            onPlay={this.props.play}
+            onPause={this.props.pause}
             onNextBubble={() => {}}
             onPreviousBubble={() => {}}
             onScrubAhead={() => {}}
@@ -101,19 +105,39 @@ class VariationsMainView extends React.Component {
           </div>
           <AudioImporter
             open={isImportOpen}
-            onClose={this.props.viewStateActions.dismissImportModal}
+            onClose={this.props.dismissImportModal}
             onImport={manifest => {}}
           />
           <SettingsPopup
             open={isSettingsOpen}
-            onClose={this.props.viewStateActions.dismissSettingsModal}
-            onSave={this.props.projectActions.updateSettings}
+            onClose={this.props.dismissSettingsModal}
+            onSave={this.props.updateSettings}
           />
         </MuiThemeProvider>
       </div>
     );
   }
 }
+
+VariationsMainView.propTypes = {
+  updateSettings: PropTypes.func,
+  showImportModal: PropTypes.func,
+  showSettingsModal: PropTypes.func,
+  setVolume: PropTypes.func.isRequired,
+  play: PropTypes.func,
+  pause: PropTypes.func,
+  dismissImportModal: PropTypes.func,
+  dismissSettingsModal: PropTypes.func,
+  volume: PropTypes.number.isRequired,
+  isPlaying: PropTypes.bool.isRequired,
+  currentTime: PropTypes.number.isRequired,
+  runTime: PropTypes.number.isRequired,
+  manifestLabel: PropTypes.string.isRequired,
+  manifestSummary: PropTypes.string.isRequired,
+  points: PropTypes.array,
+  isImportOpen: PropTypes.bool.isRequired,
+  isSettingsOpen: PropTypes.bool.isRequired,
+};
 
 const mapStateProps = state => ({
   volume: state.viewState.volume,
@@ -127,12 +151,18 @@ const mapStateProps = state => ({
   isSettingsOpen: state.viewState.isSettingsOpen,
 });
 
-const mapDispatchToProps = dispatch => ({
-  canvasActions: bindActionCreators(canvasActions, dispatch),
-  projectActions: bindActionCreators(projectActions, dispatch),
-  rangeActions: bindActionCreators(rangeActions, dispatch),
-  viewStateActions: bindActionCreators(viewStateActions, dispatch),
-});
+const mapDispatchToProps = {
+  //project actions
+  updateSettings,
+  //view state actions
+  showImportModal,
+  showSettingsModal,
+  setVolume,
+  play,
+  pause,
+  dismissImportModal,
+  dismissSettingsModal,
+};
 
 export default connect(
   mapStateProps,

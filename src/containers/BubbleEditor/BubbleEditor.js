@@ -89,8 +89,8 @@ class BubbleEditor extends React.Component {
           </Measure>
           <ZoomControls
             onZoomIn={this.props.zoomIn}
-            onZoomOut={zoom > 1 && this.props.zoomOut}
-            onResetView={this.props.resetZoom}
+            onZoomOut={zoom > 1 ? this.props.zoomOut : null}
+            onResetView={zoom !== 1 ? this.props.resetZoom : null }
           />
         </div>
       </div>
