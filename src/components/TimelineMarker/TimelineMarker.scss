@@ -1,17 +1,10 @@
 .timeline-marker {
   position: absolute;
-  width: 10px;
-  height: 10px;
+  width: 11px;
+  height: 11px;
   display: block;
-  background: grey;
   border-radius: 50%;
-  margin-left: -5px;
-  z-index: 1000;
-  &:hover {
-    background: green;
-  }
-  &:first-child:hover,
-  &:last-child:hover {
-    background: grey;
-  }
+  margin-left: -6px;
+  z-index: 1;
+  margin-top: -5px;
 }

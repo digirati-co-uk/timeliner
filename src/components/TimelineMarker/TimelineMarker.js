@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withTheme } from '@material-ui/core/styles';
 import './TimelineMarker.scss';
 
 class TimelineMarker extends Component {
@@ -9,15 +10,17 @@ class TimelineMarker extends Component {
   };
 
   render() {
+    const { x, theme } = this.props;
     return (
       <div
         className="timeline-marker"
         style={{
-          left: `${this.props.x}%`,
+          left: `${x}%`,
+          background: `${theme.palette.primary.main}`,
         }}
       />
     );
   }
 }
 
-export default TimelineMarker;
+export default withTheme()(TimelineMarker);

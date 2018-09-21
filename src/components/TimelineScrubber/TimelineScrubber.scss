@@ -1,7 +1,8 @@
 .timeline-scrubber {
   position: relative;
-  height: 10px;
+  height: 5px;
   z-index: 10;
-  background: #efefef;
-  box-sizing: content-box;
+  box-sizing: border-box;
+  border-bottom: 2px solid transparent;
+  border-top: 2px solid transparent;
 }

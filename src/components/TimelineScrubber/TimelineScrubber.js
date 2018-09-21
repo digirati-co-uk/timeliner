@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import './TimelineScrubber.scss';
+import { withTheme } from '@material-ui/core/styles';
+
 import TimelineMarker from '../TimelineMarker/TimelineMarker';
 import PlayHead from '../Playhead/Playhead';
+
+import './TimelineScrubber.scss';
 
 class TimelineScrubber extends Component {
   static propTypes = {
@@ -40,10 +43,14 @@ class TimelineScrubber extends Component {
   timeToPercent = time => (time / this.props.runTime) * 100 * this.props.zoom;
 
   render() {
-    const { currentTime, timePoints } = this.props;
-
+    const { currentTime, timePoints, theme } = this.props;
     return (
-      <div className="timeline-scrubber">
+      <div
+        className="timeline-scrubber"
+        style={{
+          background: theme.palette.secondary.main,
+        }}
+      >
         {timePoints.map(timePoint => (
           <TimelineMarker
             key={`tp-${timePoint}`}
@@ -57,4 +64,4 @@ class TimelineScrubber extends Component {
   }
 }
 
-export default TimelineScrubber;
+export default withTheme()(TimelineScrubber);

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import blue from '@material-ui/core/colors/blue';
+import purple from '@material-ui/core/colors/purple';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -29,9 +29,17 @@ class VariationsMainView extends React.Component {
     super(props);
     this.theme = createMuiTheme({
       palette: {
-        primary: blue,
+        primary: {
+          light: '#757ce8',
+          main: '#3f50b5',
+          dark: '#002884',
+          contrastText: '#fff',
+        },
         secondary: {
-          main: '#ff5252',
+          light: '#d2abf3',
+          main: '#C797F0',
+          dark: '#8b69a8',
+          contrastText: '#000',
         },
       },
       status: {

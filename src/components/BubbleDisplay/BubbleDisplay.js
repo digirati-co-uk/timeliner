@@ -79,7 +79,7 @@ class BubbleDisplay extends Component {
             width={width * zoom}
             height={height}
             style={{
-              fill: '#f6f6f6',
+              fill: '#ffffff',
               strokeWidth: 0,
               stroke: 'rgb(0,0,0,0)',
             }}
