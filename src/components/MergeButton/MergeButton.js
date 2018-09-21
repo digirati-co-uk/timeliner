@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { IconButton } from '@material-ui/core';
 import { MergeType } from '@material-ui/icons';
 
+// @deprecated
 const MergeButton = props => (
   <IconButton
     color="inherit"

@@ -38,6 +38,7 @@ class TimelineScrubber extends Component {
     onUpdateTimePoint: null, // This changes behaviour depending if null.
     timePoints: [],
     renderTimelineHover: () => null,
+    zoom: 1.0,
   };
 
   timeToPercent = time => (time / this.props.runTime) * 100 * this.props.zoom;

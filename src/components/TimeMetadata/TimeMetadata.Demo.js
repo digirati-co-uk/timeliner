@@ -7,7 +7,7 @@ const DEMO_POINTS = Object.values({
     label: 'Intro',
     summary: 'some summary',
     isSelected: false,
-    colour: '#ff0000',
+    colour: '#C797F0',
   },
   bubble1: {
     id: 'id-2',
@@ -17,7 +17,7 @@ const DEMO_POINTS = Object.values({
     label: 'Part I',
     summary: 'some summary',
     isSelected: false,
-    colour: '#00ff00',
+    colour: '#A8F097',
   },
   bubble2: {
     id: 'id-3',
@@ -27,7 +27,7 @@ const DEMO_POINTS = Object.values({
     label: 'Part II',
     summary: 'some summary',
     isSelected: false,
-    colour: '#0000ff',
+    colour: '#A8F097',
   },
 });
 
