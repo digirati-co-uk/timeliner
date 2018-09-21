@@ -12,7 +12,9 @@
   &__annotations-content {
     background: white;
     padding: 16px;
-    flex: 1;   
+    flex: 1;
+    display: flex;
+    flex-direction: column;   
   }
   &__project {
     flex: 1;
@@ -24,6 +26,15 @@
   &__project-content {
     width: 100%;
     background: white;
-    padding: 0 16px 16px 16px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+  }
+  &__content {
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin: 0 -16px;
+    padding: 16px;
+    flex: 1;
   }
 }
