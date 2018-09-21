@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import purple from '@material-ui/core/colors/purple';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import VariationsAppBar from '../../components/VariationsAppBar/VariationsAppBar';
 import AudioTransportBar from '../../components/AudioTransportBar/AudioTransportBar';
