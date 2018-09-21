@@ -52,9 +52,6 @@ class AudioTransportBar extends Component {
             <CurrentTimeIndicator
               currentTime={this.props.currentTime}
               runtime={this.props.runTime}
-              style={{
-                justifySelf: 'flex-start',
-              }}
             />
             <PrimaryButton>Add</PrimaryButton>
             <PrimaryButton disabled={true}>Group</PrimaryButton>
