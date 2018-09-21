@@ -31,17 +31,6 @@ const VariationsAppBar = props => (
         <Typography variant="title" color="inherit">
           Variations&nbsp;
         </Typography>
-        <TextField
-          id="name-simple"
-          value={props.title || 'Untitled'}
-          color="primary"
-          onChange={ev => {
-            props.onTitleChange(ev.target.value);
-          }}
-        />
-        <IconButton color="inherit">
-          <Info />
-        </IconButton>
       </div>
       <div>
         <IconButton color="inherit" onClick={props.onImportButtonClicked}>
@@ -70,10 +59,6 @@ VariationsAppBar.propTypes = {
   onSaveButtonClicked: PropTypes.func.isRequired,
   /** Opens the project settings modal */
   onSettingsButtonClicked: PropTypes.func.isRequired,
-  /** The title of the project */
-  title: PropTypes.string.isRequired,
-  /** Updates the changed title */
-  onTitleChange: PropTypes.func.isRequired,
 };
 
 export default VariationsAppBar;
