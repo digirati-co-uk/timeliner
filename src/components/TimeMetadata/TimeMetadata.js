@@ -10,18 +10,22 @@ const TimeMetadata = props => (
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'stretch',
+      flex: 1,
     }}
   >
     <div
       style={{
         flex: 2,
         paddingRight: 16,
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
       <div
         style={{
           background: 'white',
           padding: 16,
+          flex: 1,
         }}
       >
         <h5>Annotations</h5>

@@ -37,7 +37,14 @@ class AudioTransportBar extends Component {
 
   render() {
     return (
-      <Toolbar className="audio-transport-bar">
+      <Toolbar
+        className="audio-transport-bar"
+        style={{
+          marginBottom: 8,
+          paddingLeft: 16,
+          paddingRight: 16,
+        }}
+      >
         <Grid container direction="row" justify="stretch" alignItems="center">
           <Grid
             item
@@ -54,8 +61,22 @@ class AudioTransportBar extends Component {
               runtime={this.props.runTime}
             />
             <PrimaryButton>Add</PrimaryButton>
-            <PrimaryButton disabled={true}>Group</PrimaryButton>
-            <PrimaryButton disabled={true}>Delete</PrimaryButton>
+            <PrimaryButton
+              disabled={true}
+              style={{
+                marginLeft: 16,
+              }}
+            >
+              Group
+            </PrimaryButton>
+            <PrimaryButton
+              disabled={true}
+              style={{
+                marginLeft: 16,
+              }}
+            >
+              Delete
+            </PrimaryButton>
           </Grid>
           <Grid item xs="4">
             <div className="audio-transport-bar__buttons">

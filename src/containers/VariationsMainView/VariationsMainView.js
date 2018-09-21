@@ -73,7 +73,14 @@ class VariationsMainView extends React.Component {
       }, new Set())
     );
     return (
-      <div>
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
         <MuiThemeProvider theme={this.theme}>
           <VariationsAppBar
             title={manifestLabel}
@@ -102,6 +109,8 @@ class VariationsMainView extends React.Component {
               padding: 16,
               background: '#EEEEEE',
               flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
             }}
           >
             <TimelineMetadata
@@ -115,6 +124,7 @@ class VariationsMainView extends React.Component {
               container
               style={{
                 marginTop: 24,
+                height: 24,
               }}
             >
               <Grid item xs="6">
