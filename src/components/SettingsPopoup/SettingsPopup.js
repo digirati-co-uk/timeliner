@@ -24,6 +24,10 @@ export default class SettingsPopup extends React.Component {
     /** Callback to dismiss the form */
     onClose: PropTypes.func.isRequired,
     /** is the dialog open */
+    open: PropTypes.bool,
+  };
+
+  static defaultProps = {
     open: false,
   };
 

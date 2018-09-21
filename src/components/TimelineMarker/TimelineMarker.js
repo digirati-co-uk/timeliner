@@ -11,7 +11,6 @@ class TimelineMarker extends Component {
 
   render() {
     const { x, theme } = this.props;
-    console.log(x, this.props);
     return (
       <div
         className="timeline-marker"

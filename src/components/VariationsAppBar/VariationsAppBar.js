@@ -16,7 +16,13 @@ const VariationsAppBar = props => (
           justifyContent: 'flex-start',
         }}
       >
-        <Typography variant="title" color="inherit">
+        <Typography
+          variant="title"
+          color="inherit"
+          style={{
+            fontWeight: 'normal',
+          }}
+        >
           Variations&nbsp;
         </Typography>
       </div>

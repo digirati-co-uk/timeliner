@@ -115,7 +115,6 @@ class BubbleDisplay extends React.Component {
       .filter(bubble => bubble.from <= splitpoint && bubble.to >= splitpoint)
       .reduce(
         (smallestBubble, bubble) => {
-          console.log(smallestBubble, bubble);
           return smallestBubble.to - smallestBubble.from >=
             bubble.to - bubble.from
             ? bubble

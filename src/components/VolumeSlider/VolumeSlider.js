@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Slider } from '@material-ui/lab';
-import { VolumeDown, VolumeUp } from '@material-ui/icons'; 
+import { VolumeDown, VolumeUp } from '@material-ui/icons';
 import './VolumeSlider.scss';
+
+const SPEAKER_ICON_SIZE = {
+  width: 20,
+  height: 20,
+};
 
 class VolumeSlider extends Component {
   static propTypes = {
@@ -16,7 +21,6 @@ class VolumeSlider extends Component {
   };
 
   onVolumeInputChange = (ev, value) => {
-    console.log(value);
     const { onVolumeChanged } = this.props;
     if (onVolumeChanged) {
       onVolumeChanged(parseInt(value, 10));
@@ -27,14 +31,14 @@ class VolumeSlider extends Component {
     const { volume } = this.props;
     return (
       <div className="volume-slider">
-        <VolumeDown color="disabled" fontSize="small" />
+        <VolumeDown color="disabled" style={SPEAKER_ICON_SIZE} />
         <Slider
           min={0}
           max={100}
           value={volume}
           onChange={this.onVolumeInputChange}
         />
-        <VolumeUp color="disabled" fontSize="small" />
+        <VolumeUp color="disabled" style={SPEAKER_ICON_SIZE} />
       </div>
     );
   }

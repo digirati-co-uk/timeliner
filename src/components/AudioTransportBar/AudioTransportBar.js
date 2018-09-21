@@ -38,8 +38,8 @@ class AudioTransportBar extends Component {
   render() {
     return (
       <Toolbar className="audio-transport-bar">
-        <Grid container direction="row" justify="stretch" alignItems="center">
-          <Grid item xs="4" className="audio-transport-bar__actions">
+        <Grid container direction="row" alignItems="center">
+          <Grid item xs={4} className="audio-transport-bar__actions">
             <CurrentTimeIndicator
               currentTime={this.props.currentTime}
               runtime={this.props.runTime}
@@ -62,7 +62,7 @@ class AudioTransportBar extends Component {
               Delete
             </PrimaryButton>
           </Grid>
-          <Grid item xs="4">
+          <Grid item xs={4}>
             <div className="audio-transport-bar__buttons">
               <PreviousButton onClick={this.props.onPreviousBubble} />
               <SkipBackwardsButton onClick={this.props.onScrubBackwards} />
@@ -75,7 +75,7 @@ class AudioTransportBar extends Component {
               <NextButton onClick={this.props.onNextBubble} />
             </div>
           </Grid>
-          <Grid item xs="4" className="audio-transport-bar__volume">
+          <Grid item xs={4} className="audio-transport-bar__volume">
             <VolumeSlider
               volume={this.props.volume}
               onVolumeChanged={this.props.onVolumeChanged}

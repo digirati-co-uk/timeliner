@@ -28,7 +28,6 @@ class BubbleEditor extends React.Component {
   }
 
   render() {
-    console.log('props', this.props);
     const _points = this.props.points;
     const { runTime, currentTime, zoom } = this.props;
     const timePoints = Array.from(

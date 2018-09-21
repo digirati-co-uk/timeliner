@@ -17,7 +17,10 @@ const Metadata = props => (
                 range.endTime >= props.currentTime
             )
             .map(range => (
-              <MetadataDisplay {...range} />
+              <MetadataDisplay
+                key={`metadata_display-${range.id}`}
+                {...range}
+              />
             ))}
         </div>
       </div>

@@ -1,9 +1,14 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
+
 *, *:before, *:after { box-sizing: border-box; }
 body, html {
-  font-family: sans-serif;
+  font-family: 'Roboto', sans-serif;
   margin: 0;
   padding: 0;
   overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
 }
 .container { 
   max-width: 500px; 

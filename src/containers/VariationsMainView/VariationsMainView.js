@@ -10,7 +10,7 @@ import AudioImporter from '../../components/AudioImporter/AudioImporter';
 import SettingsPopup from '../../components/SettingsPopoup/SettingsPopup';
 
 import BubbleEditor from '../BubbleEditor/BubbleEditor';
-import { Grid } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 
 import { updateSettings } from '../../actions/project';
 import {
@@ -127,17 +127,21 @@ class VariationsMainView extends React.Component {
                 height: 24,
               }}
             >
-              <Grid item xs="6">
-                &copy; Indiana University, 2018
+              <Grid item xs={6}>
+                <Typography variant="body1">
+                  &copy; Indiana University, 2018
+                </Typography>
               </Grid>
               <Grid
                 item
-                xs="6"
+                xs={6}
                 style={{
                   textAlign: 'right',
                 }}
               >
-                About Timeliner | Help | Contact
+                <Typography variant="body1">
+                  About Timeliner | Help | Contact
+                </Typography>
               </Grid>
             </Grid>
           </div>
