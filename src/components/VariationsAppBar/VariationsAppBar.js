@@ -1,20 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  TextField,
-  IconButton,
-} from '@material-ui/core';
-import {
-  Info,
-  AddCircle,
-  Delete,
-  CloudDownload,
-  Settings,
-} from '@material-ui/icons';
+import { AppBar, Toolbar, Typography, IconButton } from '@material-ui/core';
+import { AddCircle, Delete, CloudDownload, Settings } from '@material-ui/icons';
 
 const VariationsAppBar = props => (
   <AppBar position="static">

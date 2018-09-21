@@ -37,25 +37,9 @@ class AudioTransportBar extends Component {
 
   render() {
     return (
-      <Toolbar
-        className="audio-transport-bar"
-        style={{
-          marginBottom: 8,
-          paddingLeft: 16,
-          paddingRight: 16,
-        }}
-      >
+      <Toolbar className="audio-transport-bar">
         <Grid container direction="row" justify="stretch" alignItems="center">
-          <Grid
-            item
-            xs="4"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              flexDirection: 'row',
-              justifyContent: 'flex-end',
-            }}
-          >
+          <Grid item xs="4" className="audio-transport-bar__actions">
             <CurrentTimeIndicator
               currentTime={this.props.currentTime}
               runtime={this.props.runTime}
@@ -91,16 +75,7 @@ class AudioTransportBar extends Component {
               <NextButton onClick={this.props.onNextBubble} />
             </div>
           </Grid>
-          <Grid
-            item
-            xs="4"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              flexDirection: 'row',
-              justifyContent: 'flex-end',
-            }}
-          >
+          <Grid item xs="4" className="audio-transport-bar__volume">
             <VolumeSlider
               volume={this.props.volume}
               onVolumeChanged={this.props.onVolumeChanged}

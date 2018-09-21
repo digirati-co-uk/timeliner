@@ -4,6 +4,11 @@ import PropTypes from 'prop-types';
 import TransportBarButton from '../TransportBarButton/TransportBarButton';
 import { PlayCircleOutline, PauseCircleOutline } from '@material-ui/icons';
 
+const PLAY_PAUSE_BUTTON_SIZE = {
+  width: 48,
+  height: 48,
+};
+
 const PlayPauseButton = props => (
   <TransportBarButton
     title={props.isPlaying ? 'Pause' : 'Play'}
@@ -20,19 +25,9 @@ const PlayPauseButton = props => (
     disabled={props.disabled}
   >
     {props.isPlaying ? (
-      <PauseCircleOutline
-        style={{
-          width: 48,
-          height: 48,
-        }}
-      />
+      <PauseCircleOutline style={PLAY_PAUSE_BUTTON_SIZE} />
     ) : (
-      <PlayCircleOutline
-        style={{
-          width: 48,
-          height: 48,
-        }}
-      />
+      <PlayCircleOutline style={PLAY_PAUSE_BUTTON_SIZE} />
     )}
   </TransportBarButton>
 );
@@ -51,7 +46,6 @@ PlayPauseButton.propTypes = {
 PlayPauseButton.defaultProps = {
   disabled: false,
   isPlaying: false,
-  
 };
 
 export default PlayPauseButton;
