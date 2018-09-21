@@ -46,12 +46,7 @@ class TimelineScrubber extends Component {
   render() {
     const { currentTime, timePoints, theme } = this.props;
     return (
-      <div
-        className="timeline-scrubber"
-        style={{
-          background: theme.palette.secondary.main,
-        }}
-      >
+      <div className="timeline-scrubber">
         {timePoints.map(timePoint => (
           <TimelineMarker
             key={`tp-${timePoint}`}
