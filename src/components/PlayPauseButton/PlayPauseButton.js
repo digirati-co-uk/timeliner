@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
 import TransportBarButton from '../TransportBarButton/TransportBarButton';
-import { PlayCircleFilled, PauseCircleFilled } from '@material-ui/icons';
+import { PlayCircleOutline, PauseCircleOutline } from '@material-ui/icons';
 
 const PlayPauseButton = props => (
   <TransportBarButton
@@ -13,9 +14,26 @@ const PlayPauseButton = props => (
         props.onPlay();
       }
     }}
+    style={{
+      border: '2px solid black',
+    }}
     disabled={props.disabled}
   >
-    {props.isPlaying ? <PauseCircleFilled /> : <PlayCircleFilled />}
+    {props.isPlaying ? (
+      <PauseCircleOutline
+        style={{
+          width: 48,
+          height: 48,
+        }}
+      />
+    ) : (
+      <PlayCircleOutline
+        style={{
+          width: 48,
+          height: 48,
+        }}
+      />
+    )}
   </TransportBarButton>
 );
 
@@ -33,6 +51,7 @@ PlayPauseButton.propTypes = {
 PlayPauseButton.defaultProps = {
   disabled: false,
   isPlaying: false,
+  
 };
 
 export default PlayPauseButton;
