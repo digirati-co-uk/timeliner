@@ -1,29 +1,27 @@
 ---
-title: Time Metadata
+title: Project Metadata
 menu: Components
 ---
 
 import { Playground, PropsTable } from 'docz';
-import TimeMetadata from './TimeMetadata';
-import DEMO_DATA from './TimeMetadata.Demo';
+import Metadata from './Metadata';
+import DEMO_DATA from './Metadata.Demo';
 
 
-# Time Metadata
+# Project Metadata
 Displays all of the metadata for a given at the current timestamp for both the manifest
 and also the ranges.
 
-<PropsTable of={TimeMetadata} />
+<PropsTable of={Metadata} />
 
-## Time Metadata Demo
+## Project Metadata Demo
 
 The first section ends at 40s try to modify the currentTime to 45s.
 
 <Playground>
-  <TimeMetadata
+  <Metadata
     ranges={DEMO_DATA}
     currentTime={30 * 1000}
     runtime={60*1000}
-    manifestLabel="Manifest label"
-    manifestSummary="Manifest Summary"
   />
 </Playground>

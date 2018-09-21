@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import VariationsAppBar from '../../components/VariationsAppBar/VariationsAppBar';
 import AudioTransportBar from '../../components/AudioTransportBar/AudioTransportBar';
-import TimelineMetadata from '../../components/TimeMetadata/TimeMetadata';
+import ProjectMetadata from '../../components/Metadata/Metadata';
 import AudioImporter from '../../components/AudioImporter/AudioImporter';
 import SettingsPopup from '../../components/SettingsPopoup/SettingsPopup';
 
@@ -113,7 +113,7 @@ class VariationsMainView extends React.Component {
               flexDirection: 'column',
             }}
           >
-            <TimelineMetadata
+            <ProjectMetadata
               ranges={_points}
               currentTime={currentTime}
               runtime={runTime}

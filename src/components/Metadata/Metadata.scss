@@ -1,0 +1,29 @@
+.metadata {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;  
+  flex: 1;
+  &__annotations {
+    flex: 2;
+    padding-right: 16px;
+    display: flex;
+    flex-direction: column; 
+  }
+  &__annotations-content {
+    background: white;
+    padding: 16px;
+    flex: 1;   
+  }
+  &__project {
+    flex: 1;
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+    flex-direction: row;
+  }
+  &__project-content {
+    width: 100%;
+    background: white;
+    padding: 0 16px 16px 16px;
+  }
+}
