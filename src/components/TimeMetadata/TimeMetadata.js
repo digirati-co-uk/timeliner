@@ -5,25 +5,60 @@ import MetadataDisplay from '../MetadataDisplay/MetadataDisplay';
 import { Grid, Card, CardContent, CardHeader } from '@material-ui/core';
 
 const TimeMetadata = props => (
-  <Grid
-    container
-    direction="column"
-    justify="flex-start"
-    alignItems="stretch"
-    spacing={16}
+  <div
+    style={{
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'stretch',
+    }}
   >
-    {props.ranges
-      .filter(
-        range =>
-          range.startTime <= props.currentTime &&
-          range.endTime >= props.currentTime
-      )
-      .map(range => (
-        <Grid item key={`${range.id}`}>
-          <MetadataDisplay {...range} />
-        </Grid>
-      ))}
-  </Grid>
+    <div
+      style={{
+        flex: 2,
+        paddingRight: 16,
+      }}
+    >
+      <div
+        style={{
+          background: 'white',
+          padding: 16,
+        }}
+      >
+        <h5>Annotations</h5>
+        {props.ranges
+          .filter(
+            range =>
+              range.startTime <= props.currentTime &&
+              range.endTime >= props.currentTime
+          )
+          .map(range => (
+            <MetadataDisplay {...range} />
+          ))}
+      </div>
+    </div>
+    <div
+      style={{
+        flex: 1,
+        display: 'flex',
+        alignItems: 'stretch',
+        justifyContent: 'stretch',
+        flexDirection: 'row',
+      }}
+    >
+      <div
+        style={{
+          width: '100%',
+          background: 'white',
+          padding: '0 16px 16px 16px',
+        }}
+      >
+        <h5>Project</h5>
+        testda asdf asf asd fasdf asdf asdfasfa<br />
+        sadf asdf asfdas
+        df asdfasdf
+      </div>
+    </div>
+  </div>
 );
 
 TimeMetadata.propTypes = {

@@ -10,6 +10,7 @@ import AudioImporter from '../../components/AudioImporter/AudioImporter';
 import SettingsPopup from '../../components/SettingsPopoup/SettingsPopup';
 
 import BubbleEditor from '../BubbleEditor/BubbleEditor';
+import { Grid } from '@material-ui/core';
 
 import { updateSettings } from '../../actions/project';
 import {
@@ -98,7 +99,9 @@ class VariationsMainView extends React.Component {
           />
           <div
             style={{
-              padding: 8,
+              padding: 16,
+              background: '#EEEEEE',
+              flex: 1,
             }}
           >
             <TimelineMetadata
@@ -108,6 +111,25 @@ class VariationsMainView extends React.Component {
               manifestLabel={manifestLabel}
               manifestSummary={manifestSummary}
             />
+            <Grid
+              container
+              style={{
+                marginTop: 24,
+              }}
+            >
+              <Grid item xs="6">
+                &copy; Indiana University, 2018
+              </Grid>
+              <Grid
+                item
+                xs="6"
+                style={{
+                  textAlign: 'right',
+                }}
+              >
+                About Timeliner | Help | Contact
+              </Grid>
+            </Grid>
           </div>
           <AudioImporter
             open={isImportOpen}
