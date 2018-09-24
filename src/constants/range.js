@@ -5,7 +5,7 @@ export const DEFAULT_RANGES_STATE = {
     endTime: 57.103563 * 1000,
     label: '',
     summary: '',
-    colour: 'skyblue',
+    colour: '#A8F097',
     depth: 1,
   },
 };

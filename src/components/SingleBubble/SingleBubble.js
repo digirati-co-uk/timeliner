@@ -60,10 +60,6 @@ class SingleBubble extends Component {
         <text
           textAnchor="middle"
           fill={labelColour}
-          stroke="#fff"
-          strokeWidth="1.9"
-          strokeLinecap="butt"
-          strokeLinejoin="miter"
           paintOrder="stroke"
           x={width / 2 + x}
           y={0}

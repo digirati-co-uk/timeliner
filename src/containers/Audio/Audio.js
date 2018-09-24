@@ -12,7 +12,6 @@ import {
 class Audio extends Component {
   handleSongLoading = params => {
     const { bytesLoaded, bytesTotal, duration, durationEstimate } = params;
-    console.log('params', bytesLoaded, bytesTotal, duration, durationEstimate);
     this.props.audioLoading(
       bytesLoaded,
       bytesTotal,

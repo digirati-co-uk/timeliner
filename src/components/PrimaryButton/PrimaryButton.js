@@ -8,12 +8,23 @@ class PrimaryButton extends Component {
     children: PropTypes.node.isRequired,
     /** On click */
     onClick: PropTypes.func,
+    /** style */
+    style: PropTypes.object,
+  };
+
+  static defaultProps = {
+    style: {},
   };
 
   render() {
-    const { children, onClick } = this.props;
+    const { children, onClick, style } = this.props;
     return (
-      <Button variant="contained" color="primary" onClick={onClick}>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={onClick}
+        style={style}
+      >
         {children}
       </Button>
     );

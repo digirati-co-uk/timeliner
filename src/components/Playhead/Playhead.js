@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withTheme } from '@material-ui/core/styles';
+
 import './Playhead.scss';
 
 class Playhead extends Component {
@@ -9,16 +11,17 @@ class Playhead extends Component {
   };
 
   render() {
-    const { x } = this.props;
+    const { x, theme } = this.props;
     return (
       <div
         className="playhead"
         style={{
-          left: `${x}%`,
+          width: `${x}%`,
+          background: `${theme.palette.primary.main}`,
         }}
       />
     );
   }
 }
 
-export default Playhead;
+export default withTheme()(Playhead);

@@ -73,15 +73,15 @@ class BubbleDisplay extends React.Component {
     const bubbles = this.getBubbles();
     return ev => {
       if (ev.shiftKey) {
-        const selecteds = bubbles.filter(bubble => bubble.isSelected);
-        if (selecteds.length > 0) {
+        const selectedBubbles = bubbles.filter(bubble => bubble.isSelected);
+        if (selectedBubbles.length > 0) {
           let firstSelected;
           let lastSelected;
-          if (selecteds[0].from > this.state.bubbles[bubbleId].from) {
-            firstSelected = selecteds[0];
+          if (selectedBubbles[0].from > this.state.bubbles[bubbleId].from) {
+            firstSelected = selectedBubbles[0];
             lastSelected = this.state.bubbles[bubbleId];
           } else {
-            lastSelected = selecteds[0];
+            lastSelected = selectedBubbles[0];
             firstSelected = this.state.bubbles[bubbleId];
           }
           bubbles.forEach(bubble => {
@@ -103,19 +103,18 @@ class BubbleDisplay extends React.Component {
 
   onTimelineClick = ev => {
     if (this.state.selectedPoint < 0) {
-      const splitpoint =
+      const splitPoint =
         (getRelativeCoordinates(ev).x / this.props.editorWidth) *
         this.state.runTime;
-      this.splitAtPoint(splitpoint);
+      this.splitAtPoint(splitPoint);
     }
   };
 
-  splitAtPoint = splitpoint => {
+  splitAtPoint = splitPoint => {
     const bubbleToSplit = Object.values(this.state.bubbles)
-      .filter(bubble => bubble.from <= splitpoint && bubble.to >= splitpoint)
+      .filter(bubble => bubble.from <= splitPoint && bubble.to >= splitPoint)
       .reduce(
         (smallestBubble, bubble) => {
-          console.log(smallestBubble, bubble);
           return smallestBubble.to - smallestBubble.from >=
             bubble.to - bubble.from
             ? bubble
@@ -124,8 +123,8 @@ class BubbleDisplay extends React.Component {
         { from: 0, to: this.state.runTime }
       );
     const newBubble = JSON.parse(JSON.stringify(bubbleToSplit));
-    bubbleToSplit.to = splitpoint;
-    newBubble.from = splitpoint;
+    bubbleToSplit.to = splitPoint;
+    newBubble.from = splitPoint;
     newBubble.id = `id-${new Date().getTime()}`;
 
     newBubble.label = '';
@@ -354,7 +353,7 @@ class BubbleDisplay extends React.Component {
                     <path
                       d={d}
                       fill={colour}
-                      stroke={bubble.isSelected ? 'black' : 'tansparent'}
+                      stroke={bubble.isSelected ? 'black' : 'transparent'}
                       strokeWidth="2.0"
                     />
 
@@ -382,7 +381,7 @@ class BubbleDisplay extends React.Component {
         <div
           className="timeline"
           onDoubleClick={this.onTimelineClick}
-          title="doubleclick to split at this point"
+          title="double click to split at this point"
         >
           {points.map((point, index) => (
             <div

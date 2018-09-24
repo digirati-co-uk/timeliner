@@ -19,7 +19,7 @@ class TransportBarButton extends Component {
   render() {
     return (
       <IconButton
-        color="inherit"
+        color="primary"
         disabled={this.props.disabled}
         title={this.props.title}
         onClick={this.props.disabled ? () => {} : this.props.onClick}
