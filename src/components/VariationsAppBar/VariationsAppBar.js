@@ -23,7 +23,7 @@ const VariationsAppBar = props => (
             fontWeight: 'normal',
           }}
         >
-          Variations&nbsp;
+          Timeliner&nbsp;
         </Typography>
       </div>
       <div>
