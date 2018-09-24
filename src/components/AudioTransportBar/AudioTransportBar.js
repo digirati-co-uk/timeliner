@@ -8,7 +8,7 @@ import PreviousButton from '../PreviousButton/PreviousButton';
 import SkipAheadButton from '../SkipAheadButton/SkipAheadButton';
 import SkipBackwardsButton from '../SkipBackwardsButton/SkipBackwardsButton';
 import PlayPauseButton from '../PlayPauseButton/PlayPauseButton';
-import MergeButton from '../MergeButton/MergeButton';
+import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import { Grid } from '@material-ui/core';
 
 import './AudioTransportBar.scss';
@@ -38,20 +38,31 @@ class AudioTransportBar extends Component {
   render() {
     return (
       <Toolbar className="audio-transport-bar">
-        <Grid
-          container
-          direction="row"
-          justify="space-between"
-          alignItems="center"
-        >
-          <Grid item>
+        <Grid container direction="row" alignItems="center">
+          <Grid item xs={4} className="audio-transport-bar__actions">
             <CurrentTimeIndicator
               currentTime={this.props.currentTime}
               runtime={this.props.runTime}
             />
-            <MergeButton onClick={() => console.log('TODO: temp')} />
+            <PrimaryButton>Add</PrimaryButton>
+            <PrimaryButton
+              disabled={true}
+              style={{
+                marginLeft: 16,
+              }}
+            >
+              Group
+            </PrimaryButton>
+            <PrimaryButton
+              disabled={true}
+              style={{
+                marginLeft: 16,
+              }}
+            >
+              Delete
+            </PrimaryButton>
           </Grid>
-          <Grid item>
+          <Grid item xs={4}>
             <div className="audio-transport-bar__buttons">
               <PreviousButton onClick={this.props.onPreviousBubble} />
               <SkipBackwardsButton onClick={this.props.onScrubBackwards} />
@@ -64,7 +75,7 @@ class AudioTransportBar extends Component {
               <NextButton onClick={this.props.onNextBubble} />
             </div>
           </Grid>
-          <Grid item>
+          <Grid item xs={4} className="audio-transport-bar__volume">
             <VolumeSlider
               volume={this.props.volume}
               onVolumeChanged={this.props.onVolumeChanged}

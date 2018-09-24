@@ -24,6 +24,10 @@ export default class SettingsPopup extends React.Component {
     /** Callback to dismiss the form */
     onClose: PropTypes.func.isRequired,
     /** is the dialog open */
+    open: PropTypes.bool,
+  };
+
+  static defaultProps = {
     open: false,
   };
 
@@ -258,10 +262,14 @@ export default class SettingsPopup extends React.Component {
           </div>
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.props.onClose} color="secondary">
+          <Button onClick={this.props.onClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={this.onSaveClicked} color="primary">
+          <Button
+            onClick={this.onSaveClicked}
+            variant="contained"
+            color="primary"
+          >
             Apply
           </Button>
         </DialogActions>

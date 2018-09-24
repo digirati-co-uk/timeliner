@@ -28,7 +28,6 @@ class BubbleEditor extends React.Component {
   }
 
   render() {
-    console.log('props', this.props);
     const _points = this.props.points;
     const { runTime, currentTime, zoom } = this.props;
     const timePoints = Array.from(
@@ -47,7 +46,7 @@ class BubbleEditor extends React.Component {
         <div
           style={{
             position: 'relative',
-            margin: '9px 24px',
+            margin: '16px 16px 8px',
           }}
         >
           <Measure
@@ -90,7 +89,7 @@ class BubbleEditor extends React.Component {
           <ZoomControls
             onZoomIn={this.props.zoomIn}
             onZoomOut={zoom > 1 ? this.props.zoomOut : null}
-            onResetView={zoom !== 1 ? this.props.resetZoom : null }
+            onResetView={zoom !== 1 ? this.props.resetZoom : null}
           />
         </div>
       </div>

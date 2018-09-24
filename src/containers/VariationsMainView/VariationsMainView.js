@@ -1,17 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import blue from '@material-ui/core/colors/blue';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import VariationsAppBar from '../../components/VariationsAppBar/VariationsAppBar';
 import AudioTransportBar from '../../components/AudioTransportBar/AudioTransportBar';
-import TimelineMetadata from '../../components/TimeMetadata/TimeMetadata';
+import ProjectMetadata from '../../components/Metadata/Metadata';
 import AudioImporter from '../../components/AudioImporter/AudioImporter';
 import SettingsPopup from '../../components/SettingsPopoup/SettingsPopup';
 
 import BubbleEditor from '../BubbleEditor/BubbleEditor';
+import { Grid, Typography } from '@material-ui/core';
 
 import { updateSettings } from '../../actions/project';
 import {
@@ -29,9 +28,17 @@ class VariationsMainView extends React.Component {
     super(props);
     this.theme = createMuiTheme({
       palette: {
-        primary: blue,
+        primary: {
+          light: '#757ce8',
+          main: '#3f50b5',
+          dark: '#002884',
+          contrastText: '#fff',
+        },
         secondary: {
-          main: '#ff5252',
+          light: '#d2abf3',
+          main: '#C797F0',
+          dark: '#8b69a8',
+          contrastText: '#000',
         },
       },
       status: {
@@ -66,7 +73,14 @@ class VariationsMainView extends React.Component {
       }, new Set())
     );
     return (
-      <div>
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
         <MuiThemeProvider theme={this.theme}>
           <VariationsAppBar
             title={manifestLabel}
@@ -92,16 +106,44 @@ class VariationsMainView extends React.Component {
           />
           <div
             style={{
-              padding: 8,
+              padding: 16,
+              background: '#EEEEEE',
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
             }}
           >
-            <TimelineMetadata
+            <ProjectMetadata
               ranges={_points}
               currentTime={currentTime}
               runtime={runTime}
               manifestLabel={manifestLabel}
               manifestSummary={manifestSummary}
             />
+            <Grid
+              container
+              style={{
+                marginTop: 24,
+                height: 24,
+              }}
+            >
+              <Grid item xs={6}>
+                <Typography variant="body1">
+                  &copy; Indiana University, 2018
+                </Typography>
+              </Grid>
+              <Grid
+                item
+                xs={6}
+                style={{
+                  textAlign: 'right',
+                }}
+              >
+                <Typography variant="body1">
+                  About Timeliner | Help | Contact
+                </Typography>
+              </Grid>
+            </Grid>
           </div>
           <AudioImporter
             open={isImportOpen}

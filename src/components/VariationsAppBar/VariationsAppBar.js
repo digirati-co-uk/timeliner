@@ -1,20 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  TextField,
-  IconButton,
-} from '@material-ui/core';
-import {
-  Info,
-  AddCircle,
-  Delete,
-  CloudDownload,
-  Settings,
-} from '@material-ui/icons';
+import { AppBar, Toolbar, Typography, IconButton } from '@material-ui/core';
+import { AddCircle, Delete, CloudDownload, Settings } from '@material-ui/icons';
 
 const VariationsAppBar = props => (
   <AppBar position="static">
@@ -28,20 +16,15 @@ const VariationsAppBar = props => (
           justifyContent: 'flex-start',
         }}
       >
-        <Typography variant="title" color="inherit">
+        <Typography
+          variant="title"
+          color="inherit"
+          style={{
+            fontWeight: 'normal',
+          }}
+        >
           Variations&nbsp;
         </Typography>
-        <TextField
-          id="name-simple"
-          value={props.title || 'Untitled'}
-          color="primary"
-          onChange={ev => {
-            props.onTitleChange(ev.target.value);
-          }}
-        />
-        <IconButton color="inherit">
-          <Info />
-        </IconButton>
       </div>
       <div>
         <IconButton color="inherit" onClick={props.onImportButtonClicked}>
@@ -70,10 +53,6 @@ VariationsAppBar.propTypes = {
   onSaveButtonClicked: PropTypes.func.isRequired,
   /** Opens the project settings modal */
   onSettingsButtonClicked: PropTypes.func.isRequired,
-  /** The title of the project */
-  title: PropTypes.string.isRequired,
-  /** Updates the changed title */
-  onTitleChange: PropTypes.func.isRequired,
 };
 
 export default VariationsAppBar;

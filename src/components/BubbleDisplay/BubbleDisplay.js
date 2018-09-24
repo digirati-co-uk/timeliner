@@ -37,13 +37,14 @@ class BubbleDisplay extends Component {
   render() {
     const { width, height, zoom, x, points, children } = this.props;
     const realWidth = width * zoom;
+    const computedWidth = Math.max(width, 1);
     const maxWidth = Math.max.apply(
       null,
       Object.values(points).map(point => point.endTime)
     );
     const maxDepth = 3; //TODO: compute max depth
     const projectionFactor = realWidth / maxWidth;
-    const viewBox = [x * projectionFactor, 0, width, height].join(' ');
+    const viewBox = [x * projectionFactor, 0, computedWidth, height].join(' ');
     const bubbles = Object.values(points).map(point => ({
       x: point.startTime * projectionFactor,
       width: (point.endTime - point.startTime) * projectionFactor,
@@ -62,7 +63,7 @@ class BubbleDisplay extends Component {
 
     return (
       <svg
-        width={width}
+        width={computedWidth}
         height={height}
         viewBox={viewBox}
         className="bubble-display"
@@ -76,10 +77,10 @@ class BubbleDisplay extends Component {
           }}
         >
           <rect
-            width={width * zoom}
+            width={computedWidth * zoom}
             height={height}
             style={{
-              fill: '#f6f6f6',
+              fill: '#ffffff',
               strokeWidth: 0,
               stroke: 'rgb(0,0,0,0)',
             }}

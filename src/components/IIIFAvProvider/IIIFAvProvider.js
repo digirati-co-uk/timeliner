@@ -115,7 +115,6 @@ class IIIFAvProvider extends Component {
   };
 
   onPlaying = time => ({ position }) => {
-    console.log('vote => ', position);
     this.vote(position + time);
   };
 
@@ -147,7 +146,6 @@ class IIIFAvProvider extends Component {
                 url={item.url}
                 loop={false}
                 onLoad={() => {
-                  console.log('loaded?');
                   this.setState({ loaded: true, status: Sound.status.PLAYING });
                 }}
                 onPlaying={this.onPlaying(item.time[0])}
