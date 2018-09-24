@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { SketchPicker } from 'react-color';
+import { Button } from '@material-ui/core';
+import { KeyboardArrowDown } from '@material-ui/icons';
 import './ColourSwatchPicker.scss';
-
-import { Select, MenuItem } from '@material-ui/core';
 
 class ColourSwatchPicker extends Component {
   static propTypes = {
@@ -16,50 +17,96 @@ class ColourSwatchPicker extends Component {
 
   static defaultProps = {
     currentColour: null,
+    swatch: [
+      '#B80000',
+      '#DB3E00',
+      '#FCCB00',
+      '#008B02',
+      '#006B76',
+      '#1273DE',
+      '#004DCF',
+      '#5300EB',
+      '#EB9694',
+      '#FAD0C3',
+      '#FEF3BD',
+      '#C1E1C5',
+      '#BEDADC',
+      '#C4DEF6',
+      '#BED3F3',
+      '#D4C4FB',
+    ],
     onSelectColour: () => {},
   };
 
   state = {
     currentColour: null,
+    colour: {
+      r: '241',
+      g: '112',
+      b: '19',
+      a: '1',
+    },
+    displayColourPicker: false,
   };
 
-  onSelect = (ev, child) => {
-    this.setState({
-      currentColour: child.props.value,
-    });
-    this.props.onSelectColour(child.props.value);
+  handleClick = () => {
+    this.setState({ displayColourPicker: !this.state.displayColourPicker });
+  };
+
+  handleClose = () => {
+    this.setState({ displayColourPicker: false });
+  };
+
+  handleChange = colour => {
+    this.setState({ colour: colour });
+    this.props.onSelectColour(colour.hex);
   };
 
   render() {
-    const { swatch } = this.props;
-    const { currentColour } = this.state;
+    const { colour, displayColourPicker, swatch } = this.state;
+
+    const popover = {
+      position: 'absolute',
+      zIndex: '2',
+    };
+    const cover = {
+      position: 'fixed',
+      top: '0px',
+      right: '0px',
+      bottom: '0px',
+      left: '0px',
+    };
+
     return (
-      <Select
-        displayEmpty={true}
-        native={false}
-        value={currentColour}
-        onChange={this.onSelect}
-        renderValue={colourIndex => (
+      <div>
+        <Button
+          variant="outlined"
+          size="small"
+          color="primary"
+          onClick={this.handleClick}
+        >
           <div
             className="colour-swatch-picker__option"
             style={{
-              backgroundColor: swatch[colourIndex],
+              backgroundColor: colour.hex,
             }}
           />
-        )}
-      >
-        {swatch.map((colour, index) => (
-          <MenuItem value={index}>
-            <div
-              selected={currentColour === index}
-              className="colour-swatch-picker__option"
-              style={{
-                backgroundColor: colour,
-              }}
+          <KeyboardArrowDown />
+        </Button>
+        {displayColourPicker ? (
+          <div style={popover}>
+            <div style={cover} onClick={this.handleClose} />
+            <SketchPicker
+              disableAlpha={true}
+              presetColors={swatch}
+              color={colour}
+              onChange={this.handleChange}
             />
-          </MenuItem>
-        ))}
-      </Select>
+          </div>
+        ) : (
+          ''
+        )}
+      </div>
     );
   }
 }
