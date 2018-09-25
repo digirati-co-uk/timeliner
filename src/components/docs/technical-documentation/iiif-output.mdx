@@ -15,14 +15,30 @@ The timeliner aims to produce rich, valid IIIF Presentation 3 manifests as its o
   ],
   "id": "http://digirati.com/timeliner/manifest/1",
   "type": "Manifest",
-  "label": {"en": ["Manifest label"]},
-  "summary": {"en": ["Description of manifest"]},
+  "label": {
+    "en": [
+      "Manifest label"
+    ]
+  },
+  "summary": {
+    "en": [
+      "Description of manifest"
+    ]
+  },
   "items": [
     {
       "id": "http://digirati.com/timeliner/manifest/1/c1",
       "type": "Canvas",
-      "label": {"en": ["Canvas label"]},
-      "summary": {"en": ["Description of canvas"]},
+      "label": {
+        "en": [
+          "Canvas label"
+        ]
+      },
+      "summary": {
+        "en": [
+          "Description of canvas"
+        ]
+      },
       "duration": 1200,
       "items": [
         {
@@ -38,7 +54,7 @@ The timeliner aims to produce rich, valid IIIF Presentation 3 manifests as its o
                 "type": "Audio",
                 "format": "audio/mp3"
               },
-              "target": "http://digirati.com/timeliner/manifest/1/c1#t=0,1200"
+              "target": "http://digirati.com/timeliner/manifest/1/c1"
             }
           ]
         }
@@ -47,53 +63,69 @@ The timeliner aims to produce rich, valid IIIF Presentation 3 manifests as its o
   ],
   "structures": [
     {
-      "id": "http://digirati.com/timeliner/manifest/1/range/top",
+      "id": "http://digirati.com/timeliner/manifest/1/range/r1",
       "type": "Range",
-      "label": {"en": ["Top level range"]},
+      "label": {
+        "en": [
+          "R1"
+        ]
+      },
       "items": [
         {
-          "id": "http://digirati.com/timeliner/manifest/1/c1",
-          "type": "Canvas"
-        },
-        {
-          "id": "http://digirati.com/timeliner/manifest/1/range/1",
+          "id": "http://digirati.com/timeliner/manifest/1/range/r2",
           "type": "Range",
-          "label": {"en": ["Single bubble example"]},
+          "label": {
+            "en": [
+              "R2"
+            ]
+          },
           "items": [
             {
-              "id": "http://digirati.com/timeliner/manifest/1/c1#t=0,300",
-              "type": "Canvas"
-            }  
-          ]
-        },
-        {
-          "id": "http://digirati.com/timeliner/manifest/1/range/2",
-          "type": "Range",
-          "label": {"en": ["Nested bubble example"]},
-          "items": [
-            {
-              "id": "http://digirati.com/timeliner/manifest/1/range/3",
+              "id": "http://digirati.com/timeliner/manifest/1/range/r4",
               "type": "Range",
-              "label": {"en": ["Child bubble 1"]},
-              "items": [
-                {
-                  "id": "http://digirati.com/timeliner/manifest/1/c1#t=301,1000",
-                  "type": "Canvas"
-                }  
-              ]
-            },
-            {
-              "id": "http://digirati.com/timeliner/manifest/1/range/4",
-              "type": "Range",
-              "label": {"en": ["Child bubble 2, with custom colour"]},
+              "label": {
+                "en": [
+                  "R4"
+                ]
+              },
               "digirati:backgroundColor": "#009900",
               "items": [
                 {
-                  "id": "http://digirati.com/timeliner/manifest/1/c1#t=1001,1200",
+                  "id": "http://digirati.com/timeliner/manifest/1/c1#t=0,400",
                   "type": "Canvas"
-                }  
+                }
               ]
-            }  
+            },
+            {
+              "id": "http://digirati.com/timeliner/manifest/1/range/r5",
+              "type": "Range",
+              "label": {
+                "en": [
+                  "R5"
+                ]
+              },
+              "items": [
+                {
+                  "id": "http://digirati.com/timeliner/manifest/1/c1#t=400,800",
+                  "type": "Canvas"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "http://digirati.com/timeliner/manifest/1/range/r3",
+          "type": "Range",
+          "label": {
+            "en": [
+              "R3"
+            ]
+          },
+          "items": [
+            {
+              "id": "http://digirati.com/timeliner/manifest/1/c1#t=800,1200",
+              "type": "Canvas"
+            }
           ]
         }
       ]
