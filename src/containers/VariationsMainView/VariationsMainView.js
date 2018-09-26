@@ -11,6 +11,7 @@ import SettingsPopup from '../../components/SettingsPopoup/SettingsPopup';
 
 import BubbleEditor from '../BubbleEditor/BubbleEditor';
 import { Grid, Typography } from '@material-ui/core';
+import Audio from '../Audio/Audio';
 
 import { updateSettings } from '../../actions/project';
 import {
@@ -21,6 +22,8 @@ import {
   pause,
   dismissImportModal,
   dismissSettingsModal,
+  fastForward,
+  fastReward,
 } from '../../actions/viewState';
 
 class VariationsMainView extends React.Component {
@@ -91,6 +94,7 @@ class VariationsMainView extends React.Component {
             onTitleChange={() => {}}
           />
           <BubbleEditor />
+          <Audio />
           <AudioTransportBar
             isPlaying={isPlaying}
             volume={volume}
@@ -101,8 +105,8 @@ class VariationsMainView extends React.Component {
             onPause={this.props.pause}
             onNextBubble={() => {}}
             onPreviousBubble={() => {}}
-            onScrubAhead={() => {}}
-            onScrubBackwards={() => {}}
+            onScrubAhead={this.props.fastForward}
+            onScrubBackwards={this.props.fastReward}
           />
           <div
             style={{
@@ -179,20 +183,21 @@ VariationsMainView.propTypes = {
   points: PropTypes.array,
   isImportOpen: PropTypes.bool.isRequired,
   isSettingsOpen: PropTypes.bool.isRequired,
+  fastForward: PropTypes.func.isRequired,
+  fastReward: PropTypes.func.isRequired,
 };
 
 const mapStateProps = state => ({
   volume: state.viewState.volume,
   isPlaying: state.viewState.isPlaying,
-  currentTime: state.canvas.currentTime,
-  runTime: state.canvas.duration,
+  currentTime: state.viewState.currentTime,
+  runTime: state.viewState.runTime,
   manifestLabel: state.project.title,
   manifestSummary: state.project.description,
   points: Object.values(state.range),
   isImportOpen: state.viewState.isImportOpen,
   isSettingsOpen: state.viewState.isSettingsOpen,
   audioUrl: state.canvas.url,
-
 });
 
 const mapDispatchToProps = {
@@ -206,6 +211,8 @@ const mapDispatchToProps = {
   pause,
   dismissImportModal,
   dismissSettingsModal,
+  fastForward,
+  fastReward,
 };
 
 export default connect(

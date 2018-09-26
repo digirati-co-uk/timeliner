@@ -1,11 +1,19 @@
+export const RANGE = {
+  START_TIME: 'startTime',
+  END_TIME: 'endTime',
+  LABEL: 'label',
+  SUMMARY: 'summary',
+  COLOUR: 'colour',
+};
+
 export const DEFAULT_RANGES_STATE = {
   'id-0': {
     id: 'id-0',
-    startTime: 0,
-    endTime: 57.103563 * 1000,
-    label: '',
-    summary: '',
-    colour: '#A8F097',
+    [RANGE.START_TIME]: 0,
+    [RANGE.END_TIME]: 57.103563 * 1000,
+    [RANGE.LABEL]: '',
+    [RANGE.SUMMARY]: '',
+    [RANGE.COLOUR]: '#A8F097',
     depth: 1,
   },
 };

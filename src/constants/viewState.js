@@ -1,4 +1,5 @@
 export const DEFAULT_VIEWSTATE_STATE = {
+  runTime: 0,
   isPlaying: false,
   currentTime: 0,
   zoom: 1.0,
@@ -10,7 +11,6 @@ export const DEFAULT_VIEWSTATE_STATE = {
 
 export const PLAY_AUDIO = 'PLAY_AUDIO';
 export const STOP_AUDIO = 'STOP_AUDIO';
-export const UPDATE_CURRENT_TIME = 'UPDATE_CURRENT_TIME';
 export const ZOOM_IN = 'ZOOM_IN';
 export const ZOOM_OUT = 'ZOOM_OUT';
 export const RESET_ZOOM = 'RESET_ZOOM';
@@ -24,3 +24,4 @@ export const PREVIOUS_BUBBLE = 'PREVIOUS_BUBBLE';
 export const FAST_FORWARD = 'FAST_FORWARD';
 export const FAST_REWARD = 'FAST_REWARD';
 export const SET_VOLUME = 'SET_VOLUME';
+export const SET_CURRENT_TIME = 'SET_CURRENT_TIME';

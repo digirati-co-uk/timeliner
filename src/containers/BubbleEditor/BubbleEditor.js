@@ -13,7 +13,7 @@ import {
   zoomOut,
   resetZoom,
   panToPosition,
-  updateCurrentTime,
+  setCurrentTime,
 } from '../../actions/viewState';
 
 class BubbleEditor extends React.Component {
@@ -98,8 +98,8 @@ class BubbleEditor extends React.Component {
 }
 
 const mapStateProps = state => ({
-  currentTime: state.canvas.currentTime,
-  runTime: state.canvas.duration,
+  currentTime: state.viewState.currentTime,
+  runTime: state.viewState.runTime,
   points: state.range,
   zoom: state.viewState.zoom,
 });
@@ -109,7 +109,7 @@ const mapDispatchToProps = {
   zoomOut,
   resetZoom,
   panToPosition,
-  updateCurrentTime,
+  setCurrentTime,
 };
 
 export default connect(

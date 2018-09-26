@@ -4,7 +4,7 @@ menu: Containers
 ---
 # Audio 
 
-Represents the audio playing.
+Represents the audio playback component.
 
 import { Playground } from 'docz';
 import { Provider } from 'react-redux';
@@ -18,3 +18,9 @@ import AudioDemo from './Audio.Demo';
     </Provider>
 </Playground>
 
+
+<Playground>
+    <Provider store={createStore(rootReducer)}>
+      <AudioDemo />
+    </Provider>
+</Playground>

@@ -15,7 +15,7 @@ import rootReducer from '../../reducers/root';
 
 
 TODO: props table doesn't render for connected components.
-<PropsTable of={VariationsMainView} />
+<PropsTable of={VariationsMainView.WrappedComponent} />
 
 <Playground>
     <Provider store={createStore(rootReducer)}>

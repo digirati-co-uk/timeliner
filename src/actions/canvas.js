@@ -1,5 +1,4 @@
 import {
-  SET_PLAY_STATE,
   AUDIO_LOADING,
   AUDIO_LOADED,
   CHANGE_AUDIO,
@@ -14,8 +13,11 @@ export const audioLoading = (bytesLoaded, bytesTotal, duration) => ({
   },
 });
 
-export const audioLoaded = () => ({
+export const audioLoaded = isLoaded => ({
   type: AUDIO_LOADED,
+  payload: {
+    isLoaded,
+  },
 });
 
 export const changeAudio = url => ({
