@@ -8,9 +8,10 @@ import AudioTransportBar from '../../components/AudioTransportBar/AudioTransport
 import ProjectMetadata from '../../components/Metadata/Metadata';
 import AudioImporter from '../../components/AudioImporter/AudioImporter';
 import SettingsPopup from '../../components/SettingsPopoup/SettingsPopup';
+import Footer from '../../components/Footer/Footer';
+import ContentOverlay from '../../components/ContentOverlay/ContentOverlay';
 
 import BubbleEditor from '../BubbleEditor/BubbleEditor';
-import { Grid, Typography } from '@material-ui/core';
 import Audio from '../Audio/Audio';
 
 import { updateSettings } from '../../actions/project';
@@ -25,6 +26,8 @@ import {
   fastForward,
   fastReward,
 } from '../../actions/viewState';
+
+import './VariationsMainView.scss';
 
 class VariationsMainView extends React.Component {
   constructor(props) {
@@ -60,13 +63,16 @@ class VariationsMainView extends React.Component {
     const {
       isPlaying,
       volume,
-      onVolumeChanged,
       currentTime,
+      audioUrl,
       runTime,
       manifestLabel,
       manifestSummary,
       isImportOpen,
       isSettingsOpen,
+      audioError,
+      loadingPercent,
+      isLoading,
     } = this.props;
     const timePoints = Array.from(
       Object.values(this.props.points).reduce((_timePoints, bubble) => {
@@ -76,14 +82,7 @@ class VariationsMainView extends React.Component {
       }, new Set())
     );
     return (
-      <div
-        style={{
-          width: '100%',
-          height: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
+      <div className="variations-app">
         <MuiThemeProvider theme={this.theme}>
           <VariationsAppBar
             title={manifestLabel}
@@ -93,61 +92,42 @@ class VariationsMainView extends React.Component {
             onSettingsButtonClicked={this.props.showSettingsModal}
             onTitleChange={() => {}}
           />
-          <BubbleEditor />
-          <Audio />
-          <AudioTransportBar
-            isPlaying={isPlaying}
-            volume={volume}
-            onVolumeChanged={this.props.setVolume}
-            currentTime={currentTime}
-            runTime={runTime}
-            onPlay={this.props.play}
-            onPause={this.props.pause}
-            onNextBubble={() => {}}
-            onPreviousBubble={() => {}}
-            onScrubAhead={this.props.fastForward}
-            onScrubBackwards={this.props.fastReward}
-          />
-          <div
-            style={{
-              padding: 16,
-              background: '#EEEEEE',
-              flex: 1,
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
-            <ProjectMetadata
-              ranges={_points}
-              currentTime={currentTime}
-              runtime={runTime}
-              manifestLabel={manifestLabel}
-              manifestSummary={manifestSummary}
-            />
-            <Grid
-              container
-              style={{
-                marginTop: 24,
-                height: 24,
+          <div className="variations-app__content">
+            <BubbleEditor />
+            <Audio />
+            <AudioTransportBar
+              {...{
+                isPlaying,
+                volume,
+                currentTime,
+                runTime,
               }}
-            >
-              <Grid item xs={6}>
-                <Typography variant="body1">
-                  &copy; Indiana University, 2018
-                </Typography>
-              </Grid>
-              <Grid
-                item
-                xs={6}
-                style={{
-                  textAlign: 'right',
+              onVolumeChanged={this.props.setVolume}
+              onPlay={this.props.play}
+              onPause={this.props.pause}
+              onNextBubble={() => {}}
+              onPreviousBubble={() => {}}
+              onScrubAhead={this.props.fastForward}
+              onScrubBackwards={this.props.fastReward}
+            />
+            <div className="variations-app__metadata-editor">
+              <ProjectMetadata
+                {...{
+                  currentTime,
+                  runTime,
+                  manifestLabel,
+                  manifestSummary,
                 }}
-              >
-                <Typography variant="body1">
-                  About Timeliner | Help | Contact
-                </Typography>
-              </Grid>
-            </Grid>
+                ranges={_points}
+              />
+              <Footer />
+            </div>
+            {(audioError.code || isLoading) && (
+              <ContentOverlay
+                {...{ loadingPercent, isLoading, audioUrl }}
+                error={audioError}
+              />
+            )}
           </div>
           <AudioImporter
             open={isImportOpen}
@@ -198,6 +178,9 @@ const mapStateProps = state => ({
   isImportOpen: state.viewState.isImportOpen,
   isSettingsOpen: state.viewState.isSettingsOpen,
   audioUrl: state.canvas.url,
+  audioError: state.canvas.error,
+  loadingPercent: state.canvas.loadingPercent,
+  isLoading: state.canvas.isLoading,
 });
 
 const mapDispatchToProps = {

@@ -10,6 +10,8 @@ import {
   audioError,
 } from '../../actions/canvas';
 
+import { ERROR_CODES } from '../../constants/canvas';
+
 import { setCurrentTime } from '../../actions/viewState';
 
 class Audio extends Component {
@@ -55,6 +57,7 @@ class Audio extends Component {
 
   handleError = (errorCode, description) => {
     console.log('handleError', errorCode, description);
+    this.props.audioError(errorCode, ERROR_CODES[description]);
   };
 
   render() {
