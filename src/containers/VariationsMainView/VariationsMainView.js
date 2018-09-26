@@ -14,7 +14,7 @@ import ContentOverlay from '../../components/ContentOverlay/ContentOverlay';
 import BubbleEditor from '../BubbleEditor/BubbleEditor';
 import Audio from '../Audio/Audio';
 
-import { updateSettings } from '../../actions/project';
+import { importDocument, updateSettings } from '../../actions/project';
 import {
   showImportModal,
   showSettingsModal,
@@ -72,7 +72,7 @@ class VariationsMainView extends React.Component {
       isSettingsOpen,
       audioError,
       loadingPercent,
-      isLoading,
+      isLoaded,
     } = this.props;
     const timePoints = Array.from(
       Object.values(this.props.points).reduce((_timePoints, bubble) => {
@@ -122,9 +122,9 @@ class VariationsMainView extends React.Component {
               />
               <Footer />
             </div>
-            {(audioError.code || isLoading) && (
+            {(audioError.code || !isLoaded) && (
               <ContentOverlay
-                {...{ loadingPercent, isLoading, audioUrl }}
+                {...{ loadingPercent, isLoaded, audioUrl }}
                 error={audioError}
               />
             )}
@@ -132,7 +132,7 @@ class VariationsMainView extends React.Component {
           <AudioImporter
             open={isImportOpen}
             onClose={this.props.dismissImportModal}
-            onImport={manifest => {}}
+            onImport={this.props.importDocument}
           />
           <SettingsPopup
             open={isSettingsOpen}
@@ -165,6 +165,7 @@ VariationsMainView.propTypes = {
   isSettingsOpen: PropTypes.bool.isRequired,
   fastForward: PropTypes.func.isRequired,
   fastReward: PropTypes.func.isRequired,
+  importDocument: PropTypes.func.isRequired,
 };
 
 const mapStateProps = state => ({
@@ -180,11 +181,12 @@ const mapStateProps = state => ({
   audioUrl: state.canvas.url,
   audioError: state.canvas.error,
   loadingPercent: state.canvas.loadingPercent,
-  isLoading: state.canvas.isLoading,
+  isLoaded: state.canvas.isLoaded,
 });
 
 const mapDispatchToProps = {
   //project actions
+  importDocument,
   updateSettings,
   //view state actions
   showImportModal,

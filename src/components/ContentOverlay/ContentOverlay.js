@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Typography } from '@material-ui/core';
 import LoadingIndicator from '../LoadingIndicator/LoadingIndicator';
 
 import './ContentOverlay.scss';
@@ -17,7 +18,7 @@ const ContentOverlay = props => (
           </a>
         </Typography>
       </div>
-    ) : props.isLoading ? (
+    ) : !props.isLoaded ? (
       <LoadingIndicator loadingPercent={props.loadingPercent} />
     ) : (
       ''

@@ -21,7 +21,7 @@ const sToMs = s => parseFloat(s) * 1000;
  * @param {String} locale default en
  */
 const getLocalisedResource = (resource, locale) =>
-  resource[locale || 'en'] || '';
+  resource ? resource[locale || 'en'] || '' : '';
 
 /**
  * get custom bubble colour
@@ -60,12 +60,19 @@ const parseTimeRange = rangeStr => {
  * @returns all audio annotations url, start and end time
  */
 const getAudioAnnotations = canvas => {
-  const annotations =
-    canvas.items && canvas.items.items ? canvas.items.items : [];
+  const annotations = canvas.items
+    ? canvas.items.reduce((annos, annotationPage) => {
+        if (annotationPage.items) {
+          return annos.concat(annotationPage.items);
+        } else {
+          return annos;
+        }
+      }, [])
+    : [];
   return annotations
     .filter(
       annotation =>
-        annotation.type === 'painting' &&
+        annotation.motivation === 'painting' &&
         annotation.body &&
         annotation.body.type === 'Audio'
     )
@@ -87,7 +94,7 @@ const getAudioAnnotations = canvas => {
  * - does not load av service documents;
  * @param {Object} canvas -
  */
-export const processCanvas = canvas => {
+const processCanvas = canvas => {
   const projectDuration = sToMs(canvas.duration || 1);
   const audioAnnotations = getAudioAnnotations(canvas);
   return Object.assign({}, DEFAULT_CANVAS_STATE, {
@@ -138,7 +145,7 @@ const processLevel = structure => {
   }
 };
 
-export const processStructures = manifest => {
+const processStructures = manifest => {
   var allStructures = (manifest.structures || []).map(structure =>
     processLevel(structure)
   );
@@ -149,7 +156,7 @@ export const processStructures = manifest => {
     }, {});
 };
 
-export const porcessManifest = manifest => ({
+const porcessManifest = manifest => ({
   ...DEFAULT_PROJECT_STATE,
   [PROJECT.DESCRIPTION]: getLocalisedResource(manifest.label) || '',
   [PROJECT.TITLE]: getLocalisedResource(manifest.summary) || '',

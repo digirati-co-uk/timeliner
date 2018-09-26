@@ -3,6 +3,7 @@ import {
   AUDIO_LOADED,
   CHANGE_AUDIO,
   AUDIO_ERROR,
+  LOAD_CANVAS,
 } from '../constants/canvas';
 
 export const audioLoading = (bytesLoaded, bytesTotal, duration) => ({
@@ -33,4 +34,9 @@ export const audioError = (code, description) => ({
     code,
     description,
   },
+});
+
+export const loadCanvas = state => ({
+  type: LOAD_CANVAS,
+  state,
 });

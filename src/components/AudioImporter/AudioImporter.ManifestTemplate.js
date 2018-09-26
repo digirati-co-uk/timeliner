@@ -2,6 +2,9 @@ const createNewManifest = (manifestDomain, audioUri, duration) => ({
   label: {
     en: ['Unnamed manifest'],
   },
+  summary: {
+    en: ['Description of manifest'],
+  },
   type: 'Manifest',
   id: `${manifestDomain}/manifest`,
   items: [
@@ -42,10 +45,16 @@ const createNewManifest = (manifestDomain, audioUri, duration) => ({
       id: `${manifestDomain}/range/r0`,
       type: 'Range',
       label: { en: ['Unnamed range'] },
-      items: [],
+      items: [
+        {
+          id: `${manifestDomain}/canvas/c1#t=0,${duration}`,
+          type: 'Canvas',
+        },
+      ],
     },
   ],
   '@context': [
+    'http://digirati.com/ns/timeliner',
     'http://www.w3.org/ns/anno.jsonld',
     'http://iiif.io/api/presentation/3/context.json',
   ],

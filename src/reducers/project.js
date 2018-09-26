@@ -7,7 +7,7 @@ import {
   SET_DESCRIPTION,
   RESET_DOCUMENT,
   EXPORT_DOCUMENT,
-  IMPORT_DOCUMENT,
+  LOAD_PROJECT,
 } from '../constants/project';
 
 const project = (state = DEFAULT_PROJECT_STATE, action) => {
@@ -79,8 +79,12 @@ const project = (state = DEFAULT_PROJECT_STATE, action) => {
           $set: DEFAULT_PROJECT_STATE.description,
         },
       });
+    case LOAD_PROJECT:
+      console('LOAD_PROJECT', action);
+      return update(state, {
+        $merge: action.state,
+      });
     case EXPORT_DOCUMENT:
-    case IMPORT_DOCUMENT:
     default:
       return state;
   }

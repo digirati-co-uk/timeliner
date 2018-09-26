@@ -5,6 +5,7 @@ import {
   AUDIO_LOADED,
   CHANGE_AUDIO,
   AUDIO_ERROR,
+  LOAD_CANVAS,
 } from '../constants/canvas';
 
 const canvas = (state = DEFAULT_CANVAS_STATE, action) => {
@@ -53,6 +54,11 @@ const canvas = (state = DEFAULT_CANVAS_STATE, action) => {
             $set: action.payload.description,
           },
         },
+      });
+    case LOAD_CANVAS:
+      console.log('LOAD_CANVAS', action);
+      return update(state, {
+        $merge: action.state,
       });
     default:
       return state;
