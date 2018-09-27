@@ -52,7 +52,7 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
             splitTime <= bubble[RANGE.END_TIME] &&
             splitTime >= bubble[RANGE.START_TIME]
         )
-        .sort((b1, b2) => b1[RANGE.DEPTH] - b2[RANGE.DEPTH]);
+        .sort((b1, b2) => b1[RANGE.DEPTH] - b2[RANGE.DEPTH])[0];
       const endTime = itemToSplit[RANGE.END_TIME];
       return update(state, {
         [newId]: {
@@ -60,6 +60,8 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
             id: newId,
             [RANGE.START_TIME]: action.payload.time,
             [RANGE.END_TIME]: endTime,
+            [RANGE.COLOUR]: itemToSplit[RANGE.COLOUR],
+            [RANGE.DEPTH]: itemToSplit[RANGE.DEPTH], //NOTE: this will be always depth 1...
           },
         },
         [itemToSplit.id]: {

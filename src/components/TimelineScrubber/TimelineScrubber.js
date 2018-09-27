@@ -43,17 +43,31 @@ class TimelineScrubber extends Component {
 
   timeToPercent = time => (time / this.props.runTime) * 100 * this.props.zoom;
 
-  handleJumpToTime = ev => {
+  getClickedTime = ev => {
     const scrobberBounds = ev.target.getBoundingClientRect();
     const positionRatio =
       (ev.pageX - scrobberBounds.left) / scrobberBounds.width;
-    this.props.onUpdateTime(positionRatio * this.props.runTime);
+    return positionRatio * this.props.runTime;
+  };
+
+  handleJumpToTime = ev => {
+    const time = this.getClickedTime(ev);
+    this.props.onUpdateTime(time);
+  };
+
+  handleAddPoint = ev => {
+    const time = this.getClickedTime(ev);
+    this.props.onClickPoint(time);
   };
 
   render() {
     const { currentTime, timePoints, theme } = this.props;
     return (
-      <div className="timeline-scrubber" onClick={this.handleJumpToTime}>
+      <div
+        className="timeline-scrubber"
+        onClick={this.handleJumpToTime}
+        onDoubleClick={this.handleAddPoint}
+      >
         {timePoints.map(timePoint => (
           <TimelineMarker
             key={`tp-${timePoint}`}

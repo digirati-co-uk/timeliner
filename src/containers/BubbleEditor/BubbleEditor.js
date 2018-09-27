@@ -16,7 +16,8 @@ import {
   setCurrentTime,
 } from '../../actions/viewState';
 
-import { selectRange } from '../../actions/range';
+import { RANGE } from '../../constants/range';
+import { selectRange, splitRangeAt } from '../../actions/range';
 
 class BubbleEditor extends React.Component {
   constructor(props) {
@@ -30,20 +31,22 @@ class BubbleEditor extends React.Component {
   }
 
   toggleSelects = (point, ev) => {
-    console.log(point);
     this.props.selectRange(point.id, !point.isSelected);
   };
 
-  render() {
-    const _points = this.props.points;
-    const { runTime, currentTime, zoom, onUpdateTime } = this.props;
-    const timePoints = Array.from(
+  getTimePoints = () =>
+    Array.from(
       Object.values(this.props.points).reduce((_timePoints, bubble) => {
-        _timePoints.add(bubble.startTime);
-        _timePoints.add(bubble.endTime);
+        _timePoints.add(bubble[RANGE.START_TIME]);
+        _timePoints.add(bubble[RANGE.END_TIME]);
         return _timePoints;
       }, new Set())
     );
+
+  render() {
+    const _points = this.props.points;
+    const { runTime, currentTime, zoom, onUpdateTime, splitRange } = this.props;
+    const timePoints = this.getTimePoints();
 
     return (
       <div
@@ -89,6 +92,7 @@ class BubbleEditor extends React.Component {
                   timePoints={timePoints}
                   points={_points}
                   onUpdateTime={onUpdateTime}
+                  onClickPoint={splitRange}
                 />
               </div>
             )}
@@ -117,6 +121,7 @@ const mapDispatchToProps = {
   resetZoom,
   panToPosition,
   onUpdateTime: setCurrentTime,
+  splitRange: splitRangeAt,
   selectRange,
 };
 
