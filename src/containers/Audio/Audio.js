@@ -35,28 +35,23 @@ class Audio extends Component {
   };
 
   handleSongPlaying = ({ position, duration }) => {
-    console.log('handleSongPlaying', position, duration);
     this.props.setCurrentTime(position);
   };
 
   handleResumePlaying = ({ position, duration }) => {
-    console.log('handleResumePlaying', position, duration);
     //this.props.setCurrentTime(position);
   };
 
   handleSongFinishedPlaying = ({ position, duration }) => {
-    console.log('handleSongFinishedPlaying', position, duration);
     //this.props.setCurrentTime(position);
   };
 
   handleOnLoad = obj => {
     const { loaded } = obj;
-    console.log('handleOnLoad', loaded, obj);
     this.props.audioLoaded(loaded);
   };
 
   handleError = (errorCode, description) => {
-    console.log('handleError', errorCode, description);
     this.props.audioError(errorCode, ERROR_CODES[description]);
   };
 

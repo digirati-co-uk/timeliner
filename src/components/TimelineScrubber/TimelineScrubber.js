@@ -45,16 +45,6 @@ class TimelineScrubber extends Component {
 
   handleJumpToTime = ev => {
     const scrobberBounds = ev.target.getBoundingClientRect();
-    // console.log(
-    //   'pageX: ',
-    //   ev.pageX,
-    //   'ev.target.left',
-    //   scrobberBounds.left,
-    //   'item relative left',
-    //   ev.pageX - scrobberBounds.left,
-    //   'percent left',
-    //   (ev.pageX - scrobberBounds.left) / scrobberBounds.width
-    // );
     const positionRatio =
       (ev.pageX - scrobberBounds.left) / scrobberBounds.width;
     this.props.onUpdateTime(positionRatio * this.props.runTime);

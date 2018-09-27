@@ -8,7 +8,7 @@ const validateManifest = manifest => true;
 
 const importResource = url => {
   return new Promise((resolve, reject) => {
-    fetch(url)
+    fetch(url, { mode: 'no-cors' })
       .then(res => {
         const contentType = res.headers.get('content-type');
         if (!contentType) {

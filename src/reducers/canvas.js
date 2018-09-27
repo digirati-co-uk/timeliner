@@ -44,7 +44,6 @@ const canvas = (state = DEFAULT_CANVAS_STATE, action) => {
         },
       });
     case AUDIO_ERROR:
-      console.log('AUDIO_ERROR', action);
       return update(state, {
         error: {
           code: {
@@ -56,7 +55,6 @@ const canvas = (state = DEFAULT_CANVAS_STATE, action) => {
         },
       });
     case LOAD_CANVAS:
-      console.log('LOAD_CANVAS', action);
       return update(state, {
         $merge: action.state,
       });
