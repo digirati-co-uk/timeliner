@@ -5,6 +5,7 @@ import {
   UPDATE_RANGE,
   MOVE_POINT,
   DELETE_RAGE,
+  LOAD_RANGES,
 } from '../constants/range';
 
 export const splitRangeAt = time => ({
@@ -54,4 +55,9 @@ export const deleteRange = id => ({
   payload: {
     id,
   },
+});
+
+export const loadRanges = state => ({
+  type: LOAD_RANGES,
+  state,
 });

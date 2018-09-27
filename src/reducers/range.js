@@ -7,31 +7,33 @@ import {
   UPDATE_RANGE,
   MOVE_POINT,
   DELETE_RAGE,
+  LOAD_RANGES,
+  RANGE,
 } from '../constants/range';
 
 const generateNewId = () => `id-${new Date().getTime()}`;
 const groupBubbles = selectedBubbles => {
   const group = selectedBubbles.reduce(
     (_group, bubble) => {
-      if (_group.startTime > bubble.startTime) {
-        _group.startTime = bubble.startTime;
+      if (_group[RANGE.START_TIME] > bubble[RANGE.END_TIME]) {
+        _group[RANGE.START_TIME] = bubble[RANGE.END_TIME];
       }
-      if (_group.endTime < bubble.endTime) {
-        _group.endTime = bubble.endTime;
+      if (_group[RANGE.END_TIME] < bubble[RANGE.END_TIME]) {
+        _group[RANGE.END_TIME] = bubble[RANGE.END_TIME];
       }
-      if (_group.depth < bubble.depth) {
-        _group.depth = bubble.depth;
+      if (_group[RANGE.DEPTH] < bubble[RANGE.DEPTH]) {
+        _group[RANGE.DEPTH] = bubble[RANGE.DEPTH];
       }
       return _group;
     },
     {
       id: generateNewId(),
-      startTime: Number.MAX_SAFE_INTEGER,
-      endTime: Number.MIN_SAFE_INTEGER,
-      depth: -1,
-      label: '',
-      summary: '',
-      colour: -1,
+      [RANGE.START_TIME]: Number.MAX_SAFE_INTEGER,
+      [RANGE.ENF_TIME]: Number.MIN_SAFE_INTEGER,
+      [RANGE.DEPTH]: -1,
+      [RANGE.LABEL]: '',
+      [RANGE.SUMMARY]: '',
+      [RANGE.COLOUR]: -1,
     }
   );
   group.depth += 1;
@@ -44,26 +46,30 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
       const newId = generateNewId();
       const splitTime = action.payload.time;
       const itemToSplit = Object.values(state)
-        .filter(bubble => splitTime <= bubble.to && splitTime >= bubble.from)
-        .sort((b1, b2) => b1.depth - b2.depth);
-      const endTime = itemToSplit.endTime;
+        .filter(
+          bubble =>
+            splitTime <= bubble[RANGE.END_TIME] &&
+            splitTime >= bubble[RANGE.START_TIME]
+        )
+        .sort((b1, b2) => b1[RANGE.DEPTH] - b2[RANGE.DEPTH]);
+      const endTime = itemToSplit[RANGE.END_TIME];
       return update(state, {
         [newId]: {
           $set: {
             id: newId,
-            startTime: action.payload.time,
-            endTime: endTime,
+            [RANGE.START_TIME]: action.payload.time,
+            [RANGE.END_TIME]: endTime,
           },
         },
         [itemToSplit.id]: {
-          endTime: {
+          [RANGE.END_TIME]: {
             $set: action.payload.time,
           },
         },
       });
     case GROUP_RANGES:
       const selectedBubbles = Object.values(state).filter(
-        bubble => bubble.isSelected
+        bubble => bubble[RANGE.IS_SELECTED]
       );
       if (selectedBubbles.length < 2) {
         return state;
@@ -77,7 +83,7 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
     case ON_SELECT_RANGE:
       return update(state, {
         [action.payload.id]: {
-          isSelected: {
+          [RANGE.IS_SELECTED]: {
             $set: action.payload.isSelected,
           },
         },
@@ -85,19 +91,19 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
     case UPDATE_RANGE:
       return update(state, {
         [action.payload.id]: {
-          startTime: {
+          [RANGE.START_TIME]: {
             $set: action.payload.startTime,
           },
-          endTime: {
+          [RANGE.END_TIME]: {
             $set: action.payload.endTime,
           },
-          label: {
+          [RANGE.LABEL]: {
             $set: action.payload.label,
           },
-          summary: {
+          [RANGE.SUMMARY]: {
             $set: action.payload.summary,
           },
-          colour: {
+          [RANGE.COLOUR]: {
             $set: action.payload.colour,
           },
         },
@@ -106,19 +112,21 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
       return update(
         state,
         Object.values(state).reduce((changes, bubble) => {
-          if (bubble.startTime === action.payload.originalX) {
-            changes[bubble.id].startTime = {
+          if (bubble[RANGE.START_TIME] === action.payload.originalX) {
+            changes[bubble.id][RANGE.START_TIME] = {
               $set: action.payload.x,
             };
           }
-          if (bubble.endTime === action.payload.originalX) {
-            changes[bubble.id].endTime = {
+          if (bubble[RANGE.END_TIME] === action.payload.originalX) {
+            changes[bubble.id][RANGE.END_TIME] = {
               $set: action.payload.x,
             };
           }
           return changes;
         })
       );
+    case LOAD_RANGES:
+      return action.state;
     case DELETE_RAGE:
     default:
       return state;

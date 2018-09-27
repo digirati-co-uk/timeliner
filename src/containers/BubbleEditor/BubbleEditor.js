@@ -13,7 +13,7 @@ import {
   zoomOut,
   resetZoom,
   panToPosition,
-  updateCurrentTime,
+  setCurrentTime,
 } from '../../actions/viewState';
 
 class BubbleEditor extends React.Component {
@@ -29,7 +29,7 @@ class BubbleEditor extends React.Component {
 
   render() {
     const _points = this.props.points;
-    const { runTime, currentTime, zoom } = this.props;
+    const { runTime, currentTime, zoom, onUpdateTime } = this.props;
     const timePoints = Array.from(
       Object.values(this.props.points).reduce((_timePoints, bubble) => {
         _timePoints.add(bubble.startTime);
@@ -82,6 +82,7 @@ class BubbleEditor extends React.Component {
                   zoom={zoom}
                   timePoints={timePoints}
                   points={_points}
+                  onUpdateTime={onUpdateTime}
                 />
               </div>
             )}
@@ -98,8 +99,8 @@ class BubbleEditor extends React.Component {
 }
 
 const mapStateProps = state => ({
-  currentTime: state.canvas.currentTime,
-  runTime: state.canvas.duration,
+  currentTime: state.viewState.currentTime,
+  runTime: state.viewState.runTime,
   points: state.range,
   zoom: state.viewState.zoom,
 });
@@ -109,7 +110,7 @@ const mapDispatchToProps = {
   zoomOut,
   resetZoom,
   panToPosition,
-  updateCurrentTime,
+  onUpdateTime: setCurrentTime,
 };
 
 export default connect(

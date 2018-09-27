@@ -157,7 +157,6 @@ class IIIFAvProvider extends Component {
         </ul>
       </div>
     );
-    return <div />;
   }
 }
 

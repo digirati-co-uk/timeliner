@@ -1,27 +1,22 @@
 import {
-  SET_PLAY_STATE,
   AUDIO_LOADING,
   AUDIO_LOADED,
-  CHANGE_AUDIO,
   AUDIO_ERROR,
+  LOAD_CANVAS,
 } from '../constants/canvas';
 
 export const audioLoading = (bytesLoaded, bytesTotal, duration) => ({
   type: AUDIO_LOADING,
   payload: {
-    percentLoaded: (bytesLoaded / bytesTotal) * 100,
+    percentLoaded: parseInt((bytesLoaded / bytesTotal) * 100, 10),
     duration,
   },
 });
 
-export const audioLoaded = () => ({
+export const audioLoaded = isLoaded => ({
   type: AUDIO_LOADED,
-});
-
-export const changeAudio = url => ({
-  type: CHANGE_AUDIO,
   payload: {
-    url,
+    isLoaded,
   },
 });
 
@@ -31,4 +26,9 @@ export const audioError = (code, description) => ({
     code,
     description,
   },
+});
+
+export const loadCanvas = state => ({
+  type: LOAD_CANVAS,
+  state,
 });

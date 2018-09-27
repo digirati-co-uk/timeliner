@@ -1,3 +1,4 @@
+import voca from 'voca';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -17,6 +18,8 @@ import {
 } from '@material-ui/core';
 import Slider from '@material-ui/lab/Slider';
 
+import { PROJECT, BUBBLE_STYLE } from '../../constants/project';
+
 export default class SettingsPopup extends React.Component {
   static propTypes = {
     /** Callback for when settings saved */
@@ -32,11 +35,11 @@ export default class SettingsPopup extends React.Component {
   };
 
   state = {
-    bubbleHeight: 70,
-    showTimes: false,
-    blackAndWhite: false,
-    bubbleShape: 'round',
-    autoScaleHeightOnResize: true,
+    [PROJECT.BUBBLE_HEIGHT]: 70,
+    [PROJECT.SHOW_TIMES]: false,
+    [PROJECT.BLACK_N_WHITE]: false,
+    [PROJECT.BUBBLE_STYLE]: 'round',
+    [PROJECT.AUTO_SCALE_HEIGHT]: true,
   };
 
   handleChange = (name, type) => event => {
@@ -94,35 +97,6 @@ export default class SettingsPopup extends React.Component {
                   justify="flex-start"
                   spacing={16}
                 >
-                  {/* 
-                  {"These properties are not needed on the web version."}
-                  <Grid item>
-                    <FormControl component="fieldset">
-                      <FormLabel component="legend">Timeline is...</FormLabel>
-                      <FormGroup>
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              checked={this.state.editable}
-                              onChange={this.handleChange('editable', 'checkbox')}
-                              value="editable"
-                            />
-                          }
-                          label="Editable"
-                        />
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              checked={this.state.resizable}
-                              onChange={this.handleChange('resizable', 'checkbox')}
-                              value="resizable"
-                            />
-                          }
-                          label="Resizable"
-                        />
-                      </FormGroup>
-                    </FormControl>
-                  </Grid> */}
                   <Grid item>
                     <FormControl component="fieldset">
                       <FormLabel component="legend">
@@ -132,12 +106,12 @@ export default class SettingsPopup extends React.Component {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={this.state.showTimes}
+                              checked={this.state[PROJECT.SHOW_TIMES]}
                               onChange={this.handleChange(
-                                'showTimes',
+                                PROJECT.SHOW_TIMES,
                                 'checkbox'
                               )}
-                              value="showTimes"
+                              value={PROJECT.SHOW_TIMES}
                             />
                           }
                           label="Show Times"
@@ -145,12 +119,12 @@ export default class SettingsPopup extends React.Component {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={this.state.blackAndWhite}
+                              checked={this.state[PROJECT.BLACK_N_WHITE]}
                               onChange={this.handleChange(
-                                'blackAndWhite',
+                                PROJECT.BLACK_N_WHITE,
                                 'checkbox'
                               )}
-                              value="blackAndWhite"
+                              value={PROJECT.BLACK_N_WHITE}
                             />
                           }
                           label="Black and White"
@@ -159,20 +133,20 @@ export default class SettingsPopup extends React.Component {
                           <FormLabel component="legend">Bubble Shape</FormLabel>
                           <RadioGroup
                             aria-label="bubble shape"
-                            name="bubbleShape"
-                            value={this.state.bubbleShape}
-                            onChange={this.handleChange('bubbleShape')}
+                            name={PROJECT.BUBBLE_STYLE}
+                            value={this.state[PROJECT.BUBBLE_STYLE]}
+                            onChange={this.handleChange(PROJECT.BUBBLE_STYLE)}
                           >
                             <FormControlLabel
-                              value="round"
+                              value={BUBBLE_STYLE.ROUNDED}
                               control={<Radio color="primary" />}
-                              label="Round"
+                              label={voca.capitalize(BUBBLE_STYLE.ROUNDED)}
                               labelPlacement="end"
                             />
                             <FormControlLabel
-                              value="square"
+                              value={BUBBLE_STYLE.SQUARE}
                               control={<Radio color="primary" />}
-                              label="Square"
+                              label={voca.capitalize(BUBBLE_STYLE.SQUARE)}
                               labelPlacement="end"
                             />
                           </RadioGroup>
@@ -200,12 +174,12 @@ export default class SettingsPopup extends React.Component {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={this.state.autoScaleHeightOnResize}
+                              checked={this.state[PROJECT.AUTO_SCALE_HEIGHT]}
                               onChange={this.handleChange(
-                                'autoScaleHeightOnResize',
+                                PROJECT.AUTO_SCALE_HEIGHT,
                                 'checkbox'
                               )}
-                              value="autoScaleHeightOnResize"
+                              value={PROJECT.AUTO_SCALE_HEIGHT}
                             />
                           }
                           label="Auto Scale Height On Resize"
@@ -228,12 +202,16 @@ export default class SettingsPopup extends React.Component {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={this.state.startPlayingWhenBubbleClicked}
+                              checked={
+                                this.state[
+                                  PROJECT.START_PLAYING_WHEN_BUBBLES_CLICKED
+                                ]
+                              }
                               onChange={this.handleChange(
-                                'startPlayingWhenBubbleClicked',
+                                PROJECT.START_PLAYING_WHEN_BUBBLES_CLICKED,
                                 'checkbox'
                               )}
-                              value="startPlayingWhenBubbleClicked"
+                              value={PROJECT.START_PLAYING_WHEN_BUBBLES_CLICKED}
                             />
                           }
                           label="Start playing when bubble is clicked."
@@ -242,13 +220,13 @@ export default class SettingsPopup extends React.Component {
                           control={
                             <Checkbox
                               checked={
-                                this.state.stopPlayingAtTheEndOfTheSection
+                                this.state[PROJECT.STOP_PLAYING_END_OF_SECTION]
                               }
                               onChange={this.handleChange(
-                                'stopPlayingAtTheEndOfTheSection',
+                                PROJECT.STOP_PLAYING_END_OF_SECTION,
                                 'checkbox'
                               )}
-                              value="stopPlayingAtTheEndOfTheSection"
+                              value={PROJECT.STOP_PLAYING_END_OF_SECTION}
                             />
                           }
                           label="Stop Playing at the end of the section."

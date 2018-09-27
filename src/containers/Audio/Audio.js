@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Sound from 'react-sound';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import {
@@ -9,7 +10,21 @@ import {
   audioError,
 } from '../../actions/canvas';
 
+import { ERROR_CODES } from '../../constants/canvas';
+
+import { setCurrentTime } from '../../actions/viewState';
+
 class Audio extends Component {
+  static propTypes = {
+    setCurrentTime: PropTypes.func.isRequired,
+    currentTime: PropTypes.number.isRequired,
+  };
+
+  static defaultProps = {
+    setCurrentTime: () => {},
+    currentTime: 0,
+  };
+
   handleSongLoading = params => {
     const { bytesLoaded, bytesTotal, duration, durationEstimate } = params;
     this.props.audioLoading(
@@ -19,20 +34,45 @@ class Audio extends Component {
     );
   };
 
-  handleSongPlaying = ({ position, duration }) => {};
-  handleSongFinishedPlaying = ({ position, duration }) => {};
+  handleSongPlaying = ({ position, duration }) => {
+    this.props.setCurrentTime(position);
+  };
+
+  handleResumePlaying = ({ position, duration }) => {
+    //this.props.setCurrentTime(position);
+  };
+
+  handleSongFinishedPlaying = ({ position, duration }) => {
+    //this.props.setCurrentTime(position);
+  };
+
+  handleOnLoad = obj => {
+    const { loaded } = obj;
+    this.props.audioLoaded(loaded);
+  };
+
+  handleError = (errorCode, description) => {
+    this.props.audioError(errorCode, ERROR_CODES[description]);
+  };
 
   render() {
-    const { url, isPalying } = this.props;
+    const { url, isPlaying, volume, currentTime } = this.props;
+    const playStatus = isPlaying ? Sound.status.PLAYING : Sound.status.PAUSED;
     return (
       <Sound
         url={url}
         loop={false}
         autoLoad={true}
-        playStatus={isPalying ? Sound.status.PLAYING : Sound.status.PAUSED}
+        volume={volume}
+        playbackRate={1.0}
+        position={currentTime}
+        playStatus={playStatus}
         onLoading={this.handleSongLoading}
+        onLoad={this.handleOnLoad}
         onPlaying={this.handleSongPlaying}
         onFinishedPlaying={this.handleSongFinishedPlaying}
+        onResume={this.handleResumePlaying}
+        onError={this.handleError}
       />
     );
   }
@@ -40,7 +80,9 @@ class Audio extends Component {
 
 const mapStateProps = state => ({
   url: state.canvas.url,
-  isPalying: state.viewState.isPalying,
+  isPlaying: state.viewState.isPlaying,
+  currentTime: state.viewState.currentTime,
+  volume: state.viewState.volume,
 });
 
 const mapDispatchToProps = {
@@ -48,6 +90,7 @@ const mapDispatchToProps = {
   audioLoaded,
   changeAudio,
   audioError,
+  setCurrentTime,
 };
 
 export default connect(

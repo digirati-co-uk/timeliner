@@ -1,0 +1,22 @@
+---
+title: Audio 
+menu: Containers
+---
+# Audio 
+
+Represents the audio playback component.
+
+import { Playground, PropsTable } from 'docz';
+import { Provider } from 'react-redux';
+import configureStore from '../../store/main';
+import AudioDemo from './Audio.Demo';
+import Audio from './Audio';
+
+<PropsTable of={Audio.WrappedComponent} />
+
+<Playground>
+  <Provider store={configureStore("https://incompetech.com/music/royalty-free/mp3-royaltyfree/Egmont%20Overture.mp3")}>
+    <AudioDemo />
+  </Provider>
+</Playground>
+

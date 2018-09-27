@@ -12,14 +12,14 @@ to create the experinece.
 
 import { Playground, PropsTable } from 'docz';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import configureStore from '../../store/main';
 import rootReducer from '../../reducers/root';
 import BubbleEditor from './BubbleEditor';
 
+<PropsTable of={BubbleEditor.WrappedComponent} />
+
 <Playground>
-  <Provider store={createStore(
-      rootReducer,
-    )}>
+  <Provider store={configureStore("https://incompetech.com/music/royalty-free/mp3-royaltyfree/Egmont%20Overture.mp3")}>
     <BubbleEditor />
   </Provider>
 </Playground>

@@ -1,68 +1,33 @@
 import update from 'immutability-helper';
 import {
   DEFAULT_CANVAS_STATE,
-  SET_CURRENT_TIME,
-  SET_PLAY_STATE,
-  SET_VOLUME,
   AUDIO_LOADING,
   AUDIO_LOADED,
-  CHANGE_AUDIO,
   AUDIO_ERROR,
+  LOAD_CANVAS,
+  CANVAS,
 } from '../constants/canvas';
 
 const canvas = (state = DEFAULT_CANVAS_STATE, action) => {
   switch (action.type) {
-    case SET_VOLUME:
-      return update(state, {
-        volume: {
-          $set: action.payload.volume,
-        },
-      });
-    case SET_CURRENT_TIME:
-      return update(state, {
-        currentTime: {
-          $set: action.payload.currentTime,
-        },
-      });
-    case SET_PLAY_STATE:
-      return update(state, {
-        isPlaying: {
-          $set: action.payload.isPlaying,
-        },
-      });
     case AUDIO_LOADING:
       return update(state, {
-        loadingPercent: {
-          $set: action.payload.loadingPercent,
-        },
-        duration: {
-          $set: action.payload.duration,
+        [CANVAS.PERCENT_LOADED]: {
+          $set: action.payload.percentLoaded,
         },
       });
     case AUDIO_LOADED:
       return update(state, {
-        isLoaded: {
+        [CANVAS.IS_LOADED]: {
           $set: action.payload.isLoaded,
         },
-      });
-    case CHANGE_AUDIO:
-      return update(state, {
-        url: {
-          $set: action.payload.url,
-        },
-        isPlaying: {
-          $set: false,
-        },
-        currentTime: {
-          $set: 0,
-        },
-        isLoaded: {
-          $set: false,
+        [CANVAS.PERCENT_LOADED]: {
+          $set: 100,
         },
       });
     case AUDIO_ERROR:
       return update(state, {
-        error: {
+        [CANVAS.ERROR]: {
           code: {
             $set: action.payload.code,
           },
@@ -70,6 +35,10 @@ const canvas = (state = DEFAULT_CANVAS_STATE, action) => {
             $set: action.payload.description,
           },
         },
+      });
+    case LOAD_CANVAS:
+      return update(DEFAULT_CANVAS_STATE, {
+        $merge: action.state,
       });
     default:
       return state;

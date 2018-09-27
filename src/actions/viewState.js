@@ -1,7 +1,6 @@
 import {
   PLAY_AUDIO,
   STOP_AUDIO,
-  UPDATE_CURRENT_TIME,
   ZOOM_IN,
   ZOOM_OUT,
   RESET_ZOOM,
@@ -15,6 +14,8 @@ import {
   FAST_FORWARD,
   FAST_REWARD,
   SET_VOLUME,
+  SET_CURRENT_TIME,
+  LOAD_VIEW_STATE,
 } from '../constants/viewState';
 
 export const play = () => ({
@@ -23,13 +24,6 @@ export const play = () => ({
 
 export const pause = () => ({
   type: STOP_AUDIO,
-});
-
-export const updateCurrentTime = time => ({
-  type: UPDATE_CURRENT_TIME,
-  payload: {
-    currentTime: time,
-  },
 });
 
 export const zoomIn = () => ({
@@ -88,4 +82,16 @@ export const setVolume = volume => ({
   payload: {
     volume,
   },
+});
+
+export const setCurrentTime = time => ({
+  type: SET_CURRENT_TIME,
+  payload: {
+    currentTime: time,
+  },
+});
+
+export const loadViewState = state => ({
+  type: LOAD_VIEW_STATE,
+  state,
 });

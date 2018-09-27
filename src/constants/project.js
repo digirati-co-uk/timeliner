@@ -7,17 +7,32 @@ const DEFAULT_BUBBLE_HEIGHT = 70;
 const DEFAULT_LANGUAGE_CODE = 'en';
 const DEFAULT_TITLE = 'Untitled Project';
 
+export const PROJECT = {
+  DESCRIPTION: 'description',
+  TITLE: 'title',
+  JSON: 'loadedJson',
+  BUBBLE_STYLE: 'bubblesStyle',
+  BLACK_N_WHITE: 'blackAndWhite',
+  SHOW_TIMES: 'showTimes',
+  AUTO_SCALE_HEIGHT: 'autoScaleHeightOnResize',
+  START_PLAYING_WHEN_BUBBLES_CLICKED: 'startPlayingWhenBubbleIsClicked',
+  STOP_PLAYING_END_OF_SECTION: 'stopPlayingAtTheEndOfSection',
+  BUBBLE_HEIGHT: 'bubbleHeight',
+  LANGUAGE: 'language',
+};
+
 export const DEFAULT_PROJECT_STATE = {
-  bubblesStyle: BUBBLE_STYLE.ROUNDED,
-  blackAndWhite: false,
-  showTimes: false,
-  autoScaleHeightOnResize: false,
-  startPlayingWhenBubbleIsClicked: false,
-  stopPlayingAtTheEndOfSection: false,
-  bubbleHeight: DEFAULT_BUBBLE_HEIGHT,
-  language: DEFAULT_LANGUAGE_CODE,
-  title: DEFAULT_TITLE,
-  description: '',
+  [PROJECT.BUBBLE_STYLE]: BUBBLE_STYLE.ROUNDED,
+  [PROJECT.BLACK_N_WHITE]: false,
+  [PROJECT.SHOW_TIMES]: false,
+  [PROJECT.AUTO_SCALE_HEIGHT]: false,
+  [PROJECT.START_PLAYING_WHEN_BUBBLES_CLICKED]: false,
+  [PROJECT.STOP_PLAYING_END_OF_SECTION]: false,
+  [PROJECT.BUBBLE_HEIGHT]: DEFAULT_BUBBLE_HEIGHT,
+  [PROJECT.LANGUAGE]: DEFAULT_LANGUAGE_CODE,
+  [PROJECT.TITLE]: DEFAULT_TITLE,
+  [PROJECT.DESCRIPTION]: '',
+  [PROJECT.JSON]: {},
 };
 
 export const UPDATE_SETTINGS = 'UPDATE_SETTINGS';
@@ -27,3 +42,4 @@ export const SET_DESCRIPTION = 'SET_DESCRIPTION';
 export const RESET_DOCUMENT = 'RESET_DOCUMENT';
 export const EXPORT_DOCUMENT = 'EXPORT_DOCUMENT';
 export const IMPORT_DOCUMENT = 'IMPORT_DOCUMENT';
+export const LOAD_PROJECT = 'LOAD_PROJECT';
