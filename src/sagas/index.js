@@ -5,6 +5,7 @@ import { loadProjectState } from '../utils/iiifLoader';
 import { loadProject } from '../actions/project';
 import { loadCanvas } from '../actions/canvas';
 import { loadRanges } from '../actions/range';
+import { loadViewState } from '../actions/viewState';
 import { dismissImportModal } from '../actions/viewState';
 
 function* watchImport() {
@@ -14,6 +15,7 @@ function* watchImport() {
     yield put(loadProject(loadedState.project));
     yield put(loadCanvas(loadedState.canvas));
     yield put(loadRanges(loadedState.range));
+    yield put(loadViewState(loadedState.viewState));
     yield put(dismissImportModal());
   }
 }

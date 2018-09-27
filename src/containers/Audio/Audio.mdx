@@ -15,8 +15,8 @@ import Audio from './Audio';
 <PropsTable of={Audio.WrappedComponent} />
 
 <Playground>
-    <Provider store={configureStore()}>
-      <AudioDemo />
-    </Provider>
+  <Provider store={configureStore("https://incompetech.com/music/royalty-free/mp3-royaltyfree/Egmont%20Overture.mp3")}>
+    <AudioDemo />
+  </Provider>
 </Playground>
 

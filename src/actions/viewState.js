@@ -15,6 +15,7 @@ import {
   FAST_REWARD,
   SET_VOLUME,
   SET_CURRENT_TIME,
+  LOAD_VIEW_STATE,
 } from '../constants/viewState';
 
 export const play = () => ({
@@ -88,4 +89,9 @@ export const setCurrentTime = time => ({
   payload: {
     currentTime: time,
   },
+});
+
+export const loadViewState = state => ({
+  type: LOAD_VIEW_STATE,
+  state,
 });

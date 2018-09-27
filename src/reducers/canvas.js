@@ -55,9 +55,7 @@ const canvas = (state = DEFAULT_CANVAS_STATE, action) => {
         },
       });
     case LOAD_CANVAS:
-      return update(state, {
-        $merge: action.state,
-      });
+      return action.state;
     default:
       return state;
   }

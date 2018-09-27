@@ -12,8 +12,6 @@ const createNewManifest = (manifestDomain, audioUri, duration) => ({
       label: {
         en: ['Untitled Item'],
       },
-      height: 1,
-      width: 1,
       type: 'Canvas',
       id: `${manifestDomain}/canvas/c1`,
       items: [

@@ -16,8 +16,8 @@ import rootReducer from '../../reducers/root';
 <PropsTable of={VariationsMainView.WrappedComponent} />
 
 <Playground>
-    <Provider store={configureStore()}>
-      <VariationsMainView/>
-    </Provider>
+  <Provider store={configureStore("https://incompetech.com/music/royalty-free/mp3-royaltyfree/Egmont%20Overture.mp3")}>
+    <VariationsMainView/>
+  </Provider>
 </Playground>
 

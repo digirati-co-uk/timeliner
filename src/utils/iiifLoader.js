@@ -1,10 +1,12 @@
 import { DEFAULT_CANVAS_STATE } from '../constants/canvas';
 import { DEFAULT_PROJECT_STATE, PROJECT } from '../constants/project';
 import { RANGE } from '../constants/range';
-
+import { DEFAULT_VIEWSTATE_STATE } from '../constants/viewState';
 // Constants
 
 const BACKROUND_COLOUR_PROPERTY = 'digirati:backgroundColor';
+
+const DEFAULT_COLOURS = ['#A8F097', '#C797F0'];
 
 // Helpers
 
@@ -20,14 +22,20 @@ const sToMs = s => parseFloat(s) * 1000;
  * @param {Object} resource
  * @param {String} locale default en
  */
-const getLocalisedResource = (resource, locale) =>
-  resource ? resource[locale || 'en'] || '' : '';
+const getLocalisedResource = (resource, locale) => {
+  if (!resource) {
+    return '';
+  } else {
+    return (resource[locale || 'en'] || ['']).join('');
+  }
+};
 
 /**
  * get custom bubble colour
  * @param {Object} range the range may has the background property
  */
-const getColour = range => range[BACKROUND_COLOUR_PROPERTY];
+const getColour = (range, fallback) =>
+  range[BACKROUND_COLOUR_PROPERTY] || fallback || '';
 
 /**
  * converts url hash parameters to an object
@@ -106,7 +114,7 @@ const processCanvas = canvas => {
 const extendRange = (parentRange, child) => {
   parentRange[RANGE.START_TIME] = Math.min(
     parentRange[RANGE.START_TIME],
-    child[RANGE.END_TIME]
+    child[RANGE.START_TIME]
   );
   parentRange[RANGE.END_TIME] = Math.max(
     parentRange[RANGE.END_TIME],
@@ -114,7 +122,7 @@ const extendRange = (parentRange, child) => {
   );
 };
 
-const processLevel = structure => {
+const processLevel = (structure, depth = 0) => {
   if (structure.type === 'Canvas') {
     const hashParams = hashParamsToObj(structure.id);
     return parseTimeRange(hashParams.t);
@@ -125,11 +133,15 @@ const processLevel = structure => {
       [RANGE.SUMMARY]: getLocalisedResource(structure.summary) || '',
       [RANGE.START_TIME]: Number.MAX_SAFE_INTEGER,
       [RANGE.END_TIME]: Number.MIN_SAFE_INTEGER,
-      colour: getColour(structure),
+      depth: depth + 1,
+      colour: getColour(
+        structure,
+        DEFAULT_COLOURS[depth % DEFAULT_COLOURS.length]
+      ),
     };
     const ranges = [];
     structure.items.forEach(struct => {
-      const result = processLevel(struct);
+      const result = processLevel(struct, depth + 1);
       if (struct.type === 'Canvas') {
         extendRange(range, result);
       } else if (struct.type === 'Range') {
@@ -153,6 +165,7 @@ const processStructures = manifest => {
     .apply([], allStructures)
     .reduce((ranges, range) => {
       ranges[range.id] = range;
+      return ranges;
     }, {});
 };
 
@@ -163,8 +176,14 @@ const porcessManifest = manifest => ({
   [PROJECT.JSON]: manifest,
 });
 
+const updateViewState = manifest => ({
+  ...DEFAULT_VIEWSTATE_STATE,
+  runTime: sToMs(manifest.items[0].items[0].items[0].body.duration),
+});
+
 export const loadProjectState = manifest => ({
   project: porcessManifest(manifest),
   canvas: processCanvas(manifest.items[0]),
   range: processStructures(manifest),
+  viewState: updateViewState(manifest),
 });

@@ -7,6 +7,7 @@ import {
   UPDATE_RANGE,
   MOVE_POINT,
   DELETE_RAGE,
+  LOAD_RANGES,
 } from '../constants/range';
 
 const generateNewId = () => `id-${new Date().getTime()}`;
@@ -119,6 +120,8 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
           return changes;
         })
       );
+    case LOAD_RANGES:
+      return action.state;
     case DELETE_RAGE:
     default:
       return state;

@@ -80,10 +80,7 @@ const project = (state = DEFAULT_PROJECT_STATE, action) => {
         },
       });
     case LOAD_PROJECT:
-      console('LOAD_PROJECT', action);
-      return update(state, {
-        $merge: action.state,
-      });
+      return action.state;
     case EXPORT_DOCUMENT:
     default:
       return state;

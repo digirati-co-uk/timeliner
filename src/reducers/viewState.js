@@ -17,6 +17,7 @@ import {
   FAST_REWARD,
   SET_VOLUME,
   SET_CURRENT_TIME,
+  LOAD_VIEW_STATE,
 } from '../constants/viewState';
 
 import { AUDIO_LOADING } from '../constants/canvas';
@@ -115,6 +116,8 @@ const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
           $set: Math.max(state.currentTime - 5000, 0),
         },
       });
+    case LOAD_VIEW_STATE:
+      return action.state;
     default:
       return state;
   }
