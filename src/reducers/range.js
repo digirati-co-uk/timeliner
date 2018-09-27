@@ -128,9 +128,15 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
           return changes;
         })
       );
+    case DELETE_RAGE:
+      const idToDelete = action.payload.id;
+      //const bubbleToDelete = state[idToDelete];
+      delete state[idToDelete];
+      return update(state, {
+        $remove: [idToDelete],
+      });
     case LOAD_RANGES:
       return action.state;
-    case DELETE_RAGE:
     default:
       return state;
   }

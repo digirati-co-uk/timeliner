@@ -14,6 +14,12 @@ import ContentOverlay from '../../components/ContentOverlay/ContentOverlay';
 import BubbleEditor from '../BubbleEditor/BubbleEditor';
 import Audio from '../Audio/Audio';
 
+import {
+  splitRangeAt,
+  groupSelectedRanges,
+  deleteRange,
+} from '../../actions/range';
+import { RANGE } from '../../constants/range';
 import { importDocument, updateSettings } from '../../actions/project';
 import {
   showImportModal,
@@ -58,6 +64,21 @@ class VariationsMainView extends React.Component {
       },
     };
   }
+  addRange = selected => () => {
+    this.props.splitRangeAt(
+      (selected[RANGE.END_TIME] - selected[RANGE.START_TIME]) / 2 +
+        selected[RANGE.START_TIME]
+    );
+  };
+
+  groupSelectedRanges = () => {
+    this.props.groupSelectedRanges();
+  };
+
+  deleteRange = selected => () => {
+    this.props.deleteRange(selected.id);
+  };
+
   render() {
     const _points = this.props.points;
     const {
@@ -74,12 +95,8 @@ class VariationsMainView extends React.Component {
       loadingPercent,
       isLoaded,
     } = this.props;
-    const timePoints = Array.from(
-      Object.values(this.props.points).reduce((_timePoints, bubble) => {
-        _timePoints.add(bubble.startTime);
-        _timePoints.add(bubble.endTime);
-        return _timePoints;
-      }, new Set())
+    const selectedBubbles = Object.values(this.props.points).filter(
+      bubble => bubble.isSelected
     );
     return (
       <div className="variations-app">
@@ -109,6 +126,21 @@ class VariationsMainView extends React.Component {
               onPreviousBubble={() => {}}
               onScrubAhead={this.props.fastForward}
               onScrubBackwards={this.props.fastReward}
+              onAddBubble={
+                selectedBubbles.length === 1
+                  ? this.addRange(selectedBubbles[0])
+                  : undefined
+              }
+              onGroupBubble={
+                selectedBubbles.length > 1
+                  ? this.props.groupSelectedRanges
+                  : undefined
+              }
+              onDeleteBubble={
+                selectedBubbles.length === 1
+                  ? this.deleteRange(selectedBubbles[0])
+                  : undefined
+              }
             />
             <div className="variations-app__metadata-editor">
               <ProjectMetadata
@@ -198,6 +230,10 @@ const mapDispatchToProps = {
   dismissSettingsModal,
   fastForward,
   fastReward,
+  //range
+  splitRangeAt,
+  groupSelectedRanges,
+  deleteRange,
 };
 
 export default connect(
