@@ -16,6 +16,8 @@ import {
   setCurrentTime,
 } from '../../actions/viewState';
 
+import { selectRange } from '../../actions/range';
+
 class BubbleEditor extends React.Component {
   constructor(props) {
     super(props);
@@ -27,6 +29,11 @@ class BubbleEditor extends React.Component {
     };
   }
 
+  toggleSelects = (point, ev) => {
+    console.log(point);
+    this.props.selectRange(point.id, !point.isSelected);
+  };
+
   render() {
     const _points = this.props.points;
     const { runTime, currentTime, zoom, onUpdateTime } = this.props;
@@ -37,6 +44,7 @@ class BubbleEditor extends React.Component {
         return _timePoints;
       }, new Set())
     );
+
     return (
       <div
         style={{
@@ -69,9 +77,7 @@ class BubbleEditor extends React.Component {
                       <SingleBubble
                         key={`bk-${bubble.id}`}
                         {...bubble}
-                        onClick={(point, ev) => {
-                          alert(JSON.stringify(point));
-                        }}
+                        onClick={this.toggleSelects}
                       />
                     ))
                   }
@@ -111,6 +117,7 @@ const mapDispatchToProps = {
   resetZoom,
   panToPosition,
   onUpdateTime: setCurrentTime,
+  selectRange,
 };
 
 export default connect(

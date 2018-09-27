@@ -1,7 +1,7 @@
 import {
   SPLIT_RANGE_AT,
   GROUP_RANGES,
-  ON_SELECT_RANGE,
+  SELECT_RANGE,
   UPDATE_RANGE,
   MOVE_POINT,
   DELETE_RAGE,
@@ -20,7 +20,7 @@ export const groupSelectedRanges = () => ({
 });
 
 export const selectRange = (id, isSelected) => ({
-  type: ON_SELECT_RANGE,
+  type: SELECT_RANGE,
   payload: {
     id,
     isSelected,

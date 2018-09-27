@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import {
   audioLoading,
   audioLoaded,
-  changeAudio,
+  //changeAudio,
   audioError,
 } from '../../actions/canvas';
 
@@ -88,7 +88,7 @@ const mapStateProps = state => ({
 const mapDispatchToProps = {
   audioLoading,
   audioLoaded,
-  changeAudio,
+  //changeAudio,
   audioError,
   setCurrentTime,
 };

@@ -3,7 +3,7 @@ import {
   DEFAULT_RANGES_STATE,
   SPLIT_RANGE_AT,
   GROUP_RANGES,
-  ON_SELECT_RANGE,
+  SELECT_RANGE,
   UPDATE_RANGE,
   MOVE_POINT,
   DELETE_RAGE,
@@ -34,6 +34,7 @@ const groupBubbles = selectedBubbles => {
       [RANGE.LABEL]: '',
       [RANGE.SUMMARY]: '',
       [RANGE.COLOUR]: -1,
+      [RANGE.IS_SELECTED]: false,
     }
   );
   group.depth += 1;
@@ -80,7 +81,7 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
           $set: newGroup,
         },
       });
-    case ON_SELECT_RANGE:
+    case SELECT_RANGE:
       return update(state, {
         [action.payload.id]: {
           [RANGE.IS_SELECTED]: {

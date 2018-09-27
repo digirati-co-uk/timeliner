@@ -144,6 +144,7 @@ const processLevel = (structure, depth = 0) => {
         structure,
         DEFAULT_COLOURS[depth % DEFAULT_COLOURS.length]
       ),
+      [RANGE.IS_SELECTED]: false,
     };
     const ranges = [];
     structure.items.forEach(struct => {
