@@ -4,17 +4,20 @@ export const RANGE = {
   LABEL: 'label',
   SUMMARY: 'summary',
   COLOUR: 'colour',
+  DEPTH: 'depth',
+  IS_SELECTED: 'isSelected',
 };
 
 export const DEFAULT_RANGES_STATE = {
   'id-0': {
     id: 'id-0',
     [RANGE.START_TIME]: 0,
-    [RANGE.END_TIME]: 57.103563 * 1000,
+    [RANGE.END_TIME]: 0,
     [RANGE.LABEL]: '',
     [RANGE.SUMMARY]: '',
     [RANGE.COLOUR]: '#A8F097',
-    depth: 1,
+    [RANGE.DEPTH]: 1,
+    [RANGE.IS_SELECTED]: false,
   },
 };
 

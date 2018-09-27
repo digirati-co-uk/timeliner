@@ -27,7 +27,7 @@ export const setTitle = title => ({
   },
 });
 
-export const setDescrition = description => ({
+export const setDescription = description => ({
   type: SET_DESCRIPTION,
   payload: {
     description,

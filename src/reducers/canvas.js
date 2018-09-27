@@ -3,49 +3,31 @@ import {
   DEFAULT_CANVAS_STATE,
   AUDIO_LOADING,
   AUDIO_LOADED,
-  CHANGE_AUDIO,
   AUDIO_ERROR,
   LOAD_CANVAS,
+  CANVAS,
 } from '../constants/canvas';
 
 const canvas = (state = DEFAULT_CANVAS_STATE, action) => {
   switch (action.type) {
     case AUDIO_LOADING:
       return update(state, {
-        loadingPercent: {
+        [CANVAS.PERCENT_LOADED]: {
           $set: action.payload.percentLoaded,
-        },
-        runTime: {
-          $set: action.payload.duration,
         },
       });
     case AUDIO_LOADED:
       return update(state, {
-        isLoaded: {
+        [CANVAS.IS_LOADED]: {
           $set: action.payload.isLoaded,
         },
-        loadingPercent: {
+        [CANVAS.PERCENT_LOADED]: {
           $set: 100,
-        },
-      });
-    case CHANGE_AUDIO:
-      return update(state, {
-        url: {
-          $set: action.payload.url,
-        },
-        isPlaying: {
-          $set: false,
-        },
-        currentTime: {
-          $set: 0,
-        },
-        isLoaded: {
-          $set: false,
         },
       });
     case AUDIO_ERROR:
       return update(state, {
-        error: {
+        [CANVAS.ERROR]: {
           code: {
             $set: action.payload.code,
           },
@@ -55,7 +37,9 @@ const canvas = (state = DEFAULT_CANVAS_STATE, action) => {
         },
       });
     case LOAD_CANVAS:
-      return action.state;
+      return update(DEFAULT_CANVAS_STATE, {
+        $merge: action.state,
+      });
     default:
       return state;
   }

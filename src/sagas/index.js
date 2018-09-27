@@ -6,7 +6,6 @@ import { loadProject } from '../actions/project';
 import { loadCanvas } from '../actions/canvas';
 import { loadRanges } from '../actions/range';
 import { loadViewState } from '../actions/viewState';
-import { dismissImportModal } from '../actions/viewState';
 
 function* watchImport() {
   while (true) {
@@ -16,7 +15,6 @@ function* watchImport() {
     yield put(loadCanvas(loadedState.canvas));
     yield put(loadRanges(loadedState.range));
     yield put(loadViewState(loadedState.viewState));
-    yield put(dismissImportModal());
   }
 }
 

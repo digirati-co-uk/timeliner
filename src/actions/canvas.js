@@ -1,7 +1,6 @@
 import {
   AUDIO_LOADING,
   AUDIO_LOADED,
-  CHANGE_AUDIO,
   AUDIO_ERROR,
   LOAD_CANVAS,
 } from '../constants/canvas';
@@ -18,13 +17,6 @@ export const audioLoaded = isLoaded => ({
   type: AUDIO_LOADED,
   payload: {
     isLoaded,
-  },
-});
-
-export const changeAudio = url => ({
-  type: CHANGE_AUDIO,
-  payload: {
-    url,
   },
 });
 

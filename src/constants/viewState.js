@@ -1,12 +1,23 @@
+export const VIEWSTATE = {
+  RUNTIME: 'runTime',
+  IS_PLAYING: 'isPlaying',
+  CURRENT_TIME: 'currentTime',
+  ZOOM: 'zoom',
+  X: 'x',
+  IS_IMPORT_OPEN: 'isImportOpen',
+  IS_SETTINGS_OPEN: 'isSettingsOpen',
+  VOLUME: 'volume',
+};
+
 export const DEFAULT_VIEWSTATE_STATE = {
-  runTime: 0,
-  isPlaying: false,
-  currentTime: 0,
-  zoom: 1.0,
-  x: 0,
-  isImportOpen: false,
-  isSettingsOpen: false,
-  volume: 70,
+  [VIEWSTATE.RUNTIME]: 0,
+  [VIEWSTATE.IS_PLAYING]: false,
+  [VIEWSTATE.CURRENT_TIME]: 0,
+  [VIEWSTATE.ZOOM]: 1.0,
+  [VIEWSTATE.X]: 0,
+  [VIEWSTATE.IS_IMPORT_OPEN]: false,
+  [VIEWSTATE.IS_SETTINGS_OPEN]: false,
+  [VIEWSTATE.VOLUME]: 70,
 };
 
 export const PLAY_AUDIO = 'PLAY_AUDIO';

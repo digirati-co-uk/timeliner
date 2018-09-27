@@ -1,10 +1,17 @@
 const DEFAULT_AUDIO = ''; //'https://webaudioapi.com/samples/audio-tag/chrono.mp3';
 
+export const CANVAS = {
+  URL: 'url',
+  IS_LOADED: 'isLoaded',
+  PERCENT_LOADED: 'loadingPercent',
+  ERROR: 'error',
+};
+
 export const DEFAULT_CANVAS_STATE = {
-  url: DEFAULT_AUDIO,
-  isLoaded: false,
-  loadingPercent: 0,
-  error: {
+  [CANVAS.URL]: DEFAULT_AUDIO,
+  [CANVAS.IS_LOADED]: false,
+  [CANVAS.PERCENT_LOADED]: 0,
+  [CANVAS.ERROR]: {
     code: null,
     description: '',
   },
@@ -12,7 +19,6 @@ export const DEFAULT_CANVAS_STATE = {
 
 export const AUDIO_LOADED = 'AUDIO_LOADED';
 export const AUDIO_LOADING = 'AUDIO_LOADING';
-export const CHANGE_AUDIO = 'CHANGE_AUDIO';
 export const AUDIO_ERROR = 'AUDIO_ERROR';
 export const SET_CURRENT_TIME = 'SET_CURRENT_TIME';
 export const LOAD_CANVAS = 'LOAD_CANVAS';

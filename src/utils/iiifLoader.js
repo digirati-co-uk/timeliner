@@ -1,7 +1,8 @@
-import { DEFAULT_CANVAS_STATE } from '../constants/canvas';
-import { DEFAULT_PROJECT_STATE, PROJECT } from '../constants/project';
+import { PROJECT } from '../constants/project';
+import { CANVAS } from '../constants/canvas';
 import { RANGE } from '../constants/range';
-import { DEFAULT_VIEWSTATE_STATE } from '../constants/viewState';
+import { VIEWSTATE } from '../constants/viewState';
+
 // Constants
 
 const BACKROUND_COLOUR_PROPERTY = 'digirati:backgroundColor';
@@ -103,12 +104,17 @@ const getAudioAnnotations = canvas => {
  * @param {Object} canvas -
  */
 const processCanvas = canvas => {
-  const projectDuration = sToMs(canvas.duration || 1);
   const audioAnnotations = getAudioAnnotations(canvas);
-  return Object.assign({}, DEFAULT_CANVAS_STATE, {
-    runTime: projectDuration,
-    url: audioAnnotations[0].url,
-  });
+  return audioAnnotations.length > 0
+    ? {
+        [CANVAS.URL]: audioAnnotations[0].url,
+      }
+    : {
+        [CANVAS.ERROR]: {
+          code: 6,
+          description: 'Manifest does not contain audio annotations',
+        },
+      };
 };
 
 const extendRange = (parentRange, child) => {
@@ -133,8 +139,8 @@ const processLevel = (structure, depth = 0) => {
       [RANGE.SUMMARY]: getLocalisedResource(structure.summary) || '',
       [RANGE.START_TIME]: Number.MAX_SAFE_INTEGER,
       [RANGE.END_TIME]: Number.MIN_SAFE_INTEGER,
-      depth: depth + 1,
-      colour: getColour(
+      [RANGE.DEPTH]: depth + 1,
+      [RANGE.COLOUR]: getColour(
         structure,
         DEFAULT_COLOURS[depth % DEFAULT_COLOURS.length]
       ),
@@ -169,21 +175,21 @@ const processStructures = manifest => {
     }, {});
 };
 
-const porcessManifest = manifest => ({
-  ...DEFAULT_PROJECT_STATE,
+const manifestToProject = manifest => ({
   [PROJECT.DESCRIPTION]: getLocalisedResource(manifest.label) || '',
   [PROJECT.TITLE]: getLocalisedResource(manifest.summary) || '',
   [PROJECT.JSON]: manifest,
 });
 
-const updateViewState = manifest => ({
-  ...DEFAULT_VIEWSTATE_STATE,
-  runTime: sToMs(manifest.items[0].items[0].items[0].body.duration),
+const manifestToViewState = manifest => ({
+  [VIEWSTATE.RUNTIME]: sToMs(manifest.items[0].items[0].items[0].body.duration),
+  [VIEWSTATE.IS_IMPORT_OPEN]: false,
+  [VIEWSTATE.IS_SETTINGS_OPEN]: false,
 });
 
 export const loadProjectState = manifest => ({
-  project: porcessManifest(manifest),
+  project: manifestToProject(manifest),
   canvas: processCanvas(manifest.items[0]),
   range: processStructures(manifest),
-  viewState: updateViewState(manifest),
+  viewState: manifestToViewState(manifest),
 });

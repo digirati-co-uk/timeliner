@@ -117,7 +117,9 @@ const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
         },
       });
     case LOAD_VIEW_STATE:
-      return action.state;
+      return update(DEFAULT_VIEWSTATE_STATE, {
+        $merge: action.state,
+      });
     default:
       return state;
   }
