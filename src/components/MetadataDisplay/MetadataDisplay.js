@@ -21,6 +21,7 @@ const MetadataDisplay = props => (
     style={{
       borderLeft: `4px solid ${props.colour}`,
       marginLeft: `${(props.depth - 1) * 24}px`,
+      marginBottom: 16,
     }}
   >
     <CardContent>

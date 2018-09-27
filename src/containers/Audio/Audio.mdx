@@ -8,15 +8,14 @@ Represents the audio playback component.
 
 import { Playground, PropsTable } from 'docz';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
-import rootReducer from '../../reducers/root';
+import configureStore from '../../store/main';
 import AudioDemo from './Audio.Demo';
 import Audio from './Audio';
 
 <PropsTable of={Audio.WrappedComponent} />
 
 <Playground>
-    <Provider store={createStore(rootReducer)}>
+    <Provider store={configureStore()}>
       <AudioDemo />
     </Provider>
 </Playground>

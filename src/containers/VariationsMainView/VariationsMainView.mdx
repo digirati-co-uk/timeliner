@@ -10,15 +10,13 @@ import { Playground, PropsTable } from 'docz';
 import VariationsMainView from './VariationsMainView';
 import { Provider } from 'react-redux';
 import DEMO_POINTS from '../../components/Metadata/Metadata.Demo';
-import { createStore } from 'redux';
+import configureStore from '../../store/main';
 import rootReducer from '../../reducers/root';
 
-
-TODO: props table doesn't render for connected components.
 <PropsTable of={VariationsMainView.WrappedComponent} />
 
 <Playground>
-    <Provider store={createStore(rootReducer)}>
+    <Provider store={configureStore()}>
       <VariationsMainView/>
     </Provider>
 </Playground>
