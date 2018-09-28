@@ -9543,7 +9543,7 @@ mixin-object@^2.0.0, mixin-object@^2.0.1:
   dependencies:
     minimist "0.0.8"
 
-moment@2.x.x, moment@^2.5.1:
+moment@2.x.x, moment@^2.22.2, moment@^2.5.1:
   version "2.22.2"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
 

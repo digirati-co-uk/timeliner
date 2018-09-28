@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { TextField, Button, Grid } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
 import bem from '@fesk/bem-js';
@@ -9,16 +10,10 @@ import ColourSwatchPicker from '../ColourSwatchPicker/ColourSwatchPicker';
 import './MetadataEditor.scss';
 
 const metadataEditor = bem.block('metadata-editor');
+const DISPLAY_TIME_FORMAT = 'HH:mm:ss';
 
 //TODO: implement themes
 const getSelectedThemeColours = () => ['red', 'blue', 'green'];
-
-const msToTimeStr = ms => {
-  const sec = '0' + Math.floor(ms / 1000); //in s
-  const min = '0' + Math.floor(ms / 60 / 1000); //in minutes
-  const h = '0' + Math.floor(ms / 3600 / 1000); // hours
-  return [h.slice(-2), min.slice(-2), sec.slice(-2)].join(':');
-};
 
 const timeStrToMs = timeStr => {
   var hms = timeStr.split(':');
@@ -59,19 +54,18 @@ class MetadataEditor extends Component {
       label,
       summary,
       colour,
-      startTime: startTime || 0,
-      endTime: endTime || 1,
+      startTime: moment(startTime)
+        .utc()
+        .format(DISPLAY_TIME_FORMAT),
+      endTime: moment(endTime)
+        .utc()
+        .format(DISPLAY_TIME_FORMAT),
     };
   }
 
   handleChange = name => ev => {
-    console.log('handleChange', name, ev.target.value);
-    const value =
-      name === 'startTime' || name === 'endTime'
-        ? timeStrToMs(ev.target.value) || 0
-        : ev.target.value;
     this.setState({
-      [name]: value,
+      [name]: ev.target.value,
     });
   };
 
@@ -80,14 +74,35 @@ class MetadataEditor extends Component {
   };
 
   onSave = () => {
-    this.props.onSave(this.props.id, this.state);
+    const { colour, label, summary } = this.state;
+    const state = this.state;
+    const newValues = {
+      colour,
+      label,
+      summary,
+    };
+    const startTime = timeStrToMs(state.startTime);
+    const endTime = timeStrToMs(state.endTime);
+    if (startTime !== this.props.startTime) {
+      newValues.startTime = {
+        x: startTime,
+        originalX: this.props.startTime,
+      };
+    }
+    if (endTime !== this.props.endTime) {
+      newValues.endTime = {
+        x: endTime,
+        originalX: this.props.endTime,
+      };
+    }
+    console.log('onSave', newValues);
+    this.props.onSave(this.props.id, newValues);
   };
 
   render() {
-    const { isNew, onDelete } = this.props;
+    const { onDelete } = this.props;
     const { label, summary, colour, startTime, endTime } = this.state;
     const colours = getSelectedThemeColours();
-    console.log('msToTimeStr(endTime)', msToTimeStr(endTime));
     return (
       <form className={metadataEditor}>
         <TextField
@@ -128,7 +143,7 @@ class MetadataEditor extends Component {
               id="startTime"
               label="Start Time"
               type="time"
-              value={msToTimeStr(startTime)}
+              defaultValue={startTime}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -143,7 +158,7 @@ class MetadataEditor extends Component {
               id="endTime"
               label="End Time"
               type="time"
-              value={msToTimeStr(endTime)}
+              defaultValue={endTime}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -166,7 +181,9 @@ class MetadataEditor extends Component {
           <Button disabled={!onDelete} onClick={onDelete}>
             <Delete /> Delete
           </Button>
-          <PrimaryButton disabled={!this.props.onSave} onClick={this.onSave}>Save</PrimaryButton>
+          <PrimaryButton disabled={!this.props.onSave} onClick={this.onSave}>
+            Save
+          </PrimaryButton>
         </div>
       </form>
     );

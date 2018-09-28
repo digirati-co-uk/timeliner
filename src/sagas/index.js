@@ -5,7 +5,7 @@ import { UPDATE_RANGE } from '../constants/range';
 import { loadProjectState } from '../utils/iiifLoader';
 import { loadProject } from '../actions/project';
 import { loadCanvas } from '../actions/canvas';
-import { loadRanges } from '../actions/range';
+import { loadRanges, movePoint } from '../actions/range';
 import { loadViewState, editMetadata } from '../actions/viewState';
 
 function* watchImport() {
@@ -21,7 +21,15 @@ function* watchImport() {
 
 function* watchSaveRange() {
   while (true) {
-    yield take(UPDATE_RANGE);
+    const { payload } = yield take(UPDATE_RANGE);
+    const { startTime, endTime } = payload;
+    console.log('watchSaveRange', startTime, endTime);
+    if (startTime) {
+      yield put(movePoint(startTime.x, startTime.originalX));
+    }
+    if (endTime) {
+      yield put(movePoint(endTime.x, endTime.originalX));
+    }
     yield put(editMetadata(null));
   }
 }

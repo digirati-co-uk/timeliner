@@ -94,12 +94,6 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
     case UPDATE_RANGE:
       return update(state, {
         [action.payload.id]: {
-          [RANGE.START_TIME]: {
-            $set: action.payload.startTime,
-          },
-          [RANGE.END_TIME]: {
-            $set: action.payload.endTime,
-          },
           [RANGE.LABEL]: {
             $set: action.payload.label,
           },
