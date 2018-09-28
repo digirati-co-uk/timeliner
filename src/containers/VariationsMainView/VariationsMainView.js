@@ -37,6 +37,8 @@ import {
   fastForward,
   fastReward,
   editMetadata,
+  previousBubble,
+  nextBubble,
 } from '../../actions/viewState';
 
 import './VariationsMainView.scss';
@@ -129,8 +131,8 @@ class VariationsMainView extends React.Component {
               onVolumeChanged={this.props.setVolume}
               onPlay={this.props.play}
               onPause={this.props.pause}
-              onNextBubble={() => {}}
-              onPreviousBubble={() => {}}
+              onNextBubble={this.props.nextBubble}
+              onPreviousBubble={this.props.previousBubble}
               onScrubAhead={this.props.fastForward}
               onScrubBackwards={this.props.fastReward}
               onAddBubble={
@@ -243,6 +245,8 @@ const mapDispatchToProps = {
   fastForward,
   fastReward,
   editMetadata,
+  previousBubble,
+  nextBubble,
   //range
   splitRangeAt,
   groupSelectedRanges,

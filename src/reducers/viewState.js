@@ -104,8 +104,6 @@ const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
           $set: action.payload.currentTime,
         },
       });
-    case NEXT_BUBBLE:
-    case PREVIOUS_BUBBLE:
     case FAST_FORWARD:
       return update(state, {
         [VIEWSTATE.CURRENT_TIME]: {
@@ -128,6 +126,8 @@ const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
           $set: action.rangeId,
         },
       });
+    case NEXT_BUBBLE:
+    case PREVIOUS_BUBBLE:
     default:
       return state;
   }

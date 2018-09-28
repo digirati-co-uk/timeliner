@@ -163,7 +163,7 @@ class BubbleEditor extends React.Component {
                   {points =>
                     points.map(bubble => (
                       <SingleBubble
-                        key={`bk-${bubble.id}`}
+                        key={`bk-${bubble.point.id}`}
                         {...bubble}
                         onClick={this.toggleSelects}
                       />

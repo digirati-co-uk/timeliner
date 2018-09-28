@@ -59,4 +59,9 @@ MetadataDisplay.propTypes = {
   onEditClick: PropTypes.func,
 };
 
+MetadataDisplay.defaultProps = {
+  label: 'Unititled',
+  summary: '',
+};
+
 export default MetadataDisplay;
