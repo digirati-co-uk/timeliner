@@ -21,7 +21,11 @@ import {
   updateRange,
 } from '../../actions/range';
 import { RANGE } from '../../constants/range';
-import { importDocument, updateSettings } from '../../actions/project';
+import {
+  importDocument,
+  updateSettings,
+  resetDocument,
+} from '../../actions/project';
 import {
   showImportModal,
   showSettingsModal,
@@ -107,7 +111,7 @@ class VariationsMainView extends React.Component {
           <VariationsAppBar
             title={manifestLabel}
             onImportButtonClicked={this.props.showImportModal}
-            onEraseButtonClicked={() => {}}
+            onEraseButtonClicked={this.props.resetDocument}
             onSaveButtonClicked={() => {}}
             onSettingsButtonClicked={this.props.showSettingsModal}
             onTitleChange={() => {}}
@@ -227,6 +231,7 @@ const mapDispatchToProps = {
   //project actions
   importDocument,
   updateSettings,
+  resetDocument,
   //view state actions
   showImportModal,
   showSettingsModal,
