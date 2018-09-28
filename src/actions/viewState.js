@@ -16,6 +16,7 @@ import {
   SET_VOLUME,
   SET_CURRENT_TIME,
   LOAD_VIEW_STATE,
+  EDIT_METADATA,
 } from '../constants/viewState';
 
 export const play = () => ({
@@ -94,4 +95,9 @@ export const setCurrentTime = time => ({
 export const loadViewState = state => ({
   type: LOAD_VIEW_STATE,
   state,
+});
+
+export const editMetadata = rangeId => ({
+  type: EDIT_METADATA,
+  rangeId,
 });

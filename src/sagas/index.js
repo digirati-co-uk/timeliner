@@ -1,11 +1,12 @@
 import { take, fork, put, all } from 'redux-saga/effects';
 
 import { IMPORT_DOCUMENT } from '../constants/project';
+import { UPDATE_RANGE } from '../constants/range';
 import { loadProjectState } from '../utils/iiifLoader';
 import { loadProject } from '../actions/project';
 import { loadCanvas } from '../actions/canvas';
 import { loadRanges } from '../actions/range';
-import { loadViewState } from '../actions/viewState';
+import { loadViewState, editMetadata } from '../actions/viewState';
 
 function* watchImport() {
   while (true) {
@@ -18,6 +19,13 @@ function* watchImport() {
   }
 }
 
+function* watchSaveRange() {
+  while (true) {
+    yield take(UPDATE_RANGE);
+    yield put(editMetadata(null));
+  }
+}
+
 export default function* root() {
-  yield all([fork(watchImport)]);
+  yield all([fork(watchImport), fork(watchSaveRange)]);
 }

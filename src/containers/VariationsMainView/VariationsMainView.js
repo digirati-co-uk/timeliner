@@ -18,6 +18,7 @@ import {
   splitRangeAt,
   groupSelectedRanges,
   deleteRange,
+  updateRange,
 } from '../../actions/range';
 import { RANGE } from '../../constants/range';
 import { importDocument, updateSettings } from '../../actions/project';
@@ -31,6 +32,7 @@ import {
   dismissSettingsModal,
   fastForward,
   fastReward,
+  editMetadata,
 } from '../../actions/viewState';
 
 import './VariationsMainView.scss';
@@ -94,10 +96,12 @@ class VariationsMainView extends React.Component {
       audioError,
       loadingPercent,
       isLoaded,
+      rangeToEdit,
     } = this.props;
     const selectedBubbles = Object.values(this.props.points).filter(
       bubble => bubble.isSelected
     );
+    console.log('this.props.updateRange', this.props.updateRange);
     return (
       <div className="variations-app">
         <MuiThemeProvider theme={this.theme}>
@@ -151,6 +155,9 @@ class VariationsMainView extends React.Component {
                   manifestSummary,
                 }}
                 ranges={_points}
+                onEdit={this.props.editMetadata}
+                rangeToEdit={rangeToEdit}
+                onUpdateRange={this.props.updateRange}
               />
               <Footer />
             </div>
@@ -214,6 +221,7 @@ const mapStateProps = state => ({
   audioError: state.canvas.error,
   loadingPercent: state.canvas.loadingPercent,
   isLoaded: state.canvas.isLoaded,
+  rangeToEdit: state.viewState.metadataToEdit,
 });
 
 const mapDispatchToProps = {
@@ -230,10 +238,12 @@ const mapDispatchToProps = {
   dismissSettingsModal,
   fastForward,
   fastReward,
+  editMetadata,
   //range
   splitRangeAt,
   groupSelectedRanges,
   deleteRange,
+  updateRange,
 };
 
 export default connect(

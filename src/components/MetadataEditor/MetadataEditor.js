@@ -13,6 +13,22 @@ const metadataEditor = bem.block('metadata-editor');
 //TODO: implement themes
 const getSelectedThemeColours = () => ['red', 'blue', 'green'];
 
+const msToTimeStr = ms => {
+  const sec = '0' + Math.floor(ms / 1000); //in s
+  const min = '0' + Math.floor(ms / 60 / 1000); //in minutes
+  const h = '0' + Math.floor(ms / 3600 / 1000); // hours
+  return [h.slice(-2), min.slice(-2), sec.slice(-2)].join(':');
+};
+
+const timeStrToMs = timeStr => {
+  var hms = timeStr.split(':');
+  return (
+    parseInt(hms[0], 10) * 3600 * 1000 +
+    parseInt(hms[1], 10) * 60 * 1000 +
+    parseInt(hms[2], 10) * 1000
+  );
+};
+
 class MetadataEditor extends Component {
   static propTypes = {
     /** Current label of the manifest or range */
@@ -20,11 +36,11 @@ class MetadataEditor extends Component {
     /** Current summary of the manifest or range */
     summary: PropTypes.string.isRequired,
     /** Selected theme colour */
-    colour: PropTypes.number.isRequired,
+    colour: PropTypes.string.isRequired,
     /** Call back when save button is clicked, gets passed an object with label and summary */
-    onSave: PropTypes.func.isRequired,
+    onSave: PropTypes.func,
     /** Call back when delete button is clicked, gets passed an object with label and summary */
-    onDelete: PropTypes.func.isRequired,
+    onDelete: PropTypes.func,
     /** Is new */
     isNew: PropTypes.bool.isRequired,
   };
@@ -43,19 +59,19 @@ class MetadataEditor extends Component {
       label,
       summary,
       colour,
-      startTime,
-      endTime,
+      startTime: startTime || 0,
+      endTime: endTime || 1,
     };
   }
 
-  defaultProps = {
-    startTime: 0,
-    endTime: 1,
-  };
-
   handleChange = name => ev => {
+    console.log('handleChange', name, ev.target.value);
+    const value =
+      name === 'startTime' || name === 'endTime'
+        ? timeStrToMs(ev.target.value) || 0
+        : ev.target.value;
     this.setState({
-      [name]: ev.target.value,
+      [name]: value,
     });
   };
 
@@ -63,12 +79,15 @@ class MetadataEditor extends Component {
     this.setState({ colour });
   };
 
-  onSave = () => this.props.onSave(this.state);
+  onSave = () => {
+    this.props.onSave(this.props.id, this.state);
+  };
 
   render() {
     const { isNew, onDelete } = this.props;
     const { label, summary, colour, startTime, endTime } = this.state;
     const colours = getSelectedThemeColours();
+    console.log('msToTimeStr(endTime)', msToTimeStr(endTime));
     return (
       <form className={metadataEditor}>
         <TextField
@@ -109,13 +128,14 @@ class MetadataEditor extends Component {
               id="startTime"
               label="Start Time"
               type="time"
-              defaultValue="00:00"
+              value={msToTimeStr(startTime)}
               InputLabelProps={{
                 shrink: true,
               }}
               inputProps={{
                 step: 1, // 5 min
               }}
+              onChange={this.handleChange('startTime')}
             />
           </Grid>
           <Grid item>
@@ -123,13 +143,14 @@ class MetadataEditor extends Component {
               id="endTime"
               label="End Time"
               type="time"
-              defaultValue="00:01"
+              value={msToTimeStr(endTime)}
               InputLabelProps={{
                 shrink: true,
               }}
               inputProps={{
                 step: 1, // 5 min
               }}
+              onChange={this.handleChange('endTime')}
             />
           </Grid>
           <Grid item>
@@ -142,10 +163,10 @@ class MetadataEditor extends Component {
           </Grid>
         </Grid>
         <div className={metadataEditor.element('button-bar')}>
-          <Button disabled={isNew} onClick={!isNew && onDelete}>
+          <Button disabled={!onDelete} onClick={onDelete}>
             <Delete /> Delete
           </Button>
-          <PrimaryButton onClick={this.onSave}>Save</PrimaryButton>
+          <PrimaryButton disabled={!this.props.onSave} onClick={this.onSave}>Save</PrimaryButton>
         </div>
       </form>
     );
