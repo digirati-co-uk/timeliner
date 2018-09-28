@@ -101,7 +101,6 @@ class VariationsMainView extends React.Component {
     const selectedBubbles = Object.values(this.props.points).filter(
       bubble => bubble.isSelected
     );
-    console.log('this.props.updateRange', this.props.updateRange);
     return (
       <div className="variations-app">
         <MuiThemeProvider theme={this.theme}>

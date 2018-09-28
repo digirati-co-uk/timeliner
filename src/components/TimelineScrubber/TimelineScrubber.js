@@ -15,8 +15,8 @@ class TimelineScrubber extends Component {
     runTime: PropTypes.number.isRequired,
     /** the current zoom level */
     zoom: PropTypes.number.isRequired,
-    /** Map of points @todo custom validator */
-    points: PropTypes.object.isRequired,
+    // /** Map of points @todo custom validator */
+    // points: PropTypes.object.isRequired,
     /** Time points */
     timePoints: PropTypes.arrayOf(PropTypes.number),
     /** Handler for when a point is clicked on the timeline */
@@ -29,6 +29,8 @@ class TimelineScrubber extends Component {
     onUpdateTimePoint: PropTypes.func,
     /** Component to render above mouse when hovering */
     renderTimelineHover: PropTypes.func,
+    /** on drag start */
+    dragStart: PropTypes.func,
   };
 
   static defaultProps = {
@@ -39,6 +41,7 @@ class TimelineScrubber extends Component {
     timePoints: [],
     renderTimelineHover: () => null,
     zoom: 1.0,
+    dragStart: () => {},
   };
 
   timeToPercent = time => (time / this.props.runTime) * 100 * this.props.zoom;
@@ -67,6 +70,7 @@ class TimelineScrubber extends Component {
         className="timeline-scrubber"
         onClick={this.handleJumpToTime}
         onDoubleClick={this.handleAddPoint}
+        onMouseDown={this.props.dragStart}
       >
         {timePoints.map(timePoint => (
           <TimelineMarker

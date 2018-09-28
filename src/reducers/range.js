@@ -116,17 +116,23 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
         state,
         Object.values(state).reduce((changes, bubble) => {
           if (bubble[RANGE.START_TIME] === action.payload.originalX) {
+            if (!changes[bubble.id]) {
+              changes[bubble.id] = {};
+            }
             changes[bubble.id][RANGE.START_TIME] = {
               $set: action.payload.x,
             };
           }
           if (bubble[RANGE.END_TIME] === action.payload.originalX) {
+            if (!changes[bubble.id]) {
+              changes[bubble.id] = {};
+            }
             changes[bubble.id][RANGE.END_TIME] = {
               $set: action.payload.x,
             };
           }
           return changes;
-        })
+        }, {})
       );
     case DELETE_RAGE:
       const idToDelete = action.payload.id;
