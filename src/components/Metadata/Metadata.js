@@ -15,7 +15,7 @@ const Metadata = props => (
             .filter(
               range =>
                 range.startTime <= props.currentTime &&
-                range.endTime >= props.currentTime
+                range.endTime > props.currentTime
             )
             .map(
               range =>
@@ -60,7 +60,7 @@ Metadata.propTypes = {
   /** Current summary of the manifest or range */
   manifestSummary: PropTypes.string.isRequired,
   /** Total runtime of manifest */
-  runtime: PropTypes.number.isRequired,
+  runTime: PropTypes.number.isRequired,
   /** Current time */
   currentTime: PropTypes.number.isRequired,
   /** Range to edit */
