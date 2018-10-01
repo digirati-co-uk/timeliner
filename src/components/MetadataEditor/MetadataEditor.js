@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { TextField, Button, Grid } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
+import formatDate from 'date-fns/format';
 import bem from '@fesk/bem-js';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import ColourSwatchPicker from '../ColourSwatchPicker/ColourSwatchPicker';
@@ -50,16 +50,19 @@ class MetadataEditor extends Component {
   constructor(props) {
     super(props);
     const { label, summary, colour, startTime, endTime } = props;
+    const timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
     this.state = {
       label,
       summary,
       colour,
-      startTime: moment(startTime)
-        .utc()
-        .format(DISPLAY_TIME_FORMAT),
-      endTime: moment(endTime)
-        .utc()
-        .format(DISPLAY_TIME_FORMAT),
+      startTime: formatDate(
+        new Date(startTime + timezoneOffset),
+        DISPLAY_TIME_FORMAT
+      ),
+      endTime: formatDate(
+        new Date(endTime + timezoneOffset),
+        DISPLAY_TIME_FORMAT
+      ),
     };
   }
 

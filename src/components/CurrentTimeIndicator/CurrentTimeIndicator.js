@@ -55,7 +55,8 @@ class CurrentTimeIndicator extends Component {
   }
 
   updateRuntimeFormat(runtime) {
-    const date = new Date(runtime);
+    const timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
+    const date = new Date(runtime + timezoneOffset);
     if (date.toString() === 'Invalid Date') {
       return this.setState({
         error: 'Invalid runtime',
