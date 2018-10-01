@@ -95,7 +95,6 @@ class MetadataEditor extends Component {
         originalX: this.props.endTime,
       };
     }
-    console.log('onSave', newValues);
     this.props.onSave(this.props.id, newValues);
   };
 

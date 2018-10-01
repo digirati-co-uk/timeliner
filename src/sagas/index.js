@@ -23,7 +23,6 @@ const getNextBubbleStartTime = state => {
       .filter(bubble => bubble.startTime > currentTime)
       .map(bubble => bubble.startTime)
   );
-  console.log('getNextBubbleStartTime', result);
   return result === Infinity ? currentTime : result;
 };
 
@@ -34,7 +33,6 @@ const getPreviousBubbleStartTime = state => {
     .map(bubble => bubble.startTime)
     .sort()
     .slice(-2, -1)[0];
-  console.log('getPreviousBubbleStartTime', result);
   return result || 0;
 };
 
