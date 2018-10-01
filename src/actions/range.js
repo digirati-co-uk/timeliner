@@ -60,5 +60,5 @@ export const deleteRange = id => ({
 
 export const loadRanges = ranges => ({
   type: LOAD_RANGES,
-  state: ranges,
+  ranges,
 });

@@ -136,14 +136,14 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
         $remove: [idToDelete],
       });
     case LOAD_RANGES:
-      return typeof action.state === 'number'
+      return typeof action.ranges === 'number'
         ? {
             'id-0': {
               ...DEFAULT_RANGES_STATE['id-0'],
-              [RANGE.END_TIME]: action.state,
+              [RANGE.END_TIME]: action.ranges,
             },
           }
-        : action.state;
+        : action.ranges;
     default:
       return state;
   }
