@@ -178,7 +178,7 @@ class BubbleEditor extends React.Component {
                   onUpdateTime={onUpdateTime}
                   onClickPoint={splitRange}
                   dragStart={this.dragStart}
-                  //selectedPoint={this.state.selectedPoint}
+                  selectedPoint={this.state.selectedPoint}
                 />
               </div>
             )}
