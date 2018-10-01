@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// import formatDate from 'date-fns/format';
+
 import {
   Card,
   CardContent,
@@ -9,9 +9,6 @@ import {
   Grid,
 } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
-
-// const displayTime = time =>
-//   formatDate(time, time >= 3600000 ? 'hh:mm:ss' : 'mm:ss');
 
 const MetadataDisplay = props => (
   <Card
