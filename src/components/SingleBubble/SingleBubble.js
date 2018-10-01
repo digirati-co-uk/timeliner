@@ -56,7 +56,12 @@ class SingleBubble extends Component {
           cursor: onClick ? 'pointer' : 'none',
         }}
       >
-        <path d={d} fill={colour} />
+        <path
+          d={d}
+          fill={colour}
+          strokeWidth={this.props.point.isSelected ? 2 : 0}
+          stroke={this.props.point.isSelected ? 'black' : 'transparent'}
+        />
         <text
           textAnchor="middle"
           fill={labelColour}

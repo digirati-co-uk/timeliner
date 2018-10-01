@@ -71,6 +71,7 @@ class BubbleDisplay extends Component {
         version="1.1"
       >
         <g
+          key="bubble_display_main"
           style={{
             transform: 'scale(1, -1)',
             transformOrigin: '50% 50%',

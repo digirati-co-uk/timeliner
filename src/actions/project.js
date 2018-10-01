@@ -5,6 +5,7 @@ import {
   SET_DESCRIPTION,
   RESET_DOCUMENT,
   IMPORT_DOCUMENT,
+  EXPORT_DOCUMENT,
   LOAD_PROJECT,
 } from '../constants/project';
 
@@ -41,6 +42,10 @@ export const resetDocument = () => ({
 export const importDocument = manifest => ({
   type: IMPORT_DOCUMENT,
   manifest,
+});
+
+export const exportDocument = () => ({
+  type: EXPORT_DOCUMENT,
 });
 
 export const loadProject = state => ({

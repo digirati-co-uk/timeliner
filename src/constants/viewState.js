@@ -7,6 +7,7 @@ export const VIEWSTATE = {
   IS_IMPORT_OPEN: 'isImportOpen',
   IS_SETTINGS_OPEN: 'isSettingsOpen',
   VOLUME: 'volume',
+  METADATA_TO_EDIT: 'metadataToEdit',
 };
 
 export const DEFAULT_VIEWSTATE_STATE = {
@@ -18,6 +19,7 @@ export const DEFAULT_VIEWSTATE_STATE = {
   [VIEWSTATE.IS_IMPORT_OPEN]: false,
   [VIEWSTATE.IS_SETTINGS_OPEN]: false,
   [VIEWSTATE.VOLUME]: 70,
+  [VIEWSTATE.METADATA_TO_EDIT]: null,
 };
 
 export const PLAY_AUDIO = 'PLAY_AUDIO';
@@ -37,3 +39,4 @@ export const FAST_REWARD = 'FAST_REWARD';
 export const SET_VOLUME = 'SET_VOLUME';
 export const SET_CURRENT_TIME = 'SET_CURRENT_TIME';
 export const LOAD_VIEW_STATE = 'LOAD_VIEW_STATE';
+export const EDIT_METADATA = 'EDIT_METATADA';

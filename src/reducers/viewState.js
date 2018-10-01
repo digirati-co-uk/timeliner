@@ -18,6 +18,8 @@ import {
   SET_VOLUME,
   SET_CURRENT_TIME,
   LOAD_VIEW_STATE,
+  EDIT_METADATA,
+  VIEWSTATE,
 } from '../constants/viewState';
 
 import { AUDIO_LOADING } from '../constants/canvas';
@@ -26,93 +28,91 @@ const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
   switch (action.type) {
     case AUDIO_LOADING:
       return update(state, {
-        runTime: {
+        [VIEWSTATE.RUNTIME]: {
           $set: action.payload.duration,
         },
       });
     case PLAY_AUDIO:
       return update(state, {
-        isPlaying: {
+        [VIEWSTATE.IS_PLAYING]: {
           $set: true,
         },
       });
     case STOP_AUDIO:
       return update(state, {
-        isPlaying: {
+        [VIEWSTATE.IS_PLAYING]: {
           $set: false,
         },
       });
     case ZOOM_IN:
       return update(state, {
-        zoom: {
+        [VIEWSTATE.ZOOM]: {
           $set: state.zoom * 1.2,
         },
       });
     case ZOOM_OUT:
       return update(state, {
-        zoom: {
+        [VIEWSTATE.ZOOM]: {
           $set: Math.max(state.zoom * 0.8, 1.0),
         },
       });
     case RESET_ZOOM:
       return update(state, {
-        zoom: {
+        [VIEWSTATE.ZOOM]: {
           $set: 1.0,
         },
       });
     case PAN_TO_POSITION:
       return update(state, {
-        x: {
+        [VIEWSTATE.X]: {
           $set: action.payload.x,
         },
       });
     case SHOW_IMPORT_MODAL:
       return update(state, {
-        isImportOpen: {
+        [VIEWSTATE.IS_IMPORT_OPEN]: {
           $set: true,
         },
       });
     case DISMISS_IMPORT_MODAL:
       return update(state, {
-        isImportOpen: {
+        [VIEWSTATE.IS_IMPORT_OPEN]: {
           $set: false,
         },
       });
     case SHOW_SETTINGS_MODAL:
       return update(state, {
-        isSettingsOpen: {
+        [VIEWSTATE.IS_SETTINGS_OPEN]: {
           $set: true,
         },
       });
     case DISMISS_SETTINGS_MODAL:
       return update(state, {
-        isSettingsOpen: {
+        [VIEWSTATE.IS_SETTINGS_OPEN]: {
           $set: false,
         },
       });
     case SET_VOLUME:
       return update(state, {
-        volume: {
+        [VIEWSTATE.VOLUME]: {
           $set: action.payload.volume,
         },
       });
     case SET_CURRENT_TIME:
       return update(state, {
-        currentTime: {
+        [VIEWSTATE.CURRENT_TIME]: {
           $set: action.payload.currentTime,
         },
       });
-    case NEXT_BUBBLE:
-    case PREVIOUS_BUBBLE:
     case FAST_FORWARD:
       return update(state, {
-        currentTime: {
+        [VIEWSTATE.CURRENT_TIME]: {
           $set: Math.min(state.currentTime + 5000, state.runTime),
         },
       });
     case FAST_REWARD:
       return update(state, {
-        currentTime: {
+        [VIEWSTATE.CURRENT_TIME]: {
           $set: Math.max(state.currentTime - 5000, 0),
         },
       });
@@ -120,6 +120,14 @@ const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
       return update(DEFAULT_VIEWSTATE_STATE, {
         $merge: action.state,
       });
+    case EDIT_METADATA:
+      return update(state, {
+        [VIEWSTATE.METADATA_TO_EDIT]: {
+          $set: action.rangeId,
+        },
+      });
+    case NEXT_BUBBLE:
+    case PREVIOUS_BUBBLE:
     default:
       return state;
   }

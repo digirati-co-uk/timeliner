@@ -15,11 +15,11 @@ describe('actions/range', () => {
   test('selectRange', () => {
     expect(range.selectRange('123', true)).toEqual({
       payload: { id: '123', isSelected: true },
-      type: 'ON_SELECT_RANGE',
+      type: 'SELECT_RANGE',
     });
     expect(range.selectRange('123', false)).toEqual({
       payload: { id: '123', isSelected: false },
-      type: 'ON_SELECT_RANGE',
+      type: 'SELECT_RANGE',
     });
   });
 
@@ -61,7 +61,7 @@ describe('actions/range', () => {
 
   test('loadRanges', () => {
     expect(range.loadRanges({ ranges: 'something' })).toEqual({
-      state: { ranges: 'something' },
+      ranges: { ranges: 'something' },
       type: 'LOAD_RANGES',
     });
   });

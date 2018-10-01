@@ -16,6 +16,9 @@ import {
   setCurrentTime,
 } from '../../actions/viewState';
 
+import { RANGE } from '../../constants/range';
+import { selectRange, splitRangeAt, movePoint } from '../../actions/range';
+
 class BubbleEditor extends React.Component {
   constructor(props) {
     super(props);
@@ -24,19 +27,112 @@ class BubbleEditor extends React.Component {
         width: -1,
         height: -1,
       },
+      selectedPoint: -1,
+      startX: 0,
+      deltaX: 0,
     };
   }
 
-  render() {
-    const _points = this.props.points;
-    const { runTime, currentTime, zoom, onUpdateTime } = this.props;
-    const timePoints = Array.from(
+  toggleSelects = (point, ev) => {
+    this.props.selectRange(point.id, !point.isSelected);
+  };
+
+  getTimePoints = () =>
+    Array.from(
       Object.values(this.props.points).reduce((_timePoints, bubble) => {
-        _timePoints.add(bubble.startTime);
-        _timePoints.add(bubble.endTime);
+        _timePoints.add(bubble[RANGE.START_TIME]);
+        _timePoints.add(bubble[RANGE.END_TIME]);
         return _timePoints;
       }, new Set())
+    ).sort((p1, p2) => p1 - p2);
+
+  clearTextSelection = () => {
+    if (window.getSelection) {
+      if (window.getSelection().empty) {
+        // Chrome
+        window.getSelection().empty();
+      } else if (window.getSelection().removeAllRanges) {
+        // Firefox
+        window.getSelection().removeAllRanges();
+      }
+    } else if (document.selection) {
+      // IE?
+      document.selection.empty();
+    }
+  };
+
+  dragStart = ev => {
+    if (
+      ev.target === ev.target.parentNode.firstChild ||
+      ev.target === ev.target.parentNode.lastChild
+    ) {
+      return;
+    }
+    const selectedPoint = Array.prototype.indexOf.call(
+      ev.target.parentNode.childNodes,
+      ev.target
     );
+
+    document.body.addEventListener('mousemove', this.dragMove);
+    document.body.addEventListener('mouseup', this.dragEnd);
+    this.setState({
+      selectedPoint: selectedPoint,
+      startX: ev.pageX,
+      deltaX: 0,
+    });
+  };
+
+  dragMove = ev => {
+    if (this.state.selectedPoint < 0) {
+      return;
+    }
+    // in order to smooth drag
+    this.clearTextSelection();
+    this.setState({
+      deltaX: ev.clientX - this.state.startX,
+    });
+  };
+
+  dragEnd = ev => {
+    if (this.state.selectedPoint !== -1) {
+      document.body.removeEventListener('mousemove', this.dragMove);
+      document.body.removeEventListener('mouseup', this.dragEnd);
+      const originalX = this.getTimePoints()[this.state.selectedPoint];
+      const dX =
+        ((ev.pageX - this.state.startX) / this.state.dimensions.width) *
+        this.props.runTime;
+
+      this.props.movePoint(originalX + dX, originalX);
+    }
+    this.setState({
+      selectedPoint: -1,
+    });
+  };
+
+  render() {
+    const _points = this.props.points;
+    const { runTime, currentTime, zoom, onUpdateTime, splitRange } = this.props;
+    const { dimensions, selectedPoint, deltaX } = this.state;
+    const timePoints = this.getTimePoints();
+
+    let selectedPointValue = 0;
+    let substituteValue = 0;
+    if (selectedPoint !== -1) {
+      selectedPointValue = timePoints[selectedPoint];
+      timePoints[selectedPoint] += Math.max(
+        (deltaX / dimensions.width) * runTime
+      );
+      timePoints[selectedPoint] = Math.max(
+        timePoints[selectedPoint],
+        timePoints[selectedPoint - 1]
+      );
+      timePoints[selectedPoint] = Math.min(
+        timePoints[selectedPoint],
+        timePoints[selectedPoint + 1]
+      );
+      substituteValue = timePoints[selectedPoint];
+    }
+
     return (
       <div
         style={{
@@ -67,11 +163,9 @@ class BubbleEditor extends React.Component {
                   {points =>
                     points.map(bubble => (
                       <SingleBubble
-                        key={`bk-${bubble.id}`}
+                        key={`bk-${bubble.point.id}`}
                         {...bubble}
-                        onClick={(point, ev) => {
-                          alert(JSON.stringify(point));
-                        }}
+                        onClick={this.toggleSelects}
                       />
                     ))
                   }
@@ -81,8 +175,10 @@ class BubbleEditor extends React.Component {
                   currentTime={currentTime}
                   zoom={zoom}
                   timePoints={timePoints}
-                  points={_points}
                   onUpdateTime={onUpdateTime}
+                  onClickPoint={splitRange}
+                  dragStart={this.dragStart}
+                  //selectedPoint={this.state.selectedPoint}
                 />
               </div>
             )}
@@ -111,6 +207,9 @@ const mapDispatchToProps = {
   resetZoom,
   panToPosition,
   onUpdateTime: setCurrentTime,
+  splitRange: splitRangeAt,
+  selectRange,
+  movePoint,
 };
 
 export default connect(

@@ -14,7 +14,20 @@ import ContentOverlay from '../../components/ContentOverlay/ContentOverlay';
 import BubbleEditor from '../BubbleEditor/BubbleEditor';
 import Audio from '../Audio/Audio';
 
-import { importDocument, updateSettings } from '../../actions/project';
+import {
+  splitRangeAt,
+  groupSelectedRanges,
+  deleteRange,
+  updateRange,
+} from '../../actions/range';
+import { RANGE } from '../../constants/range';
+import { PROJECT } from '../../constants/project';
+import {
+  importDocument,
+  updateSettings,
+  resetDocument,
+  exportDocument,
+} from '../../actions/project';
 import {
   showImportModal,
   showSettingsModal,
@@ -25,6 +38,9 @@ import {
   dismissSettingsModal,
   fastForward,
   fastReward,
+  editMetadata,
+  previousBubble,
+  nextBubble,
 } from '../../actions/viewState';
 
 import './VariationsMainView.scss';
@@ -58,6 +74,21 @@ class VariationsMainView extends React.Component {
       },
     };
   }
+  addRange = selected => () => {
+    this.props.splitRangeAt(
+      (selected[RANGE.END_TIME] - selected[RANGE.START_TIME]) / 2 +
+        selected[RANGE.START_TIME]
+    );
+  };
+
+  groupSelectedRanges = () => {
+    this.props.groupSelectedRanges();
+  };
+
+  deleteRange = selected => () => {
+    this.props.deleteRange(selected.id);
+  };
+
   render() {
     const _points = this.props.points;
     const {
@@ -73,13 +104,11 @@ class VariationsMainView extends React.Component {
       audioError,
       loadingPercent,
       isLoaded,
+      rangeToEdit,
+      settings,
     } = this.props;
-    const timePoints = Array.from(
-      Object.values(this.props.points).reduce((_timePoints, bubble) => {
-        _timePoints.add(bubble.startTime);
-        _timePoints.add(bubble.endTime);
-        return _timePoints;
-      }, new Set())
+    const selectedBubbles = Object.values(this.props.points).filter(
+      bubble => bubble.isSelected
     );
     return (
       <div className="variations-app">
@@ -87,8 +116,8 @@ class VariationsMainView extends React.Component {
           <VariationsAppBar
             title={manifestLabel}
             onImportButtonClicked={this.props.showImportModal}
-            onEraseButtonClicked={() => {}}
-            onSaveButtonClicked={() => {}}
+            onEraseButtonClicked={this.props.resetDocument}
+            onSaveButtonClicked={this.props.exportDocument}
             onSettingsButtonClicked={this.props.showSettingsModal}
             onTitleChange={() => {}}
           />
@@ -105,10 +134,25 @@ class VariationsMainView extends React.Component {
               onVolumeChanged={this.props.setVolume}
               onPlay={this.props.play}
               onPause={this.props.pause}
-              onNextBubble={() => {}}
-              onPreviousBubble={() => {}}
+              onNextBubble={this.props.nextBubble}
+              onPreviousBubble={this.props.previousBubble}
               onScrubAhead={this.props.fastForward}
               onScrubBackwards={this.props.fastReward}
+              onAddBubble={
+                selectedBubbles.length === 1
+                  ? this.addRange(selectedBubbles[0])
+                  : null
+              }
+              onGroupBubble={
+                selectedBubbles.length > 1
+                  ? this.props.groupSelectedRanges
+                  : null
+              }
+              onDeleteBubble={
+                selectedBubbles.length === 1
+                  ? this.deleteRange(selectedBubbles[0])
+                  : null
+              }
             />
             <div className="variations-app__metadata-editor">
               <ProjectMetadata
@@ -119,6 +163,9 @@ class VariationsMainView extends React.Component {
                   manifestSummary,
                 }}
                 ranges={_points}
+                onEdit={this.props.editMetadata}
+                rangeToEdit={rangeToEdit}
+                onUpdateRange={this.props.updateRange}
               />
               <Footer />
             </div>
@@ -138,6 +185,7 @@ class VariationsMainView extends React.Component {
             open={isSettingsOpen}
             onClose={this.props.dismissSettingsModal}
             onSave={this.props.updateSettings}
+            settings={settings}
           />
         </MuiThemeProvider>
       </div>
@@ -156,6 +204,7 @@ VariationsMainView.propTypes = {
   dismissSettingsModal: PropTypes.func,
   volume: PropTypes.number.isRequired,
   isPlaying: PropTypes.bool.isRequired,
+  isLoaded: PropTypes.bool.isRequired,
   currentTime: PropTypes.number.isRequired,
   runTime: PropTypes.number.isRequired,
   manifestLabel: PropTypes.string.isRequired,
@@ -166,6 +215,8 @@ VariationsMainView.propTypes = {
   fastForward: PropTypes.func.isRequired,
   fastReward: PropTypes.func.isRequired,
   importDocument: PropTypes.func.isRequired,
+  exportDocument: PropTypes.func.isRequired,
+  settings: PropTypes.object,
 };
 
 const mapStateProps = state => ({
@@ -182,12 +233,27 @@ const mapStateProps = state => ({
   audioError: state.canvas.error,
   loadingPercent: state.canvas.loadingPercent,
   isLoaded: state.canvas.isLoaded,
+  rangeToEdit: state.viewState.metadataToEdit,
+  //settings
+  settings: {
+    [PROJECT.BUBBLE_STYLE]: state.project[PROJECT.BUBBLE_STYLE],
+    [PROJECT.BLACK_N_WHITE]: state.project[PROJECT.BLACK_N_WHITE],
+    [PROJECT.SHOW_TIMES]: state.project[PROJECT.SHOW_TIMES],
+    [PROJECT.AUTO_SCALE_HEIGHT]: state.project[PROJECT.AUTO_SCALE_HEIGHT],
+    [PROJECT.START_PLAYING_WHEN_BUBBLES_CLICKED]:
+      state.project[PROJECT.START_PLAYING_WHEN_BUBBLES_CLICKED],
+    [PROJECT.STOP_PLAYING_END_OF_SECTION]:
+      state.project[PROJECT.STOP_PLAYING_END_OF_SECTION],
+    [PROJECT.BUBBLE_HEIGHT]: state.project[PROJECT.BUBBLE_HEIGHT],
+  },
 });
 
 const mapDispatchToProps = {
   //project actions
   importDocument,
   updateSettings,
+  resetDocument,
+  exportDocument,
   //view state actions
   showImportModal,
   showSettingsModal,
@@ -198,6 +264,14 @@ const mapDispatchToProps = {
   dismissSettingsModal,
   fastForward,
   fastReward,
+  editMetadata,
+  previousBubble,
+  nextBubble,
+  //range
+  splitRangeAt,
+  groupSelectedRanges,
+  deleteRange,
+  updateRange,
 };
 
 export default connect(
