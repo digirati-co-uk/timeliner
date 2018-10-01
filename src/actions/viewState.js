@@ -17,6 +17,7 @@ import {
   SET_CURRENT_TIME,
   LOAD_VIEW_STATE,
 } from '../constants/viewState';
+import invariant from '../utils/invariant';
 
 export const play = () => ({
   type: PLAY_AUDIO,
@@ -77,12 +78,16 @@ export const fastReward = () => ({
   type: FAST_REWARD,
 });
 
-export const setVolume = volume => ({
-  type: SET_VOLUME,
-  payload: {
-    volume,
-  },
-});
+export const setVolume = volume =>
+  invariant(
+    () => volume >= 0 && volume <= 100,
+    'Volume must be between 0-100'
+  ) && {
+    type: SET_VOLUME,
+    payload: {
+      volume,
+    },
+  };
 
 export const setCurrentTime = time => ({
   type: SET_CURRENT_TIME,
