@@ -1,0 +1,29 @@
+---
+title: Verify Dialog 
+menu: Components
+---
+
+import { Playground, PropsTable } from 'docz';
+import Component from "@reach/component-component";
+import VerifyDialog from './VerifyDialog';
+
+
+<PropsTable of={VerifyDialog} />
+
+
+<Playground>
+  <Component initialState={{ 
+      open: false,
+      title: "Delete test",
+      description: "Item will be permanently removed",
+      cancelText: "Oh ,no",
+      aggreeText: "Yes, please",
+   }}>
+  {({ setState, state }) => (
+    <div>
+      <button onClick={()=>setState({open: true})}>Delete Item</button>
+      <VerifyDialog {...state} onClose={()=>setState({open:false})} onProceed={()=>setState({open:false})}/>
+    </div>
+  )}
+  </Component>
+</Playground>

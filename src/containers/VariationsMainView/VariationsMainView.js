@@ -10,6 +10,7 @@ import AudioImporter from '../../components/AudioImporter/AudioImporter';
 import SettingsPopup from '../../components/SettingsPopoup/SettingsPopup';
 import Footer from '../../components/Footer/Footer';
 import ContentOverlay from '../../components/ContentOverlay/ContentOverlay';
+import VerifyDialog from '../../components/VerifyDialog/VerifyDialog';
 
 import BubbleEditor from '../BubbleEditor/BubbleEditor';
 import Audio from '../Audio/Audio';
@@ -41,6 +42,8 @@ import {
   editMetadata,
   previousBubble,
   nextBubble,
+  confirmYes,
+  confirmNo,
 } from '../../actions/viewState';
 
 import './VariationsMainView.scss';
@@ -187,6 +190,12 @@ class VariationsMainView extends React.Component {
             onSave={this.props.updateSettings}
             settings={settings}
           />
+          <VerifyDialog
+            open={this.props.verifyDialog.open}
+            title={this.props.verifyDialog.title}
+            onClose={this.props.confirmNo}
+            onProceed={this.props.confirmYes}
+          />
         </MuiThemeProvider>
       </div>
     );
@@ -234,6 +243,7 @@ const mapStateProps = state => ({
   loadingPercent: state.canvas.loadingPercent,
   isLoaded: state.canvas.isLoaded,
   rangeToEdit: state.viewState.metadataToEdit,
+  verifyDialog: state.viewState.verifyDialog,
   //settings
   settings: {
     [PROJECT.BUBBLE_STYLE]: state.project[PROJECT.BUBBLE_STYLE],
@@ -267,6 +277,8 @@ const mapDispatchToProps = {
   editMetadata,
   previousBubble,
   nextBubble,
+  confirmYes,
+  confirmNo,
   //range
   splitRangeAt,
   groupSelectedRanges,

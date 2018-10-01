@@ -20,6 +20,10 @@ import {
   LOAD_VIEW_STATE,
   EDIT_METADATA,
   VIEWSTATE,
+  OPEN_CONFIRM_DIALOG,
+  CLOSE_CONFIRM_DIALOG,
+  CONFIRM_YES,
+  CONFIRM_NO,
 } from '../constants/viewState';
 
 import { AUDIO_LOADING } from '../constants/canvas';
@@ -126,6 +130,27 @@ const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
           $set: action.rangeId,
         },
       });
+    case OPEN_CONFIRM_DIALOG:
+      return update(state, {
+        [VIEWSTATE.VERIFY_DIALOG]: {
+          open: {
+            $set: true,
+          },
+          title: {
+            $set: action.title,
+          },
+        },
+      });
+    case CLOSE_CONFIRM_DIALOG:
+      return update(state, {
+        [VIEWSTATE.VERIFY_DIALOG]: {
+          open: {
+            $set: false,
+          },
+        },
+      });
+    case CONFIRM_YES:
+    case CONFIRM_NO:
     case NEXT_BUBBLE:
     case PREVIOUS_BUBBLE:
     default:

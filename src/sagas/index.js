@@ -1,4 +1,4 @@
-import { put, select, takeEvery } from 'redux-saga/effects';
+import { put, select, takeEvery, race, call, take } from 'redux-saga/effects';
 
 import { IMPORT_DOCUMENT, RESET_DOCUMENT } from '../constants/project';
 import { UPDATE_RANGE } from '../constants/range';
@@ -11,8 +11,15 @@ import {
   loadViewState,
   editMetadata,
   setCurrentTime,
+  openVerifyDialog,
+  closeVerifyDialog,
 } from '../actions/viewState';
-import { NEXT_BUBBLE, PREVIOUS_BUBBLE } from '../constants/viewState';
+import {
+  NEXT_BUBBLE,
+  PREVIOUS_BUBBLE,
+  CONFIRM_NO,
+  CONFIRM_YES,
+} from '../constants/viewState';
 import { EXPORT_DOCUMENT } from '../constants/project';
 
 const getDuration = state => state.viewState.runTime;
@@ -59,9 +66,30 @@ function* saveRange({ payload }) {
   yield put(editMetadata(null));
 }
 
+function* showConfirmation(message) {
+  yield put(openVerifyDialog(message));
+
+  const { yes } = yield race({
+    yes: take(CONFIRM_YES),
+    no: take(CONFIRM_NO),
+  });
+
+  yield put(closeVerifyDialog());
+
+  return !!yes;
+}
+
 function* resetDocument() {
-  const duration = yield select(getDuration);
-  yield put(loadRanges(duration));
+  console.log('resetDocument');
+  const confirmed = yield call(
+    showConfirmation,
+    'Are you sure you want to delete all ranges?'
+  );
+  console.log('showConfirmation', confirmed);
+  if (confirmed) {
+    const duration = yield select(getDuration);
+    yield put(loadRanges(duration));
+  }
 }
 
 function* previousBubble() {
@@ -77,7 +105,6 @@ function* nextBubble() {
 function* exportDocument() {
   const state = yield select(getState);
   const outputJSON = exporter(state);
-  console.log(outputJSON);
   const mime_type = 'application/json';
 
   const blob = new Blob([JSON.stringify(outputJSON, null, 2)], {
