@@ -1,4 +1,4 @@
-import { take, fork, put, all, select, takeEvery } from 'redux-saga/effects';
+import { put, select, takeEvery } from 'redux-saga/effects';
 
 import { IMPORT_DOCUMENT, RESET_DOCUMENT } from '../constants/project';
 import { UPDATE_RANGE } from '../constants/range';
@@ -37,32 +37,32 @@ const getNextBubbleStartTime = state => {
 };
 
 function* importDocument({ manifest }) {
-    const loadedState = loadProjectState(manifest);
-    yield put(loadProject(loadedState.project));
-    yield put(loadCanvas(loadedState.canvas));
-    yield put(loadRanges(loadedState.range));
-    yield put(loadViewState(loadedState.viewState));
+  const loadedState = loadProjectState(manifest);
+  yield put(loadProject(loadedState.project));
+  yield put(loadCanvas(loadedState.canvas));
+  yield put(loadRanges(loadedState.range));
+  yield put(loadViewState(loadedState.viewState));
 }
 
 function* saveRange({ payload }) {
-    const { startTime, endTime } = payload;
-    if (startTime) {
-      yield put(movePoint(startTime.x, startTime.originalX));
-    }
-    if (endTime) {
-      yield put(movePoint(endTime.x, endTime.originalX));
-    }
-    yield put(editMetadata(null));
+  const { startTime, endTime } = payload;
+  if (startTime) {
+    yield put(movePoint(startTime.x, startTime.originalX));
+  }
+  if (endTime) {
+    yield put(movePoint(endTime.x, endTime.originalX));
+  }
+  yield put(editMetadata(null));
 }
 
 function* resetDocument() {
-    const duration = yield select(getDuration);
-    yield put(loadRanges(duration));
+  const duration = yield select(getDuration);
+  yield put(loadRanges(duration));
 }
 
 function* previousBubble() {
-    const nextBubbleTime = yield select(getNextBubbleStartTime);
-    yield put(setCurrentTime(nextBubbleTime));
+  const nextBubbleTime = yield select(getNextBubbleStartTime);
+  yield put(setCurrentTime(nextBubbleTime));
 }
 
 function* nextBubble() {
