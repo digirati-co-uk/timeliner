@@ -1,4 +1,4 @@
-import { take, fork, put, all, select } from 'redux-saga/effects';
+import { take, fork, put, all, select, takeEvery } from 'redux-saga/effects';
 
 import { IMPORT_DOCUMENT, RESET_DOCUMENT } from '../constants/project';
 import { UPDATE_RANGE } from '../constants/range';
@@ -15,7 +15,7 @@ import { NEXT_BUBBLE, PREVIOUS_BUBBLE } from '../constants/viewState';
 
 const getDuration = state => state.viewState.runTime;
 
-const getNextBubbleStartTime = state => {
+const getPreviousBubbleStartTime = state => {
   const currentTime = state.viewState.currentTime;
   const result = Math.min.apply(
     null,
@@ -26,7 +26,7 @@ const getNextBubbleStartTime = state => {
   return result === Infinity ? currentTime : result;
 };
 
-const getPreviousBubbleStartTime = state => {
+const getNextBubbleStartTime = state => {
   const currentTime = state.viewState.currentTime;
   const result = Object.values(state.range)
     .filter(bubble => bubble.startTime < currentTime)
@@ -36,20 +36,15 @@ const getPreviousBubbleStartTime = state => {
   return result || 0;
 };
 
-function* watchImport() {
-  while (true) {
-    const { manifest } = yield take(IMPORT_DOCUMENT);
+function* importDocument({ manifest }) {
     const loadedState = loadProjectState(manifest);
     yield put(loadProject(loadedState.project));
     yield put(loadCanvas(loadedState.canvas));
     yield put(loadRanges(loadedState.range));
     yield put(loadViewState(loadedState.viewState));
-  }
 }
 
-function* watchSaveRange() {
-  while (true) {
-    const { payload } = yield take(UPDATE_RANGE);
+function* saveRange({ payload }) {
     const { startTime, endTime } = payload;
     if (startTime) {
       yield put(movePoint(startTime.x, startTime.originalX));
@@ -58,39 +53,27 @@ function* watchSaveRange() {
       yield put(movePoint(endTime.x, endTime.originalX));
     }
     yield put(editMetadata(null));
-  }
 }
 
-function* watchResetDocument() {
-  while (true) {
-    yield take(RESET_DOCUMENT);
+function* resetDocument() {
     const duration = yield select(getDuration);
     yield put(loadRanges(duration));
-  }
 }
 
-function* watchPreviousBubble() {
-  while (true) {
-    yield take(NEXT_BUBBLE);
+function* previousBubble() {
     const nextBubbleTime = yield select(getNextBubbleStartTime);
     yield put(setCurrentTime(nextBubbleTime));
-  }
 }
 
-function* watchNextBubble() {
-  while (true) {
-    yield take(PREVIOUS_BUBBLE);
-    const previousBubbleTime = yield select(getPreviousBubbleStartTime);
-    yield put(setCurrentTime(previousBubbleTime));
-  }
+function* nextBubble() {
+  const previousBubbleTime = yield select(getPreviousBubbleStartTime);
+  yield put(setCurrentTime(previousBubbleTime));
 }
 
 export default function* root() {
-  yield all([
-    fork(watchImport),
-    fork(watchSaveRange),
-    fork(watchResetDocument),
-    fork(watchPreviousBubble),
-    fork(watchNextBubble),
-  ]);
+  yield takeEvery(IMPORT_DOCUMENT, importDocument);
+  yield takeEvery(UPDATE_RANGE, saveRange);
+  yield takeEvery(RESET_DOCUMENT, resetDocument);
+  yield takeEvery(PREVIOUS_BUBBLE, previousBubble);
+  yield takeEvery(NEXT_BUBBLE, nextBubble);
 }
