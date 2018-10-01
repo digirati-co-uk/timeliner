@@ -21,6 +21,7 @@ import {
   updateRange,
 } from '../../actions/range';
 import { RANGE } from '../../constants/range';
+import { PROJECT } from '../../constants/project';
 import {
   importDocument,
   updateSettings,
@@ -103,6 +104,7 @@ class VariationsMainView extends React.Component {
       loadingPercent,
       isLoaded,
       rangeToEdit,
+      settings,
     } = this.props;
     const selectedBubbles = Object.values(this.props.points).filter(
       bubble => bubble.isSelected
@@ -182,6 +184,7 @@ class VariationsMainView extends React.Component {
             open={isSettingsOpen}
             onClose={this.props.dismissSettingsModal}
             onSave={this.props.updateSettings}
+            settings={settings}
           />
         </MuiThemeProvider>
       </div>
@@ -200,6 +203,7 @@ VariationsMainView.propTypes = {
   dismissSettingsModal: PropTypes.func,
   volume: PropTypes.number.isRequired,
   isPlaying: PropTypes.bool.isRequired,
+  isLoaded: PropTypes.bool.isRequired,
   currentTime: PropTypes.number.isRequired,
   runTime: PropTypes.number.isRequired,
   manifestLabel: PropTypes.string.isRequired,
@@ -210,6 +214,7 @@ VariationsMainView.propTypes = {
   fastForward: PropTypes.func.isRequired,
   fastReward: PropTypes.func.isRequired,
   importDocument: PropTypes.func.isRequired,
+  settings: PropTypes.object,
 };
 
 const mapStateProps = state => ({
@@ -227,6 +232,18 @@ const mapStateProps = state => ({
   loadingPercent: state.canvas.loadingPercent,
   isLoaded: state.canvas.isLoaded,
   rangeToEdit: state.viewState.metadataToEdit,
+  //settings
+  settings: {
+    [PROJECT.BUBBLE_STYLE]: state.project[PROJECT.BUBBLE_STYLE],
+    [PROJECT.BLACK_N_WHITE]: state.project[PROJECT.BLACK_N_WHITE],
+    [PROJECT.SHOW_TIMES]: state.project[PROJECT.SHOW_TIMES],
+    [PROJECT.AUTO_SCALE_HEIGHT]: state.project[PROJECT.AUTO_SCALE_HEIGHT],
+    [PROJECT.START_PLAYING_WHEN_BUBBLES_CLICKED]:
+      state.project[PROJECT.START_PLAYING_WHEN_BUBBLES_CLICKED],
+    [PROJECT.STOP_PLAYING_END_OF_SECTION]:
+      state.project[PROJECT.STOP_PLAYING_END_OF_SECTION],
+    [PROJECT.BUBBLE_HEIGHT]: state.project[PROJECT.BUBBLE_HEIGHT],
+  },
 });
 
 const mapDispatchToProps = {

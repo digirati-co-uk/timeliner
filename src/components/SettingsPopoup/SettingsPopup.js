@@ -28,6 +28,8 @@ export default class SettingsPopup extends React.Component {
     onClose: PropTypes.func.isRequired,
     /** is the dialog open */
     open: PropTypes.bool,
+    /** initial settings state */
+    settings: PropTypes.object,
   };
 
   static defaultProps = {
@@ -40,6 +42,8 @@ export default class SettingsPopup extends React.Component {
     [PROJECT.BLACK_N_WHITE]: false,
     [PROJECT.BUBBLE_STYLE]: 'round',
     [PROJECT.AUTO_SCALE_HEIGHT]: true,
+    [PROJECT.START_PLAYING_WHEN_BUBBLES_CLICKED]: true,
+    [PROJECT.STOP_PLAYING_END_OF_SECTION]: false,
   };
 
   handleChange = (name, type) => event => {
@@ -58,6 +62,13 @@ export default class SettingsPopup extends React.Component {
     this.props.onSave(this.state);
     this.props.onClose();
   };
+
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    if (prevProps.open === false && this.props.open) {
+      this.setState({ ...prevProps.settings });
+    }
+    return null;
+  }
 
   render() {
     return (
