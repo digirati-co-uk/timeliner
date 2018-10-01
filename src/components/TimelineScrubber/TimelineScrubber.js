@@ -15,8 +15,6 @@ class TimelineScrubber extends Component {
     runTime: PropTypes.number.isRequired,
     /** the current zoom level */
     zoom: PropTypes.number.isRequired,
-    // /** Map of points @todo custom validator */
-    // points: PropTypes.object.isRequired,
     /** Time points */
     timePoints: PropTypes.arrayOf(PropTypes.number),
     /** Handler for when a point is clicked on the timeline */
