@@ -140,17 +140,17 @@ class VariationsMainView extends React.Component {
               onAddBubble={
                 selectedBubbles.length === 1
                   ? this.addRange(selectedBubbles[0])
-                  : undefined
+                  : null
               }
               onGroupBubble={
                 selectedBubbles.length > 1
                   ? this.props.groupSelectedRanges
-                  : undefined
+                  : null
               }
               onDeleteBubble={
                 selectedBubbles.length === 1
                   ? this.deleteRange(selectedBubbles[0])
-                  : undefined
+                  : null
               }
             />
             <div className="variations-app__metadata-editor">
