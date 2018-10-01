@@ -1,20 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import bem from '@fesk/bem-js';
-import formatDate from 'date-fns/format';
+
 import {
   Card,
   CardContent,
-  CardHeader,
   Typography,
-  CardActions,
   IconButton,
   Grid,
 } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
-
-const displayTime = time =>
-  formatDate(time, time >= 3600000 ? 'hh:mm:ss' : 'mm:ss');
 
 const MetadataDisplay = props => (
   <Card
@@ -38,7 +32,7 @@ const MetadataDisplay = props => (
         </Grid>
         <Grid>
           <IconButton>
-            <Edit />
+            <Edit onClick={props.onEditClick} />
           </IconButton>
         </Grid>
       </Grid>
@@ -58,6 +52,13 @@ MetadataDisplay.propTypes = {
   startTime: PropTypes.number.isRequired,
   /** Time (ms) when metadata should be displayed until */
   endTime: PropTypes.number.isRequired,
+  /** On Edit Click handler */
+  onEditClick: PropTypes.func,
+};
+
+MetadataDisplay.defaultProps = {
+  label: 'Unititled',
+  summary: '',
 };
 
 export default MetadataDisplay;

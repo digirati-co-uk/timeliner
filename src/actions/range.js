@@ -1,11 +1,12 @@
 import {
   SPLIT_RANGE_AT,
   GROUP_RANGES,
-  ON_SELECT_RANGE,
+  SELECT_RANGE,
   UPDATE_RANGE,
   MOVE_POINT,
   DELETE_RAGE,
   LOAD_RANGES,
+  DEFAULT_RANGES_STATE,
 } from '../constants/range';
 
 export const splitRangeAt = time => ({
@@ -20,7 +21,7 @@ export const groupSelectedRanges = () => ({
 });
 
 export const selectRange = (id, isSelected) => ({
-  type: ON_SELECT_RANGE,
+  type: SELECT_RANGE,
   payload: {
     id,
     isSelected,
@@ -57,7 +58,7 @@ export const deleteRange = id => ({
   },
 });
 
-export const loadRanges = state => ({
+export const loadRanges = ranges => ({
   type: LOAD_RANGES,
-  state,
+  ranges,
 });

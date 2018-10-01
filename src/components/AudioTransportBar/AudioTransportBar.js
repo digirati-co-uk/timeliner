@@ -33,6 +33,12 @@ class AudioTransportBar extends Component {
     currentTime: PropTypes.number.isRequired,
     /** Runtime time */
     runTime: PropTypes.number.isRequired,
+    /** Add bubble handle splits the first selected bubble in the middle */
+    onAddBubble: PropTypes.func,
+    /** Creates a group if multiple items selected */
+    onGroupBubble: PropTypes.func,
+    /** Deletes the selected bubble */
+    onDeleteBubble: PropTypes.func,
   };
 
   render() {
@@ -44,9 +50,15 @@ class AudioTransportBar extends Component {
               currentTime={this.props.currentTime}
               runtime={this.props.runTime}
             />
-            <PrimaryButton>Add</PrimaryButton>
             <PrimaryButton
-              disabled={true}
+              disabled={!this.props.onAddBubble}
+              onClick={this.props.onAddBubble}
+            >
+              Add
+            </PrimaryButton>
+            <PrimaryButton
+              disabled={!this.props.onGroupBubble}
+              onClick={this.props.onGroupBubble}
               style={{
                 marginLeft: 16,
               }}
@@ -54,7 +66,8 @@ class AudioTransportBar extends Component {
               Group
             </PrimaryButton>
             <PrimaryButton
-              disabled={true}
+              disabled={!this.props.onDeleteBubble}
+              onClick={this.props.onDeleteBubble}
               style={{
                 marginLeft: 16,
               }}

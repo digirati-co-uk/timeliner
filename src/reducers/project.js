@@ -31,12 +31,7 @@ const project = (state = DEFAULT_PROJECT_STATE, action) => {
         [PROJECT.DESCRIPTION]: action.payload.description,
       });
     case RESET_DOCUMENT:
-      return update(
-        {},
-        {
-          $merge: DEFAULT_PROJECT_STATE,
-        }
-      );
+      return state;
     case LOAD_PROJECT:
       return update(
         update(
