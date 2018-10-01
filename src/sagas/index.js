@@ -3,6 +3,7 @@ import { put, select, takeEvery } from 'redux-saga/effects';
 import { IMPORT_DOCUMENT, RESET_DOCUMENT } from '../constants/project';
 import { UPDATE_RANGE } from '../constants/range';
 import { loadProjectState } from '../utils/iiifLoader';
+import exporter from '../utils/iiifSaver';
 import { loadProject } from '../actions/project';
 import { loadCanvas } from '../actions/canvas';
 import { loadRanges, movePoint } from '../actions/range';
@@ -12,6 +13,7 @@ import {
   setCurrentTime,
 } from '../actions/viewState';
 import { NEXT_BUBBLE, PREVIOUS_BUBBLE } from '../constants/viewState';
+import { EXPORT_DOCUMENT } from '../constants/project';
 
 const getDuration = state => state.viewState.runTime;
 
@@ -35,6 +37,8 @@ const getNextBubbleStartTime = state => {
     .slice(-2, -1)[0];
   return result || 0;
 };
+
+const getState = state => state;
 
 function* importDocument({ manifest }) {
   const loadedState = loadProjectState(manifest);
@@ -70,10 +74,17 @@ function* nextBubble() {
   yield put(setCurrentTime(previousBubbleTime));
 }
 
+function* exportDocument() {
+  const state = yield select(getState);
+  const outputJSON = exporter(state);
+  console.log(outputJSON);
+}
+
 export default function* root() {
   yield takeEvery(IMPORT_DOCUMENT, importDocument);
   yield takeEvery(UPDATE_RANGE, saveRange);
   yield takeEvery(RESET_DOCUMENT, resetDocument);
   yield takeEvery(PREVIOUS_BUBBLE, previousBubble);
   yield takeEvery(NEXT_BUBBLE, nextBubble);
+  yield takeEvery(EXPORT_DOCUMENT, exportDocument);
 }

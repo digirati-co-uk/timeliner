@@ -26,6 +26,7 @@ import {
   importDocument,
   updateSettings,
   resetDocument,
+  exportDocument,
 } from '../../actions/project';
 import {
   showImportModal,
@@ -116,7 +117,7 @@ class VariationsMainView extends React.Component {
             title={manifestLabel}
             onImportButtonClicked={this.props.showImportModal}
             onEraseButtonClicked={this.props.resetDocument}
-            onSaveButtonClicked={() => {}}
+            onSaveButtonClicked={this.props.exportDocument}
             onSettingsButtonClicked={this.props.showSettingsModal}
             onTitleChange={() => {}}
           />
@@ -214,6 +215,7 @@ VariationsMainView.propTypes = {
   fastForward: PropTypes.func.isRequired,
   fastReward: PropTypes.func.isRequired,
   importDocument: PropTypes.func.isRequired,
+  exportDocument: PropTypes.func.isRequired,
   settings: PropTypes.object,
 };
 
@@ -251,6 +253,7 @@ const mapDispatchToProps = {
   importDocument,
   updateSettings,
   resetDocument,
+  exportDocument,
   //view state actions
   showImportModal,
   showSettingsModal,
