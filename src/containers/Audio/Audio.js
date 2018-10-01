@@ -3,12 +3,7 @@ import Sound from 'react-sound';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import {
-  audioLoading,
-  audioLoaded,
-  changeAudio,
-  audioError,
-} from '../../actions/canvas';
+import { audioLoading, audioLoaded, audioError } from '../../actions/canvas';
 
 import { ERROR_CODES } from '../../constants/canvas';
 
@@ -88,7 +83,6 @@ const mapStateProps = state => ({
 const mapDispatchToProps = {
   audioLoading,
   audioLoaded,
-  changeAudio,
   audioError,
   setCurrentTime,
 };

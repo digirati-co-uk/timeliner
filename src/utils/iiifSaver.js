@@ -1,4 +1,5 @@
 import { RANGE } from '../constants/range';
+import { PROJECT } from '../constants/project'; 
 
 const PROJECT_SETTINGS_ATTRIBUTE = 'digirati:settings';
 
@@ -67,11 +68,23 @@ const exportRanges = (range, canvasId) => {
   return ranges;
 };
 
+const getProjectSettings = state => ({
+  [PROJECT.BUBBLE_STYLE]: state.project[PROJECT.BUBBLE_STYLE],
+  [PROJECT.BLACK_N_WHITE]: state.project[PROJECT.BLACK_N_WHITE],
+  [PROJECT.SHOW_TIMES]: state.project[PROJECT.SHOW_TIMES],
+  [PROJECT.AUTO_SCALE_HEIGHT]: state.project[PROJECT.AUTO_SCALE_HEIGHT],
+  [PROJECT.START_PLAYING_WHEN_BUBBLES_CLICKED]:
+    state.project[PROJECT.START_PLAYING_WHEN_BUBBLES_CLICKED],
+  [PROJECT.STOP_PLAYING_END_OF_SECTION]:
+    state.project[PROJECT.STOP_PLAYING_END_OF_SECTION],
+  [PROJECT.BUBBLE_HEIGHT]: state.project[PROJECT.BUBBLE_HEIGHT],
+});
+
 const exporter = state => {
   return {
     ...state.project.loadedJson,
     structures: exportRanges(state.range, state.project.loadedJson.items[0].id),
-    [PROJECT_SETTINGS_ATTRIBUTE]: state.project.settings,
+    [PROJECT_SETTINGS_ATTRIBUTE]: getProjectSettings(state),
   };
 };
 
