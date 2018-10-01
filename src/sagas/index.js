@@ -78,6 +78,25 @@ function* exportDocument() {
   const state = yield select(getState);
   const outputJSON = exporter(state);
   console.log(outputJSON);
+  const mime_type = 'application/json';
+
+  const blob = new Blob([JSON.stringify(outputJSON, null, 2)], {
+    type: mime_type,
+  });
+
+  var dlink = document.createElement('a');
+  dlink.download = 'manifest.json';
+  dlink.href = window.URL.createObjectURL(blob);
+  dlink.onclick = function(e) {
+    // revokeObjectURL needs a delay to work properly
+    var that = this;
+    setTimeout(function() {
+      window.URL.revokeObjectURL(that.href);
+    }, 1500);
+  };
+
+  dlink.click();
+  dlink.remove();
 }
 
 export default function* root() {
