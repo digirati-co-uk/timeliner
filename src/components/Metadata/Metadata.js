@@ -78,11 +78,11 @@ Metadata.propTypes = {
   /** Array of Ranges */
   ranges: PropTypes.arrayOf(
     PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      summary: PropTypes.string.isRequired,
+      label: PropTypes.string,
+      summary: PropTypes.string,
       startTime: PropTypes.number.isRequired,
       endTime: PropTypes.number.isRequired,
-      colour: PropTypes.string.isRequired,
+      colour: PropTypes.string,
     }).isRequired
   ).isRequired,
 };

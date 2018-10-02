@@ -5,6 +5,7 @@ menu: Components
 
 import { Playground, PropsTable } from 'docz'; 
 import SingleBubble from './SingleBubble';
+import { BUBBLE_STYLES } from '../../constants/project';
 
 # Single Bubble Demo
 SVG React component that will render a single bubble shape when given a height, width and style.
@@ -13,7 +14,7 @@ SVG React component that will render a single bubble shape when given a height, 
 
 ## Single Bubble Demo
 <Playground>
-  <svg width="400" height="50" viewBox="0 0 400 50">
+  <svg width="700" height="50" viewBox="0 0 700 50">
     <g 
       style={{
         transform: 'scale(1, -1)',
@@ -21,7 +22,7 @@ SVG React component that will render a single bubble shape when given a height, 
       }}
     >
       <rect 
-        width="400" 
+        width="700" 
         height="50" 
         style={{
           fill: '#f6f6f6', 
@@ -34,7 +35,16 @@ SVG React component that will render a single bubble shape when given a height, 
         width={300} 
         height={50} 
         colour="#A8F097"
-        label="asd"
+        label="round"
+        shape={BUBBLE_STYLES.ROUNDED}
+      />
+      <SingleBubble 
+        x={400} 
+        width={300} 
+        height={50} 
+        colour="#A8F097"
+        label="suqare"
+        shape={BUBBLE_STYLES.SQUARE}
       />
     </g>
   </svg>

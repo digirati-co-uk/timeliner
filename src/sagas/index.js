@@ -111,9 +111,6 @@ function* previousBubble() {
 
 function* nextBubble() {
   const nextBubbleTime = yield select(getNextBubbleStartTime);
-  // if (!nextBubbleTime.doStop) {
-  //   yield put(pause());
-  // }
   yield put(setCurrentTime(nextBubbleTime.time));
 }
 

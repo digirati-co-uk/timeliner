@@ -14,12 +14,16 @@ class BubbleDisplay extends Component {
     zoom: PropTypes.number,
     /** X offset of view box */
     x: PropTypes.number,
+    /** Bubble style passed to single bubbles */
+    shape: PropTypes.string,
+    /** Bubble height */
+    bubbleHeight: PropTypes.number,
   };
 
   static defaultProps = {
     zoom: 1,
     x: 0,
-    renderBubble: null,
+    bubbleHeight: 70,
   };
 
   shouldComponentUpdate(nextProps) {
@@ -35,7 +39,16 @@ class BubbleDisplay extends Component {
   }
 
   render() {
-    const { width, height, zoom, x, points, children } = this.props;
+    const {
+      width,
+      height,
+      zoom,
+      x,
+      points,
+      children,
+      shape,
+      bubbleHeight,
+    } = this.props;
     const realWidth = width * zoom;
     const computedWidth = Math.max(width, 1);
     const maxWidth = Math.max.apply(
@@ -49,9 +62,11 @@ class BubbleDisplay extends Component {
       x: point.startTime * projectionFactor,
       width: (point.endTime - point.startTime) * projectionFactor,
       colour: point.colour,
-      height: (maxDepth - point.depth) * 70, //Math.pow(2 / 3, point.depth - 1) * height,
+      height: (maxDepth - point.depth) * bubbleHeight, //Math.pow(2 / 3, point.depth - 1) * height,
       label: point.label,
-      point: point,
+      point,
+      isSelected: point.isSelected,
+      shape,
     }));
 
     const childrenWithProps =

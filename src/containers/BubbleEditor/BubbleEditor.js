@@ -17,6 +17,7 @@ import {
 } from '../../actions/viewState';
 
 import { RANGE } from '../../constants/range';
+import { PROJECT } from '../../constants/project';
 import { selectRange, splitRangeAt, movePoint } from '../../actions/range';
 
 class BubbleEditor extends React.Component {
@@ -111,9 +112,19 @@ class BubbleEditor extends React.Component {
 
   render() {
     const _points = this.props.points;
-    const { runTime, currentTime, zoom, onUpdateTime, splitRange } = this.props;
+    const {
+      runTime,
+      currentTime,
+      zoom,
+      onUpdateTime,
+      splitRange,
+      bubbleHeight,
+      bubbleStyle,
+    } = this.props;
     const { dimensions, selectedPoint, deltaX } = this.state;
+
     const timePoints = this.getTimePoints();
+    console.log(bubbleHeight, bubbleStyle);
 
     let selectedPointValue = 0;
     let substituteValue = 0;
@@ -159,6 +170,8 @@ class BubbleEditor extends React.Component {
                   height={200}
                   x={0}
                   zoom={zoom}
+                  bubbleHeight={bubbleHeight}
+                  shape={bubbleStyle}
                 >
                   {points =>
                     points.map(bubble => (
@@ -199,6 +212,8 @@ const mapStateProps = state => ({
   runTime: state.viewState.runTime,
   points: state.range,
   zoom: state.viewState.zoom,
+  bubbleHeight: state.project[PROJECT.BUBBLE_HEIGHT],
+  bubbleStyle: state.project[PROJECT.BUBBLE_STYLE],
 });
 
 const mapDispatchToProps = {
