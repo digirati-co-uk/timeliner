@@ -9,9 +9,8 @@ import {
   DELETE_RAGE,
   LOAD_RANGES,
   RANGE,
+  DEFAULT_COLOURS,
 } from '../constants/range';
-
-const DEFAULT_COLOURS = ['#A63993', '#7D3DB0', '#3E3D99', '#417AB0', '#40A6A2'];
 
 const generateNewId = () => `id-${new Date().getTime()}`;
 const groupBubbles = selectedBubbles => {
@@ -23,7 +22,6 @@ const groupBubbles = selectedBubbles => {
       if (_group[RANGE.END_TIME] < bubble[RANGE.END_TIME]) {
         _group[RANGE.END_TIME] = bubble[RANGE.END_TIME];
       }
-      console.log('groupBubbles->depth', bubble[RANGE.DEPTH]);
       if (_group[RANGE.DEPTH] < bubble[RANGE.DEPTH]) {
         _group[RANGE.DEPTH] = bubble[RANGE.DEPTH];
       }
@@ -41,8 +39,7 @@ const groupBubbles = selectedBubbles => {
     }
   );
   group.depth += 1;
-  group.colour = DEFAULT_COLOURS[group.depth%DEFAULT_COLOURS.length];
-  console.log('groupBubbles', group);
+  group.colour = DEFAULT_COLOURS[group.depth % DEFAULT_COLOURS.length];
   return group;
 };
 
