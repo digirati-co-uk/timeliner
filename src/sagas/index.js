@@ -13,6 +13,8 @@ import {
   setCurrentTime,
   openVerifyDialog,
   closeVerifyDialog,
+  play,
+  pause,
 } from '../actions/viewState';
 import {
   NEXT_BUBBLE,
@@ -26,23 +28,31 @@ import { immediateDownload } from '../utils/fileDownload';
 
 const getDuration = state => state.viewState.runTime;
 
-const getPreviousBubbleStartTime = state => {
-  const currentTime = state.viewState.currentTime;
-  const result = Math.min.apply(
-    null,
-    Object.values(state.range)
-      .filter(bubble => bubble.startTime > currentTime)
-      .map(bubble => bubble.startTime)
-  );
-  return result === Infinity ? currentTime : result;
-};
+const getPoints = state =>
+  Array.from(
+    Object.values(state.range).reduce((markers, range) => {
+      markers.add(range.startTime);
+      markers.add(range.endTime);
+      return markers;
+    }, new Set([]))
+  ).sort();
 
 const getNextBubbleStartTime = state => {
   const currentTime = state.viewState.currentTime;
-  const result = Object.values(state.range)
-    .filter(bubble => bubble.startTime < currentTime)
-    .map(bubble => bubble.startTime)
-    .sort()
+  const result = Math.min.apply(
+    null,
+    getPoints(state).filter(point => point > currentTime)
+  );
+  return {
+    time: result === Infinity ? state.viewState.runTime + 1 : result + 1,
+    doStop: result === Infinity,
+  };
+};
+
+const getPreviousBubbleStartTime = state => {
+  const currentTime = state.viewState.currentTime;
+  const result = getPoints(state)
+    .filter(point => point <= currentTime)
     .slice(-2, -1)[0];
   return result || 0;
 };
@@ -95,13 +105,16 @@ function* resetDocument() {
 }
 
 function* previousBubble() {
-  const nextBubbleTime = yield select(getNextBubbleStartTime);
-  yield put(setCurrentTime(nextBubbleTime));
+  const previousBubbleTime = yield select(getPreviousBubbleStartTime);
+  yield put(setCurrentTime(previousBubbleTime));
 }
 
 function* nextBubble() {
-  const previousBubbleTime = yield select(getPreviousBubbleStartTime);
-  yield put(setCurrentTime(previousBubbleTime));
+  const nextBubbleTime = yield select(getNextBubbleStartTime);
+  // if (!nextBubbleTime.doStop) {
+  //   yield put(pause());
+  // }
+  yield put(setCurrentTime(nextBubbleTime.time));
 }
 
 function* exportDocument() {

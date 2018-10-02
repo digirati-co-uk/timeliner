@@ -4608,10 +4608,6 @@ delegates@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/delegates/-/delegates-1.0.0.tgz#84c6e159b81904fdca59a0ef44cd870d31250f9a"
 
-delve@^0.3.2:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/delve/-/delve-0.3.2.tgz#1d41a7cb008c1d3719fa2c621973253417de6b8b"
-
 depd@0.4.5:
   version "0.4.5"
   resolved "https://registry.yarnpkg.com/depd/-/depd-0.4.5.tgz#1a664b53388b4a6573e8ae67b5f767c693ca97f1"
@@ -8125,10 +8121,6 @@ jquery@>=3.0.0, jquery@^3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
 
-jquery@^1.11.2:
-  version "1.12.4"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-1.12.4.tgz#01e1dfba290fe73deba77ceeacb0f9ba2fec9e0c"
-
 js-base64@^2.1.8, js-base64@^2.1.9:
   version "2.4.9"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.4.9.tgz#748911fb04f48a60c4771b375cac45a80df11c03"
@@ -8577,12 +8569,9 @@ koa@^2.4.1, koa@^2.5.2:
     type-is "^1.6.16"
     vary "^1.1.2"
 
-lang@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/lang/-/lang-0.1.1.tgz#2324e17706ad464781092305106e6cf87fdfa319"
-  dependencies:
-    delve "^0.3.2"
-    jquery "^1.11.2"
+langs@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/langs/-/langs-2.0.0.tgz#00c32ce48152a49a614450b9ba2632ab58a0a364"
 
 last-call-webpack-plugin@^3.0.0:
   version "3.0.0"

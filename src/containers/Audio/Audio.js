@@ -34,11 +34,11 @@ class Audio extends Component {
   };
 
   handleResumePlaying = ({ position, duration }) => {
-    //this.props.setCurrentTime(position);
+    this.props.setCurrentTime(position);
   };
 
   handleSongFinishedPlaying = ({ position, duration }) => {
-    //this.props.setCurrentTime(position);
+    //this.props.setCurrentTime(0);
   };
 
   handleOnLoad = obj => {

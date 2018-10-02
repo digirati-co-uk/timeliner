@@ -69,6 +69,20 @@ class VariationsMainView extends React.Component {
       status: {
         danger: 'orange',
       },
+      spacing: {
+        unit: 4,
+      },
+      shape: {
+        borderRadius: 2,
+      },
+      typography: {
+        fontSize: 12,
+      },
+      mixins: {
+        toolbar: {
+          minHeight: 36,
+        },
+      },
     });
     this.state = {
       dimensions: {
