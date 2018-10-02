@@ -178,15 +178,23 @@ class MetadataEditor extends Component {
               onSelectColour={this.onSelectColour}
             />
           </Grid>
+          <Grid
+            item
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              flex: 1,
+            }}
+          >
+            <Button disabled={!onDelete} onClick={onDelete}>
+              <Delete /> Delete
+            </Button>
+            <PrimaryButton disabled={!this.props.onSave} onClick={this.onSave}>
+              Save
+            </PrimaryButton>
+          </Grid>
         </Grid>
-        <div className={metadataEditor.element('button-bar')}>
-          <Button disabled={!onDelete} onClick={onDelete}>
-            <Delete /> Delete
-          </Button>
-          <PrimaryButton disabled={!this.props.onSave} onClick={this.onSave}>
-            Save
-          </PrimaryButton>
-        </div>
       </form>
     );
   }

@@ -156,7 +156,7 @@ class BubbleEditor extends React.Component {
                 <BubbleDisplay
                   points={_points}
                   width={this.state.dimensions.width}
-                  height={300}
+                  height={200}
                   x={0}
                   zoom={zoom}
                 >
@@ -178,7 +178,7 @@ class BubbleEditor extends React.Component {
                   onUpdateTime={onUpdateTime}
                   onClickPoint={splitRange}
                   dragStart={this.dragStart}
-                  //selectedPoint={this.state.selectedPoint}
+                  selectedPoint={this.state.selectedPoint}
                 />
               </div>
             )}

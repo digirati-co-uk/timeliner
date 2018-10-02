@@ -17,6 +17,10 @@ import {
   SET_CURRENT_TIME,
   LOAD_VIEW_STATE,
   EDIT_METADATA,
+  OPEN_CONFIRM_DIALOG,
+  CLOSE_CONFIRM_DIALOG,
+  CONFIRM_YES,
+  CONFIRM_NO,
 } from '../constants/viewState';
 import invariant from '../utils/invariant';
 
@@ -105,4 +109,21 @@ export const loadViewState = state => ({
 export const editMetadata = rangeId => ({
   type: EDIT_METADATA,
   rangeId,
+});
+
+export const openVerifyDialog = title => ({
+  type: OPEN_CONFIRM_DIALOG,
+  title,
+});
+
+export const closeVerifyDialog = () => ({
+  type: CLOSE_CONFIRM_DIALOG,
+});
+
+export const confirmYes = () => ({
+  type: CONFIRM_YES,
+});
+
+export const confirmNo = () => ({
+  type: CONFIRM_NO,
 });

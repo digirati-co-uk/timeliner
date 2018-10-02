@@ -7,4 +7,16 @@
   margin-left: -5px;
   z-index: 1;
   margin-top: -5px;
+  cursor: ew-resize;
+  &__tooltip {
+    position: absolute;
+    bottom: 12px;
+    left: 0;
+    margin-left: 5px;
+    background: white;
+    color: #777;
+    border-radius: 2px;
+    transform: translate(-50%,0);
+    cursor: ew-resize;
+  }
 }

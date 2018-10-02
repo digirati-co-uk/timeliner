@@ -9,7 +9,9 @@ const Metadata = props => (
   <div className="metadata">
     <div className="metadata__annotations">
       <div className="metadata__annotations-content">
-        <Typography variant="subheading">Annotations</Typography>
+        <Typography variant="subheading" color="textSecondary">
+          Annotations
+        </Typography>
         <div className="metadata__content">
           {props.ranges
             .filter(
@@ -40,7 +42,9 @@ const Metadata = props => (
     </div>
     <div className="metadata__project">
       <div className="metadata__project-content">
-        <Typography variant="subheading">Project</Typography>
+        <Typography variant="subheading" color="textSecondary">
+          Project
+        </Typography>
         <div className="metadata__content">
           <Typography variant="title" component="h3">
             {props.manifestLabel}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withTheme } from '@material-ui/core/styles';
+import formatDate from 'date-fns/format';
 
 import TimelineMarker from '../TimelineMarker/TimelineMarker';
 import PlayHead from '../Playhead/Playhead';
@@ -29,6 +30,7 @@ class TimelineScrubber extends Component {
     renderTimelineHover: PropTypes.func,
     /** on drag start */
     dragStart: PropTypes.func,
+    selectedPoint: PropTypes.number,
   };
 
   static defaultProps = {
@@ -43,6 +45,17 @@ class TimelineScrubber extends Component {
   };
 
   timeToPercent = time => (time / this.props.runTime) * 100 * this.props.zoom;
+
+  timeToLabel = time => {
+    const timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
+    const date = new Date(time + timezoneOffset);
+    if (date.toString() === 'Invalid Date') {
+      return 'Invalid time';
+    }
+
+    const format = time >= 3600000 ? 'hh:mm:ss' : 'mm:ss';
+    return formatDate(date, format);
+  };
 
   getClickedTime = ev => {
     const scrobberBounds = ev.currentTarget.getBoundingClientRect();
@@ -62,7 +75,7 @@ class TimelineScrubber extends Component {
   };
 
   render() {
-    const { currentTime, timePoints, theme } = this.props;
+    const { currentTime, timePoints, theme, selectedPoint } = this.props;
     return (
       <div
         className="timeline-scrubber"
@@ -74,8 +87,15 @@ class TimelineScrubber extends Component {
           <TimelineMarker
             key={`tp-${timePoint}`}
             x={this.timeToPercent(timePoint)}
-            isUpdating={false}
-          />
+          >
+            {timePoint === timePoints[selectedPoint] ? (
+              <span className="timeline-marker__tooltip">
+                {this.timeToLabel(timePoint)}
+              </span>
+            ) : (
+              ''
+            )}
+          </TimelineMarker>
         ))}
         <PlayHead x={this.timeToPercent(currentTime)} isUpdating={false} />
       </div>

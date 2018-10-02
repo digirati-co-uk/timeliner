@@ -4,7 +4,7 @@ import {
   AUDIO_ERROR,
   LOAD_CANVAS,
 } from '../constants/canvas';
-import invariant from "../utils/invariant";
+import invariant from '../utils/invariant';
 
 export const audioLoading = (bytesLoaded, bytesTotal, duration) =>
   invariant(

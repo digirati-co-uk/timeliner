@@ -1,4 +1,4 @@
-import { put, select, takeEvery } from 'redux-saga/effects';
+import { put, select, takeEvery, race, call, take } from 'redux-saga/effects';
 
 import { IMPORT_DOCUMENT, RESET_DOCUMENT } from '../constants/project';
 import { UPDATE_RANGE } from '../constants/range';
@@ -11,29 +11,48 @@ import {
   loadViewState,
   editMetadata,
   setCurrentTime,
+  openVerifyDialog,
+  closeVerifyDialog,
+  play,
+  pause,
 } from '../actions/viewState';
-import { NEXT_BUBBLE, PREVIOUS_BUBBLE } from '../constants/viewState';
+import {
+  NEXT_BUBBLE,
+  PREVIOUS_BUBBLE,
+  CONFIRM_NO,
+  CONFIRM_YES,
+} from '../constants/viewState';
 import { EXPORT_DOCUMENT } from '../constants/project';
+import { serialize } from '../utils/iiifSerializer';
+import { immediateDownload } from '../utils/fileDownload';
 
 const getDuration = state => state.viewState.runTime;
 
-const getPreviousBubbleStartTime = state => {
-  const currentTime = state.viewState.currentTime;
-  const result = Math.min.apply(
-    null,
-    Object.values(state.range)
-      .filter(bubble => bubble.startTime > currentTime)
-      .map(bubble => bubble.startTime)
-  );
-  return result === Infinity ? currentTime : result;
-};
+const getPoints = state =>
+  Array.from(
+    Object.values(state.range).reduce((markers, range) => {
+      markers.add(range.startTime);
+      markers.add(range.endTime);
+      return markers;
+    }, new Set([]))
+  ).sort();
 
 const getNextBubbleStartTime = state => {
   const currentTime = state.viewState.currentTime;
-  const result = Object.values(state.range)
-    .filter(bubble => bubble.startTime < currentTime)
-    .map(bubble => bubble.startTime)
-    .sort()
+  const result = Math.min.apply(
+    null,
+    getPoints(state).filter(point => point > currentTime)
+  );
+  return {
+    time: result === Infinity ? state.viewState.runTime + 1 : result + 1,
+    doStop: result === Infinity,
+  };
+};
+
+const getPreviousBubbleStartTime = state => {
+  const currentTime = state.viewState.currentTime;
+  const result = getPoints(state)
+    .filter(point => point <= currentTime)
     .slice(-2, -1)[0];
   return result || 0;
 };
@@ -59,44 +78,49 @@ function* saveRange({ payload }) {
   yield put(editMetadata(null));
 }
 
+function* showConfirmation(message) {
+  yield put(openVerifyDialog(message));
+
+  const { yes } = yield race({
+    yes: take(CONFIRM_YES),
+    no: take(CONFIRM_NO),
+  });
+
+  yield put(closeVerifyDialog());
+
+  return !!yes;
+}
+
 function* resetDocument() {
-  const duration = yield select(getDuration);
-  yield put(loadRanges(duration));
+  console.log('resetDocument');
+  const confirmed = yield call(
+    showConfirmation,
+    'Are you sure you want to delete all ranges?'
+  );
+  console.log('showConfirmation', confirmed);
+  if (confirmed) {
+    const duration = yield select(getDuration);
+    yield put(loadRanges(duration));
+  }
 }
 
 function* previousBubble() {
-  const nextBubbleTime = yield select(getNextBubbleStartTime);
-  yield put(setCurrentTime(nextBubbleTime));
+  const previousBubbleTime = yield select(getPreviousBubbleStartTime);
+  yield put(setCurrentTime(previousBubbleTime));
 }
 
 function* nextBubble() {
-  const previousBubbleTime = yield select(getPreviousBubbleStartTime);
-  yield put(setCurrentTime(previousBubbleTime));
+  const nextBubbleTime = yield select(getNextBubbleStartTime);
+  // if (!nextBubbleTime.doStop) {
+  //   yield put(pause());
+  // }
+  yield put(setCurrentTime(nextBubbleTime.time));
 }
 
 function* exportDocument() {
   const state = yield select(getState);
   const outputJSON = exporter(state);
-  console.log(outputJSON);
-  const mime_type = 'application/json';
-
-  const blob = new Blob([JSON.stringify(outputJSON, null, 2)], {
-    type: mime_type,
-  });
-
-  var dlink = document.createElement('a');
-  dlink.download = 'manifest.json';
-  dlink.href = window.URL.createObjectURL(blob);
-  dlink.onclick = function(e) {
-    // revokeObjectURL needs a delay to work properly
-    var that = this;
-    setTimeout(function() {
-      window.URL.revokeObjectURL(that.href);
-    }, 1500);
-  };
-
-  dlink.click();
-  dlink.remove();
+  immediateDownload(serialize(outputJSON));
 }
 
 export default function* root() {

@@ -9,8 +9,12 @@ class TimelineMarker extends Component {
     x: PropTypes.number.isRequired,
   };
 
+  static defaultProps = {
+    x: 0,
+  };
+
   render() {
-    const { x, theme } = this.props;
+    const { x, theme, children } = this.props;
     return (
       <div
         className="timeline-marker"
@@ -18,7 +22,9 @@ class TimelineMarker extends Component {
           left: `${x}%`,
           background: `${theme.palette.primary.main}`,
         }}
-      />
+      >
+        {children}
+      </div>
     );
   }
 }

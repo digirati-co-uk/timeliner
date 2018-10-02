@@ -8,6 +8,7 @@ export const VIEWSTATE = {
   IS_SETTINGS_OPEN: 'isSettingsOpen',
   VOLUME: 'volume',
   METADATA_TO_EDIT: 'metadataToEdit',
+  VERIFY_DIALOG: 'verifyDialog',
 };
 
 export const DEFAULT_VIEWSTATE_STATE = {
@@ -20,6 +21,10 @@ export const DEFAULT_VIEWSTATE_STATE = {
   [VIEWSTATE.IS_SETTINGS_OPEN]: false,
   [VIEWSTATE.VOLUME]: 70,
   [VIEWSTATE.METADATA_TO_EDIT]: null,
+  [VIEWSTATE.VERIFY_DIALOG]: {
+    open: false,
+    title: '',
+  },
 };
 
 export const PLAY_AUDIO = 'PLAY_AUDIO';
@@ -40,3 +45,8 @@ export const SET_VOLUME = 'SET_VOLUME';
 export const SET_CURRENT_TIME = 'SET_CURRENT_TIME';
 export const LOAD_VIEW_STATE = 'LOAD_VIEW_STATE';
 export const EDIT_METADATA = 'EDIT_METATADA';
+export const SET_VERIFY_DIALOG = 'SET_VERIFY_DIALOG';
+export const OPEN_CONFIRM_DIALOG = 'OPEN_CONFIRM_DIALOG';
+export const CLOSE_CONFIRM_DIALOG = 'CLOSE_CONFIRM_DIALOG';
+export const CONFIRM_YES = 'CONFIRM_YES';
+export const CONFIRM_NO = 'CONFIRM_NO';

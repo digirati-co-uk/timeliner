@@ -1,3 +1,6 @@
+import { DEFAULT_SETTINGS, RDF_NAMESPACE } from '../../constants/project';
+import { getProjectSettings } from '../../utils/iiifSaver';
+
 const createNewManifest = (manifestDomain, audioUri, duration) => ({
   label: {
     en: ['Unnamed manifest'],
@@ -51,6 +54,7 @@ const createNewManifest = (manifestDomain, audioUri, duration) => ({
       ],
     },
   ],
+  [`${RDF_NAMESPACE}:settings`]: getProjectSettings(DEFAULT_SETTINGS),
   '@context': [
     'http://digirati.com/ns/timeliner',
     'http://www.w3.org/ns/anno.jsonld',
