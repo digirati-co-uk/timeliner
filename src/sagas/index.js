@@ -22,6 +22,9 @@ import {
   CONFIRM_NO,
   CONFIRM_YES,
 } from '../constants/viewState';
+import {
+  SELECT_RANGE
+} from '../constants/range';
 import { EXPORT_DOCUMENT } from '../constants/project';
 import { serialize } from '../utils/iiifSerializer';
 import { immediateDownload } from '../utils/fileDownload';
@@ -92,12 +95,10 @@ function* showConfirmation(message) {
 }
 
 function* resetDocument() {
-  console.log('resetDocument');
   const confirmed = yield call(
     showConfirmation,
     'Are you sure you want to delete all ranges?'
   );
-  console.log('showConfirmation', confirmed);
   if (confirmed) {
     const duration = yield select(getDuration);
     yield put(loadRanges(duration));
@@ -120,6 +121,17 @@ function* exportDocument() {
   immediateDownload(serialize(outputJSON));
 }
 
+function* selectSideEffects({payload}) {
+  const state = yield select(getState);
+  if (state.project.startPlayingWhenBubbleIsClicked) {
+    if (payload.isSelected) {
+      yield put(play());
+    } else {
+      yield put(pause());
+    }
+  }
+}
+
 export default function* root() {
   yield takeEvery(IMPORT_DOCUMENT, importDocument);
   yield takeEvery(UPDATE_RANGE, saveRange);
@@ -127,4 +139,5 @@ export default function* root() {
   yield takeEvery(PREVIOUS_BUBBLE, previousBubble);
   yield takeEvery(NEXT_BUBBLE, nextBubble);
   yield takeEvery(EXPORT_DOCUMENT, exportDocument);
+  yield takeEvery(SELECT_RANGE, selectSideEffects);
 }
