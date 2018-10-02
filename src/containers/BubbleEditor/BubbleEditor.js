@@ -120,6 +120,7 @@ class BubbleEditor extends React.Component {
       splitRange,
       bubbleHeight,
       bubbleStyle,
+      blackAndWhiteMode,
     } = this.props;
     const { dimensions, selectedPoint, deltaX } = this.state;
 
@@ -163,7 +164,13 @@ class BubbleEditor extends React.Component {
             }}
           >
             {({ measureRef }) => (
-              <div ref={measureRef}>
+              <div ref={measureRef} 
+                style={
+                  blackAndWhiteMode ? {
+                    filter: 'grayscale(1.0)',
+                  }: {}
+                }
+              >
                 <BubbleDisplay
                   points={_points}
                   width={this.state.dimensions.width}
@@ -216,6 +223,7 @@ const mapStateProps = state => ({
   bubbleHeight: state.project[PROJECT.BUBBLE_HEIGHT],
   bubbleStyle: state.project[PROJECT.BUBBLE_STYLE],
   showTimes: state.project[PROJECT.SHOW_TIMES],
+  blackAndWhiteMode: state.project[PROJECT.BLACK_N_WHITE],
 });
 
 const mapDispatchToProps = {

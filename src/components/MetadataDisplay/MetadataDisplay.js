@@ -16,6 +16,7 @@ const MetadataDisplay = props => (
       borderLeft: `4px solid ${props.colour}`,
       marginLeft: `${(props.depth - 1) * 24}px`,
       marginBottom: 16,
+      filter: props.blackAndWhiteMode ? 'grayscale(1.0)' : '',
     }}
   >
     <CardContent>
@@ -54,11 +55,14 @@ MetadataDisplay.propTypes = {
   endTime: PropTypes.number.isRequired,
   /** On Edit Click handler */
   onEditClick: PropTypes.func,
+  /** Black and white mode */
+  blackAndWhiteMode: PropTypes.bool,
 };
 
 MetadataDisplay.defaultProps = {
   label: 'Unititled',
   summary: '',
+  blackAndWhiteMode: false,
 };
 
 export default MetadataDisplay;

@@ -183,6 +183,7 @@ class VariationsMainView extends React.Component {
                 onEdit={this.props.editMetadata}
                 rangeToEdit={rangeToEdit}
                 onUpdateRange={this.props.updateRange}
+                blackAndWhiteMode={this.props.settings[PROJECT.BLACK_N_WHITE]}
               />
               <Footer />
             </div>

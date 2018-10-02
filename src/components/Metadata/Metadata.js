@@ -34,6 +34,7 @@ const Metadata = props => (
                     {...range}
                     onEditClick={(selectedRange => () =>
                       props.onEdit(selectedRange.id))(range)}
+                    blackAndWhiteMode={props.blackAndWhiteMode}
                   />
                 )
             )}
@@ -85,6 +86,12 @@ Metadata.propTypes = {
       colour: PropTypes.string,
     }).isRequired
   ).isRequired,
+  /** Black and white mode */
+  blackAndWhiteMode: PropTypes.bool,
+};
+
+Metadata.defaultProps = {
+  blackAndWhiteMode: false,
 };
 
 export default Metadata;
