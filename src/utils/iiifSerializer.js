@@ -1,4 +1,7 @@
-const KEY_ORDER = [
+import langs from 'langs';
+import { PROJECT_SETTINGS_KEYS, RDF_NAMESPACE } from '../../constants/project';
+
+const IIIF_KEY_ORDER = [
   '@context',
   'id',
   '@id',
@@ -32,72 +35,16 @@ const KEY_ORDER = [
   'annotations',
 ];
 
-const [KEY_ORDER_MAP, REVERSE_MAP] = KEY_ORDER.reduce(
-  (kom, key, idx) => {
-    const paddedIdx = `${idx}`.padStart(4, '0');
-    kom[0][key] = paddedIdx;
-    kom[1][paddedIdx] = key;
-    return kom;
-  },
-  [{}, {}]
-);
+const TIMELINE_PROPERTIES = [
+  `${RDF_NAMESPACE}:backgroundColour`,
+  `${RDF_NAMESPACE}:settings`,
+  ...PROJECT_SETTINGS_KEYS.map(key => `${RDF_NAMESPACE}:${key}`),
+];
 
-const isArray = i => i instanceof Array;
-const isDictionary = i => i instanceof Object && !(i instanceof Array);
-const getIndent = indent => new Array(indent + 1).join(' ');
+const LANGUAGES = langs.codes('1');
 
-export const serialize = (item, indent = 0, indentIncrement = 2) => {
-  let result = [];
-  if (isArray(item)) {
-    result.push('[');
-    result.push(
-      item
-        .map(
-          child =>
-            (!isDictionary(child) && !isArray(child)
-              ? '\n' + getIndent(indent + indentIncrement)
-              : '') + serialize(child, indent + indentIncrement)
-        )
-        .join(',\n')
-    );
-    result.push('\n', getIndent(indent), ']');
-  } else if (isDictionary(item)) {
-    const keyValues = Object.keys(item)
-      .map(key => {
-        if (KEY_ORDER_MAP.hasOwnProperty(key)) {
-          return [KEY_ORDER_MAP[key], item[key]];
-        } else {
-          return [key, item[key]];
-        }
-      })
-      .sort((a, b) => {
-        if (a[0] > b[0]) {
-          return 1;
-        }
-        if (a[0] < b[0]) {
-          return -1;
-        }
-        return 0;
-      });
-    result.push('{');
-    result.push(
-      keyValues
-        .map(
-          ([key, value]) =>
-            '\n' +
-            getIndent(indent + indentIncrement) +
-            '"' +
-            (REVERSE_MAP.hasOwnProperty(key) ? REVERSE_MAP[key] : key) +
-            '": ' +
-            serialize(value, indent + indentIncrement)
-        )
-        .join(',')
-    );
-    result.push('\n', getIndent(indent), '}');
-  } else if (typeof item === 'string') {
-    result.push('"', item, '"');
-  } else if (typeof item === 'number' || typeof item === 'boolean') {
-    result.push(item);
-  }
-  return result.join('');
+const KEY_ORDER = IIIF_KEY_ORDER.concat(TIMELINE_PROPERTIES, LANGUAGES);
+
+export const serialize = item => {
+  return JSON.stringify(item, KEY_ORDER, 2);
 };
