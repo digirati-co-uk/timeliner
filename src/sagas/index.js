@@ -22,9 +22,7 @@ import {
   CONFIRM_NO,
   CONFIRM_YES,
 } from '../constants/viewState';
-import {
-  SELECT_RANGE
-} from '../constants/range';
+import { SELECT_RANGE } from '../constants/range';
 import { EXPORT_DOCUMENT } from '../constants/project';
 import { serialize } from '../utils/iiifSerializer';
 import { immediateDownload } from '../utils/fileDownload';

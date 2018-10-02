@@ -164,12 +164,9 @@ class BubbleEditor extends React.Component {
             }}
           >
             {({ measureRef }) => (
-              <div ref={measureRef} 
-                style={
-                  blackAndWhiteMode ? {
-                    filter: 'grayscale(1.0)',
-                  }: {}
-                }
+              <div
+                ref={measureRef}
+                style={blackAndWhiteMode ? { filter: 'grayscale(1.0)' } : {}}
               >
                 <BubbleDisplay
                   points={_points}
@@ -181,13 +178,19 @@ class BubbleEditor extends React.Component {
                   shape={bubbleStyle}
                 >
                   {points =>
-                    points.map(bubble => (
-                      <SingleBubble
-                        key={`bk-${bubble.point.id}`}
-                        {...bubble}
-                        onClick={this.toggleSelects}
-                      />
-                    ))
+                    points
+                      .sort((b1, b2) => {
+                        return b2.point.depth - b1.point.depth === 0
+                          ? b1.x - b2.x
+                          : b2.point.depth - b1.point.depth;
+                      })
+                      .map(bubble => (
+                        <SingleBubble
+                          key={`bk-${bubble.point.id}`}
+                          {...bubble}
+                          onClick={this.toggleSelects}
+                        />
+                      ))
                   }
                 </BubbleDisplay>
                 <TimelineScrubber

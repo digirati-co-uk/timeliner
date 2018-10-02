@@ -11,16 +11,19 @@ import {
   RANGE,
 } from '../constants/range';
 
+const DEFAULT_COLOURS = ['#A63993', '#7D3DB0', '#3E3D99', '#417AB0', '#40A6A2'];
+
 const generateNewId = () => `id-${new Date().getTime()}`;
 const groupBubbles = selectedBubbles => {
   const group = selectedBubbles.reduce(
     (_group, bubble) => {
-      if (_group[RANGE.START_TIME] > bubble[RANGE.END_TIME]) {
-        _group[RANGE.START_TIME] = bubble[RANGE.END_TIME];
+      if (_group[RANGE.START_TIME] > bubble[RANGE.START_TIME]) {
+        _group[RANGE.START_TIME] = bubble[RANGE.START_TIME];
       }
       if (_group[RANGE.END_TIME] < bubble[RANGE.END_TIME]) {
         _group[RANGE.END_TIME] = bubble[RANGE.END_TIME];
       }
+      console.log('groupBubbles->depth', bubble[RANGE.DEPTH]);
       if (_group[RANGE.DEPTH] < bubble[RANGE.DEPTH]) {
         _group[RANGE.DEPTH] = bubble[RANGE.DEPTH];
       }
@@ -29,7 +32,7 @@ const groupBubbles = selectedBubbles => {
     {
       id: generateNewId(),
       [RANGE.START_TIME]: Number.MAX_SAFE_INTEGER,
-      [RANGE.ENF_TIME]: Number.MIN_SAFE_INTEGER,
+      [RANGE.END_TIME]: Number.MIN_SAFE_INTEGER,
       [RANGE.DEPTH]: -1,
       [RANGE.LABEL]: '',
       [RANGE.SUMMARY]: '',
@@ -38,6 +41,8 @@ const groupBubbles = selectedBubbles => {
     }
   );
   group.depth += 1;
+  group.colour = DEFAULT_COLOURS[group.depth%DEFAULT_COLOURS.length];
+  console.log('groupBubbles', group);
   return group;
 };
 
