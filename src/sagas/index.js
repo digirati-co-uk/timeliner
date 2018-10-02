@@ -21,6 +21,8 @@ import {
   CONFIRM_YES,
 } from '../constants/viewState';
 import { EXPORT_DOCUMENT } from '../constants/project';
+import { serialize } from '../utils/iiifSerializer';
+import { immediateDownload } from '../utils/fileDownload';
 
 const getDuration = state => state.viewState.runTime;
 
@@ -105,25 +107,7 @@ function* nextBubble() {
 function* exportDocument() {
   const state = yield select(getState);
   const outputJSON = exporter(state);
-  const mime_type = 'application/json';
-
-  const blob = new Blob([JSON.stringify(outputJSON, null, 2)], {
-    type: mime_type,
-  });
-
-  var dlink = document.createElement('a');
-  dlink.download = 'manifest.json';
-  dlink.href = window.URL.createObjectURL(blob);
-  dlink.onclick = function(e) {
-    // revokeObjectURL needs a delay to work properly
-    var that = this;
-    setTimeout(function() {
-      window.URL.revokeObjectURL(that.href);
-    }, 1500);
-  };
-
-  dlink.click();
-  dlink.remove();
+  immediateDownload(serialize(outputJSON));
 }
 
 export default function* root() {

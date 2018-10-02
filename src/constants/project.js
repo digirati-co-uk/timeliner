@@ -1,4 +1,4 @@
-export const BUBBLE_STYLE = {
+export const BUBBLE_STYLES = {
   SQUARE: 'square',
   ROUNDED: 'rounded',
 };
@@ -7,32 +7,62 @@ const DEFAULT_BUBBLE_HEIGHT = 70;
 const DEFAULT_LANGUAGE_CODE = 'en';
 const DEFAULT_TITLE = 'Untitled Project';
 
+const DESCRIPTION = 'description';
+const TITLE = 'title';
+const LOADED_JSON = 'loadedJson';
+const BUBBLE_STYLE = 'bubblesStyle';
+const BLACK_N_WHITE = 'blackAndWhite';
+const SHOW_TIMES = 'showTimes';
+const AUTO_SCALE_HEIGHT = 'autoScaleHeightOnResize';
+const START_PLAYING_WHEN_BUBBLES_CLICKED = 'startPlayingWhenBubbleIsClicked';
+const STOP_PLAYING_END_OF_SECTION = 'stopPlayingAtTheEndOfSection';
+const BUBBLE_HEIGHT = 'bubbleHeight';
+const LANGUAGE = 'language';
+
 export const PROJECT = {
-  DESCRIPTION: 'description',
-  TITLE: 'title',
-  JSON: 'loadedJson',
-  BUBBLE_STYLE: 'bubblesStyle',
-  BLACK_N_WHITE: 'blackAndWhite',
-  SHOW_TIMES: 'showTimes',
-  AUTO_SCALE_HEIGHT: 'autoScaleHeightOnResize',
-  START_PLAYING_WHEN_BUBBLES_CLICKED: 'startPlayingWhenBubbleIsClicked',
-  STOP_PLAYING_END_OF_SECTION: 'stopPlayingAtTheEndOfSection',
-  BUBBLE_HEIGHT: 'bubbleHeight',
-  LANGUAGE: 'language',
+  DESCRIPTION,
+  TITLE,
+  LOADED_JSON,
+  BUBBLE_STYLE,
+  BLACK_N_WHITE,
+  SHOW_TIMES,
+  AUTO_SCALE_HEIGHT,
+  START_PLAYING_WHEN_BUBBLES_CLICKED,
+  STOP_PLAYING_END_OF_SECTION,
+  BUBBLE_HEIGHT,
+  LANGUAGE,
+};
+
+export const RDF_NAMESPACE = 'tl';
+
+export const PROJECT_SETTINGS_KEYS = [
+  BUBBLE_STYLE,
+  BLACK_N_WHITE,
+  SHOW_TIMES,
+  AUTO_SCALE_HEIGHT,
+  START_PLAYING_WHEN_BUBBLES_CLICKED,
+  STOP_PLAYING_END_OF_SECTION,
+  BUBBLE_HEIGHT,
+];
+
+export const SETTINGS_ATTRIBUTE = `${RDF_NAMESPACE}:settings`;
+
+export const DEFAULT_SETTINGS = {
+  [BUBBLE_HEIGHT]: DEFAULT_BUBBLE_HEIGHT,
+  [SHOW_TIMES]: false,
+  [BLACK_N_WHITE]: false,
+  [BUBBLE_STYLE]: BUBBLE_STYLES.ROUNDED,
+  [AUTO_SCALE_HEIGHT]: true,
+  [START_PLAYING_WHEN_BUBBLES_CLICKED]: true,
+  [STOP_PLAYING_END_OF_SECTION]: false,
 };
 
 export const DEFAULT_PROJECT_STATE = {
-  [PROJECT.BUBBLE_STYLE]: BUBBLE_STYLE.ROUNDED,
-  [PROJECT.BLACK_N_WHITE]: false,
-  [PROJECT.SHOW_TIMES]: false,
-  [PROJECT.AUTO_SCALE_HEIGHT]: false,
-  [PROJECT.START_PLAYING_WHEN_BUBBLES_CLICKED]: false,
-  [PROJECT.STOP_PLAYING_END_OF_SECTION]: false,
-  [PROJECT.BUBBLE_HEIGHT]: DEFAULT_BUBBLE_HEIGHT,
-  [PROJECT.LANGUAGE]: DEFAULT_LANGUAGE_CODE,
-  [PROJECT.TITLE]: DEFAULT_TITLE,
-  [PROJECT.DESCRIPTION]: '',
-  [PROJECT.JSON]: {},
+  ...DEFAULT_SETTINGS,
+  [LANGUAGE]: DEFAULT_LANGUAGE_CODE,
+  [TITLE]: DEFAULT_TITLE,
+  [DESCRIPTION]: '',
+  [LOADED_JSON]: {},
 };
 
 export const UPDATE_SETTINGS = 'UPDATE_SETTINGS';

@@ -18,7 +18,11 @@ import {
 } from '@material-ui/core';
 import Slider from '@material-ui/lab/Slider';
 
-import { PROJECT, BUBBLE_STYLE } from '../../constants/project';
+import {
+  PROJECT,
+  DEFAULT_SETTINGS,
+  BUBBLE_STYLES,
+} from '../../constants/project';
 
 export default class SettingsPopup extends React.Component {
   static propTypes = {
@@ -37,13 +41,7 @@ export default class SettingsPopup extends React.Component {
   };
 
   state = {
-    [PROJECT.BUBBLE_HEIGHT]: 70,
-    [PROJECT.SHOW_TIMES]: false,
-    [PROJECT.BLACK_N_WHITE]: false,
-    [PROJECT.BUBBLE_STYLE]: 'round',
-    [PROJECT.AUTO_SCALE_HEIGHT]: true,
-    [PROJECT.START_PLAYING_WHEN_BUBBLES_CLICKED]: true,
-    [PROJECT.STOP_PLAYING_END_OF_SECTION]: false,
+    ...DEFAULT_SETTINGS,
   };
 
   handleChange = (name, type) => event => {
@@ -149,15 +147,15 @@ export default class SettingsPopup extends React.Component {
                             onChange={this.handleChange(PROJECT.BUBBLE_STYLE)}
                           >
                             <FormControlLabel
-                              value={BUBBLE_STYLE.ROUNDED}
+                              value={BUBBLE_STYLES.ROUNDED}
                               control={<Radio color="primary" />}
-                              label={voca.capitalize(BUBBLE_STYLE.ROUNDED)}
+                              label={voca.capitalize(BUBBLE_STYLES.ROUNDED)}
                               labelPlacement="end"
                             />
                             <FormControlLabel
-                              value={BUBBLE_STYLE.SQUARE}
+                              value={BUBBLE_STYLES.SQUARE}
                               control={<Radio color="primary" />}
-                              label={voca.capitalize(BUBBLE_STYLE.SQUARE)}
+                              label={voca.capitalize(BUBBLE_STYLES.SQUARE)}
                               labelPlacement="end"
                             />
                           </RadioGroup>

@@ -1,4 +1,4 @@
-import { PROJECT } from '../constants/project';
+import { PROJECT, RDF_NAMESPACE } from '../constants/project';
 import { CANVAS } from '../constants/canvas';
 import { RANGE } from '../constants/range';
 import { VIEWSTATE } from '../constants/viewState';
@@ -176,10 +176,18 @@ const processStructures = manifest => {
     }, {});
 };
 
+const mapSettings = iiifSettings =>
+  Object.entries(iiifSettings).reduce((settings, [rdfKey, value]) => {
+    const key = rdfKey.split(':')[1];
+    settings[key] = value;
+    return settings;
+  }, {});
+
 const manifestToProject = manifest => ({
   [PROJECT.DESCRIPTION]: getLocalisedResource(manifest.label) || '',
   [PROJECT.TITLE]: getLocalisedResource(manifest.summary) || '',
-  [PROJECT.JSON]: manifest,
+  [PROJECT.LOADED_JSON]: manifest,
+  ...mapSettings(manifest[`${RDF_NAMESPACE}:settings`]),
 });
 
 const manifestToViewState = manifest => ({
