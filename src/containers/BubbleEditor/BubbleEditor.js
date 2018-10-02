@@ -153,7 +153,7 @@ class BubbleEditor extends React.Component {
         <div
           style={{
             position: 'relative',
-            margin: '16px 16px 8px',
+            margin: '16px',
           }}
         >
           <Measure
@@ -192,6 +192,7 @@ class BubbleEditor extends React.Component {
                   onClickPoint={splitRange}
                   dragStart={this.dragStart}
                   selectedPoint={this.state.selectedPoint}
+                  showTimes={this.props.showTimes}
                 />
               </div>
             )}
@@ -214,6 +215,7 @@ const mapStateProps = state => ({
   zoom: state.viewState.zoom,
   bubbleHeight: state.project[PROJECT.BUBBLE_HEIGHT],
   bubbleStyle: state.project[PROJECT.BUBBLE_STYLE],
+  showTimes: state.project[PROJECT.SHOW_TIMES],
 });
 
 const mapDispatchToProps = {

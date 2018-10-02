@@ -31,6 +31,8 @@ class TimelineScrubber extends Component {
     /** on drag start */
     dragStart: PropTypes.func,
     selectedPoint: PropTypes.number,
+    /** show times */
+    showTimes: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -42,6 +44,7 @@ class TimelineScrubber extends Component {
     renderTimelineHover: () => null,
     zoom: 1.0,
     dragStart: () => {},
+    showTimes: false,
   };
 
   timeToPercent = time => (time / this.props.runTime) * 100 * this.props.zoom;
@@ -75,7 +78,7 @@ class TimelineScrubber extends Component {
   };
 
   render() {
-    const { currentTime, timePoints, theme, selectedPoint } = this.props;
+    const { currentTime, timePoints, theme, selectedPoint, showTimes } = this.props;
     return (
       <div
         className="timeline-scrubber"
@@ -88,7 +91,7 @@ class TimelineScrubber extends Component {
             key={`tp-${timePoint}`}
             x={this.timeToPercent(timePoint)}
           >
-            {timePoint === timePoints[selectedPoint] ? (
+            {timePoint === timePoints[selectedPoint] || showTimes ? (
               <span className="timeline-marker__tooltip">
                 {this.timeToLabel(timePoint)}
               </span>
