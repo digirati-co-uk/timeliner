@@ -156,7 +156,7 @@ class BubbleEditor extends React.Component {
                 <BubbleDisplay
                   points={_points}
                   width={this.state.dimensions.width}
-                  height={300}
+                  height={200}
                   x={0}
                   zoom={zoom}
                 >
