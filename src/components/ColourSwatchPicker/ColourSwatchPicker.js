@@ -126,7 +126,6 @@ class ColourSwatchPicker extends Component {
       bottom: '0px',
       left: '0px',
     };
-    console.log(colour);
     return (
       <div>
         <Button

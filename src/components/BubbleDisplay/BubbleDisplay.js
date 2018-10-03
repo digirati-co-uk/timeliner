@@ -18,12 +18,15 @@ class BubbleDisplay extends Component {
     shape: PropTypes.string,
     /** Bubble height */
     bubbleHeight: PropTypes.number,
+    /** on pan start trigger */
+    onPanStart: PropTypes.func,
   };
 
   static defaultProps = {
     zoom: 1,
     x: 0,
     bubbleHeight: 70,
+    onPanStart: () => {},
   };
 
   shouldComponentUpdate(nextProps) {
@@ -55,9 +58,8 @@ class BubbleDisplay extends Component {
       null,
       Object.values(points).map(point => point.endTime)
     );
-    const maxDepth = 3; //TODO: compute max depth
     const projectionFactor = realWidth / maxWidth;
-    const viewBox = [x * projectionFactor, 0, computedWidth, height].join(' ');
+    const viewBox = [x, 0, computedWidth, height].join(' ');
     const bubbles = Object.values(points).map(point => ({
       x: point.startTime * projectionFactor,
       width: (point.endTime - point.startTime) * projectionFactor,
@@ -99,7 +101,9 @@ class BubbleDisplay extends Component {
               fill: '#ffffff',
               strokeWidth: 0,
               stroke: 'rgb(0,0,0,0)',
+              cursor: 'grab',
             }}
+            onMouseDown={this.props.onPanStart}
           />
           {childrenWithProps}
         </g>

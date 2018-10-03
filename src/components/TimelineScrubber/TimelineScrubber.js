@@ -33,6 +33,8 @@ class TimelineScrubber extends Component {
     selectedPoint: PropTypes.number,
     /** show times */
     showTimes: PropTypes.bool,
+    /** current viewport position */
+    x: PropTypes.number,
   };
 
   static defaultProps = {
@@ -47,7 +49,7 @@ class TimelineScrubber extends Component {
     showTimes: false,
   };
 
-  timeToPercent = time => (time / this.props.runTime) * 100 * this.props.zoom;
+  timeToPercent = time => (time / this.props.runTime) * 100; //* this.props.zoom;
 
   timeToLabel = time => {
     const timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
@@ -85,6 +87,9 @@ class TimelineScrubber extends Component {
       theme,
       selectedPoint,
       showTimes,
+      x,
+      width,
+      zoom,
     } = this.props;
     return (
       <div
@@ -92,6 +97,11 @@ class TimelineScrubber extends Component {
         onClick={this.handleJumpToTime}
         onDoubleClick={this.handleAddPoint}
         onMouseDown={this.props.dragStart}
+        style={{
+          position: 'relative',
+          marginLeft: -x,
+          width: width * zoom,
+        }}
       >
         {timePoints.map(timePoint => (
           <TimelineMarker

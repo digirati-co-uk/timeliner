@@ -31,6 +31,8 @@ class BubbleEditor extends React.Component {
       selectedPoint: -1,
       startX: 0,
       deltaX: 0,
+      viewportX: 0,
+      viewportStartX: 0,
     };
   }
 
@@ -110,6 +112,40 @@ class BubbleEditor extends React.Component {
     });
   };
 
+  onPanStart = ev => {
+    document.body.addEventListener('mousemove', this.panMove);
+    document.body.addEventListener('mouseup', this.panEnd);
+
+    this.setState({
+      selectedPoint: -1,
+      startX: ev.pageX,
+      viewportStartX: this.state.viewportX,
+      deltaX: 0,
+    });
+  };
+
+  panMove = ev => {
+    this.clearTextSelection();
+    const dX = ev.pageX - this.state.startX;
+    const dXz = dX / this.props.zoom;
+    this.setState({
+      viewportX: Math.min(
+        Math.max(0, this.state.viewportStartX - dXz),
+        this.state.dimensions.width * this.props.zoom -
+          this.state.dimensions.width
+      ),
+    });
+  };
+
+  panEnd = ev => {
+    document.body.removeEventListener('mousemove', this.panMove);
+    document.body.removeEventListener('mouseup', this.panEnd);
+    this.setState({
+      selectedPoint: -1,
+      viewportStartX: 0,
+    });
+  };
+
   render() {
     const _points = this.props.points;
     const {
@@ -122,10 +158,9 @@ class BubbleEditor extends React.Component {
       bubbleStyle,
       blackAndWhiteMode,
     } = this.props;
-    const { dimensions, selectedPoint, deltaX } = this.state;
+    const { dimensions, selectedPoint, deltaX, viewportX } = this.state;
 
     const timePoints = this.getTimePoints();
-    console.log(bubbleHeight, bubbleStyle);
 
     let selectedPointValue = 0;
     let substituteValue = 0;
@@ -172,10 +207,11 @@ class BubbleEditor extends React.Component {
                   points={_points}
                   width={this.state.dimensions.width}
                   height={200}
-                  x={0}
+                  x={viewportX}
                   zoom={zoom}
                   bubbleHeight={bubbleHeight}
                   shape={bubbleStyle}
+                  onPanStart={this.onPanStart}
                 >
                   {points =>
                     points
@@ -197,6 +233,8 @@ class BubbleEditor extends React.Component {
                   runTime={runTime}
                   currentTime={currentTime}
                   zoom={zoom}
+                  x={viewportX}
+                  width={this.state.dimensions.width}
                   timePoints={timePoints}
                   onUpdateTime={onUpdateTime}
                   onClickPoint={splitRange}

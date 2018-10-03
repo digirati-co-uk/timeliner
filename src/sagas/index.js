@@ -123,7 +123,6 @@ function* selectSideEffects({ payload }) {
   const state = yield select(getState);
   if (state.project.startPlayingWhenBubbleIsClicked) {
     if (payload.isSelected) {
-      //console.log('selectSideEffects', state.range[payload.id].startTime);
       yield put(play());
       yield put(setCurrentTime(state.range[payload.id].startTime));
     } else {

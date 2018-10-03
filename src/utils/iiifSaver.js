@@ -12,7 +12,6 @@ const exportLevel = (bubble, parentChildren, canvasId, languageCode) => {
   if (bubble.done) {
     return;
   }
-  console.log('exportLevel', bubble);
   const range = {
     id: bubble.id,
     type: 'Range',
