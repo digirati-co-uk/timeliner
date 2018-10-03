@@ -9,9 +9,6 @@ import {
 const toSeconds = msValue => msValue / 1000;
 
 const exportLevel = (bubble, parentChildren, canvasId, languageCode) => {
-  if (bubble.done) {
-    return;
-  }
   const range = {
     id: bubble.id,
     type: 'Range',
@@ -30,8 +27,9 @@ const exportLevel = (bubble, parentChildren, canvasId, languageCode) => {
 
   if (bubble.hasOwnProperty('children')) {
     range.items = [];
-    range.done = true;
-    bubble.children.forEach(child => exportLevel(child, range.items, canvasId));
+    bubble.children.forEach(child =>
+      exportLevel(child, range.items, canvasId, languageCode)
+    );
   } else {
     const canvasStartTime = toSeconds(bubble[RANGE.START_TIME]);
     const canvasEndTime = toSeconds(bubble[RANGE.END_TIME]);
@@ -54,9 +52,10 @@ const exportRanges = (range, canvasId, languageCode) => {
         b[RANGE.START_TIME] -
         (a[RANGE.END_TIME] - a[RANGE.START_TIME])
     );
+
   bubbles.forEach((bubble, idx) => {
-    const possibleParents = bubbles.slice(0, idx - 1).reverse();
-    possibleParents.forEach(parentBubble => {
+    const possibleParents = bubbles.slice(0, idx).reverse();
+    possibleParents.some(parentBubble => {
       if (
         parentBubble.id !== bubble.id &&
         parentBubble[RANGE.END_TIME] >= bubble[RANGE.END_TIME] &&
@@ -64,16 +63,17 @@ const exportRanges = (range, canvasId, languageCode) => {
       ) {
         bubble.parent = parentBubble;
         if (parentBubble.hasOwnProperty('children')) {
-          parentBubble.children.append(bubble);
+          parentBubble.children.push(bubble);
         } else {
           parentBubble.children = [bubble];
         }
+        return true;
       }
     });
   });
   const ranges = [];
   bubbles.forEach(bubble => {
-    if (!bubble.done) {
+    if (!bubble.parent) {
       exportLevel(bubble, ranges, canvasId, languageCode);
     }
   });
