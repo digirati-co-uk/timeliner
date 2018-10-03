@@ -3,7 +3,7 @@ export const BUBBLE_STYLES = {
   ROUNDED: 'rounded',
 };
 
-const DEFAULT_BUBBLE_HEIGHT = 70;
+const DEFAULT_BUBBLE_HEIGHT = 55;
 const DEFAULT_LANGUAGE_CODE = 'en';
 const DEFAULT_TITLE = 'Untitled Project';
 
