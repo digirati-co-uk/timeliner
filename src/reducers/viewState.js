@@ -24,6 +24,9 @@ import {
   CLOSE_CONFIRM_DIALOG,
   CONFIRM_YES,
   CONFIRM_NO,
+  EDIT_PROJECT_METADATA,
+  CANCEL_PROJECT_METADATA_EDITS,
+  SAVE_PROJECT_METADATA,
 } from '../constants/viewState';
 
 import { AUDIO_LOADING } from '../constants/canvas';
@@ -149,6 +152,19 @@ const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
           },
         },
       });
+    case EDIT_PROJECT_METADATA:
+      return update(state, {
+        [VIEWSTATE.PROJECT_METADATA_EDITOR_OPEN]: {
+          $set: true,
+        },
+      });
+    case CANCEL_PROJECT_METADATA_EDITS:
+      return update(state, {
+        [VIEWSTATE.PROJECT_METADATA_EDITOR_OPEN]: {
+          $set: false,
+        },
+      });
+    case SAVE_PROJECT_METADATA:
     case CONFIRM_YES:
     case CONFIRM_NO:
     case NEXT_BUBBLE:

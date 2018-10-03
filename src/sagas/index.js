@@ -4,7 +4,7 @@ import { IMPORT_DOCUMENT, RESET_DOCUMENT } from '../constants/project';
 import { UPDATE_RANGE } from '../constants/range';
 import { loadProjectState } from '../utils/iiifLoader';
 import exporter from '../utils/iiifSaver';
-import { loadProject } from '../actions/project';
+import { loadProject, setTitle, setDescription } from '../actions/project';
 import { loadCanvas } from '../actions/canvas';
 import { loadRanges, movePoint } from '../actions/range';
 import {
@@ -15,12 +15,14 @@ import {
   closeVerifyDialog,
   play,
   pause,
+  cancelProjectMetadataEdits,
 } from '../actions/viewState';
 import {
   NEXT_BUBBLE,
   PREVIOUS_BUBBLE,
   CONFIRM_NO,
   CONFIRM_YES,
+  SAVE_PROJECT_METADATA,
 } from '../constants/viewState';
 import { SELECT_RANGE } from '../constants/range';
 import { EXPORT_DOCUMENT } from '../constants/project';
@@ -131,6 +133,14 @@ function* selectSideEffects({ payload }) {
   }
 }
 
+function* saveProjectMetadata({ metadata }) {
+  console.log(metadata);
+  const { manifestLabel, manifestSummary } = metadata;
+  yield put(setTitle(manifestLabel));
+  yield put(setDescription(manifestSummary));
+  yield put(cancelProjectMetadataEdits());
+}
+
 export default function* root() {
   yield takeEvery(IMPORT_DOCUMENT, importDocument);
   yield takeEvery(UPDATE_RANGE, saveRange);
@@ -139,4 +149,5 @@ export default function* root() {
   yield takeEvery(NEXT_BUBBLE, nextBubble);
   yield takeEvery(EXPORT_DOCUMENT, exportDocument);
   yield takeEvery(SELECT_RANGE, selectSideEffects);
+  yield takeEvery(SAVE_PROJECT_METADATA, saveProjectMetadata);
 }
