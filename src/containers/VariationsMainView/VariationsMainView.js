@@ -23,7 +23,7 @@ import {
 } from '../../actions/range';
 import { RANGE } from '../../constants/range';
 import { PROJECT } from '../../constants/project';
-import { VIEWSTATE } from '../../constants/viewstate';
+import { VIEWSTATE } from '../../constants/viewState';
 import {
   importDocument,
   updateSettings,
