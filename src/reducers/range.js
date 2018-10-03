@@ -35,7 +35,7 @@ const groupBubbles = selectedBubbles => {
       [RANGE.LABEL]: '',
       [RANGE.SUMMARY]: '',
       [RANGE.COLOUR]: -1,
-      [RANGE.IS_SELECTED]: false,
+      [RANGE.IS_SELECTED]: true,
     }
   );
   group.depth += 1;
@@ -79,11 +79,20 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
       if (selectedBubbles.length < 2) {
         return state;
       }
+      const unselectBubbles = selectedBubbles.reduce((updates, bubble) => {
+        updates[bubble.id] = {
+          isSelected: {
+            $set: false,
+          },
+        };
+        return updates;
+      }, {});
       const newGroup = groupBubbles(selectedBubbles);
       return update(state, {
         [newGroup.id]: {
           $set: newGroup,
         },
+        ...unselectBubbles,
       });
     case SELECT_RANGE:
       return update(state, {
@@ -131,11 +140,8 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
         }, {})
       );
     case DELETE_RAGE:
-      const idToDelete = action.payload.id;
-      //const bubbleToDelete = state[idToDelete];
-      delete state[idToDelete];
       return update(state, {
-        $remove: [idToDelete],
+        $unset: [action.payload.id],
       });
     case LOAD_RANGES:
       return typeof action.ranges === 'number'
