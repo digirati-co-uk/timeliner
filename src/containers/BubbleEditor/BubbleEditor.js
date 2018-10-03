@@ -102,8 +102,9 @@ class BubbleEditor extends React.Component {
       document.body.removeEventListener('mouseup', this.dragEnd);
       const originalX = this.getTimePoints()[this.state.selectedPoint];
       const dX =
-        ((ev.pageX - this.state.startX) / this.state.dimensions.width) *
-        this.props.runTime;
+        (((ev.pageX - this.state.startX) / this.state.dimensions.width) *
+          this.props.runTime) /
+        this.props.zoom;
 
       this.props.movePoint(originalX + dX, originalX);
     }
@@ -167,7 +168,7 @@ class BubbleEditor extends React.Component {
     if (selectedPoint !== -1) {
       selectedPointValue = timePoints[selectedPoint];
       timePoints[selectedPoint] += Math.max(
-        (deltaX / dimensions.width) * runTime
+        ((deltaX / dimensions.width) * runTime) / zoom
       );
       timePoints[selectedPoint] = Math.max(
         timePoints[selectedPoint],

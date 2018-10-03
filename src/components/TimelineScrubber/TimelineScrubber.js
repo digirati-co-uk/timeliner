@@ -102,9 +102,9 @@ class TimelineScrubber extends Component {
           width: width * zoom,
         }}
       >
-        {timePoints.map(timePoint => (
+        {timePoints.map((timePoint, timePointIndex) => (
           <TimelineMarker
-            key={`tp-${timePoint}`}
+            key={`tp-${timePointIndex}`}
             x={this.timeToPercent(timePoint)}
           >
             {timePoint === timePoints[selectedPoint] || showTimes ? (
