@@ -63,7 +63,8 @@ class TimelineScrubber extends Component {
   getClickedTime = ev => {
     const scrobberBounds = ev.currentTarget.getBoundingClientRect();
     const positionRatio =
-      (ev.pageX - scrobberBounds.left) / scrobberBounds.width;
+      (ev.pageX - scrobberBounds.left) /
+      (scrobberBounds.width * this.props.zoom);
     return positionRatio * this.props.runTime;
   };
 
@@ -78,7 +79,13 @@ class TimelineScrubber extends Component {
   };
 
   render() {
-    const { currentTime, timePoints, theme, selectedPoint, showTimes } = this.props;
+    const {
+      currentTime,
+      timePoints,
+      theme,
+      selectedPoint,
+      showTimes,
+    } = this.props;
     return (
       <div
         className="timeline-scrubber"
