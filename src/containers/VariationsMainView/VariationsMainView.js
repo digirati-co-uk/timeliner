@@ -106,6 +106,36 @@ class VariationsMainView extends React.Component {
     this.props.deleteRange(selected.id);
   };
 
+  isGroupingPossible = selectedBubbles => {
+    const newRangeMinMax = selectedBubbles.reduce(
+      (newRange, bubble) => {
+        newRange.startTime = Math.min(newRange.startTime, bubble.startTime);
+        newRange.endTime = Math.max(newRange.endTime, bubble.endTime);
+        return newRange;
+      },
+      {
+        startTime: Number.MAX_SAFE_INTEGER,
+        endTime: Number.MIN_SAFE_INTEGER,
+      }
+    );
+    const tallBubbles = Object.values(this.props.points).filter(
+      bubble => bubble.depth > 1
+    );
+    return (
+      tallBubbles.filter(
+        bubble =>
+          (bubble.startTime < newRangeMinMax.startTime &&
+            newRangeMinMax.startTime < bubble.endTime &&
+            bubble.endTime < newRangeMinMax.endTime) ||
+          (newRangeMinMax.startTime < bubble.startTime &&
+            bubble.startTime < newRangeMinMax.endTime &&
+            newRangeMinMax.endTime < bubble.endTime) ||
+          (bubble.startTime === newRangeMinMax.startTime &&
+            bubble.endTime === newRangeMinMax.endTime)
+      ).length === 0
+    );
+  };
+
   render() {
     const _points = this.props.points;
     const {
@@ -161,7 +191,8 @@ class VariationsMainView extends React.Component {
                   : null
               }
               onGroupBubble={
-                selectedBubbles.length > 1
+                selectedBubbles.length > 1 &&
+                this.isGroupingPossible(selectedBubbles)
                   ? this.props.groupSelectedRanges
                   : null
               }
