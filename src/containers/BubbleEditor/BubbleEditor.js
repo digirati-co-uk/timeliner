@@ -17,6 +17,7 @@ import {
 } from '../../actions/viewState';
 
 import { RANGE } from '../../constants/range';
+import { PROJECT } from '../../constants/project';
 import { selectRange, splitRangeAt, movePoint } from '../../actions/range';
 
 class BubbleEditor extends React.Component {
@@ -30,6 +31,8 @@ class BubbleEditor extends React.Component {
       selectedPoint: -1,
       startX: 0,
       deltaX: 0,
+      viewportX: 0,
+      viewportStartX: 0,
     };
   }
 
@@ -109,10 +112,54 @@ class BubbleEditor extends React.Component {
     });
   };
 
+  onPanStart = ev => {
+    document.body.addEventListener('mousemove', this.panMove);
+    document.body.addEventListener('mouseup', this.panEnd);
+
+    this.setState({
+      selectedPoint: -1,
+      startX: ev.pageX,
+      viewportStartX: this.state.viewportX,
+      deltaX: 0,
+    });
+  };
+
+  panMove = ev => {
+    this.clearTextSelection();
+    const dX = ev.pageX - this.state.startX;
+    const dXz = dX / this.props.zoom;
+    this.setState({
+      viewportX: Math.min(
+        Math.max(0, this.state.viewportStartX - dXz),
+        this.state.dimensions.width * this.props.zoom -
+          this.state.dimensions.width
+      ),
+    });
+  };
+
+  panEnd = ev => {
+    document.body.removeEventListener('mousemove', this.panMove);
+    document.body.removeEventListener('mouseup', this.panEnd);
+    this.setState({
+      selectedPoint: -1,
+      viewportStartX: 0,
+    });
+  };
+
   render() {
     const _points = this.props.points;
-    const { runTime, currentTime, zoom, onUpdateTime, splitRange } = this.props;
-    const { dimensions, selectedPoint, deltaX } = this.state;
+    const {
+      runTime,
+      currentTime,
+      zoom,
+      onUpdateTime,
+      splitRange,
+      bubbleHeight,
+      bubbleStyle,
+      blackAndWhiteMode,
+    } = this.props;
+    const { dimensions, selectedPoint, deltaX, viewportX } = this.state;
+
     const timePoints = this.getTimePoints();
 
     let selectedPointValue = 0;
@@ -142,7 +189,7 @@ class BubbleEditor extends React.Component {
         <div
           style={{
             position: 'relative',
-            margin: '16px 16px 8px',
+            margin: '16px',
           }}
         >
           <Measure
@@ -152,33 +199,48 @@ class BubbleEditor extends React.Component {
             }}
           >
             {({ measureRef }) => (
-              <div ref={measureRef}>
+              <div
+                ref={measureRef}
+                style={blackAndWhiteMode ? { filter: 'grayscale(1.0)' } : {}}
+              >
                 <BubbleDisplay
                   points={_points}
                   width={this.state.dimensions.width}
                   height={200}
-                  x={0}
+                  x={viewportX}
                   zoom={zoom}
+                  bubbleHeight={bubbleHeight}
+                  shape={bubbleStyle}
+                  onPanStart={this.onPanStart}
                 >
                   {points =>
-                    points.map(bubble => (
-                      <SingleBubble
-                        key={`bk-${bubble.point.id}`}
-                        {...bubble}
-                        onClick={this.toggleSelects}
-                      />
-                    ))
+                    points
+                      .sort((b1, b2) => {
+                        return b2.point.depth - b1.point.depth === 0
+                          ? b1.x - b2.x
+                          : b2.point.depth - b1.point.depth;
+                      })
+                      .map(bubble => (
+                        <SingleBubble
+                          key={`bk-${bubble.point.id}`}
+                          {...bubble}
+                          onClick={this.toggleSelects}
+                        />
+                      ))
                   }
                 </BubbleDisplay>
                 <TimelineScrubber
                   runTime={runTime}
                   currentTime={currentTime}
                   zoom={zoom}
+                  x={viewportX}
+                  width={this.state.dimensions.width}
                   timePoints={timePoints}
                   onUpdateTime={onUpdateTime}
                   onClickPoint={splitRange}
                   dragStart={this.dragStart}
                   selectedPoint={this.state.selectedPoint}
+                  showTimes={this.props.showTimes}
                 />
               </div>
             )}
@@ -199,6 +261,10 @@ const mapStateProps = state => ({
   runTime: state.viewState.runTime,
   points: state.range,
   zoom: state.viewState.zoom,
+  bubbleHeight: state.project[PROJECT.BUBBLE_HEIGHT],
+  bubbleStyle: state.project[PROJECT.BUBBLE_STYLE],
+  showTimes: state.project[PROJECT.SHOW_TIMES],
+  blackAndWhiteMode: state.project[PROJECT.BLACK_N_WHITE],
 });
 
 const mapDispatchToProps = {

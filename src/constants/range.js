@@ -7,7 +7,13 @@ export const RANGE = {
   DEPTH: 'depth',
   IS_SELECTED: 'isSelected',
 };
-
+export const DEFAULT_COLOURS = [
+  '#A63993',
+  '#7D3DB0',
+  '#3E3D99',
+  '#417AB0',
+  '#40A6A2',
+];
 export const DEFAULT_RANGES_STATE = {
   'id-0': {
     id: 'id-0',
@@ -15,7 +21,7 @@ export const DEFAULT_RANGES_STATE = {
     [RANGE.END_TIME]: 0,
     [RANGE.LABEL]: '',
     [RANGE.SUMMARY]: '',
-    [RANGE.COLOUR]: '#A8F097',
+    [RANGE.COLOUR]: DEFAULT_COLOURS[0],
     [RANGE.DEPTH]: 1,
     [RANGE.IS_SELECTED]: false,
   },

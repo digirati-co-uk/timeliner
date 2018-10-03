@@ -9,14 +9,15 @@ import {
   DELETE_RAGE,
   LOAD_RANGES,
   RANGE,
+  DEFAULT_COLOURS,
 } from '../constants/range';
 
 const generateNewId = () => `id-${new Date().getTime()}`;
 const groupBubbles = selectedBubbles => {
   const group = selectedBubbles.reduce(
     (_group, bubble) => {
-      if (_group[RANGE.START_TIME] > bubble[RANGE.END_TIME]) {
-        _group[RANGE.START_TIME] = bubble[RANGE.END_TIME];
+      if (_group[RANGE.START_TIME] > bubble[RANGE.START_TIME]) {
+        _group[RANGE.START_TIME] = bubble[RANGE.START_TIME];
       }
       if (_group[RANGE.END_TIME] < bubble[RANGE.END_TIME]) {
         _group[RANGE.END_TIME] = bubble[RANGE.END_TIME];
@@ -29,15 +30,16 @@ const groupBubbles = selectedBubbles => {
     {
       id: generateNewId(),
       [RANGE.START_TIME]: Number.MAX_SAFE_INTEGER,
-      [RANGE.ENF_TIME]: Number.MIN_SAFE_INTEGER,
+      [RANGE.END_TIME]: Number.MIN_SAFE_INTEGER,
       [RANGE.DEPTH]: -1,
       [RANGE.LABEL]: '',
       [RANGE.SUMMARY]: '',
       [RANGE.COLOUR]: -1,
-      [RANGE.IS_SELECTED]: false,
+      [RANGE.IS_SELECTED]: true,
     }
   );
   group.depth += 1;
+  group.colour = DEFAULT_COLOURS[group.depth % DEFAULT_COLOURS.length];
   return group;
 };
 
@@ -77,11 +79,20 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
       if (selectedBubbles.length < 2) {
         return state;
       }
+      const unselectBubbles = selectedBubbles.reduce((updates, bubble) => {
+        updates[bubble.id] = {
+          isSelected: {
+            $set: false,
+          },
+        };
+        return updates;
+      }, {});
       const newGroup = groupBubbles(selectedBubbles);
       return update(state, {
         [newGroup.id]: {
           $set: newGroup,
         },
+        ...unselectBubbles,
       });
     case SELECT_RANGE:
       return update(state, {
@@ -129,11 +140,8 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
         }, {})
       );
     case DELETE_RAGE:
-      const idToDelete = action.payload.id;
-      //const bubbleToDelete = state[idToDelete];
-      delete state[idToDelete];
       return update(state, {
-        $remove: [idToDelete],
+        $unset: [action.payload.id],
       });
     case LOAD_RANGES:
       return typeof action.ranges === 'number'

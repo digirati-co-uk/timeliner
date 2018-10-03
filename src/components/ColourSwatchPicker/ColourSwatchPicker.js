@@ -5,6 +5,43 @@ import { Button } from '@material-ui/core';
 import { KeyboardArrowDown } from '@material-ui/icons';
 import './ColourSwatchPicker.scss';
 
+const hexToRgb = hex =>
+  hex
+    .replace(
+      /^#?([a-f\d])([a-f\d])([a-f\d])$/i,
+      (m, r, g, b) => '#' + r + r + g + g + b + b
+    )
+    .substring(1)
+    .match(/.{2}/g)
+    .map(x => parseInt(x, 16));
+
+const rgbToOrgba = rgb =>
+  rgb.reduce(
+    (rgba, component, idx) => {
+      rgba[Object.keys(rgba)[idx]] = component;
+      return rgba;
+    },
+    {
+      r: 255,
+      g: 255,
+      b: 255,
+      a: 1,
+    }
+  );
+
+const orgbToHex = orgb => {
+  const r = parseInt(orgb.r, 10)
+    .toString(16)
+    .padStart(2, '0');
+  const g = parseInt(orgb.g, 10)
+    .toString(16)
+    .padStart(2, '0');
+  const b = parseInt(orgb.b, 10)
+    .toString(16)
+    .padStart(2, '0');
+  return `#${r}${g}${b}`;
+};
+
 class ColourSwatchPicker extends Component {
   static propTypes = {
     /** Array of colours to display as choices */
@@ -39,7 +76,6 @@ class ColourSwatchPicker extends Component {
   };
 
   state = {
-    currentColour: null,
     colour: {
       r: '241',
       g: '112',
@@ -62,12 +98,26 @@ class ColourSwatchPicker extends Component {
     this.props.onSelectColour(colour.hex);
   };
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (
+      nextProps.currentColour &&
+      nextProps.currentColour.startsWith('#') &&
+      nextProps.currentColour !== orgbToHex(prevState.colour)
+    ) {
+      return {
+        colour: rgbToOrgba(hexToRgb(nextProps.currentColour)),
+      };
+    }
+  }
+
   render() {
     const { colour, displayColourPicker, swatch } = this.state;
 
     const popover = {
       position: 'absolute',
       zIndex: '2',
+      transform: 'translate(0,-100%)',
+      paddingBottom: '50px',
     };
     const cover = {
       position: 'fixed',
@@ -76,7 +126,6 @@ class ColourSwatchPicker extends Component {
       bottom: '0px',
       left: '0px',
     };
-
     return (
       <div>
         <Button
@@ -88,7 +137,7 @@ class ColourSwatchPicker extends Component {
           <div
             className="colour-swatch-picker__option"
             style={{
-              backgroundColor: colour.hex,
+              backgroundColor: orgbToHex(colour),
             }}
           />
           <KeyboardArrowDown />

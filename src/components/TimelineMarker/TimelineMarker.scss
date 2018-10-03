@@ -10,13 +10,14 @@
   cursor: ew-resize;
   &__tooltip {
     position: absolute;
-    bottom: 12px;
+    top: 11px;
     left: 0;
     margin-left: 5px;
-    background: white;
     color: #777;
     border-radius: 2px;
+    font-size: 11px;
     transform: translate(-50%,0);
     cursor: ew-resize;
+    pointer-events: none;
   }
 }

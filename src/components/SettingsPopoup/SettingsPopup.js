@@ -179,6 +179,9 @@ export default class SettingsPopup extends React.Component {
                         <Slider
                           onChange={this.handleSliderChange}
                           value={this.state.bubbleHeight}
+                          min={48}
+                          max={80}
+                          step={1}
                         />
                         <FormControlLabel
                           control={

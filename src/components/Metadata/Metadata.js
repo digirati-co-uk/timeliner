@@ -19,8 +19,9 @@ const Metadata = props => (
                 range.startTime <= props.currentTime &&
                 range.endTime > props.currentTime
             )
+            .sort((a, b) => b.endTime - b.startTime - (a.endTime - a.startTime))
             .map(
-              range =>
+              (range, depth) =>
                 range.id === props.rangeToEdit ? (
                   <MetadataEditor
                     key={`metadata_editor-${range.id}`}
@@ -32,8 +33,10 @@ const Metadata = props => (
                   <MetadataDisplay
                     key={`metadata_display-${range.id}`}
                     {...range}
+                    inset={depth}
                     onEditClick={(selectedRange => () =>
                       props.onEdit(selectedRange.id))(range)}
+                    blackAndWhiteMode={props.blackAndWhiteMode}
                   />
                 )
             )}
@@ -78,13 +81,19 @@ Metadata.propTypes = {
   /** Array of Ranges */
   ranges: PropTypes.arrayOf(
     PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      summary: PropTypes.string.isRequired,
+      label: PropTypes.string,
+      summary: PropTypes.string,
       startTime: PropTypes.number.isRequired,
       endTime: PropTypes.number.isRequired,
-      colour: PropTypes.string.isRequired,
+      colour: PropTypes.string,
     }).isRequired
   ).isRequired,
+  /** Black and white mode */
+  blackAndWhiteMode: PropTypes.bool,
+};
+
+Metadata.defaultProps = {
+  blackAndWhiteMode: false,
 };
 
 export default Metadata;

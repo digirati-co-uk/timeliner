@@ -14,12 +14,19 @@ class BubbleDisplay extends Component {
     zoom: PropTypes.number,
     /** X offset of view box */
     x: PropTypes.number,
+    /** Bubble style passed to single bubbles */
+    shape: PropTypes.string,
+    /** Bubble height */
+    bubbleHeight: PropTypes.number,
+    /** on pan start trigger */
+    onPanStart: PropTypes.func,
   };
 
   static defaultProps = {
     zoom: 1,
     x: 0,
-    renderBubble: null,
+    bubbleHeight: 70,
+    onPanStart: () => {},
   };
 
   shouldComponentUpdate(nextProps) {
@@ -35,23 +42,33 @@ class BubbleDisplay extends Component {
   }
 
   render() {
-    const { width, height, zoom, x, points, children } = this.props;
+    const {
+      width,
+      height,
+      zoom,
+      x,
+      points,
+      children,
+      shape,
+      bubbleHeight,
+    } = this.props;
     const realWidth = width * zoom;
     const computedWidth = Math.max(width, 1);
     const maxWidth = Math.max.apply(
       null,
       Object.values(points).map(point => point.endTime)
     );
-    const maxDepth = 3; //TODO: compute max depth
     const projectionFactor = realWidth / maxWidth;
-    const viewBox = [x * projectionFactor, 0, computedWidth, height].join(' ');
+    const viewBox = [x, 0, computedWidth, height].join(' ');
     const bubbles = Object.values(points).map(point => ({
       x: point.startTime * projectionFactor,
       width: (point.endTime - point.startTime) * projectionFactor,
       colour: point.colour,
-      height: (maxDepth - point.depth) * 70, //Math.pow(2 / 3, point.depth - 1) * height,
+      height: point.depth * bubbleHeight, //Math.pow(2 / 3, point.depth - 1) * height,
       label: point.label,
-      point: point,
+      point,
+      isSelected: point.isSelected,
+      shape,
     }));
 
     const childrenWithProps =
@@ -84,7 +101,9 @@ class BubbleDisplay extends Component {
               fill: '#ffffff',
               strokeWidth: 0,
               stroke: 'rgb(0,0,0,0)',
+              cursor: 'grab',
             }}
+            onMouseDown={this.props.onPanStart}
           />
           {childrenWithProps}
         </g>

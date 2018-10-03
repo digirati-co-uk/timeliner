@@ -3,7 +3,7 @@ export const BUBBLE_STYLES = {
   ROUNDED: 'rounded',
 };
 
-const DEFAULT_BUBBLE_HEIGHT = 70;
+const DEFAULT_BUBBLE_HEIGHT = 55;
 const DEFAULT_LANGUAGE_CODE = 'en';
 const DEFAULT_TITLE = 'Untitled Project';
 
@@ -52,8 +52,8 @@ export const DEFAULT_SETTINGS = {
   [SHOW_TIMES]: false,
   [BLACK_N_WHITE]: false,
   [BUBBLE_STYLE]: BUBBLE_STYLES.ROUNDED,
-  [AUTO_SCALE_HEIGHT]: true,
-  [START_PLAYING_WHEN_BUBBLES_CLICKED]: true,
+  [AUTO_SCALE_HEIGHT]: false,
+  [START_PLAYING_WHEN_BUBBLES_CLICKED]: false,
   [STOP_PLAYING_END_OF_SECTION]: false,
 };
 
