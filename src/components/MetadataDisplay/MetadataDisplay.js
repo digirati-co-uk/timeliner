@@ -14,7 +14,7 @@ const MetadataDisplay = props => (
   <Card
     style={{
       borderLeft: `4px solid ${props.colour}`,
-      marginLeft: `${(props.depth - 1) * 24}px`,
+      marginLeft: `${props.inset * 24}px`,
       marginBottom: 16,
       filter: props.blackAndWhiteMode ? 'grayscale(1.0)' : '',
     }}
@@ -57,6 +57,8 @@ MetadataDisplay.propTypes = {
   onEditClick: PropTypes.func,
   /** Black and white mode */
   blackAndWhiteMode: PropTypes.bool,
+  /** how deep the element is in the hierarchy */
+  inset: PropTypes.number,
 };
 
 MetadataDisplay.defaultProps = {
