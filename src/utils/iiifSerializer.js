@@ -14,6 +14,7 @@ const IIIF_KEY_ORDER = [
   'language',
   'value',
   'metadata',
+  'summary',
   'requiredStatement',
   'thumbnail',
   'homepage',
