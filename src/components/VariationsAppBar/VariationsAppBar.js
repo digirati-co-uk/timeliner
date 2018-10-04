@@ -2,7 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { AppBar, Toolbar, Typography, IconButton } from '@material-ui/core';
-import { AddCircle, Delete, CloudDownload, Settings } from '@material-ui/icons';
+import {
+  AddCircle,
+  RestorePage,
+  CloudDownload,
+  Settings,
+} from '@material-ui/icons';
 
 const VariationsAppBar = props => (
   <AppBar position="static">
@@ -27,16 +32,32 @@ const VariationsAppBar = props => (
         </Typography>
       </div>
       <div>
-        <IconButton color="inherit" onClick={props.onImportButtonClicked}>
+        <IconButton
+          color="inherit"
+          onClick={props.onImportButtonClicked}
+          title="New project"
+        >
           <AddCircle />
         </IconButton>
-        <IconButton color="inherit" onClick={props.onEraseButtonClicked}>
-          <Delete />
+        <IconButton
+          color="inherit"
+          onClick={props.onEraseButtonClicked}
+          title="Clear annotation"
+        >
+          <RestorePage />
         </IconButton>
-        <IconButton color="inherit" onClick={props.onSaveButtonClicked}>
+        <IconButton
+          color="inherit"
+          onClick={props.onSaveButtonClicked}
+          title="Download project"
+        >
           <CloudDownload />
         </IconButton>
-        <IconButton color="inherit" onClick={props.onSettingsButtonClicked}>
+        <IconButton
+          color="inherit"
+          onClick={props.onSettingsButtonClicked}
+          title="Settings"
+        >
           <Settings />
         </IconButton>
       </div>
