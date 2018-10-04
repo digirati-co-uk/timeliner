@@ -140,6 +140,18 @@ class VariationsMainView extends React.Component {
     );
   };
 
+  isSplittingPossible = () => {
+    return !Object.values(this.props.points)
+      .reduce((allPoints, range) => {
+        allPoints.add(range.startTime);
+        allPoints.add(range.endTime);
+        return allPoints;
+      }, new Set([]))
+      .has(this.props.currentTime);
+  };
+
+  splitRange = () => this.props.splitRangeAt(this.props.currentTime);
+
   render() {
     const _points = this.props.points;
     const {
@@ -190,9 +202,10 @@ class VariationsMainView extends React.Component {
               onScrubAhead={this.props.fastForward}
               onScrubBackwards={this.props.fastReward}
               onAddBubble={
-                selectedBubbles.length === 1
-                  ? this.addRange(selectedBubbles[0])
-                  : null
+                this.isSplittingPossible() ? this.splitRange : null
+                // selectedBubbles.length === 1
+                //   ? this.addRange(selectedBubbles[0])
+                //   : null
               }
               onGroupBubble={
                 selectedBubbles.length > 1 &&
