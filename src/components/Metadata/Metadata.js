@@ -32,6 +32,9 @@ const Metadata = props => (
                     {...range}
                     onSave={props.onUpdateRange}
                     onDelete={props.onDeleteRange}
+                    onCancel={() => {
+                      props.onEdit(null);
+                    }}
                   />
                 ) : (
                   <MetadataDisplay
@@ -90,6 +93,8 @@ Metadata.propTypes = {
   onUpdateRange: PropTypes.func,
   /** Removes range */
   onDeleteRange: PropTypes.func,
+  /** Cancels range edit */
+  onCancelRangeEdit: PropTypes.func,
   /** Array of Ranges */
   ranges: PropTypes.arrayOf(
     PropTypes.shape({
@@ -105,7 +110,6 @@ Metadata.propTypes = {
   projectMetadataEditorOpen: PropTypes.bool,
   onEditProjectMetadata: PropTypes.func,
   onSaveProjectMetadata: PropTypes.func,
-  onCancelEditingProjectMetadata: PropTypes.func,
 };
 
 Metadata.defaultProps = {

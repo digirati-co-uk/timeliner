@@ -36,6 +36,8 @@ class MetadataEditor extends Component {
     onSave: PropTypes.func,
     /** Call back when delete button is clicked, gets passed an object with label and summary */
     onDelete: PropTypes.func,
+    /** on Cancel annotation edit */
+    onCancel: PropTypes.func,
     /** Is new */
     isNew: PropTypes.bool.isRequired,
   };
@@ -102,7 +104,7 @@ class MetadataEditor extends Component {
   };
 
   render() {
-    const { onDelete } = this.props;
+    const { onDelete, onCancel } = this.props;
     const { label, summary, colour, startTime, endTime } = this.state;
     const colours = getSelectedThemeColours();
     return (
@@ -190,6 +192,7 @@ class MetadataEditor extends Component {
             <Button disabled={!onDelete} onClick={onDelete}>
               <Delete /> Delete
             </Button>
+            <Button onClick={onCancel}>Cancel</Button>
             <PrimaryButton disabled={!this.props.onSave} onClick={this.onSave}>
               Save
             </PrimaryButton>
