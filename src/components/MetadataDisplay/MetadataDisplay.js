@@ -62,7 +62,7 @@ MetadataDisplay.propTypes = {
 };
 
 MetadataDisplay.defaultProps = {
-  label: 'Unititled',
+  label: 'Unnamed Range',
   summary: '',
   blackAndWhiteMode: false,
 };
