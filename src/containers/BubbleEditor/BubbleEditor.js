@@ -67,7 +67,7 @@ class BubbleEditor extends React.Component {
   dragStart = ev => {
     if (
       ev.target === ev.target.parentNode.firstChild ||
-      ev.target === ev.target.parentNode.lastChild
+      ev.target === ev.target.parentNode.lastChild.previousSibling
     ) {
       return;
     }
