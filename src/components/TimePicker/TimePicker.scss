@@ -1,0 +1,16 @@
+.time-picker {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-end;
+  justify-content: space-evenly;
+  width: 70px;
+  height: 40px;
+  margin-right: 8px;
+  &__unit {
+    width: 21px;
+    border: 0;
+    outline: 0;
+    appearance: none;
+    border-radius: 0px;
+  }
+}
