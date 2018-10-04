@@ -23,6 +23,7 @@ import {
 } from '../../actions/range';
 import { RANGE } from '../../constants/range';
 import { PROJECT } from '../../constants/project';
+import { VIEWSTATE } from '../../constants/viewState';
 import {
   importDocument,
   updateSettings,
@@ -44,6 +45,9 @@ import {
   nextBubble,
   confirmYes,
   confirmNo,
+  editProjectMetadata,
+  cancelProjectMetadataEdits,
+  saveProjectMetadata,
 } from '../../actions/viewState';
 
 import './VariationsMainView.scss';
@@ -215,6 +219,12 @@ class VariationsMainView extends React.Component {
                 rangeToEdit={rangeToEdit}
                 onUpdateRange={this.props.updateRange}
                 blackAndWhiteMode={this.props.settings[PROJECT.BLACK_N_WHITE]}
+                projectMetadataEditorOpen={this.props.showMetadataEditor}
+                onEditProjectMetadata={this.props.editProjectMetadata}
+                onSaveProjectMetadata={this.props.saveProjectMetadata}
+                onCancelEditingProjectMetadata={
+                  this.props.cancelProjectMetadataEdits
+                }
               />
               <Footer />
             </div>
@@ -290,6 +300,7 @@ const mapStateProps = state => ({
   isLoaded: state.canvas.isLoaded,
   rangeToEdit: state.viewState.metadataToEdit,
   verifyDialog: state.viewState.verifyDialog,
+  showMetadataEditor: state.viewState[VIEWSTATE.PROJECT_METADATA_EDITOR_OPEN],
   //settings
   settings: {
     [PROJECT.BUBBLE_STYLE]: state.project[PROJECT.BUBBLE_STYLE],
@@ -310,6 +321,9 @@ const mapDispatchToProps = {
   updateSettings,
   resetDocument,
   exportDocument,
+  editProjectMetadata,
+  cancelProjectMetadataEdits,
+  saveProjectMetadata,
   //view state actions
   showImportModal,
   showSettingsModal,

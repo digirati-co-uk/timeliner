@@ -1,8 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Typography } from '@material-ui/core';
+
 import MetadataDisplay from '../MetadataDisplay/MetadataDisplay';
 import MetadataEditor from '../MetadataEditor/MetadataEditor';
+import ProjectMetadataDisplay from '../ProjectMetadataDisplay/ProjectMetadataDisplay';
+import ProjectMetadataEditor from '../ProjectMetadataEditor/ProjectMetadataEditor';
+
 import './Metadata.scss';
 
 const Metadata = props => (
@@ -49,12 +53,20 @@ const Metadata = props => (
           Project
         </Typography>
         <div className="metadata__content">
-          <Typography variant="title" component="h3">
-            {props.manifestLabel}
-          </Typography>
-          <Typography varinant="body1" paragraph={true}>
-            {props.manifestSummary}
-          </Typography>
+          {props.projectMetadataEditorOpen ? (
+            <ProjectMetadataEditor
+              manifestLabel={props.manifestLabel}
+              manifestSummary={props.manifestSummary}
+              onSave={props.onSaveProjectMetadata}
+              onCancel={props.onCancelEditingProjectMetadata}
+            />
+          ) : (
+            <ProjectMetadataDisplay
+              manifestLabel={props.manifestLabel}
+              manifestSummary={props.manifestSummary}
+              onEditClick={props.onEditProjectMetadata}
+            />
+          )}
         </div>
       </div>
     </div>
@@ -90,6 +102,10 @@ Metadata.propTypes = {
   ).isRequired,
   /** Black and white mode */
   blackAndWhiteMode: PropTypes.bool,
+  projectMetadataEditorOpen: PropTypes.bool,
+  onEditProjectMetadata: PropTypes.func,
+  onSaveProjectMetadata: PropTypes.func,
+  onCancelEditingProjectMetadata: PropTypes.func,
 };
 
 Metadata.defaultProps = {

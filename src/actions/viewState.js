@@ -21,6 +21,9 @@ import {
   CLOSE_CONFIRM_DIALOG,
   CONFIRM_YES,
   CONFIRM_NO,
+  EDIT_PROJECT_METADATA,
+  CANCEL_PROJECT_METADATA_EDITS,
+  SAVE_PROJECT_METADATA,
 } from '../constants/viewState';
 import invariant from '../utils/invariant';
 
@@ -109,6 +112,19 @@ export const loadViewState = state => ({
 export const editMetadata = rangeId => ({
   type: EDIT_METADATA,
   rangeId,
+});
+
+export const editProjectMetadata = () => ({
+  type: EDIT_PROJECT_METADATA,
+});
+
+export const cancelProjectMetadataEdits = () => ({
+  type: CANCEL_PROJECT_METADATA_EDITS,
+});
+
+export const saveProjectMetadata = metadata => ({
+  type: SAVE_PROJECT_METADATA,
+  metadata,
 });
 
 export const openVerifyDialog = title => ({

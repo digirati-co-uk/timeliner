@@ -19,16 +19,22 @@ const project = (state = DEFAULT_PROJECT_STATE, action) => {
       });
     case SET_LANGUAGE:
       return update(state, {
-        [PROJECT.LANGUAGE]: action.payload.language,
+        [PROJECT.LANGUAGE]: {
+          $set: action.payload.language,
+        },
       });
     case SET_TITLE:
       return update(state, {
-        [PROJECT.TITLE]: action.payload.title,
+        [PROJECT.TITLE]: {
+          $set: action.payload.title,
+        },
       });
 
     case SET_DESCRIPTION:
       return update(state, {
-        [PROJECT.DESCRIPTION]: action.payload.description,
+        [PROJECT.DESCRIPTION]: {
+          $set: action.payload.description,
+        },
       });
     case RESET_DOCUMENT:
       return state;

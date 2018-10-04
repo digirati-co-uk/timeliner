@@ -1,0 +1,23 @@
+---
+title: Project Metadata Display
+menu: Components
+---
+
+import { Playground, PropsTable } from 'docz';
+import ProjectMetadataDisplay from './ProjectMetadataDisplay';
+
+
+# Project Metadata Display
+Displays the metadata on the manifest level.
+
+<PropsTable of={ProjectMetadataDisplay} />
+
+## Project Metadata Display Demo
+
+<Playground>
+  <ProjectMetadataDisplay
+    manifestLabel="Chopin - Nocturne in C minor, Op. 48, No. 1"
+    manifestSummary="The Nocturne in C minor, Op. 48, No. 1 is initially marked lento and is in 4/4 meter. In general, the scheme of the music is ternary form and follows A-B-A'"
+    onEditClick={()=>{alert('edit');}}
+  />
+</Playground>
