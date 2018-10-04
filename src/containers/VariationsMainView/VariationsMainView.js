@@ -201,12 +201,7 @@ class VariationsMainView extends React.Component {
               onPreviousBubble={this.props.previousBubble}
               onScrubAhead={this.props.fastForward}
               onScrubBackwards={this.props.fastReward}
-              onAddBubble={
-                this.isSplittingPossible() ? this.splitRange : null
-                // selectedBubbles.length === 1
-                //   ? this.addRange(selectedBubbles[0])
-                //   : null
-              }
+              onAddBubble={this.isSplittingPossible() ? this.splitRange : null}
               onGroupBubble={
                 selectedBubbles.length > 1 &&
                 this.isGroupingPossible(selectedBubbles)
