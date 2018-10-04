@@ -63,6 +63,12 @@ class MetadataEditor extends Component {
     });
   };
 
+  handleTimePickerChange = name => value => {
+    this.setState({
+      [name]: value,
+    });
+  };
+
   onSelectColour = colour => {
     this.setState({ colour });
   };
@@ -138,7 +144,7 @@ class MetadataEditor extends Component {
               </InputLabel>
               <TimePicker
                 value={startTime}
-                onChange={this.handleChange('startTime')}
+                onChange={this.handleTimePickerChange('startTime')}
               />
             </FormControl>
           </Grid>
@@ -149,7 +155,7 @@ class MetadataEditor extends Component {
               </InputLabel>
               <TimePicker
                 value={endTime}
-                onChange={this.handleChange('endTime')}
+                onChange={this.handleTimePickerChange('endTime')}
               />
             </FormControl>
           </Grid>

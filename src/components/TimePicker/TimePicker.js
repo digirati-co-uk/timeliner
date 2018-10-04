@@ -24,6 +24,8 @@ const FIELD_MIN_MAX = {
   },
 };
 
+const TWENTYFOUR_HOUR = 24 * 60 * 60 * 1000;
+
 class TimePicker extends React.Component {
   constructor(props) {
     super(props);
@@ -37,24 +39,18 @@ class TimePicker extends React.Component {
 
   static defaultProps = {
     min: 0,
-    max: 24 * 60 * 60 * 60,
+    max: TWENTYFOUR_HOUR - 1,
     value: 0,
   };
 
-  createFakeEventObject = value => ({
-    target: {
-      value,
-    },
-  });
-
   onChange = value =>
-    this.props.onChange &&
-    this.props.onChange(this.createFakeEventObject(this.applyMinMax(value)));
+    this.props.onChange && this.props.onChange(this.applyMinMax(value));
 
   applyMinMax = value =>
     Math.max(this.props.min, Math.min(this.props.max, value));
 
   increaseDecrease = ev => {
+    console.log(ev);
     if (ev.keyCode === 38) {
       ev.stopPropagation();
       ev.preventDefault();
@@ -98,7 +94,7 @@ class TimePicker extends React.Component {
     const minute = Math.floor(hourRemaining / FIELD_MULTIPLIER.minute);
     const minuteRemaining = hourRemaining % FIELD_MULTIPLIER.minute;
     const second = Math.floor(minuteRemaining / FIELD_MULTIPLIER.second);
-    const millisecond = Math.floor(minuteRemaining % FIELD_MULTIPLIER.second);
+    const millisecond = minuteRemaining % FIELD_MULTIPLIER.second;
     return {
       hour,
       minute,
