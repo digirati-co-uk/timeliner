@@ -32,8 +32,8 @@ const MetadataDisplay = props => (
           </Typography>
         </Grid>
         <Grid>
-          <IconButton>
-            <Edit onClick={props.onEditClick} />
+          <IconButton onClick={props.onEditClick}>
+            <Edit />
           </IconButton>
         </Grid>
       </Grid>

@@ -69,11 +69,6 @@ class TimelineScrubber extends Component {
     return positionRatio * this.props.runTime;
   };
 
-  handleJumpToTime = ev => {
-    const time = this.getClickedTime(ev);
-    this.props.onUpdateTime(time);
-  };
-
   handleAddPoint = ev => {
     const time = this.getClickedTime(ev);
     this.props.onClickPoint(time);
@@ -93,7 +88,6 @@ class TimelineScrubber extends Component {
     return (
       <div
         className="timeline-scrubber"
-        onClick={this.handleJumpToTime}
         onDoubleClick={this.handleAddPoint}
         onMouseDown={this.props.dragStart}
         style={{

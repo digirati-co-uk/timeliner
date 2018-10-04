@@ -71,6 +71,17 @@ class BubbleEditor extends React.Component {
     ) {
       return;
     }
+    if (
+      ev.target.className === 'playhead' ||
+      ev.target.className === 'timeline-scrubber'
+    ) {
+      const scrobberBounds = ev.currentTarget.getBoundingClientRect();
+      const positionRatio =
+        (ev.pageX - scrobberBounds.left) / scrobberBounds.width;
+      const time = positionRatio * this.props.runTime;
+      this.props.onUpdateTime(time);
+      return;
+    }
     const selectedPoint = Array.prototype.indexOf.call(
       ev.target.parentNode.childNodes,
       ev.target
@@ -97,16 +108,25 @@ class BubbleEditor extends React.Component {
   };
 
   dragEnd = ev => {
+    ev.preventDefault(); // Let's stop this event.
+    ev.stopPropagation(); // Really this time.
     if (this.state.selectedPoint !== -1) {
       document.body.removeEventListener('mousemove', this.dragMove);
       document.body.removeEventListener('mouseup', this.dragEnd);
-      const originalX = this.getTimePoints()[this.state.selectedPoint];
+      const timePoints = this.getTimePoints();
+      const originalX = timePoints[this.state.selectedPoint];
       const dX =
         (((ev.pageX - this.state.startX) / this.state.dimensions.width) *
           this.props.runTime) /
         this.props.zoom;
 
-      this.props.movePoint(originalX + dX, originalX);
+      this.props.movePoint(
+        Math.min(
+          Math.max(originalX + dX, timePoints[this.state.selectedPoint - 1]),
+          timePoints[this.state.selectedPoint + 1]
+        ),
+        originalX
+      );
     }
     this.setState({
       selectedPoint: -1,

@@ -17,8 +17,8 @@ const ProjectMetadataDisplay = props => (
         </Typography>
       </Grid>
       <Grid item xs={2}>
-        <IconButton>
-          <Edit onClick={props.onEditClick} />
+        <IconButton onClick={props.onEditClick}>
+          <Edit />
         </IconButton>
       </Grid>
     </Grid>
