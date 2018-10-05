@@ -40,7 +40,7 @@ class MetadataEditor extends Component {
 
   static defaultProps = {
     isNew: true,
-    label: 'Untitled',
+    label: 'Unnamed Range',
     summary: '',
     colour: 0,
   };
