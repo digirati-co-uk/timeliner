@@ -36,6 +36,8 @@ const IIIF_KEY_ORDER = [
   'annotations',
 ];
 
+const W3CANNOTATION_KEYS = ['body', 'target', 'duration'];
+
 const TIMELINE_PROPERTIES = [
   `${RDF_NAMESPACE}:backgroundColour`,
   `${RDF_NAMESPACE}:settings`,
@@ -44,7 +46,11 @@ const TIMELINE_PROPERTIES = [
 
 const LANGUAGES = langs.codes('1');
 
-const KEY_ORDER = IIIF_KEY_ORDER.concat(TIMELINE_PROPERTIES, LANGUAGES);
+const KEY_ORDER = IIIF_KEY_ORDER.concat(
+  W3CANNOTATION_KEYS,
+  TIMELINE_PROPERTIES,
+  LANGUAGES
+);
 
 export const serialize = item => {
   return JSON.stringify(item, KEY_ORDER, 2);

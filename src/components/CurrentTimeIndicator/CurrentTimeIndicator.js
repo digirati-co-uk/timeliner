@@ -17,7 +17,7 @@ class CurrentTimeIndicator extends Component {
   };
 
   static defaultProps = {
-    separator: ' - ',
+    separator: ' / ',
   };
 
   state = {

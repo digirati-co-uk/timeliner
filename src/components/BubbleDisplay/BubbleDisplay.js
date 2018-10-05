@@ -89,10 +89,7 @@ class BubbleDisplay extends Component {
       >
         <g
           key="bubble_display_main"
-          style={{
-            transform: 'scale(1, -1)',
-            transformOrigin: '50% 50%',
-          }}
+          transform={`translate(0,${height}) scale(1, -1)`}
         >
           <rect
             width={computedWidth * zoom}
