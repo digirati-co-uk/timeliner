@@ -6,7 +6,7 @@ import {
   MOVE_POINT,
   DELETE_RAGE,
   LOAD_RANGES,
-  DEFAULT_RANGES_STATE,
+  DELETE_REDUNDANT_SIZES,
 } from '../constants/range';
 
 export const splitRangeAt = time => ({
@@ -57,6 +57,10 @@ export const deleteRange = id => ({
   payload: {
     id,
   },
+});
+
+export const deleteRedundantSizes = () => ({
+  type: DELETE_REDUNDANT_SIZES,
 });
 
 export const loadRanges = ranges => ({

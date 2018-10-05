@@ -10,6 +10,7 @@ import {
   LOAD_RANGES,
   RANGE,
   DEFAULT_COLOURS,
+  DELETE_REDUNDANT_SIZES,
 } from '../constants/range';
 
 const generateNewId = () => `id-${new Date().getTime()}`;
@@ -39,7 +40,7 @@ const groupBubbles = selectedBubbles => {
     }
   );
   group.depth += 1;
-  group.colour = DEFAULT_COLOURS[group.depth % DEFAULT_COLOURS.length];
+  group.colour = DEFAULT_COLOURS[group[RANGE.DEPTH] % DEFAULT_COLOURS.length];
   return group;
 };
 
@@ -81,18 +82,41 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
       }
       const unselectBubbles = selectedBubbles.reduce((updates, bubble) => {
         updates[bubble.id] = {
-          isSelected: {
+          [RANGE.IS_SELECTED]: {
             $set: false,
           },
         };
         return updates;
       }, {});
       const newGroup = groupBubbles(selectedBubbles);
+      const depthUpdates = Object.values(state)
+        .filter(
+          bubble =>
+            newGroup[RANGE.DEPTH] <= bubble[RANGE.DEPTH] &&
+            newGroup[RANGE.START_TIME] >= bubble[RANGE.START_TIME] &&
+            newGroup[RANGE.END_TIME] <= bubble[RANGE.END_TIME]
+        )
+        .reduce((depthChanges, bubble) => {
+          depthChanges[bubble.id] = {
+            [RANGE.DEPTH]: {
+              $set: bubble[RANGE.DEPTH] + 1,
+            },
+            [RANGE.COLOUR]: {
+              $set:
+                DEFAULT_COLOURS[
+                  (bubble[RANGE.DEPTH] + 1) % DEFAULT_COLOURS.length
+                ],
+            },
+          };
+          return depthChanges;
+        }, {});
+      console.log('depthUpdates', depthUpdates);
       return update(state, {
         [newGroup.id]: {
           $set: newGroup,
         },
         ...unselectBubbles,
+        ...depthUpdates,
       });
     case SELECT_RANGE:
       return update(
@@ -155,32 +179,32 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
         }, {})
       );
     case DELETE_RAGE:
-      const currentRagne = state[action.payload.id];
+      const currentRange = state[action.payload.id];
       const changes = {
         $unset: [action.payload.id],
       };
-      if (currentRagne.depth === 1) {
+      if (currentRange.depth === 1) {
         let neighbours = Object.values(state).filter(
-          bubble => bubble[RANGE.END_TIME] === currentRagne[RANGE.START_TIME]
+          bubble => bubble[RANGE.END_TIME] === currentRange[RANGE.START_TIME]
         );
         if (neighbours.length > 0) {
           neighbours.forEach(bubble => {
             changes[bubble.id] = {
               [RANGE.END_TIME]: {
-                $set: currentRagne[RANGE.END_TIME],
+                $set: currentRange[RANGE.END_TIME],
               },
             };
           });
         }
         if (Object.keys(changes).length === 1) {
           neighbours = Object.values(state).filter(
-            bubble => bubble[RANGE.START_TIME] === currentRagne[RANGE.END_TIME]
+            bubble => bubble[RANGE.START_TIME] === currentRange[RANGE.END_TIME]
           );
           if (neighbours.length > 0) {
             neighbours.forEach(bubble => {
               changes[bubble.id] = {
                 [RANGE.START_TIME]: {
-                  $set: currentRagne[RANGE.START_TIME],
+                  $set: currentRange[RANGE.START_TIME],
                 },
               };
             });
@@ -188,6 +212,33 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
         }
       }
       return update(state, changes);
+    case DELETE_REDUNDANT_SIZES:
+      const removals = {
+        $unset: [],
+      };
+      Object.values(state)
+        .sort(
+          (a, b) =>
+            b[RANGE.END_TIME] -
+            b[RANGE.START_TIME] -
+            (a[RANGE.END_TIME] - a[RANGE.START_TIME])
+        )
+        .forEach((item, index, array) => {
+          if (index > 0) {
+            const previousItem = array[index - 1];
+            if (
+              previousItem[RANGE.START_TIME] === item[RANGE.START_TIME] &&
+              previousItem[RANGE.END_TIME] === item[RANGE.END_TIME]
+            ) {
+              removals.$unset.push(
+                previousItem[RANGE.DEPTH] > item[RANGE.DEPTH]
+                  ? previousItem.id
+                  : item.id
+              );
+            }
+          }
+        });
+      return removals.$unset.length > 0 ? update(state, removals) : state;
     case LOAD_RANGES:
       return typeof action.ranges === 'number'
         ? {

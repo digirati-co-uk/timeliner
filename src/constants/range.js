@@ -34,3 +34,4 @@ export const UPDATE_RANGE = 'UPDATE_RANGE';
 export const MOVE_POINT = 'MOVE_POINT';
 export const DELETE_RAGE = 'DELETE_RAGE';
 export const LOAD_RANGES = 'LOAD_RANGES';
+export const DELETE_REDUNDANT_SIZES = 'DELETE_REDUNDANT_SIZES';
