@@ -39,8 +39,6 @@ const groupBubbles = selectedBubbles => {
       [RANGE.IS_SELECTED]: true,
     }
   );
-  group.depth += 1;
-  group.colour = DEFAULT_COLOURS[group[RANGE.DEPTH] % DEFAULT_COLOURS.length];
   return group;
 };
 
@@ -89,6 +87,19 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
         return updates;
       }, {});
       const newGroup = groupBubbles(selectedBubbles);
+      newGroup[RANGE.DEPTH] =
+        Object.values(state)
+          .filter(
+            bubble =>
+              newGroup[RANGE.START_TIME] <= bubble[RANGE.START_TIME] &&
+              newGroup[RANGE.END_TIME] >= bubble[RANGE.END_TIME]
+          )
+          .reduce(
+            (maxDepth, bubble) => Math.max(maxDepth, bubble[RANGE.DEPTH]),
+            1
+          ) + 1;
+      newGroup.colour =
+        DEFAULT_COLOURS[newGroup[RANGE.DEPTH] % DEFAULT_COLOURS.length];
       const depthUpdates = Object.values(state)
         .filter(
           bubble =>
