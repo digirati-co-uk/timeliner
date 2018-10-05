@@ -209,7 +209,7 @@ class VariationsMainView extends React.Component {
                   : null
               }
               onDeleteBubble={
-                selectedBubbles.length === 1
+                selectedBubbles.length === 1 && _points.length > 1
                   ? this.deleteRange(selectedBubbles[0])
                   : null
               }

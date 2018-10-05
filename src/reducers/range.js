@@ -155,9 +155,39 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
         }, {})
       );
     case DELETE_RAGE:
-      return update(state, {
+      const currentRagne = state[action.payload.id];
+      const changes = {
         $unset: [action.payload.id],
-      });
+      };
+      if (currentRagne.depth === 1) {
+        let neighbours = Object.values(state).filter(
+          bubble => bubble[RANGE.END_TIME] === currentRagne[RANGE.START_TIME]
+        );
+        if (neighbours.length > 0) {
+          neighbours.forEach(bubble => {
+            changes[bubble.id] = {
+              [RANGE.END_TIME]: {
+                $set: currentRagne[RANGE.END_TIME],
+              },
+            };
+          });
+        }
+        if (Object.keys(changes).length === 1) {
+          neighbours = Object.values(state).filter(
+            bubble => bubble[RANGE.START_TIME] === currentRagne[RANGE.END_TIME]
+          );
+          if (neighbours.length > 0) {
+            neighbours.forEach(bubble => {
+              changes[bubble.id] = {
+                [RANGE.START_TIME]: {
+                  $set: currentRagne[RANGE.START_TIME],
+                },
+              };
+            });
+          }
+        }
+      }
+      return update(state, changes);
     case LOAD_RANGES:
       return typeof action.ranges === 'number'
         ? {
