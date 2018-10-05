@@ -1,0 +1,29 @@
+---
+title: Time Picker 
+menu: Components
+---
+
+import { Playground, PropsTable } from 'docz';
+import Component from "@reach/component-component";
+import TimePicker  from './TimePicker';
+
+# Time Picker
+
+<PropsTable of={TimePicker.Naked} />
+
+
+<Playground>
+  <Component initialState={{ currentTime: 2*60*1000 }}>
+  {({ setState, state }) => (
+    <div>
+      <TimePicker 
+        value={state.currentTime} 
+        onChange={ev=>setState({currentTime: ev.target.value})}
+        min={2*60*1000}
+        max={4.5*60*1000}
+      />
+      {state.currentTime}
+    </div>
+  )}
+  </Component>
+</Playground>

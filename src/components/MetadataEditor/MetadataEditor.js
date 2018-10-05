@@ -1,28 +1,24 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextField, Button, Grid } from '@material-ui/core';
+import {
+  TextField,
+  Button,
+  Grid,
+  InputLabel,
+  FormControl,
+} from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
-import formatDate from 'date-fns/format';
 import bem from '@fesk/bem-js';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import ColourSwatchPicker from '../ColourSwatchPicker/ColourSwatchPicker';
+import TimePicker from '../TimePicker/TimePicker';
 
 import './MetadataEditor.scss';
 
 const metadataEditor = bem.block('metadata-editor');
-const DISPLAY_TIME_FORMAT = 'HH:mm:ss';
 
 //TODO: implement themes
 const getSelectedThemeColours = () => ['red', 'blue', 'green'];
-
-const timeStrToMs = timeStr => {
-  var hms = timeStr.split(':');
-  return (
-    parseInt(hms[0], 10) * 3600 * 1000 +
-    parseInt(hms[1], 10) * 60 * 1000 +
-    parseInt(hms[2], 10) * 1000
-  );
-};
 
 class MetadataEditor extends Component {
   static propTypes = {
@@ -52,25 +48,24 @@ class MetadataEditor extends Component {
   constructor(props) {
     super(props);
     const { label, summary, colour, startTime, endTime } = props;
-    const timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
     this.state = {
       label,
       summary,
       colour,
-      startTime: formatDate(
-        new Date(startTime + timezoneOffset),
-        DISPLAY_TIME_FORMAT
-      ),
-      endTime: formatDate(
-        new Date(endTime + timezoneOffset),
-        DISPLAY_TIME_FORMAT
-      ),
+      startTime,
+      endTime,
     };
   }
 
   handleChange = name => ev => {
     this.setState({
       [name]: ev.target.value,
+    });
+  };
+
+  handleTimePickerChange = name => value => {
+    this.setState({
+      [name]: value,
     });
   };
 
@@ -86,8 +81,8 @@ class MetadataEditor extends Component {
       label,
       summary,
     };
-    const startTime = timeStrToMs(state.startTime);
-    const endTime = timeStrToMs(state.endTime);
+    const startTime = state.startTime;
+    const endTime = state.endTime;
     if (startTime !== this.props.startTime) {
       newValues.startTime = {
         x: startTime,
@@ -143,34 +138,26 @@ class MetadataEditor extends Component {
           alignItems="center"
         >
           <Grid item>
-            <TextField
-              id="startTime"
-              label="Start Time"
-              type="time"
-              defaultValue={startTime}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              inputProps={{
-                step: 1, // 5 min
-              }}
-              onChange={this.handleChange('startTime')}
-            />
+            <FormControl>
+              <InputLabel htmlFor="startTime" shrink>
+                Start Time
+              </InputLabel>
+              <TimePicker
+                value={startTime}
+                onChange={this.handleTimePickerChange('startTime')}
+              />
+            </FormControl>
           </Grid>
           <Grid item>
-            <TextField
-              id="endTime"
-              label="End Time"
-              type="time"
-              defaultValue={endTime}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              inputProps={{
-                step: 1, // 5 min
-              }}
-              onChange={this.handleChange('endTime')}
-            />
+            <FormControl>
+              <InputLabel htmlFor="endTime" shrink>
+                End Time
+              </InputLabel>
+              <TimePicker
+                value={endTime}
+                onChange={this.handleTimePickerChange('endTime')}
+              />
+            </FormControl>
           </Grid>
           <Grid item>
             <ColourSwatchPicker
