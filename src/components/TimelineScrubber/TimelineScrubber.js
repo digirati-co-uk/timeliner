@@ -58,7 +58,7 @@ class TimelineScrubber extends Component {
       return 'Invalid time';
     }
 
-    const format = time >= 3600000 ? 'hh:mm:ss' : 'mm:ss';
+    const format = time >= 3600000 ? 'hh:mm:ss.S' : 'mm:ss.S';
     return formatDate(date, format);
   };
 
