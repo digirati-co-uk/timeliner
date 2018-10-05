@@ -14,11 +14,19 @@ describe('actions/range', () => {
 
   test('selectRange', () => {
     expect(range.selectRange('123', true)).toEqual({
-      payload: { id: '123', isSelected: true },
+      payload: {
+        id: '123',
+        isSelected: true,
+        deselectOthers: true,
+      },
       type: 'SELECT_RANGE',
     });
     expect(range.selectRange('123', false)).toEqual({
-      payload: { id: '123', isSelected: false },
+      payload: {
+        id: '123',
+        isSelected: false,
+        deselectOthers: true,
+      },
       type: 'SELECT_RANGE',
     });
   });

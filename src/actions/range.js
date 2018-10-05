@@ -20,11 +20,12 @@ export const groupSelectedRanges = () => ({
   type: GROUP_RANGES,
 });
 
-export const selectRange = (id, isSelected) => ({
+export const selectRange = (id, isSelected, deselectOthers = true) => ({
   type: SELECT_RANGE,
   payload: {
     id,
     isSelected,
+    deselectOthers,
   },
 });
 
