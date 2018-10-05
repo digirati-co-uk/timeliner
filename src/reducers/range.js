@@ -95,13 +95,28 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
         ...unselectBubbles,
       });
     case SELECT_RANGE:
-      return update(state, {
-        [action.payload.id]: {
-          [RANGE.IS_SELECTED]: {
-            $set: action.payload.isSelected,
-          },
-        },
-      });
+      return update(
+        state,
+        Object.values(state).reduce((updates, bubble) => {
+          if (action.payload.id === bubble.id) {
+            updates[action.payload.id] = {
+              [RANGE.IS_SELECTED]: {
+                $set: action.payload.isSelected,
+              },
+            };
+          } else if (
+            action.payload.deselectOthers &&
+            bubble[RANGE.IS_SELECTED]
+          ) {
+            updates[bubble.id] = {
+              [RANGE.IS_SELECTED]: {
+                $set: false,
+              },
+            };
+          }
+          return updates;
+        }, {})
+      );
     case UPDATE_RANGE:
       return update(state, {
         [action.payload.id]: {

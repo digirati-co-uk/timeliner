@@ -20,6 +20,8 @@ import { RANGE } from '../../constants/range';
 import { PROJECT } from '../../constants/project';
 import { selectRange, splitRangeAt, movePoint } from '../../actions/range';
 
+const isOSX = navigator.userAgent.indexOf('Mac OS X') !== -1;
+
 class BubbleEditor extends React.Component {
   constructor(props) {
     super(props);
@@ -37,7 +39,8 @@ class BubbleEditor extends React.Component {
   }
 
   toggleSelects = (point, ev) => {
-    this.props.selectRange(point.id, !point.isSelected);
+    const deselectOthers = !(isOSX ? ev.metaKey : ev.ctrlKey);
+    this.props.selectRange(point.id, !point.isSelected, deselectOthers);
   };
 
   getTimePoints = () =>
