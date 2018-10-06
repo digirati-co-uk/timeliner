@@ -87,6 +87,15 @@ export const getProjectSettings = project =>
     return settings;
   }, {});
 
+const getProjectMetadata = project => ({
+  label: {
+    [project[PROJECT.LANGUAGE]]: [project[PROJECT.TITLE]],
+  },
+  summary: {
+    [project[PROJECT.LANGUAGE]]: [project[PROJECT.DESCRIPTION]],
+  },
+});
+
 const exporter = state => {
   return {
     ...state.project.loadedJson,
@@ -96,6 +105,7 @@ const exporter = state => {
       state.project[PROJECT.LANGUAGE]
     ),
     [SETTINGS_ATTRIBUTE]: getProjectSettings(state.project),
+    ...getProjectMetadata(state.project),
   };
 };
 
