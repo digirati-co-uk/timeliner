@@ -166,7 +166,6 @@ const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
         },
       });
     case FINISHED_PLAYING:
-      console.log(FINISHED_PLAYING, state);
       return update(state, {
         [VIEWSTATE.IS_PLAYING]: {
           $set: false,
