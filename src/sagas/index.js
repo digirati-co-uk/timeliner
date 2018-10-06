@@ -6,7 +6,13 @@ import { loadProjectState } from '../utils/iiifLoader';
 import exporter from '../utils/iiifSaver';
 import { loadProject, setTitle, setDescription } from '../actions/project';
 import { loadCanvas } from '../actions/canvas';
-import { loadRanges, movePoint, deleteRedundantSizes } from '../actions/range';
+import {
+  loadRanges,
+  movePoint,
+  deleteRedundantSizes,
+  updateDepthsAfterDelete,
+  deleteRange,
+} from '../actions/range';
 import {
   loadViewState,
   editMetadata,
@@ -24,7 +30,7 @@ import {
   CONFIRM_YES,
   SAVE_PROJECT_METADATA,
 } from '../constants/viewState';
-import { SELECT_RANGE, DELETE_RAGE } from '../constants/range';
+import { SELECT_RANGE, DELETE_RAGE, DELETE_RAGES } from '../constants/range';
 import { EXPORT_DOCUMENT } from '../constants/project';
 import { serialize } from '../utils/iiifSerializer';
 import { immediateDownload } from '../utils/fileDownload';
@@ -142,6 +148,14 @@ function* saveProjectMetadata({ metadata }) {
 
 function* afterDelete() {
   yield put(deleteRedundantSizes());
+  yield put(updateDepthsAfterDelete());
+}
+
+function* multiDelete({ selecteds }) {
+  for (var i = 0; i < selecteds.length; i++) {
+    yield put(deleteRange(selecteds[i]));
+  }
+  
 }
 
 export default function* root() {
@@ -154,4 +168,5 @@ export default function* root() {
   yield takeEvery(SELECT_RANGE, selectSideEffects);
   yield takeEvery(SAVE_PROJECT_METADATA, saveProjectMetadata);
   yield takeEvery(DELETE_RAGE, afterDelete);
+  yield takeEvery(DELETE_RAGES, multiDelete);
 }
