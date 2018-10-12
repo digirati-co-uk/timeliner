@@ -7,7 +7,7 @@ import { audioLoading, audioLoaded, audioError } from '../../actions/canvas';
 
 import { ERROR_CODES } from '../../constants/canvas';
 
-import { setCurrentTime } from '../../actions/viewState';
+import { setCurrentTime, finishedPlaying } from '../../actions/viewState';
 
 class Audio extends Component {
   static propTypes = {
@@ -31,14 +31,18 @@ class Audio extends Component {
 
   handleSongPlaying = ({ position, duration }) => {
     this.props.setCurrentTime(position);
+    if (position === duration) {
+      this.props.finishedPlaying();
+    }
   };
 
   handleResumePlaying = ({ position, duration }) => {
     //this.props.setCurrentTime(position);
   };
 
-  handleSongFinishedPlaying = ({ position, duration }) => {
-    //this.props.setCurrentTime(0);
+  handleSongFinishedPlaying = () => {
+    // NOTE: we never reach this...
+    this.props.finishedPlaying();
   };
 
   handleOnLoad = obj => {
@@ -66,6 +70,7 @@ class Audio extends Component {
         onLoad={this.handleOnLoad}
         onPlaying={this.handleSongPlaying}
         onFinishedPlaying={this.handleSongFinishedPlaying}
+        onStop={this.handleSongFinishedPlaying}
         onResume={this.handleResumePlaying}
         onError={this.handleError}
       />
@@ -85,6 +90,7 @@ const mapDispatchToProps = {
   audioLoaded,
   audioError,
   setCurrentTime,
+  finishedPlaying,
 };
 
 export default connect(

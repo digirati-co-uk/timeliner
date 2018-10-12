@@ -50,7 +50,6 @@ class TimePicker extends React.Component {
     Math.max(this.props.min, Math.min(this.props.max, value));
 
   increaseDecrease = ev => {
-    console.log(ev);
     if (ev.keyCode === 38) {
       ev.stopPropagation();
       ev.preventDefault();

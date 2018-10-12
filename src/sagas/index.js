@@ -134,7 +134,6 @@ function* selectSideEffects({ payload }) {
 }
 
 function* saveProjectMetadata({ metadata }) {
-  console.log(metadata);
   const { manifestLabel, manifestSummary } = metadata;
   yield put(setTitle(manifestLabel));
   yield put(setDescription(manifestSummary));

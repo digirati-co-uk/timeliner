@@ -24,6 +24,7 @@ import {
   EDIT_PROJECT_METADATA,
   CANCEL_PROJECT_METADATA_EDITS,
   SAVE_PROJECT_METADATA,
+  FINISHED_PLAYING,
 } from '../constants/viewState';
 import invariant from '../utils/invariant';
 
@@ -142,4 +143,8 @@ export const confirmYes = () => ({
 
 export const confirmNo = () => ({
   type: CONFIRM_NO,
+});
+
+export const finishedPlaying = () => ({
+  type: FINISHED_PLAYING,
 });

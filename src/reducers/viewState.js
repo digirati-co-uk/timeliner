@@ -27,6 +27,7 @@ import {
   EDIT_PROJECT_METADATA,
   CANCEL_PROJECT_METADATA_EDITS,
   SAVE_PROJECT_METADATA,
+  FINISHED_PLAYING,
 } from '../constants/viewState';
 
 import { AUDIO_LOADING } from '../constants/canvas';
@@ -161,6 +162,12 @@ const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
     case CANCEL_PROJECT_METADATA_EDITS:
       return update(state, {
         [VIEWSTATE.PROJECT_METADATA_EDITOR_OPEN]: {
+          $set: false,
+        },
+      });
+    case FINISHED_PLAYING:
+      return update(state, {
+        [VIEWSTATE.IS_PLAYING]: {
           $set: false,
         },
       });
