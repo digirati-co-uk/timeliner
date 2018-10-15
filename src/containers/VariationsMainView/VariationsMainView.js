@@ -18,7 +18,7 @@ import Audio from '../Audio/Audio';
 import {
   splitRangeAt,
   groupSelectedRanges,
-  deleteRange,
+  deleteRanges,
   updateRange,
 } from '../../actions/range';
 import { RANGE } from '../../constants/range';
@@ -106,8 +106,9 @@ class VariationsMainView extends React.Component {
     this.props.groupSelectedRanges();
   };
 
-  deleteRange = selected => () => {
-    this.props.deleteRange(selected.id);
+  deleteRanges = selecteds => () => {
+    const ids = selecteds.map(selected => selected.id);
+    this.props.deleteRanges(ids);
   };
 
   isGroupingPossible = selectedBubbles => {
@@ -209,8 +210,10 @@ class VariationsMainView extends React.Component {
                   : null
               }
               onDeleteBubble={
-                selectedBubbles.length === 1 && _points.length > 1
-                  ? this.deleteRange(selectedBubbles[0])
+                selectedBubbles.length > 0 &&
+                _points.length > 1 &&
+                _points.length - selectedBubbles.length > 0
+                  ? this.deleteRanges(selectedBubbles)
                   : null
               }
             />
@@ -350,7 +353,7 @@ const mapDispatchToProps = {
   //range
   splitRangeAt,
   groupSelectedRanges,
-  deleteRange,
+  deleteRanges,
   updateRange,
 };
 

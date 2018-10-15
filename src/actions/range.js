@@ -5,8 +5,10 @@ import {
   UPDATE_RANGE,
   MOVE_POINT,
   DELETE_RAGE,
+  DELETE_RAGES,
   LOAD_RANGES,
-  DEFAULT_RANGES_STATE,
+  DELETE_REDUNDANT_SIZES,
+  UPDATE_DEPTHS_AFTER_DELETE,
 } from '../constants/range';
 
 export const splitRangeAt = time => ({
@@ -57,6 +59,19 @@ export const deleteRange = id => ({
   payload: {
     id,
   },
+});
+
+export const deleteRanges = selecteds => ({
+  type: DELETE_RAGES,
+  selecteds,
+});
+
+export const deleteRedundantSizes = () => ({
+  type: DELETE_REDUNDANT_SIZES,
+});
+
+export const updateDepthsAfterDelete = () => ({
+  type: UPDATE_DEPTHS_AFTER_DELETE,
 });
 
 export const loadRanges = ranges => ({
