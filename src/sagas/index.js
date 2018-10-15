@@ -30,8 +30,13 @@ import {
   CONFIRM_YES,
   SAVE_PROJECT_METADATA,
 } from '../constants/viewState';
-import { SELECT_RANGE, DELETE_RAGE, DELETE_RAGES } from '../constants/range';
-import { EXPORT_DOCUMENT } from '../constants/project';
+import {
+  SELECT_RANGE,
+  DELETE_RAGE,
+  DELETE_RAGES,
+  RANGE,
+} from '../constants/range';
+import { EXPORT_DOCUMENT, PROJECT } from '../constants/project';
 import { serialize } from '../utils/iiifSerializer';
 import { immediateDownload } from '../utils/fileDownload';
 
@@ -65,6 +70,16 @@ const getPreviousBubbleStartTime = state => {
     .slice(-2, -1)[0];
   return result || 0;
 };
+
+const getSelectedBubbles = state =>
+  Object.values(state.range)
+    .filter(bubble => bubble.isSelected)
+    .sort(
+      (bubbleA, bubbleB) =>
+        bubbleA[RANGE.START_TIME] === bubbleB[RANGE.START_TIME]
+          ? bubbleA[RANGE.DEPTH] - bubbleB[RANGE.DEPTH]
+          : bubbleA[RANGE.START_TIME] - bubbleB[RANGE.START_TIME]
+    );
 
 const getState = state => state;
 
@@ -129,10 +144,16 @@ function* exportDocument() {
 
 function* selectSideEffects({ payload }) {
   const state = yield select(getState);
-  if (state.project.startPlayingWhenBubbleIsClicked) {
+  const selectedBubbles = yield select(getSelectedBubbles);
+  if (state.project[PROJECT.START_PLAYING_WHEN_BUBBLES_CLICKED]) {
     if (payload.isSelected) {
-      yield put(play());
-      yield put(setCurrentTime(state.range[payload.id].startTime));
+      if (
+        selectedBubbles[0][RANGE.START_TIME] ===
+        state.range[payload.id][RANGE.START_TIME]
+      ) {
+        yield put(play());
+        yield put(setCurrentTime(state.range[payload.id][RANGE.START_TIME]));
+      }
     } else {
       yield put(pause());
     }
@@ -155,7 +176,6 @@ function* multiDelete({ selecteds }) {
   for (var i = 0; i < selecteds.length; i++) {
     yield put(deleteRange(selecteds[i]));
   }
-  
 }
 
 export default function* root() {
