@@ -3,6 +3,34 @@ import PropTypes from 'prop-types';
 import { BUBBLE_STYLES } from '../../constants/project';
 import './SingleBubble.scss';
 
+const textWidthCache = {};
+
+const getLabelLengthInPixel = label => {
+  if (!textWidthCache.hasOwnProperty(label)) {
+    const textWidthMeasureEl = document.createElement('span');
+    document.body.appendChild(textWidthMeasureEl);
+    textWidthMeasureEl.textContent = label;
+    textWidthCache[label] = textWidthMeasureEl.offsetWidth;
+    document.body.removeChild(textWidthMeasureEl);
+  }
+  return textWidthCache[label];
+};
+
+const getAlteredLabel = (label, width) => {
+  let text = label;
+  const textWidthMeasureEl = document.createElement('span');
+  document.body.appendChild(textWidthMeasureEl);
+  do {
+    textWidthMeasureEl.textContent = text + '...';
+    text = text.slice(0, -1);
+  } while (
+    textWidthMeasureEl.offsetWidth > width &&
+    textWidthMeasureEl.textContent !== '...'
+  );
+  document.body.removeChild(textWidthMeasureEl);
+  return textWidthMeasureEl.textContent;
+};
+
 class SingleBubble extends Component {
   static propTypes = {
     /** Width of the bubble */
@@ -59,6 +87,8 @@ class SingleBubble extends Component {
         ? `M${x},0a${width / 2},${height} 0 0,0 ${width},0`
         : `M${x},0L ${x + 2} ${height}  L${x + width - 2} ${height} L${x +
             width} 0Z`;
+
+    const textWidth = getLabelLengthInPixel(label);
     return (
       <g
         onClick={this.onBubbleClick}
@@ -71,6 +101,7 @@ class SingleBubble extends Component {
           fill={colour}
           strokeWidth={isSelected ? 2 : 0}
           stroke={isSelected ? 'black' : 'transparent'}
+          title={label}
         />
         <text
           textAnchor="middle"
@@ -80,7 +111,7 @@ class SingleBubble extends Component {
           y={0}
           transform={`scale(1,-1) translate(0,${70 / 2 - height})`}
         >
-          {label}
+          {textWidth < width ? label : getAlteredLabel(label, width)}
         </text>
       </g>
     );

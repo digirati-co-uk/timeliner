@@ -291,7 +291,6 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
           a[RANGE.START_TIME] -
           (b[RANGE.END_TIME] - b[RANGE.START_TIME])
       );
-      console.log('UPDATE_DEPTHS_AFTER_DELETE', rangesSorted);
       var maxDepths = [];
       return update(
         state,
