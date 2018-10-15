@@ -13,7 +13,6 @@ const getLabelLengthInPixel = label => {
     textWidthCache[label] = textWidthMeasureEl.offsetWidth;
     document.body.removeChild(textWidthMeasureEl);
   }
-  console.log(textWidthCache[label]);
   return textWidthCache[label];
 };
 
