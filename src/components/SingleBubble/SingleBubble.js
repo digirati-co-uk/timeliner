@@ -11,6 +11,8 @@ class SingleBubble extends Component {
     height: PropTypes.number.isRequired,
     /** Position on X co-ordinate */
     x: PropTypes.number,
+    /** curve adjustment */
+    dX: PropTypes.number,
     /** Background colour of the bubble */
     colour: PropTypes.string,
     /** Bubble label text colour */
@@ -48,15 +50,20 @@ class SingleBubble extends Component {
       height,
       x,
       width,
+      dX,
       colour,
       label,
       labelColour,
       shape,
       isSelected,
     } = this.props;
+    //`M${x},0a${width / 2},${height} 0 0,0 ${width},0`
+    const cDX = dX || width / 2 - width / 8;
     const d =
       shape === BUBBLE_STYLES.ROUNDED
-        ? `M${x},0a${width / 2},${height} 0 0,0 ${width},0`
+        ? `M${x},0C${x},${height} ${x + cDX},${height} ${width / 2 +
+            x},${height} C${x + width - cDX},${height} ${width +
+            x},${height} ${width + x},${0}`
         : `M${x},0L ${x + 2} ${height}  L${x + width - 2} ${height} L${x +
             width} 0Z`;
     return (

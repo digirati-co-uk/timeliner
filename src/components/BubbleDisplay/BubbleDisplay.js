@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './BubbleDisplay.scss';
+import { RANGE } from '../../constants/range';
 
 class BubbleDisplay extends Component {
   static propTypes = {
@@ -41,6 +42,36 @@ class BubbleDisplay extends Component {
     );
   }
 
+  getDx = (point, pts, projectionFactor) => {
+    const firstChild = pts
+      .filter(
+        pt =>
+          pt[RANGE.START_TIME] === point[RANGE.START_TIME] &&
+          pt[RANGE.DEPTH] < point[RANGE.DEPTH]
+      )
+      .sort((ptA, ptB) => ptA[RANGE.DEPTH] - ptB[RANGE.DEPTH])[0];
+    const lastChild = pts
+      .filter(
+        pt =>
+          pt[RANGE.END_TIME] === point[RANGE.END_TIME] &&
+          pt[RANGE.DEPTH] < point[RANGE.DEPTH]
+      )
+      .sort((ptA, ptB) => ptA[RANGE.DEPTH] - ptB[RANGE.DEPTH])[0];
+    const dXCandidate = Math.min(
+      firstChild
+        ? firstChild[RANGE.END_TIME] - firstChild[RANGE.START_TIME]
+        : Number.MAX_SAFE_INTEGER,
+      lastChild
+        ? lastChild[RANGE.END_TIME] - lastChild[RANGE.START_TIME]
+        : Number.MAX_SAFE_INTEGER
+    );
+    if (dXCandidate === Number.MAX_SAFE_INTEGER) {
+      return null;
+    } else {
+      return (dXCandidate / 2) * projectionFactor;
+    }
+  };
+
   render() {
     const {
       width,
@@ -60,12 +91,14 @@ class BubbleDisplay extends Component {
     );
     const projectionFactor = realWidth / maxWidth;
     const viewBox = [x, 0, computedWidth, height].join(' ');
-    const bubbles = Object.values(points).map(point => ({
-      x: point.startTime * projectionFactor,
-      width: (point.endTime - point.startTime) * projectionFactor,
+    const bubbles = Object.values(points).map((point, idx, pts) => ({
+      x: point[RANGE.START_TIME] * projectionFactor,
+      width:
+        (point[RANGE.END_TIME] - point[RANGE.START_TIME]) * projectionFactor,
       colour: point.colour,
-      height: point.depth * bubbleHeight, //Math.pow(2 / 3, point.depth - 1) * height,
+      height: point.depth * bubbleHeight,
       label: point.label,
+      dX: this.getDx(point, pts, projectionFactor),
       point,
       isSelected: point.isSelected,
       shape,
