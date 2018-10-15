@@ -5,6 +5,7 @@ import {
   AUDIO_LOADED,
   AUDIO_ERROR,
   LOAD_CANVAS,
+  UNLOAD_AUDIO,
   CANVAS,
 } from '../constants/canvas';
 
@@ -34,6 +35,18 @@ const canvas = (state = DEFAULT_CANVAS_STATE, action) => {
           description: {
             $set: action.payload.description,
           },
+        },
+      });
+    case UNLOAD_AUDIO:
+      return update(state, {
+        [CANVAS.URL]: {
+          $set: null,
+        },
+        [CANVAS.IS_LOADED]: {
+          $set: false,
+        },
+        [CANVAS.PERCENT_LOADED]: {
+          $set: 0,
         },
       });
     case LOAD_CANVAS:
