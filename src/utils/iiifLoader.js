@@ -1,13 +1,11 @@
 import { PROJECT, RDF_NAMESPACE } from '../constants/project';
 import { CANVAS } from '../constants/canvas';
-import { RANGE } from '../constants/range';
+import { RANGE, DEFAULT_COLOURS } from '../constants/range';
 import { VIEWSTATE } from '../constants/viewState';
 
 // Constants
 
-const BACKROUND_COLOUR_PROPERTY = 'digirati:backgroundColor';
-
-const DEFAULT_COLOURS = ['#A8F097', '#C797F0'];
+const BACKROUND_COLOUR_PROPERTY = 'tl:backgroundColour';
 
 // Helpers
 
@@ -35,8 +33,10 @@ const getLocalisedResource = (resource, locale) => {
  * get custom bubble colour
  * @param {Object} range the range may has the background property
  */
-const getColour = (range, fallback) =>
-  range[BACKROUND_COLOUR_PROPERTY] || fallback || '';
+const getColour = range =>
+  range[RANGE.COLOUR] ||
+  DEFAULT_COLOURS[(range[RANGE.DEPTH] - 1) % DEFAULT_COLOURS.length] ||
+  '';
 
 /**
  * converts url hash parameters to an object
@@ -126,12 +126,19 @@ const extendRange = (parentRange, child) => {
     parentRange[RANGE.END_TIME],
     child[RANGE.END_TIME]
   );
+  parentRange[RANGE.DEPTH] = Math.max(
+    child[RANGE.DEPTH] + 1,
+    parentRange[RANGE.DEPTH] || 1
+  );
 };
 
-const processLevel = (structure, depth = 0) => {
+const processLevel = structure => {
   if (structure.type === 'Canvas') {
     const hashParams = hashParamsToObj(structure.id);
-    return parseTimeRange(hashParams.t);
+    return {
+      ...parseTimeRange(hashParams.t),
+      [RANGE.DEPTH]: 0,
+    };
   } else if (structure.type === 'Range') {
     const range = {
       id: structure.id,
@@ -139,16 +146,13 @@ const processLevel = (structure, depth = 0) => {
       [RANGE.SUMMARY]: getLocalisedResource(structure.summary) || '',
       [RANGE.START_TIME]: Number.MAX_SAFE_INTEGER,
       [RANGE.END_TIME]: Number.MIN_SAFE_INTEGER,
-      [RANGE.DEPTH]: depth + 1,
-      [RANGE.COLOUR]: getColour(
-        structure,
-        DEFAULT_COLOURS[depth % DEFAULT_COLOURS.length]
-      ),
+      [RANGE.DEPTH]: 1,
+      [RANGE.COLOUR]: structure[BACKROUND_COLOUR_PROPERTY],
       [RANGE.IS_SELECTED]: false,
     };
     const ranges = [];
     structure.items.forEach(struct => {
-      const result = processLevel(struct, depth + 1);
+      const result = processLevel(struct);
       if (struct.type === 'Canvas') {
         extendRange(range, result);
       } else if (struct.type === 'Range') {
@@ -171,6 +175,7 @@ const processStructures = manifest => {
   return Array.prototype.concat
     .apply([], allStructures)
     .reduce((ranges, range) => {
+      range[RANGE.COLOUR] = getColour(range);
       ranges[range.id] = range;
       return ranges;
     }, {});
