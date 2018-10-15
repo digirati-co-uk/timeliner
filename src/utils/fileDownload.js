@@ -1,4 +1,5 @@
 export const immediateDownload = (dataStr, mime_type = 'application/json') => {
+  const body = document.body;
   const blob = new Blob([dataStr], {
     type: mime_type,
   });
@@ -13,8 +14,8 @@ export const immediateDownload = (dataStr, mime_type = 'application/json') => {
       window.URL.revokeObjectURL(that.href);
     }, 1500);
   };
-  document.body.appendChild(dlink);
+  body.appendChild(dlink);
   dlink.click();
   dlink.remove();
-  document.body.removeChild(dlink);
+  body.removeChild(dlink);
 };
