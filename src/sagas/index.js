@@ -155,7 +155,6 @@ function* multiDelete({ selecteds }) {
   for (var i = 0; i < selecteds.length; i++) {
     yield put(deleteRange(selecteds[i]));
   }
-  
 }
 
 export default function* root() {

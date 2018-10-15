@@ -54,10 +54,11 @@ class SingleBubble extends Component {
       shape,
       isSelected,
     } = this.props;
-    const d = 
+    const d =
       shape === BUBBLE_STYLES.ROUNDED
-        ? `M${x},0a${width / 2},${height} 0 0,0 ${width},0` 
-        : `M${x},0L ${x + 2} ${height}  L${x + width - 2} ${height} L${x + width} 0Z`;
+        ? `M${x},0a${width / 2},${height} 0 0,0 ${width},0`
+        : `M${x},0L ${x + 2} ${height}  L${x + width - 2} ${height} L${x +
+            width} 0Z`;
     return (
       <g
         onClick={this.onBubbleClick}
