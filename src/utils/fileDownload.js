@@ -13,7 +13,8 @@ export const immediateDownload = (dataStr, mime_type = 'application/json') => {
       window.URL.revokeObjectURL(that.href);
     }, 1500);
   };
-
+  document.body.appendChild(dlink);
   dlink.click();
   dlink.remove();
+  document.body.removeChild(dlink);
 };
