@@ -5,7 +5,7 @@ import { UPDATE_RANGE } from '../constants/range';
 import { loadProjectState } from '../utils/iiifLoader';
 import exporter from '../utils/iiifSaver';
 import { loadProject, setTitle, setDescription } from '../actions/project';
-import { loadCanvas } from '../actions/canvas';
+import { loadCanvas, unloadAudio } from '../actions/canvas';
 import {
   loadRanges,
   movePoint,
@@ -85,6 +85,7 @@ const getState = state => state;
 
 function* importDocument({ manifest }) {
   const loadedState = loadProjectState(manifest);
+  yield put(unloadAudio());
   yield put(loadProject(loadedState.project));
   yield put(loadCanvas(loadedState.canvas));
   yield put(loadRanges(loadedState.range));
