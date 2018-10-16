@@ -37,7 +37,13 @@ const MetadataDisplay = props => (
           </IconButton>
         </Grid>
       </Grid>
-      <Typography variant="body1" component="pre">
+      <Typography
+        variant="body1"
+        component="pre"
+        style={{
+          whiteSpace: 'pre-line',
+        }}
+      >
         {props.summary}
       </Typography>
     </CardContent>

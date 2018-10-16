@@ -22,7 +22,13 @@ const ProjectMetadataDisplay = props => (
         </IconButton>
       </Grid>
     </Grid>
-    <Typography varinant="body1" paragraph={true}>
+    <Typography
+      variant="body1"
+      component="pre"
+      style={{
+        whiteSpace: 'pre-line',
+      }}
+    >
       {props.manifestSummary}
     </Typography>
   </div>

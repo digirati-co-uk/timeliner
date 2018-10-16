@@ -71,7 +71,11 @@ class AudioImporter extends Component {
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.props.onClose} color="primary">
+          <Button
+            disabled={!this.props.onClose}
+            onClick={this.props.onClose}
+            color="primary"
+          >
             Cancel
           </Button>
           <Button
