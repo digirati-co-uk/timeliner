@@ -35,7 +35,7 @@ class CurrentTimeIndicator extends Component {
   validateProps(props) {
     if (props.currentTime > props.runtime) {
       return this.setState({
-        error: 'Invalid time',
+        currentFormattedTime: formatDate(new Date(0), 'hh:mm:ss'),
       });
     }
 
@@ -73,7 +73,7 @@ class CurrentTimeIndicator extends Component {
     const date = new Date(time);
     if (date.toString() === 'Invalid Date') {
       return this.setState({
-        error: 'Invalid current time',
+        currentFormattedTime: formatDate(new Date(0), 'hh:mm:ss'),
       });
     }
 
