@@ -178,7 +178,7 @@ function* multiDelete({ selecteds }) {
   if (selecteds.length > 1) {
     confirmed = yield call(
       showConfirmation,
-      'Multiple ranges will be deleted. Redundant length groups will be removed. Are you wish to continue?'
+      'Multiple ranges will be deleted. Redundant length groups will be removed. Do you wish to continue?'
     );
   }
   if (confirmed) {
