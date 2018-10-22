@@ -18,6 +18,7 @@ import {
 
 import { RANGE } from '../../constants/range';
 import { PROJECT } from '../../constants/project';
+import { VIEWSTATE } from '../../constants/viewState';
 import { selectRange, splitRangeAt, movePoint } from '../../actions/range';
 
 const isOSX = navigator.userAgent.indexOf('Mac OS X') !== -1;
@@ -34,7 +35,7 @@ class BubbleEditor extends React.Component {
       startX: 0,
       deltaX: 0,
       viewportX: 0,
-      viewportStartX: 0,
+      viewportStartX: -1,
     };
   }
 
@@ -164,11 +165,23 @@ class BubbleEditor extends React.Component {
   panEnd = ev => {
     document.body.removeEventListener('mousemove', this.panMove);
     document.body.removeEventListener('mouseup', this.panEnd);
+    if (this.state.viewportStartX !== -1) {
+      this.props.panToPosition(this.state.viewportX);
+    }
     this.setState({
       selectedPoint: -1,
-      viewportStartX: 0,
+      viewportStartX: -1,
     });
   };
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.x !== this.props.x) {
+      this.setState({
+        viewportX: nextProps.x,
+        viewportStartX: -1,
+      });
+    }
+  }
 
   render() {
     const _points = this.props.points;
@@ -176,13 +189,20 @@ class BubbleEditor extends React.Component {
       runTime,
       currentTime,
       zoom,
+      x,
       onUpdateTime,
       splitRange,
       bubbleHeight,
       bubbleStyle,
       blackAndWhiteMode,
     } = this.props;
-    const { dimensions, selectedPoint, deltaX, viewportX } = this.state;
+    const {
+      dimensions,
+      selectedPoint,
+      deltaX,
+      viewportX,
+      viewportStartX,
+    } = this.state;
 
     const timePoints = this.getTimePoints();
 
@@ -231,7 +251,7 @@ class BubbleEditor extends React.Component {
                   points={_points}
                   width={this.state.dimensions.width}
                   height={200}
-                  x={viewportX}
+                  x={viewportStartX !== -1 ? viewportX : x}
                   zoom={zoom}
                   bubbleHeight={bubbleHeight}
                   shape={bubbleStyle}
@@ -257,7 +277,7 @@ class BubbleEditor extends React.Component {
                   runTime={runTime}
                   currentTime={currentTime}
                   zoom={zoom}
-                  x={viewportX}
+                  x={viewportStartX !== -1 ? viewportX : x}
                   width={this.state.dimensions.width}
                   timePoints={timePoints}
                   onUpdateTime={onUpdateTime}
@@ -281,10 +301,11 @@ class BubbleEditor extends React.Component {
 }
 
 const mapStateProps = state => ({
-  currentTime: state.viewState.currentTime,
-  runTime: state.viewState.runTime,
+  currentTime: state.viewState[VIEWSTATE.CURRENT_TIME],
+  runTime: state.viewState[VIEWSTATE.RUNTIME],
   points: state.range,
-  zoom: state.viewState.zoom,
+  zoom: state.viewState[VIEWSTATE.ZOOM],
+  x: state.viewState[VIEWSTATE.X],
   bubbleHeight: state.project[PROJECT.BUBBLE_HEIGHT],
   bubbleStyle: state.project[PROJECT.BUBBLE_STYLE],
   showTimes: state.project[PROJECT.SHOW_TIMES],
