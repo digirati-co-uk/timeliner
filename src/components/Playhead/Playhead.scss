@@ -5,7 +5,7 @@
   bottom: 0;
   margin-top: -2px;
   margin-bottom: -2px;
-  pointer-events: none;
+  pointer-events: all;
   overflow: visible;
   &:after {
     content: '';
@@ -16,5 +16,6 @@
     position: absolute;
     right: -5px;
     top: 5px;
+    cursor: ew-resize;
   }
 }
