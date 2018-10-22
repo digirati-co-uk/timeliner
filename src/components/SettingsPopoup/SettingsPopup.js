@@ -199,14 +199,14 @@ export default class SettingsPopup extends React.Component {
                       </FormGroup>
                     </FormControl>
                   </Grid>
-                  <Grid item>
+                  {/* TODO: phase 2... <Grid item>
                     <FormControl component="fieldset">
                       <FormLabel component="legend">
                         Bubble Level Colours
                       </FormLabel>
                       <FormGroup>TODO: Colour theme editor</FormGroup>
                     </FormControl>
-                  </Grid>
+                  </Grid> */}
                   <Grid item>
                     <FormControl component="fieldset">
                       <FormLabel component="legend">Audio Settings</FormLabel>
