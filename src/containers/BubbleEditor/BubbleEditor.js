@@ -73,9 +73,7 @@ class BubbleEditor extends React.Component {
   playheadDragMove = ev => {
     if (this.state.isPlayheadUpdating) {
       // in order to smooth drag
-      console.log('playheadDragMove');
       this.clearTextSelection();
-      //const scrobberBounds = ev.currentTarget.getBoundingClientRect();
       const positionRatio =
         (ev.pageX - this.state.scrobberBounds.left) /
         this.state.scrobberBounds.width;
@@ -88,7 +86,6 @@ class BubbleEditor extends React.Component {
 
   playheadDragEnd = ev => {
     if (this.state.isPlayheadUpdating) {
-      console.log('playheadDragEnd');
       this.props.onUpdateTime(this.state.playheadX);
       this.setState({
         selectedPoint: -1,
@@ -306,7 +303,6 @@ class BubbleEditor extends React.Component {
                   selectedPoint={this.state.selectedPoint}
                   showTimes={this.props.showTimes}
                   isPlayheadUpdating={this.state.isPlayheadUpdating}
-                  //onPlayheadDragStart={this.onPlayheadDragStart}
                   playheadX={this.state.playheadX}
                 />
               </div>
