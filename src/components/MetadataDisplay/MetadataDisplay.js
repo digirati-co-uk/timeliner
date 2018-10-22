@@ -28,7 +28,7 @@ const MetadataDisplay = props => (
       >
         <Grid item>
           <Typography variant="title" component="h3">
-            {props.label}
+            {props.label || 'Unnamed range'}
           </Typography>
         </Grid>
         <Grid>
@@ -44,7 +44,7 @@ const MetadataDisplay = props => (
           whiteSpace: 'pre-line',
         }}
       >
-        {props.summary}
+        {props.summary || 'Range description'}
       </Typography>
     </CardContent>
   </Card>
