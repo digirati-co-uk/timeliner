@@ -17,7 +17,10 @@ const getLabelLengthInPixel = label => {
 };
 
 const getAlteredLabel = (label, width) => {
-  let text = label;
+  let text = label || '';
+  if (width === 0) {
+    return '';
+  }
   const textWidthMeasureEl = document.createElement('span');
   document.body.appendChild(textWidthMeasureEl);
   do {
