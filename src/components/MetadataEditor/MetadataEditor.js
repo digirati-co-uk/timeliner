@@ -176,9 +176,9 @@ class MetadataEditor extends Component {
               flex: 1,
             }}
           >
-            <Button disabled={!onDelete} onClick={onDelete}>
+            {/* <Button disabled={!onDelete} onClick={onDelete}>
               <Delete /> Delete
-            </Button>
+            </Button> */}
             <Button onClick={onCancel}>Cancel</Button>
             <PrimaryButton disabled={!this.props.onSave} onClick={this.onSave}>
               Save
