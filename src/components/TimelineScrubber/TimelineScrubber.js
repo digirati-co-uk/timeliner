@@ -110,7 +110,17 @@ class TimelineScrubber extends Component {
             x={this.timeToPercent(timePoint)}
           >
             {timePoint === timePoints[selectedPoint] || showTimes ? (
-              <span className="timeline-marker__tooltip">
+              <span
+                className="timeline-marker__tooltip"
+                style={{
+                  transform:
+                    timePointIndex === 0
+                      ? 'translate(0)'
+                      : timePointIndex === timePoints.length - 1
+                        ? 'translate(-100%)'
+                        : 'translate(-50%)',
+                }}
+              >
                 {this.timeToLabel(timePoint)}
               </span>
             ) : (

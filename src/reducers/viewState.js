@@ -69,6 +69,9 @@ const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
         [VIEWSTATE.ZOOM]: {
           $set: 1.0,
         },
+        [VIEWSTATE.X]: {
+          $set: 0.0,
+        },
       });
     case PAN_TO_POSITION:
       return update(state, {

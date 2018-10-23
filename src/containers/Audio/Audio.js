@@ -57,6 +57,9 @@ class Audio extends Component {
   render() {
     const { url, isPlaying, volume, currentTime } = this.props;
     const playStatus = isPlaying ? Sound.status.PLAYING : Sound.status.PAUSED;
+    if (!url) {
+      return null;
+    }
     return (
       <Sound
         url={url}

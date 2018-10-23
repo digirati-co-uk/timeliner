@@ -236,6 +236,7 @@ class VariationsMainView extends React.Component {
                 onCancelEditingProjectMetadata={
                   this.props.cancelProjectMetadataEdits
                 }
+                url={this.props.url}
               />
               <Footer />
             </div>

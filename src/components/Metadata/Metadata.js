@@ -68,6 +68,7 @@ const Metadata = props => (
               manifestLabel={props.manifestLabel}
               manifestSummary={props.manifestSummary}
               onEditClick={props.onEditProjectMetadata}
+              url={props.url}
             />
           )}
         </div>
@@ -110,6 +111,8 @@ Metadata.propTypes = {
   projectMetadataEditorOpen: PropTypes.bool,
   onEditProjectMetadata: PropTypes.func,
   onSaveProjectMetadata: PropTypes.func,
+  /** Audio url */
+  url: PropTypes.string,
 };
 
 Metadata.defaultProps = {
