@@ -40,7 +40,7 @@ class MetadataEditor extends Component {
 
   static defaultProps = {
     isNew: true,
-    label: 'Unnamed Range',
+    label: '',
     summary: '',
     colour: 0,
   };
@@ -110,7 +110,7 @@ class MetadataEditor extends Component {
           InputLabelProps={{
             shrink: true,
           }}
-          placeholder="Placeholder"
+          placeholder="Unnamed range"
           fullWidth
           margin="normal"
           value={label}
@@ -123,7 +123,7 @@ class MetadataEditor extends Component {
           InputLabelProps={{
             shrink: true,
           }}
-          placeholder="Placeholder"
+          placeholder="Range description"
           fullWidth
           multiline={true}
           margin="normal"
@@ -176,9 +176,9 @@ class MetadataEditor extends Component {
               flex: 1,
             }}
           >
-            <Button disabled={!onDelete} onClick={onDelete}>
+            {/* <Button disabled={!onDelete} onClick={onDelete}>
               <Delete /> Delete
-            </Button>
+            </Button> */}
             <Button onClick={onCancel}>Cancel</Button>
             <PrimaryButton disabled={!this.props.onSave} onClick={this.onSave}>
               Save

@@ -13,7 +13,7 @@ const ProjectMetadataDisplay = props => (
     >
       <Grid item xs={10}>
         <Typography variant="title" component="h3">
-          {props.manifestLabel}
+          {props.manifestLabel || 'Unnamed manifest'}
         </Typography>
       </Grid>
       <Grid item xs={2}>
@@ -29,7 +29,7 @@ const ProjectMetadataDisplay = props => (
         whiteSpace: 'pre-line',
       }}
     >
-      {props.manifestSummary}
+      {props.manifestSummary || 'Description of manifest'}
     </Typography>
     <hr />
     <Typography variant="body1" component="p">

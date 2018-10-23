@@ -55,7 +55,7 @@ class ProjectMetadataEditor extends Component {
           InputLabelProps={{
             shrink: true,
           }}
-          placeholder="Placeholder"
+          placeholder="Unnamed manifest"
           fullWidth
           margin="normal"
           value={manifestLabel}
@@ -68,7 +68,7 @@ class ProjectMetadataEditor extends Component {
           InputLabelProps={{
             shrink: true,
           }}
-          placeholder="Placeholder"
+          placeholder="Description of manifest"
           fullWidth
           multiline={true}
           margin="normal"

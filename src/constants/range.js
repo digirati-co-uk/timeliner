@@ -7,6 +7,7 @@ export const RANGE = {
   DEPTH: 'depth',
   IS_SELECTED: 'isSelected',
 };
+
 export const DEFAULT_COLOURS = [
   '#A63993',
   '#7D3DB0',
@@ -14,6 +15,7 @@ export const DEFAULT_COLOURS = [
   '#417AB0',
   '#40A6A2',
 ];
+
 export const DEFAULT_RANGES_STATE = {
   'id-0': {
     id: 'id-0',

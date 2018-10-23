@@ -3,10 +3,10 @@ import { getProjectSettings } from '../../utils/iiifSaver';
 
 const createNewManifest = (manifestDomain, audioUri, duration) => ({
   label: {
-    en: ['Unnamed manifest'],
+    en: [''],
   },
   summary: {
-    en: ['Description of manifest'],
+    en: [''],
   },
   type: 'Manifest',
   id: `${manifestDomain}/manifest`,
@@ -45,7 +45,7 @@ const createNewManifest = (manifestDomain, audioUri, duration) => ({
     {
       id: `${manifestDomain}/range/r0`,
       type: 'Range',
-      label: { en: ['Unnamed range'] },
+      label: { en: [''] },
       items: [
         {
           id: `${manifestDomain}/canvas/c1#t=0,${duration}`,
