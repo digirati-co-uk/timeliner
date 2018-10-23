@@ -17,7 +17,10 @@ const getLabelLengthInPixel = label => {
 };
 
 const getAlteredLabel = (label, width) => {
-  let text = label;
+  let text = label || '';
+  if (width === 0) {
+    return '';
+  }
   const textWidthMeasureEl = document.createElement('span');
   document.body.appendChild(textWidthMeasureEl);
   do {
@@ -76,7 +79,6 @@ class SingleBubble extends Component {
     const {
       onClick,
       height,
-      x,
       width,
       dX,
       colour,
@@ -85,7 +87,7 @@ class SingleBubble extends Component {
       shape,
       isSelected,
     } = this.props;
-    //`M${x},0a${width / 2},${height} 0 0,0 ${width},0`
+    const x = this.props.x || 0;
     const cDX = dX || width / 2 - width / 8;
     const d =
       shape === BUBBLE_STYLES.ROUNDED
@@ -114,7 +116,7 @@ class SingleBubble extends Component {
           textAnchor="middle"
           fill={labelColour}
           paintOrder="stroke"
-          x={width / 2 + x}
+          x={width / 2 + x || 0}
           y={0}
           transform={`scale(1,-1) translate(0,${70 / 2 - height})`}
         >

@@ -15,7 +15,7 @@ class AudioImporter extends Component {
     /** Callback for when a manifest is imported, receives manifest object */
     onImport: PropTypes.func.isRequired,
     /** On close */
-    onClose: PropTypes.func.isRequired,
+    onClose: PropTypes.func,
     /** is the dialog open */
     open: PropTypes.bool,
   };

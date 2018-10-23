@@ -30,7 +30,7 @@ ContentOverlay.propTypes = {
   loadingPercent: PropTypes.number.isRequired,
   error: PropTypes.object,
   audioUrl: PropTypes.string,
-  isLoaded: PropTypes.boolean,
+  isLoaded: PropTypes.bool,
 };
 
 export default ContentOverlay;

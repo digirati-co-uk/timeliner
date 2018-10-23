@@ -17,5 +17,4 @@ export const immediateDownload = (dataStr, mime_type = 'application/json') => {
   body.appendChild(dlink);
   dlink.click();
   dlink.remove();
-  body.removeChild(dlink);
 };

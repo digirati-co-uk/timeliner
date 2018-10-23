@@ -10,11 +10,11 @@
   &:after {
     content: '';
     height: 100%;
-    border-bottom: 11px solid #ddd;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
+    border-bottom: 21px solid #424242;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
     position: absolute;
-    right: -5px;
+    right: -10px;
     top: 5px;
   }
 }

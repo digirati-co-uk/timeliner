@@ -31,12 +31,17 @@ const ProjectMetadataDisplay = props => (
     >
       {props.manifestSummary}
     </Typography>
+    <hr />
+    <Typography variant="body1" component="p">
+      <b>Source: </b> {props.url}
+    </Typography>
   </div>
 );
 
 ProjectMetadataDisplay.propTypes = {
   manifestLabel: PropTypes.string,
   manifestSummary: PropTypes.string,
+  url: PropTypes.string,
   onEditClick: PropTypes.func,
 };
 
