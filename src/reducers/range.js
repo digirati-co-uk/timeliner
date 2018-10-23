@@ -260,7 +260,6 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
       const removals = {
         $unset: [],
       };
-      const deleted = [];
       Object.values(state)
         .sort(
           (a, b) =>
