@@ -35,6 +35,10 @@ class TimelineScrubber extends Component {
     showTimes: PropTypes.bool,
     /** current viewport position */
     x: PropTypes.number,
+    /** playhead is dragging */
+    isPlayheadUpdating: PropTypes.bool,
+    /** playhead Drag X */
+    playheadX: PropTypes.number,
   };
 
   static defaultProps = {
@@ -47,6 +51,8 @@ class TimelineScrubber extends Component {
     zoom: 1.0,
     dragStart: () => {},
     showTimes: false,
+    isPlayheadUpdating: false,
+    playheadX: 0,
   };
 
   timeToPercent = time => (time / this.props.runTime) * 100; //* this.props.zoom;
@@ -84,6 +90,8 @@ class TimelineScrubber extends Component {
       x,
       width,
       zoom,
+      isPlayheadUpdating,
+      playheadX,
     } = this.props;
     return (
       <div
@@ -120,7 +128,10 @@ class TimelineScrubber extends Component {
             )}
           </TimelineMarker>
         ))}
-        <PlayHead x={this.timeToPercent(currentTime)} isUpdating={false} />
+        <PlayHead
+          x={this.timeToPercent(isPlayheadUpdating ? playheadX : currentTime)}
+          isUpdating={isPlayheadUpdating}
+        />
       </div>
     );
   }

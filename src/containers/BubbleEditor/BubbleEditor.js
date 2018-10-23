@@ -35,7 +35,10 @@ class BubbleEditor extends React.Component {
       startX: 0,
       deltaX: 0,
       viewportX: 0,
-      viewportStartX: -1,
+      viewportStartX: 0,
+      isPlayheadUpdating: false,
+      playheadX: 0,
+      scrobberBounds: null,
     };
   }
 
@@ -68,6 +71,33 @@ class BubbleEditor extends React.Component {
     }
   };
 
+  playheadDragMove = ev => {
+    if (this.state.isPlayheadUpdating) {
+      // in order to smooth drag
+      this.clearTextSelection();
+      const positionRatio =
+        (ev.pageX - this.state.scrobberBounds.left) /
+        this.state.scrobberBounds.width;
+      const time = positionRatio * this.props.runTime;
+      this.setState({
+        playheadX: time,
+      });
+    }
+  };
+
+  playheadDragEnd = ev => {
+    if (this.state.isPlayheadUpdating) {
+      this.props.onUpdateTime(this.state.playheadX);
+      this.setState({
+        selectedPoint: -1,
+        isPlayheadUpdating: false,
+        playheadX: 0,
+      });
+    }
+    document.body.removeEventListener('mousemove', this.playheadDragMove);
+    document.body.removeEventListener('mouseup', this.playheadDragEnd);
+  };
+
   dragStart = ev => {
     if (
       ev.target === ev.target.parentNode.firstChild ||
@@ -83,7 +113,14 @@ class BubbleEditor extends React.Component {
       const positionRatio =
         (ev.pageX - scrobberBounds.left) / scrobberBounds.width;
       const time = positionRatio * this.props.runTime;
-      this.props.onUpdateTime(time);
+      document.body.addEventListener('mousemove', this.playheadDragMove);
+      document.body.addEventListener('mouseup', this.playheadDragEnd);
+      this.setState({
+        selectedPoint: -1,
+        isPlayheadUpdating: true,
+        playheadX: time,
+        scrobberBounds,
+      });
       return;
     }
     const selectedPoint = Array.prototype.indexOf.call(
@@ -285,6 +322,8 @@ class BubbleEditor extends React.Component {
                   dragStart={this.dragStart}
                   selectedPoint={this.state.selectedPoint}
                   showTimes={this.props.showTimes}
+                  isPlayheadUpdating={this.state.isPlayheadUpdating}
+                  playheadX={this.state.playheadX}
                 />
               </div>
             )}
