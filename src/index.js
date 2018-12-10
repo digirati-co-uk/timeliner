@@ -4,4 +4,9 @@ import { render } from 'react-dom';
 import Root from './containers/Root/Root';
 import configureStore from './store/main';
 
-render(<Root store={configureStore()} />, document.getElementById('app'));
+const { store, persistor } = configureStore();
+
+render(
+  <Root store={store} persistor={persistor} />,
+  document.getElementById('app')
+);
