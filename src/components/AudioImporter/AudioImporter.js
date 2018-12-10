@@ -28,8 +28,11 @@ class AudioImporter extends Component {
     error: '',
   };
 
+  importUrlField = React.createRef();
+
   onImportResource = () => {
     const { onImport } = this.props;
+    console.log(this.importUrlField.value);
     importResource(this.importUrlField.value)
       .then(manifest => {
         onImport(manifest);
@@ -42,12 +45,11 @@ class AudioImporter extends Component {
   };
 
   render() {
+    const { open, onClose } = this.props;
+    const { error } = this.state;
+
     return (
-      <Dialog
-        open={this.props.open}
-        onClose={this.props.onClose}
-        aria-labelledby="form-dialog-title"
-      >
+      <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
         <DialogTitle>Import Audio/Manifest</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -58,24 +60,21 @@ class AudioImporter extends Component {
             inputRef={x => (this.importUrlField = x)}
             autoFocus
             margin="dense"
-            id="name"
+            id="manifestUrl"
+            name="manifestUrl"
             label="Audio or Manifest url"
             type="url"
             onKeyPress={this.onKeyPress}
             fullWidth
           />
-          {this.state.error && (
+          {error && (
             <Typography variant="body1" color="error">
-              {this.state.error}
+              {error}
             </Typography>
           )}
         </DialogContent>
         <DialogActions>
-          <Button
-            disabled={!this.props.onClose}
-            onClick={this.props.onClose}
-            color="primary"
-          >
+          <Button disabled={!onClose} onClick={onClose} color="primary">
             Cancel
           </Button>
           <Button
