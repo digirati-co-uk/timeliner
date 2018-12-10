@@ -301,13 +301,28 @@ class BubbleEditor extends React.Component {
                           ? b1.x - b2.x
                           : b2.point.depth - b1.point.depth;
                       })
-                      .map(bubble => (
-                        <SingleBubble
-                          key={`bk-${bubble.point.id}`}
-                          {...bubble}
-                          onClick={this.toggleSelects}
-                        />
-                      ))
+                      .map(
+                        (bubble, n) =>
+                          console.log(this.state, n) || (
+                            <SingleBubble
+                              key={`bk-${bubble.point.id}`}
+                              {...bubble}
+                              x={
+                                this.state.selectedPoint === n
+                                  ? bubble.x + this.state.deltaX
+                                  : bubble.x
+                              }
+                              width={
+                                this.state.selectedPoint - 1 === n
+                                  ? bubble.width + this.state.deltaX
+                                  : this.state.selectedPoint === n
+                                  ? bubble.width - this.state.deltaX
+                                  : bubble.width
+                              }
+                              onClick={this.toggleSelects}
+                            />
+                          )
+                      )
                   }
                 </BubbleDisplay>
                 <TimelineScrubber
