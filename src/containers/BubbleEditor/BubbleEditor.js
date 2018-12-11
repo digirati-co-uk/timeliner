@@ -303,7 +303,7 @@ class BubbleEditor extends React.Component {
                       })
                       .map(
                         (bubble, n) =>
-                          console.log(this.state, n) || (
+                          (
                             <SingleBubble
                               key={`bk-${bubble.point.id}`}
                               {...bubble}
