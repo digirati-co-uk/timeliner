@@ -6,6 +6,7 @@ export const BUBBLE_STYLES = {
 const DEFAULT_BUBBLE_HEIGHT = 55;
 const DEFAULT_LANGUAGE_CODE = 'en';
 const DEFAULT_TITLE = 'Untitled Project';
+const DEFAULT_BACKGROUND_COLOUR = '#fff';
 
 const DESCRIPTION = 'description';
 const TITLE = 'title';
@@ -18,6 +19,7 @@ const START_PLAYING_WHEN_BUBBLES_CLICKED = 'startPlayingWhenBubbleIsClicked';
 const STOP_PLAYING_END_OF_SECTION = 'stopPlayingAtTheEndOfSection';
 const BUBBLE_HEIGHT = 'bubbleHeight';
 const LANGUAGE = 'language';
+const BACKGROUND_COLOUR = 'backgroundColour';
 
 export const PROJECT = {
   DESCRIPTION,
@@ -31,6 +33,7 @@ export const PROJECT = {
   STOP_PLAYING_END_OF_SECTION,
   BUBBLE_HEIGHT,
   LANGUAGE,
+  BACKGROUND_COLOUR,
 };
 
 export const RDF_NAMESPACE = 'tl';
@@ -43,6 +46,7 @@ export const PROJECT_SETTINGS_KEYS = [
   START_PLAYING_WHEN_BUBBLES_CLICKED,
   STOP_PLAYING_END_OF_SECTION,
   BUBBLE_HEIGHT,
+  BACKGROUND_COLOUR,
 ];
 
 export const SETTINGS_ATTRIBUTE = `${RDF_NAMESPACE}:settings`;
@@ -55,6 +59,7 @@ export const DEFAULT_SETTINGS = {
   [AUTO_SCALE_HEIGHT]: false,
   [START_PLAYING_WHEN_BUBBLES_CLICKED]: true,
   [STOP_PLAYING_END_OF_SECTION]: false,
+  [BACKGROUND_COLOUR]: DEFAULT_BACKGROUND_COLOUR,
 };
 
 export const DEFAULT_PROJECT_STATE = {
