@@ -2,10 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import VariationsMainView from '../VariationsMainView/VariationsMainView';
+import { PersistGate } from 'redux-persist/integration/react';
 
-const Root = ({ store }) => (
+const Root = ({ store, persistor }) => (
   <Provider store={store}>
-    <VariationsMainView />
+    <PersistGate loading="loading..." persistor={persistor}>
+      <VariationsMainView />
+    </PersistGate>
   </Provider>
 );
 
