@@ -262,15 +262,11 @@ class BubbleEditor extends React.Component {
     }
 
     return (
-      <div
-        style={{
-          overflow: 'hidden',
-        }}
-      >
+      <div style={{ background: this.props.backgroundColour }}>
         <div
           style={{
             position: 'relative',
-            margin: '16px',
+            margin: '16px 5px 0 5px',
           }}
         >
           <Measure
@@ -301,7 +297,7 @@ class BubbleEditor extends React.Component {
                           ? b1.x - b2.x
                           : b2.point.depth - b1.point.depth;
                       })
-                      .map(bubble => (
+                      .map((bubble, n) => (
                         <SingleBubble
                           key={`bk-${bubble.point.id}`}
                           {...bubble}
@@ -349,6 +345,7 @@ const mapStateProps = state => ({
   bubbleStyle: state.project[PROJECT.BUBBLE_STYLE],
   showTimes: state.project[PROJECT.SHOW_TIMES],
   blackAndWhiteMode: state.project[PROJECT.BLACK_N_WHITE],
+  backgroundColour: state.project[PROJECT.BACKGROUND_COLOUR],
 });
 
 const mapDispatchToProps = {

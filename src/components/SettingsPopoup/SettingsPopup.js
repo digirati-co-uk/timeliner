@@ -23,6 +23,7 @@ import {
   DEFAULT_SETTINGS,
   BUBBLE_STYLES,
 } from '../../constants/project';
+import ColourSwatchPicker from '../ColourSwatchPicker/ColourSwatchPicker';
 
 export default class SettingsPopup extends React.Component {
   static propTypes = {
@@ -47,6 +48,12 @@ export default class SettingsPopup extends React.Component {
   handleChange = (name, type) => event => {
     this.setState({
       [name]: type === 'checkbox' ? event.target.checked : event.target.value,
+    });
+  };
+
+  onSelectBackground = value => {
+    this.setState({
+      [PROJECT.BACKGROUND_COLOUR]: value,
     });
   };
 
@@ -159,6 +166,19 @@ export default class SettingsPopup extends React.Component {
                               labelPlacement="end"
                             />
                           </RadioGroup>
+                        </FormControl>
+                        <FormControl component="fieldset">
+                          <FormLabel component="legend">
+                            Background color
+                          </FormLabel>
+                          <ColourSwatchPicker
+                            swatch={[]}
+                            label="Background colour"
+                            currentColour={
+                              this.state[PROJECT.BACKGROUND_COLOUR]
+                            }
+                            onSelectColour={this.onSelectBackground}
+                          />
                         </FormControl>
                       </FormGroup>
                     </FormControl>

@@ -128,7 +128,7 @@ class BubbleDisplay extends Component {
             width={computedWidth * zoom}
             height={height}
             style={{
-              fill: '#ffffff',
+              fill: 'transparent',
               strokeWidth: 0,
               stroke: 'rgb(0,0,0,0)',
               cursor: 'grab',
