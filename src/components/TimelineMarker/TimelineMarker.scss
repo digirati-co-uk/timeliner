@@ -8,6 +8,7 @@
   z-index: 1;
   margin-top: -5px;
   cursor: ew-resize;
+
   &__tooltip {
     position: absolute;
     top: 11px;
@@ -18,7 +19,7 @@
     font-size: 11px;
     transform: translate(-50%,0);
     cursor: ew-resize;
-    pointer-events: none;
+    //pointer-events: none;
     text-shadow: -1px -1px 0 #fff, 
                 1px -1px 0 #fff, 
                 -1px 1px 0 #fff,

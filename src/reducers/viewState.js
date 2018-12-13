@@ -113,7 +113,7 @@ const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
     case SET_CURRENT_TIME:
       return update(state, {
         [VIEWSTATE.CURRENT_TIME]: {
-          $set: action.payload.currentTime,
+          $set: action.payload.currentTime || 0,
         },
       });
     case FAST_FORWARD:

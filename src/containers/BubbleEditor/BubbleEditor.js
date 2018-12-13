@@ -38,7 +38,8 @@ class BubbleEditor extends React.Component {
       viewportStartX: 0,
       isPlayheadUpdating: false,
       playheadX: 0,
-      scrobberBounds: null,
+      scrubberBounds: null,
+      markerMovement: null,
     };
   }
 
@@ -49,10 +50,10 @@ class BubbleEditor extends React.Component {
 
   getTimePoints = () =>
     Array.from(
-      Object.values(this.props.points).reduce((_timePoints, bubble) => {
-        _timePoints.add(bubble[RANGE.START_TIME]);
-        _timePoints.add(bubble[RANGE.END_TIME]);
-        return _timePoints;
+      Object.values(this.props.points).reduce((timePointsSet, bubble) => {
+        timePointsSet.add(bubble[RANGE.START_TIME]);
+        timePointsSet.add(bubble[RANGE.END_TIME]);
+        return timePointsSet;
       }, new Set())
     ).sort((p1, p2) => p1 - p2);
 
@@ -71,13 +72,13 @@ class BubbleEditor extends React.Component {
     }
   };
 
-  playheadDragMove = ev => {
+  dragMovePlayhead = ev => {
     if (this.state.isPlayheadUpdating) {
       // in order to smooth drag
       this.clearTextSelection();
       const positionRatio =
-        (ev.pageX - this.state.scrobberBounds.left) /
-        this.state.scrobberBounds.width;
+        (ev.pageX - this.state.scrubberBounds.left) /
+        this.state.scrubberBounds.width;
       const time = positionRatio * this.props.runTime;
       this.setState({
         playheadX: time,
@@ -85,92 +86,117 @@ class BubbleEditor extends React.Component {
     }
   };
 
-  playheadDragEnd = ev => {
+  dragEndPlayhead = ev => {
     if (this.state.isPlayheadUpdating) {
       this.props.onUpdateTime(this.state.playheadX);
       this.setState({
-        selectedPoint: -1,
         isPlayheadUpdating: false,
         playheadX: 0,
       });
     }
-    document.body.removeEventListener('mousemove', this.playheadDragMove);
-    document.body.removeEventListener('mouseup', this.playheadDragEnd);
+    document.body.removeEventListener('mousemove', this.dragMovePlayhead);
+    document.body.removeEventListener('mouseup', this.dragEndPlayhead);
   };
 
-  dragStart = ev => {
-    if (
-      ev.target === ev.target.parentNode.firstChild ||
-      ev.target === ev.target.parentNode.lastChild.previousSibling
-    ) {
-      return;
-    }
-    if (
-      ev.target.className === 'playhead' ||
-      ev.target.className === 'timeline-scrubber'
-    ) {
-      const scrobberBounds = ev.currentTarget.getBoundingClientRect();
-      const positionRatio =
-        (ev.pageX - scrobberBounds.left) / scrobberBounds.width;
-      const time = positionRatio * this.props.runTime;
-      document.body.addEventListener('mousemove', this.playheadDragMove);
-      document.body.addEventListener('mouseup', this.playheadDragEnd);
-      this.setState({
-        selectedPoint: -1,
-        isPlayheadUpdating: true,
-        playheadX: time,
-        scrobberBounds,
-      });
-      return;
-    }
-    const selectedPoint = Array.prototype.indexOf.call(
-      ev.target.parentNode.childNodes,
-      ev.target
-    );
-
-    document.body.addEventListener('mousemove', this.dragMove);
-    document.body.addEventListener('mouseup', this.dragEnd);
+  dragStartMarker = (resource, ev) => {
+    document.body.addEventListener('mousemove', this.dragMoveMarker);
+    document.body.addEventListener('mouseup', this.dragEndMarker);
     this.setState({
-      selectedPoint: selectedPoint,
-      startX: ev.pageX,
-      deltaX: 0,
+      markerMovement: {
+        selectedPoint: resource.index,
+        markerX: resource.x,
+        startX: ev.pageX,
+        deltaX: 0,
+        deltaTime: 0,
+      },
     });
   };
 
-  dragMove = ev => {
-    if (this.state.selectedPoint < 0) {
+  dragStartPlayhead = (resource, ev) => {
+    const scrubberBounds = ev.currentTarget.getBoundingClientRect();
+    const positionRatio =
+      (ev.pageX - scrubberBounds.left) / scrubberBounds.width;
+    const time = positionRatio * this.props.runTime;
+
+    document.body.addEventListener('mousemove', this.dragMovePlayhead);
+    document.body.addEventListener('mouseup', this.dragEndPlayhead);
+
+    this.setState({
+      isPlayheadUpdating: true,
+      playheadX: time,
+      scrubberBounds,
+    });
+  };
+
+  dragStart = (resource, ev) => {
+    ev.preventDefault();
+    ev.stopPropagation();
+
+    if (resource.type === 'marker') {
+      // Return if first or last point.
+      if (
+        resource.index === 0 ||
+        resource.index === this.getTimePoints().length - 1
+      ) {
+        return;
+      }
+
+      return this.dragStartMarker(resource, ev);
+    }
+
+    if (resource.type === 'scrubber') {
+      return this.dragStartPlayhead(resource, ev);
+    }
+  };
+
+  dragMoveMarker = ev => {
+    const { runTime, zoom } = this.props;
+    const { markerMovement, dimensions } = this.state;
+    if (markerMovement.selectedPoint < 0) {
       return;
     }
     // in order to smooth drag
     this.clearTextSelection();
+    const deltaX = ev.clientX - markerMovement.startX;
+
     this.setState({
-      deltaX: ev.clientX - this.state.startX,
+      markerMovement: {
+        ...markerMovement,
+        deltaX: deltaX,
+        deltaTime: ((deltaX / dimensions.width) * runTime) / zoom,
+      },
     });
   };
 
-  dragEnd = ev => {
-    ev.preventDefault(); // Let's stop this event.
-    ev.stopPropagation(); // Really this time.
-    if (this.state.selectedPoint !== -1) {
-      document.body.removeEventListener('mousemove', this.dragMove);
-      document.body.removeEventListener('mouseup', this.dragEnd);
-      const timePoints = this.getTimePoints();
-      const originalX = timePoints[this.state.selectedPoint];
-      const dX =
-        (((ev.pageX - this.state.startX) / this.state.dimensions.width) *
-          this.props.runTime) /
-        this.props.zoom;
+  dragEndMarker = ev => {
+    ev.preventDefault();
+    ev.stopPropagation();
+    const { markerMovement } = this.state;
 
-      this.props.movePoint(
-        Math.min(
-          Math.max(originalX + dX, timePoints[this.state.selectedPoint - 1]),
-          timePoints[this.state.selectedPoint + 1]
+    // Remove events.
+    document.body.removeEventListener('mousemove', this.dragMoveMarker);
+    document.body.removeEventListener('mouseup', this.dragEndMarker);
+
+    // Calculate new time point.
+    const timePoints = this.getTimePoints();
+    const dX =
+      (((ev.pageX - markerMovement.startX) / this.state.dimensions.width) *
+        this.props.runTime) /
+      this.props.zoom;
+
+    this.props.movePoint(
+      Math.min(
+        Math.max(
+          timePoints[markerMovement.selectedPoint] + dX,
+          timePoints[markerMovement.selectedPoint - 1]
         ),
-        originalX
-      );
-    }
+        timePoints[markerMovement.selectedPoint + 1]
+      ),
+      timePoints[markerMovement.selectedPoint]
+    );
+
     this.setState({
-      selectedPoint: -1,
+      markerMovement: null,
     });
   };
 
@@ -211,7 +237,7 @@ class BubbleEditor extends React.Component {
     });
   };
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps, nextContext) {
     if (nextProps.x !== this.props.x) {
       this.setState({
         viewportX: nextProps.x,
@@ -221,7 +247,6 @@ class BubbleEditor extends React.Component {
   }
 
   render() {
-    const _points = this.props.points;
     const {
       runTime,
       currentTime,
@@ -233,33 +258,9 @@ class BubbleEditor extends React.Component {
       bubbleStyle,
       blackAndWhiteMode,
     } = this.props;
-    const {
-      dimensions,
-      selectedPoint,
-      deltaX,
-      viewportX,
-      viewportStartX,
-    } = this.state;
+    const { viewportX, viewportStartX } = this.state;
 
     const timePoints = this.getTimePoints();
-
-    let selectedPointValue = 0;
-    let substituteValue = 0;
-    if (selectedPoint !== -1) {
-      selectedPointValue = timePoints[selectedPoint];
-      timePoints[selectedPoint] += Math.max(
-        ((deltaX / dimensions.width) * runTime) / zoom
-      );
-      timePoints[selectedPoint] = Math.max(
-        timePoints[selectedPoint],
-        timePoints[selectedPoint - 1]
-      );
-      timePoints[selectedPoint] = Math.min(
-        timePoints[selectedPoint],
-        timePoints[selectedPoint + 1]
-      );
-      substituteValue = timePoints[selectedPoint];
-    }
 
     return (
       <div style={{ background: this.props.backgroundColour }}>
@@ -281,7 +282,7 @@ class BubbleEditor extends React.Component {
                 style={blackAndWhiteMode ? { filter: 'grayscale(1.0)' } : {}}
               >
                 <BubbleDisplay
-                  points={_points}
+                  points={this.props.points}
                   width={this.state.dimensions.width}
                   height={200}
                   x={viewportStartX !== -1 ? viewportX : x}
@@ -313,10 +314,10 @@ class BubbleEditor extends React.Component {
                   x={viewportStartX !== -1 ? viewportX : x}
                   width={this.state.dimensions.width}
                   timePoints={timePoints}
+                  markerMovement={this.state.markerMovement}
                   onUpdateTime={onUpdateTime}
                   onClickPoint={splitRange}
                   dragStart={this.dragStart}
-                  selectedPoint={this.state.selectedPoint}
                   showTimes={this.props.showTimes}
                   isPlayheadUpdating={this.state.isPlayheadUpdating}
                   playheadX={this.state.playheadX}

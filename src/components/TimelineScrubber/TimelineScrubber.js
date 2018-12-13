@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withTheme } from '@material-ui/core/styles';
 import formatDate from 'date-fns/format';
-
+import BEM from '@fesk/bem-js';
 import TimelineMarker from '../TimelineMarker/TimelineMarker';
 import PlayHead from '../Playhead/Playhead';
 
 import './TimelineScrubber.scss';
+
+const $style = BEM.block('timeline-scrubber');
 
 class TimelineScrubber extends Component {
   static propTypes = {
@@ -55,7 +57,15 @@ class TimelineScrubber extends Component {
     playheadX: 0,
   };
 
-  timeToPercent = time => (time / this.props.runTime) * 100; //* this.props.zoom;
+  timeToPercent = time => (time / this.props.runTime) * 100;
+
+  resolveTime = (time, markerIndex) => {
+    const { markerMovement } = this.props;
+    if (markerMovement && markerMovement.selectedPoint === markerIndex) {
+      return time + markerMovement.deltaTime;
+    }
+    return time;
+  };
 
   timeToLabel = time => {
     const timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
@@ -69,9 +79,8 @@ class TimelineScrubber extends Component {
   };
 
   getClickedTime = ev => {
-    const scrobberBounds = ev.currentTarget.getBoundingClientRect();
-    const positionRatio =
-      (ev.pageX - scrobberBounds.left) / scrobberBounds.width;
+    const bounds = ev.currentTarget.getBoundingClientRect();
+    const positionRatio = (ev.pageX - bounds.left) / bounds.width;
     return positionRatio * this.props.runTime;
   };
 
@@ -80,25 +89,30 @@ class TimelineScrubber extends Component {
     this.props.onClickPoint(time);
   };
 
+  dragStart = element => e => this.props.dragStart(element, e);
+
   render() {
     const {
       currentTime,
       timePoints,
       theme,
-      selectedPoint,
       showTimes,
       x,
       width,
       zoom,
       isPlayheadUpdating,
       playheadX,
+      markerMovement,
     } = this.props;
+
+    const selectedIndex = markerMovement ? markerMovement.selectedPoint : -1;
+
     return (
       <div
-        className="timeline-scrubber"
+        className={$style}
         onDoubleClick={this.handleAddPoint}
-        onMouseDown={this.props.dragStart}
         tabIndex={0}
+        onMouseDown={this.dragStart({ type: 'scrubber' })}
         style={{
           position: 'relative',
           marginLeft: -x,
@@ -107,10 +121,12 @@ class TimelineScrubber extends Component {
       >
         {timePoints.map((timePoint, timePointIndex) => (
           <TimelineMarker
+            index={timePointIndex}
             key={`tp-${timePointIndex}`}
-            x={this.timeToPercent(timePoint)}
+            x={this.timeToPercent(this.resolveTime(timePoint, timePointIndex))}
+            onMouseDown={this.dragStart}
           >
-            {timePoint === timePoints[selectedPoint] || showTimes ? (
+            {timePointIndex === selectedIndex || showTimes ? (
               <span
                 className="timeline-marker__tooltip"
                 style={{
@@ -122,7 +138,7 @@ class TimelineScrubber extends Component {
                       : 'translate(-50%)',
                 }}
               >
-                {this.timeToLabel(timePoint)}
+                {this.timeToLabel(this.resolveTime(timePoint, timePointIndex))}
               </span>
             ) : (
               ''

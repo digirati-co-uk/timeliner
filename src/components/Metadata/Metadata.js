@@ -24,28 +24,27 @@ const Metadata = props => (
                 range.endTime > props.currentTime
             )
             .sort((a, b) => b.endTime - b.startTime - (a.endTime - a.startTime))
-            .map(
-              (range, depth) =>
-                range.id === props.rangeToEdit ? (
-                  <MetadataEditor
-                    key={`metadata_editor-${range.id}`}
-                    {...range}
-                    onSave={props.onUpdateRange}
-                    onDelete={props.onDeleteRange}
-                    onCancel={() => {
-                      props.onEdit(null);
-                    }}
-                  />
-                ) : (
-                  <MetadataDisplay
-                    key={`metadata_display-${range.id}`}
-                    {...range}
-                    inset={depth}
-                    onEditClick={(selectedRange => () =>
-                      props.onEdit(selectedRange.id))(range)}
-                    blackAndWhiteMode={props.blackAndWhiteMode}
-                  />
-                )
+            .map((range, depth) =>
+              range.id === props.rangeToEdit ? (
+                <MetadataEditor
+                  key={`metadata_editor-${range.id}`}
+                  {...range}
+                  onSave={props.onUpdateRange}
+                  onDelete={props.onDeleteRange}
+                  onCancel={() => {
+                    props.onEdit(null);
+                  }}
+                />
+              ) : (
+                <MetadataDisplay
+                  key={`metadata_display-${range.id}`}
+                  {...range}
+                  inset={depth}
+                  onEditClick={(selectedRange => () =>
+                    props.onEdit(selectedRange.id))(range)}
+                  blackAndWhiteMode={props.blackAndWhiteMode}
+                />
+              )
             )}
         </div>
       </div>
