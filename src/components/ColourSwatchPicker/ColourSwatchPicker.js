@@ -86,16 +86,35 @@ class ColourSwatchPicker extends Component {
   };
 
   handleClick = () => {
-    this.setState({ displayColourPicker: !this.state.displayColourPicker });
-  };
-
-  handleClose = () => {
-    this.setState({ displayColourPicker: false });
+    if (this.state.displayColourPicker) {
+      return this.closePicker();
+    }
+    return this.openPicker();
   };
 
   handleChange = colour => {
     this.setState({ colour: colour });
     this.props.onSelectColour(colour.hex);
+  };
+
+  closeEvent = e => {
+    let el = e.target;
+    do {
+      if (el.classList.contains('colour-swatch-picker')) return null;
+      el = el.parentElement || el.parentNode;
+    } while (el !== null && el.nodeType === 1);
+
+    this.closePicker();
+  };
+
+  closePicker = () => {
+    this.setState({ displayColourPicker: false });
+    document.removeEventListener('click', this.closeEvent);
+  };
+
+  openPicker = () => {
+    this.setState({ displayColourPicker: true });
+    document.addEventListener('click', this.closeEvent);
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -108,6 +127,7 @@ class ColourSwatchPicker extends Component {
         colour: rgbToOrgba(hexToRgb(nextProps.currentColour)),
       };
     }
+    return null;
   }
 
   render() {
@@ -127,7 +147,7 @@ class ColourSwatchPicker extends Component {
       left: '0px',
     };
     return (
-      <div>
+      <div className="colour-swatch-picker">
         <Button
           variant="outlined"
           size="small"
@@ -144,7 +164,7 @@ class ColourSwatchPicker extends Component {
         </Button>
         {displayColourPicker ? (
           <div style={popover}>
-            <div style={cover} onClick={this.handleClose} />
+            <div style={cover} onClick={this.closePicker} />
             <SketchPicker
               disableAlpha={true}
               presetColors={swatch}
