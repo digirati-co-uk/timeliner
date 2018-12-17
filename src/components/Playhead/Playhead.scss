@@ -7,15 +7,22 @@
   margin-bottom: -2px;
   pointer-events: none;
   overflow: visible;
+  z-index: 2;
   &:after {
+    transition: border .4s;
     content: '';
     height: 100%;
-    border-bottom: 21px solid #424242;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
+    border-bottom: 0px solid #424242;
+    border-left: 0px solid transparent;
+    border-right: 0px solid transparent;
     position: absolute;
     right: -10px;
     top: 5px;
     cursor: ew-resize;
+  }
+  &:hover .playhead:after {
+    border-bottom: 21px solid #424242;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
   }
 }
