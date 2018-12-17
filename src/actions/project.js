@@ -7,6 +7,7 @@ import {
   IMPORT_DOCUMENT,
   EXPORT_DOCUMENT,
   LOAD_PROJECT,
+  IMPORT_ERROR,
 } from '../constants/project';
 
 export const updateSettings = form => ({
@@ -43,6 +44,11 @@ export const importDocument = (manifest, source) => ({
   type: IMPORT_DOCUMENT,
   manifest,
   source,
+});
+
+export const importError = error => ({
+  type: IMPORT_ERROR,
+  payload: { error: error.toString() },
 });
 
 export const exportDocument = () => ({

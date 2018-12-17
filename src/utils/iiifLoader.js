@@ -5,13 +5,13 @@ import { VIEWSTATE } from '../constants/viewState';
 
 // Constants
 
-const BACKROUND_COLOUR_PROPERTY = 'tl:backgroundColour';
+const BACKGROUND_COLOUR_PROPERTY = 'tl:backgroundColour';
 
 // Helpers
 
 /**
  * seconds to microseconds
- * @param {Number} s seconds to convert
+ * @param {String|Number} s seconds to convert
  * @return {Number} milliseconds
  */
 const sToMs = s => parseFloat(s) * 1000;
@@ -21,11 +21,11 @@ const sToMs = s => parseFloat(s) * 1000;
  * @param {Object} resource
  * @param {String} locale default en
  */
-const getLocalisedResource = (resource, locale) => {
+const getLocalisedResource = (resource, locale = 'en') => {
   if (!resource) {
     return '';
   } else {
-    return (resource[locale || 'en'] || ['']).join('');
+    return (resource[locale] || ['']).join('');
   }
 };
 
@@ -34,14 +34,16 @@ const getLocalisedResource = (resource, locale) => {
  * @param {Object} range the range may has the background property
  */
 const getColour = range =>
-  range[RANGE.COLOUR] ||
-  DEFAULT_COLOURS[(range[RANGE.DEPTH] - 1) % DEFAULT_COLOURS.length] ||
-  '';
+  range
+    ? range[RANGE.COLOUR] ||
+      DEFAULT_COLOURS[(range[RANGE.DEPTH] - 1) % DEFAULT_COLOURS.length] ||
+      ''
+    : '';
 
 /**
  * converts url hash parameters to an object
  * @param {String} url input url
- * @returns {Object} the key-value pairs converted to object porperty-values.
+ * @returns {Object} the key-value pairs converted to object property-values.
  */
 const hashParamsToObj = url =>
   (url.split('#')[1] || '').split('&').reduce((params, item) => {
@@ -66,9 +68,12 @@ const parseTimeRange = rangeStr => {
 
 /**
  * @param {Object} canvas - IIIFCanvas javascript object
- * @returns all audio annotations url, start and end time
+ * @returns array all audio annotations url, start and end time
  */
 const getAudioAnnotations = canvas => {
+  if (!canvas) {
+    return [];
+  }
   const annotations = canvas.items
     ? canvas.items.reduce((annos, annotationPage) => {
         if (annotationPage.items) {
@@ -147,7 +152,7 @@ const processLevel = structure => {
       [RANGE.START_TIME]: Number.MAX_SAFE_INTEGER,
       [RANGE.END_TIME]: Number.MIN_SAFE_INTEGER,
       [RANGE.DEPTH]: 1,
-      [RANGE.COLOUR]: structure[BACKROUND_COLOUR_PROPERTY],
+      [RANGE.COLOUR]: structure[BACKGROUND_COLOUR_PROPERTY],
       [RANGE.IS_SELECTED]: false,
     };
     const ranges = [];
@@ -172,17 +177,20 @@ const processStructures = manifest => {
   var allStructures = (manifest.structures || []).map(structure =>
     processLevel(structure)
   );
+
   return Array.prototype.concat
     .apply([], allStructures)
     .reduce((ranges, range) => {
-      range[RANGE.COLOUR] = getColour(range);
-      ranges[range.id] = range;
+      if (range) {
+        range[RANGE.COLOUR] = getColour(range);
+        ranges[range.id] = range;
+      }
       return ranges;
     }, {});
 };
 
 const mapSettings = iiifSettings =>
-  Object.entries(iiifSettings).reduce((settings, [rdfKey, value]) => {
+  Object.entries(iiifSettings || {}).reduce((settings, [rdfKey, value]) => {
     const key = rdfKey.split(':')[1];
     settings[key] = value;
     return settings;
@@ -195,15 +203,29 @@ const manifestToProject = manifest => ({
   ...mapSettings(manifest[`${RDF_NAMESPACE}:settings`]),
 });
 
+function getDuration(manifest) {
+  return manifest &&
+    manifest.items &&
+    manifest.items[0] &&
+    manifest.items[0].items &&
+    manifest.items[0].items[0] &&
+    manifest.items[0].items[0].items &&
+    manifest.items[0].items[0].items[0] &&
+    manifest.items[0].items[0].items[0].body &&
+    manifest.items[0].items[0].items[0].body.duration
+    ? sToMs(manifest.items[0].items[0].items[0].body.duration)
+    : 0;
+}
+
 const manifestToViewState = manifest => ({
-  [VIEWSTATE.RUNTIME]: sToMs(manifest.items[0].items[0].items[0].body.duration),
+  [VIEWSTATE.RUNTIME]: getDuration(manifest),
   [VIEWSTATE.IS_IMPORT_OPEN]: false,
   [VIEWSTATE.IS_SETTINGS_OPEN]: false,
 });
 
 export const loadProjectState = (manifest, source) => ({
   project: manifestToProject(manifest),
-  canvas: processCanvas(manifest.items[0]),
+  canvas: processCanvas(manifest.items ? manifest.items[0] : null),
   range: processStructures(manifest),
   viewState: manifestToViewState(manifest),
   source,

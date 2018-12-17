@@ -4,7 +4,12 @@ import { IMPORT_DOCUMENT, RESET_DOCUMENT } from '../constants/project';
 import { UPDATE_RANGE } from '../constants/range';
 import { loadProjectState } from '../utils/iiifLoader';
 import exporter from '../utils/iiifSaver';
-import { loadProject, setTitle, setDescription } from '../actions/project';
+import {
+  loadProject,
+  setTitle,
+  setDescription,
+  importError,
+} from '../actions/project';
 import { loadCanvas, unloadAudio } from '../actions/canvas';
 import {
   loadRanges,
@@ -90,14 +95,17 @@ function* importDocument({ manifest, source }) {
     return;
   }
 
-  const loadedState = loadProjectState(manifest, source);
-
-  yield put(unloadAudio());
-  yield put(loadProject(loadedState.project));
-  yield put(loadCanvas(loadedState.canvas));
-  yield put(loadRanges(loadedState.range));
-  yield put(loadViewState(loadedState.viewState));
-  yield put(loadSource(loadedState.source));
+  try {
+    const loadedState = loadProjectState(manifest);
+    yield put(unloadAudio());
+    yield put(loadProject(loadedState.project));
+    yield put(loadCanvas(loadedState.canvas));
+    yield put(loadRanges(loadedState.range));
+    yield put(loadViewState(loadedState.viewState));
+  } catch (err) {
+    console.error(err);
+    yield put(importError(err));
+  }
 }
 
 function* saveRange({ payload }) {
