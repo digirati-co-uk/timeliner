@@ -20,6 +20,18 @@ class ProjectMetadataEditor extends Component {
     manifestSummary: '',
   };
 
+  handleKeyDown = e => {
+    if (e.target && e.target.tagName === 'TEXTAREA') {
+      return;
+    }
+    if (e.keyCode === 13) {
+      this.onSave();
+    }
+    if (e.keyCode === 27) {
+      this.props.onCancel();
+    }
+  };
+
   constructor(props) {
     super(props);
     const { manifestLabel, manifestSummary } = props;
@@ -48,10 +60,11 @@ class ProjectMetadataEditor extends Component {
     const { onCancel } = this.props;
     const { manifestLabel, manifestSummary } = this.state;
     return (
-      <form>
+      <form onKeyDown={this.handleKeyDown}>
         <TextField
           id="manifestLabel"
           label="Label"
+          autoFocus={true}
           InputLabelProps={{
             shrink: true,
           }}

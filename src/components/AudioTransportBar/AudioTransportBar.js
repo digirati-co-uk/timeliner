@@ -42,6 +42,13 @@ class AudioTransportBar extends Component {
   };
 
   keyboardListener = e => {
+    if (
+      e.target &&
+      ['INPUT', 'BUTTON', 'TEXTAREA'].indexOf(e.target.tagName) !== -1
+    ) {
+      return;
+    }
+
     switch (e.keyCode) {
       case 37: //left
         return this.props.onScrubBackwards();

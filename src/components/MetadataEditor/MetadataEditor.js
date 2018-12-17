@@ -98,14 +98,27 @@ class MetadataEditor extends Component {
     this.props.onSave(this.props.id, newValues);
   };
 
+  handleKeyDown = e => {
+    if (e.target && e.target.tagName === 'TEXTAREA') {
+      return;
+    }
+    if (e.keyCode === 13) {
+      this.onSave();
+    }
+    if (e.keyCode === 27) {
+      this.props.onCancel();
+    }
+  };
+
   render() {
     const { onDelete, onCancel } = this.props;
     const { label, summary, colour, startTime, endTime } = this.state;
     const colours = getSelectedThemeColours();
     return (
-      <form className={metadataEditor}>
+      <form className={metadataEditor} onKeyDown={this.handleKeyDown}>
         <TextField
           id="label"
+          autoFocus={true}
           label="Label"
           InputLabelProps={{
             shrink: true,
@@ -176,9 +189,6 @@ class MetadataEditor extends Component {
               flex: 1,
             }}
           >
-            {/* <Button disabled={!onDelete} onClick={onDelete}>
-              <Delete /> Delete
-            </Button> */}
             <Button onClick={onCancel}>Cancel</Button>
             <PrimaryButton disabled={!this.props.onSave} onClick={this.onSave}>
               Save
