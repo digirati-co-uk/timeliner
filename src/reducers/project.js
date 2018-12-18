@@ -8,7 +8,7 @@ import {
   RESET_DOCUMENT,
   EXPORT_DOCUMENT,
   LOAD_PROJECT,
-  PROJECT,
+  PROJECT, IMPORT_ERROR,
 } from '../constants/project';
 
 const project = (state = DEFAULT_PROJECT_STATE, action) => {
@@ -35,6 +35,10 @@ const project = (state = DEFAULT_PROJECT_STATE, action) => {
         [PROJECT.DESCRIPTION]: {
           $set: action.payload.description,
         },
+      });
+    case IMPORT_ERROR:
+      return update(state, {
+        error: { $set: action.payload.error },
       });
     case RESET_DOCUMENT:
       return state;

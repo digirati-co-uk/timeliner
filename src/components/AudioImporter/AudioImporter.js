@@ -18,10 +18,13 @@ class AudioImporter extends Component {
     onClose: PropTypes.func,
     /** is the dialog open */
     open: PropTypes.bool,
+    /** Error state from the parent */
+    error: PropTypes.string,
   };
 
   static defaultProps = {
     open: false,
+    error: '',
   };
 
   state = {
@@ -44,34 +47,42 @@ class AudioImporter extends Component {
     this.setState({ error: '' });
   };
 
+  handleKeyDown = e => {
+    if (e.keyCode === 13) {
+      this.onImportResource();
+    }
+  };
+
   render() {
     const { open, onClose } = this.props;
-    const { error } = this.state;
+    const error = this.state.error || this.props.error;
 
     return (
       <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
         <DialogTitle>Import Audio/Manifest</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            Please provide a web compatible audio file url or a previously saved
-            manifest.
-          </DialogContentText>
-          <TextField
-            inputRef={x => (this.importUrlField = x)}
-            autoFocus
-            margin="dense"
-            id="manifestUrl"
-            name="manifestUrl"
-            label="Audio or Manifest url"
-            type="url"
-            onKeyPress={this.onKeyPress}
-            fullWidth
-          />
-          {error && (
-            <Typography variant="body1" color="error">
-              {error}
-            </Typography>
-          )}
+          <form onKeyDown={this.handleKeyDown}>
+            <DialogContentText>
+              Please provide a web compatible audio file url or a previously
+              saved manifest.
+            </DialogContentText>
+            <TextField
+              inputRef={x => (this.importUrlField = x)}
+              autoFocus
+              margin="dense"
+              id="manifestUrl"
+              name="manifestUrl"
+              label="Audio or Manifest url"
+              type="url"
+              onKeyPress={this.onKeyPress}
+              fullWidth
+            />
+            {error && (
+              <Typography variant="body1" color="error">
+                {error}
+              </Typography>
+            )}
+          </form>
         </DialogContent>
         <DialogActions>
           <Button disabled={!onClose} onClick={onClose} color="primary">

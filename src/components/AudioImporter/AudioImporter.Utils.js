@@ -17,35 +17,40 @@ const importResource = url => {
       switch (audio.error.code) {
         case 1:
           throw 'fetching process aborted by user';
-          break;
         case 2:
           throw 'error occurred when downloading';
-          break;
         case 3:
           throw 'error occurred when decoding';
-          break;
         case 4:
           fetch(url)
             .then(res => {
+              if (!res.ok) {
+                if (res.status === 404) {
+                  throw new Error('Resource not found (404)');
+                }
+                console.log(res);
+              }
+
               const contentType = res.headers.get('content-type');
               if (!contentType) {
-                throw `Invalid Content Type ${contentType}`;
+                throw new Error(
+                  'No content type on resource, unable to identify.'
+                );
               }
               if (contentType.includes('application/json')) {
                 const manifestJSON = res.json();
                 validateManifest(manifestJSON);
                 resolve(manifestJSON);
               } else {
-                throw `Content type not recognised ${contentType}`;
+                throw new Error(`Content type not recognised ${contentType}`);
               }
             })
             .catch(err => {
-              reject(err);
+              reject(err.toString());
             });
           break;
         default:
-          throw 'undetermined audio error';
-          break;
+          throw 'Unknown error with resource.';
       }
     });
     audio.src = audioURL;

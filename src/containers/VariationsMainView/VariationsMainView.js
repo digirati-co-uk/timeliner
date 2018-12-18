@@ -250,6 +250,7 @@ class VariationsMainView extends React.Component {
           </div>
           <AudioImporter
             open={isImportOpen}
+            error={this.props.importError}
             onClose={this.props.url ? this.props.dismissImportModal : null}
             onImport={this.props.importDocument}
           />
@@ -284,6 +285,7 @@ VariationsMainView.propTypes = {
   volume: PropTypes.number.isRequired,
   isPlaying: PropTypes.bool.isRequired,
   isLoaded: PropTypes.bool.isRequired,
+  importError: PropTypes.string,
   currentTime: PropTypes.number.isRequired,
   runTime: PropTypes.number.isRequired,
   manifestLabel: PropTypes.string.isRequired,
@@ -305,6 +307,7 @@ const mapStateProps = state => ({
   url: state.canvas.url,
   runTime: state.viewState.runTime,
   manifestLabel: state.project.title,
+  importError: state.project.error,
   manifestSummary: state.project.description,
   points: Object.values(state.range),
   isImportOpen: state.viewState.isImportOpen,
