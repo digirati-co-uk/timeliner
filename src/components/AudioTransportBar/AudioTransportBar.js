@@ -76,7 +76,7 @@ class AudioTransportBar extends Component {
 
   render() {
     return (
-      <Toolbar className="audio-transport-bar">
+      <div className="audio-transport-bar">
         <Grid container direction="row" alignItems="center">
           <Grid item xs={4} className="audio-transport-bar__actions">
             <CurrentTimeIndicator
@@ -128,7 +128,7 @@ class AudioTransportBar extends Component {
             />
           </Grid>
         </Grid>
-      </Toolbar>
+      </div>
     );
   }
 }

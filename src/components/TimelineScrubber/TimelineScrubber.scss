@@ -7,4 +7,19 @@
   border-top: 2px solid transparent;
   background: #eeeeee;
   cursor: pointer;
+  &:focus {
+    outline: none; // @todo change.
+  }
+
+  &:before {
+    z-index: 1;
+    background: transparent;
+    content: '';
+    width: 100%;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -10px;
+    height: 20px;
+  }
 }

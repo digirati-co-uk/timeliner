@@ -98,6 +98,7 @@ class TimelineScrubber extends Component {
         className="timeline-scrubber"
         onDoubleClick={this.handleAddPoint}
         onMouseDown={this.props.dragStart}
+        tabIndex={0}
         style={{
           position: 'relative',
           marginLeft: -x,

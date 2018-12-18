@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { AppBar, Toolbar, Typography, IconButton } from '@material-ui/core';
 import {
   AddCircle,
@@ -8,9 +7,13 @@ import {
   CloudDownload,
   Settings,
 } from '@material-ui/icons';
+import bem from '@fesk/bem-js';
+import './VariationsAppBar.scss';
+
+const $block = bem.block('variations-app-bar');
 
 const VariationsAppBar = props => (
-  <AppBar position="static">
+  <div className={$block} position="static">
     <Toolbar>
       <div
         style={{
@@ -19,6 +22,7 @@ const VariationsAppBar = props => (
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'flex-start',
+          marginLeft: 10,
         }}
       >
         <Typography
@@ -62,7 +66,7 @@ const VariationsAppBar = props => (
         </IconButton>
       </div>
     </Toolbar>
-  </AppBar>
+  </div>
 );
 
 VariationsAppBar.propTypes = {

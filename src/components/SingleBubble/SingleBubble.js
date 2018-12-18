@@ -89,6 +89,7 @@ class SingleBubble extends Component {
     } = this.props;
     const x = this.props.x || 0;
     const cDX = dX || width / 2 - width / 8;
+
     const d =
       shape === BUBBLE_STYLES.ROUNDED
         ? `M${x},0C${x},${height} ${x + cDX},${height} ${width / 2 +
