@@ -95,6 +95,7 @@ class VariationsMainView extends React.Component {
       },
     };
   }
+
   addRange = selected => () => {
     this.props.splitRangeAt(
       (selected[RANGE.END_TIME] - selected[RANGE.START_TIME]) / 2 +

@@ -24,7 +24,7 @@ const FIELD_MIN_MAX = {
   },
 };
 
-const TWENTYFOUR_HOUR = 24 * 60 * 60 * 1000;
+const TWENTY_FOUR_HOUR = 24 * 60 * 60 * 1000;
 
 class TimePicker extends React.Component {
   constructor(props) {
@@ -39,7 +39,7 @@ class TimePicker extends React.Component {
 
   static defaultProps = {
     min: 0,
-    max: TWENTYFOUR_HOUR - 1,
+    max: TWENTY_FOUR_HOUR - 1,
     value: 0,
   };
 
@@ -73,7 +73,7 @@ class TimePicker extends React.Component {
     );
 
     if (parsedValueAdjusted !== parsedValue) {
-      displayValue = ('' + parsedValueAdjusted).padStart(2, '0');
+      // displayValue = ('' + parsedValueAdjusted).padStart(2, '0');
       parsedValue = parsedValueAdjusted;
     }
 

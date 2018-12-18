@@ -390,7 +390,9 @@ class BubbleDisplay extends React.Component {
                 left: (point / runTime) * editorWidth,
                 backgroundColor: selectedPoint === index ? 'red' : '',
               }}
-              onMouseDown={this.dragStart}
+              onMouseDown={e =>
+                this.dragStart({ type: 'point-marker', point, index }, e)
+              }
               // onClick={ev => ev.stopPropagation()}
             />
           ))}
