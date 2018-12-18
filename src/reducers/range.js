@@ -16,18 +16,18 @@ import {
 
 const generateNewId = () => `id-${new Date().getTime()}`;
 const groupBubbles = selectedBubbles => {
-  const group = selectedBubbles.reduce(
-    (_group, bubble) => {
-      if (_group[RANGE.START_TIME] > bubble[RANGE.START_TIME]) {
-        _group[RANGE.START_TIME] = bubble[RANGE.START_TIME];
+  return selectedBubbles.reduce(
+    (group, bubble) => {
+      if (group[RANGE.START_TIME] > bubble[RANGE.START_TIME]) {
+        group[RANGE.START_TIME] = bubble[RANGE.START_TIME];
       }
-      if (_group[RANGE.END_TIME] < bubble[RANGE.END_TIME]) {
-        _group[RANGE.END_TIME] = bubble[RANGE.END_TIME];
+      if (group[RANGE.END_TIME] < bubble[RANGE.END_TIME]) {
+        group[RANGE.END_TIME] = bubble[RANGE.END_TIME];
       }
-      if (_group[RANGE.DEPTH] < bubble[RANGE.DEPTH]) {
-        _group[RANGE.DEPTH] = bubble[RANGE.DEPTH];
+      if (group[RANGE.DEPTH] < bubble[RANGE.DEPTH]) {
+        group[RANGE.DEPTH] = bubble[RANGE.DEPTH];
       }
-      return _group;
+      return group;
     },
     {
       id: generateNewId(),
@@ -40,7 +40,6 @@ const groupBubbles = selectedBubbles => {
       [RANGE.IS_SELECTED]: true,
     }
   );
-  return group;
 };
 
 const extendAround = (ranges, direction, changes, currentRange) => {
@@ -284,13 +283,13 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
         });
       return removals.$unset.length > 0 ? update(state, removals) : state;
     case UPDATE_DEPTHS_AFTER_DELETE:
-      var rangesSorted = Object.values(state).sort(
+      const rangesSorted = Object.values(state).sort(
         (a, b) =>
           a[RANGE.END_TIME] -
           a[RANGE.START_TIME] -
           (b[RANGE.END_TIME] - b[RANGE.START_TIME])
       );
-      var maxDepths = [];
+      const maxDepths = [];
       return update(
         state,
         rangesSorted.reduce((depthChanges, bubble, index) => {
@@ -299,14 +298,12 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
               null,
               rangesSorted
                 .slice(0, index)
-                .map(
-                  (possibleContainment, idx) =>
-                    bubble[RANGE.START_TIME] <=
-                      possibleContainment[RANGE.START_TIME] &&
-                    bubble[RANGE.END_TIME] >=
-                      possibleContainment[RANGE.END_TIME]
-                      ? maxDepths[idx] + 1 || 1
-                      : 1
+                .map((possibleContainment, idx) =>
+                  bubble[RANGE.START_TIME] <=
+                    possibleContainment[RANGE.START_TIME] &&
+                  bubble[RANGE.END_TIME] >= possibleContainment[RANGE.END_TIME]
+                    ? maxDepths[idx] + 1 || 1
+                    : 1
                 )
             );
           } else {

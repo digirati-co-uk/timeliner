@@ -59,10 +59,10 @@ const hashParamsToObj = url =>
  * @param {String} rangeStr
  */
 const parseTimeRange = rangeStr => {
-  const [startStr, endStr] = rangeStr.split(',');
+  const [startString, endString] = rangeStr.split(',');
   return {
-    [RANGE.START_TIME]: sToMs(startStr),
-    [RANGE.END_TIME]: sToMs(endStr),
+    [RANGE.START_TIME]: sToMs(startString),
+    [RANGE.END_TIME]: sToMs(endString),
   };
 };
 
@@ -75,14 +75,15 @@ const getAudioAnnotations = canvas => {
     return [];
   }
   const annotations = canvas.items
-    ? canvas.items.reduce((annos, annotationPage) => {
+    ? canvas.items.reduce((acc, annotationPage) => {
         if (annotationPage.items) {
-          return annos.concat(annotationPage.items);
+          return acc.concat(annotationPage.items);
         } else {
-          return annos;
+          return acc;
         }
       }, [])
     : [];
+
   return annotations
     .filter(
       annotation =>
@@ -174,7 +175,7 @@ const processLevel = structure => {
 };
 
 const processStructures = manifest => {
-  var allStructures = (manifest.structures || []).map(structure =>
+  const allStructures = (manifest.structures || []).map(structure =>
     processLevel(structure)
   );
 

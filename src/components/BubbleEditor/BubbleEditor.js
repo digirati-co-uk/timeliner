@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import Measure from 'react-measure';
 import './BubbleEditor.scss';
 
@@ -19,9 +18,9 @@ const DEMO_POINTS = {
 };
 
 const getRelativeCoordinates = e => {
-  var pos = {},
-    offset = {},
-    ref;
+  const pos = {};
+  const offset = {};
+  let ref;
 
   ref = e.target;
 
@@ -277,7 +276,6 @@ class BubbleDisplay extends React.Component {
   deleteSelected = e => {};
 
   render() {
-    const self = this;
     const { editorWidth, bubbleStepHeight } = this.props;
     const { bubbles, runTime, maxDepth, selectedPoint, deltaX } = this.state;
     const bubblesList = this.getBubbles();
@@ -418,10 +416,7 @@ class BubbleDisplay extends React.Component {
                   bubble.to === selectedMinMax.to
               ).length;
 
-              if (numberOfIntervals > 0) {
-                return true;
-              }
-              return false;
+              return numberOfIntervals > 0;
             })()}
             onClick={this.groupSelected}
           >

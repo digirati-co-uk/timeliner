@@ -22,13 +22,13 @@ class VerifyDialog extends React.Component {
     title: PropTypes.string,
     description: PropTypes.string,
     cancelText: PropTypes.string,
-    aggreeText: PropTypes.string,
+    agreeText: PropTypes.string,
     onProceed: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
     cancelText: 'Cancel',
-    aggreeText: 'Ok',
+    agreeText: 'Ok',
     open: false,
   };
   render() {
@@ -38,7 +38,7 @@ class VerifyDialog extends React.Component {
       title,
       description,
       cancelText,
-      aggreeText,
+      agreeText,
       onProceed,
     } = this.props;
     return (
@@ -62,7 +62,7 @@ class VerifyDialog extends React.Component {
             {cancelText}
           </Button>
           <Button onClick={onProceed} color="primary">
-            {aggreeText}
+            {agreeText}
           </Button>
         </DialogActions>
       </Dialog>

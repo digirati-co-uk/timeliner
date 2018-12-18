@@ -107,9 +107,8 @@ class VariationsMainView extends React.Component {
     this.props.groupSelectedRanges();
   };
 
-  deleteRanges = selecteds => () => {
-    const ids = selecteds.map(selected => selected.id);
-    this.props.deleteRanges(ids);
+  deleteRanges = ranges => () => {
+    this.props.deleteRanges(ranges.map(range => range.id));
   };
 
   isGroupingPossible = selectedBubbles => {

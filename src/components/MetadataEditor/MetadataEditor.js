@@ -7,7 +7,6 @@ import {
   InputLabel,
   FormControl,
 } from '@material-ui/core';
-import { Delete } from '@material-ui/icons';
 import bem from '@fesk/bem-js';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import ColourSwatchPicker from '../ColourSwatchPicker/ColourSwatchPicker';
@@ -111,7 +110,7 @@ class MetadataEditor extends Component {
   };
 
   render() {
-    const { onDelete, onCancel } = this.props;
+    const { onCancel } = this.props;
     const { label, summary, colour, startTime, endTime } = this.state;
     const colours = getSelectedThemeColours();
     return (

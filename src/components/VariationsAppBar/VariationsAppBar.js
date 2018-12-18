@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { AppBar, Toolbar, Typography, IconButton } from '@material-ui/core';
+import { Toolbar, Typography, IconButton } from '@material-ui/core';
 import {
   AddCircle,
   RestorePage,

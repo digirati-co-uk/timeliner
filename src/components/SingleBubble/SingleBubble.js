@@ -54,7 +54,7 @@ class SingleBubble extends Component {
     label: PropTypes.string,
     /** Bubble style */
     shape: PropTypes.string,
-    /** is bubble seleced */
+    /** is bubble selected */
     isSelected: PropTypes.bool,
   };
 
