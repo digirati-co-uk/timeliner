@@ -75,6 +75,21 @@ export default class SettingsPopup extends React.Component {
     return null;
   }
 
+  keyboardListener = e => {
+    if (e.keyCode === 13) {
+      e.preventDefault();
+      this.onSaveClicked();
+    }
+  };
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.keyboardListener);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.keyboardListener);
+  }
+
   render() {
     return (
       <Dialog

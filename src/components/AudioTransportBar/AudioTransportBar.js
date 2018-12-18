@@ -41,6 +41,39 @@ class AudioTransportBar extends Component {
     onDeleteBubble: PropTypes.func,
   };
 
+  keyboardListener = e => {
+    if (
+      e.target &&
+      ['INPUT', 'BUTTON', 'TEXTAREA'].indexOf(e.target.tagName) !== -1
+    ) {
+      return;
+    }
+
+    switch (e.keyCode) {
+      case 37: //left
+        return this.props.onScrubBackwards();
+      case 39: // right
+        return this.props.onScrubAhead();
+      case 40: //down
+      case 38: // top
+
+      case 32: // space-bar
+        return this.props.isPlaying
+          ? this.props.onPause()
+          : this.props.onPlay();
+      default:
+        return;
+    }
+  };
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.keyboardListener);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.keyboardListener);
+  }
+
   render() {
     return (
       <Toolbar className="audio-transport-bar">
