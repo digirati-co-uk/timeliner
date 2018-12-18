@@ -35,6 +35,7 @@
     "immutability-helper": "^2.8.1",
     "langs": "^2.0.0",
     "prop-types": "^15.6.2",
+    "query-string": "^6.2.0",
     "react": "^16.4.2",
     "react-color": "^2.14.1",
     "react-dom": "^16.4.2",

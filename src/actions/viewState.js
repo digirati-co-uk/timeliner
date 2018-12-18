@@ -25,6 +25,7 @@ import {
   CANCEL_PROJECT_METADATA_EDITS,
   SAVE_PROJECT_METADATA,
   FINISHED_PLAYING,
+  LOAD_SOURCE,
 } from '../constants/viewState';
 import invariant from '../utils/invariant';
 
@@ -108,6 +109,11 @@ export const setCurrentTime = time => ({
 export const loadViewState = state => ({
   type: LOAD_VIEW_STATE,
   state,
+});
+
+export const loadSource = source => ({
+  type: LOAD_SOURCE,
+  payload: { source },
 });
 
 export const editMetadata = rangeId => ({

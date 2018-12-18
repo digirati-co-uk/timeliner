@@ -201,9 +201,10 @@ const manifestToViewState = manifest => ({
   [VIEWSTATE.IS_SETTINGS_OPEN]: false,
 });
 
-export const loadProjectState = manifest => ({
+export const loadProjectState = (manifest, source) => ({
   project: manifestToProject(manifest),
   canvas: processCanvas(manifest.items[0]),
   range: processStructures(manifest),
   viewState: manifestToViewState(manifest),
+  source,
 });

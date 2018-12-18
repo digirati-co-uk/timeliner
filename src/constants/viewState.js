@@ -10,6 +10,7 @@ export const VIEWSTATE = {
   METADATA_TO_EDIT: 'metadataToEdit',
   PROJECT_METADATA_EDITOR_OPEN: 'projectMetadataEditorOpen',
   VERIFY_DIALOG: 'verifyDialog',
+  SOURCE: 'source',
 };
 
 export const DEFAULT_VIEWSTATE_STATE = {
@@ -23,6 +24,7 @@ export const DEFAULT_VIEWSTATE_STATE = {
   [VIEWSTATE.VOLUME]: 70,
   [VIEWSTATE.METADATA_TO_EDIT]: null,
   [VIEWSTATE.PROJECT_METADATA_EDITOR_OPEN]: false,
+  [VIEWSTATE.SOURCE]: null,
   [VIEWSTATE.VERIFY_DIALOG]: {
     open: false,
     title: '',
@@ -46,6 +48,7 @@ export const FAST_REWARD = 'FAST_REWARD';
 export const SET_VOLUME = 'SET_VOLUME';
 export const SET_CURRENT_TIME = 'SET_CURRENT_TIME';
 export const LOAD_VIEW_STATE = 'LOAD_VIEW_STATE';
+export const LOAD_SOURCE = 'LOAD_SOURCE';
 export const EDIT_METADATA = 'EDIT_METATADA';
 export const SET_VERIFY_DIALOG = 'SET_VERIFY_DIALOG';
 export const OPEN_CONFIRM_DIALOG = 'OPEN_CONFIRM_DIALOG';

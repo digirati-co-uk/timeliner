@@ -39,9 +39,10 @@ export const resetDocument = () => ({
   type: RESET_DOCUMENT,
 });
 
-export const importDocument = manifest => ({
+export const importDocument = (manifest, source) => ({
   type: IMPORT_DOCUMENT,
   manifest,
+  source,
 });
 
 export const exportDocument = () => ({
