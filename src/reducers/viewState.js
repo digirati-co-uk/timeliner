@@ -28,6 +28,7 @@ import {
   CANCEL_PROJECT_METADATA_EDITS,
   SAVE_PROJECT_METADATA,
   FINISHED_PLAYING,
+  LOAD_SOURCE,
 } from '../constants/viewState';
 
 import { AUDIO_LOADING } from '../constants/canvas';
@@ -130,6 +131,12 @@ const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
     case LOAD_VIEW_STATE:
       return update(DEFAULT_VIEWSTATE_STATE, {
         $merge: action.state,
+      });
+    case LOAD_SOURCE:
+      return update(state, {
+        [VIEWSTATE.SOURCE]: {
+          $set: action.payload.source,
+        },
       });
     case EDIT_METADATA:
       return update(state, {

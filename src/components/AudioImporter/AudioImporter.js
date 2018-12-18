@@ -32,10 +32,10 @@ class AudioImporter extends Component {
 
   onImportResource = () => {
     const { onImport } = this.props;
-    console.log(this.importUrlField.value);
-    importResource(this.importUrlField.value)
+    const resourceUri = this.importUrlField.value;
+    importResource(resourceUri)
       .then(manifest => {
-        onImport(manifest);
+        onImport(manifest, resourceUri);
       })
       .catch(error => this.setState({ error }));
   };

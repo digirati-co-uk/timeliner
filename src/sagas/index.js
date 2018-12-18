@@ -22,6 +22,7 @@ import {
   play,
   pause,
   cancelProjectMetadataEdits,
+  loadSource,
 } from '../actions/viewState';
 import {
   NEXT_BUBBLE,
@@ -74,22 +75,29 @@ const getPreviousBubbleStartTime = state => {
 const getSelectedBubbles = state =>
   Object.values(state.range)
     .filter(bubble => bubble.isSelected)
-    .sort(
-      (bubbleA, bubbleB) =>
-        bubbleA[RANGE.START_TIME] === bubbleB[RANGE.START_TIME]
-          ? bubbleA[RANGE.DEPTH] - bubbleB[RANGE.DEPTH]
-          : bubbleA[RANGE.START_TIME] - bubbleB[RANGE.START_TIME]
+    .sort((bubbleA, bubbleB) =>
+      bubbleA[RANGE.START_TIME] === bubbleB[RANGE.START_TIME]
+        ? bubbleA[RANGE.DEPTH] - bubbleB[RANGE.DEPTH]
+        : bubbleA[RANGE.START_TIME] - bubbleB[RANGE.START_TIME]
     );
 
 const getState = state => state;
 
-function* importDocument({ manifest }) {
-  const loadedState = loadProjectState(manifest);
+function* importDocument({ manifest, source }) {
+  const { viewState } = yield select();
+
+  if (viewState.source === source) {
+    return;
+  }
+
+  const loadedState = loadProjectState(manifest, source);
+
   yield put(unloadAudio());
   yield put(loadProject(loadedState.project));
   yield put(loadCanvas(loadedState.canvas));
   yield put(loadRanges(loadedState.range));
   yield put(loadViewState(loadedState.viewState));
+  yield put(loadSource(loadedState.source));
 }
 
 function* saveRange({ payload }) {
