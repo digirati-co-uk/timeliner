@@ -10,6 +10,8 @@ class TimelineMarker extends Component {
   static propTypes = {
     /** percentage position for the marker */
     x: PropTypes.number.isRequired,
+    /** Index of the marker when in a list */
+    index: PropTypes.number.isRequired,
   };
 
   static defaultProps = {

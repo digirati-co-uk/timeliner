@@ -32,7 +32,6 @@ class TimelineScrubber extends Component {
     renderTimelineHover: PropTypes.func,
     /** on drag start */
     dragStart: PropTypes.func,
-    selectedPoint: PropTypes.number,
     /** show times */
     showTimes: PropTypes.bool,
     /** current viewport position */
@@ -41,6 +40,11 @@ class TimelineScrubber extends Component {
     isPlayheadUpdating: PropTypes.bool,
     /** playhead Drag X */
     playheadX: PropTypes.number,
+    /** Current marker and its movement */
+    markerMovement: PropTypes.shape({
+      selectedPoint: PropTypes.number,
+      deltaTime: PropTypes.number,
+    }),
   };
 
   static defaultProps = {
