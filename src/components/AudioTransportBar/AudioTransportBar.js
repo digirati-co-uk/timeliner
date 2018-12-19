@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Toolbar } from '@material-ui/core';
 import VolumeSlider from '../VolumeSlider/VolumeSlider';
 import CurrentTimeIndicator from '../CurrentTimeIndicator/CurrentTimeIndicator';
 import NextButton from '../NextButton/NextButton';

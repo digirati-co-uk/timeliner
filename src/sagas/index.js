@@ -189,17 +189,17 @@ function* afterDelete() {
   yield put(updateDepthsAfterDelete());
 }
 
-function* multiDelete({ selecteds }) {
+function* multiDelete({ ranges }) {
   let confirmed = true;
-  if (selecteds.length > 1) {
+  if (ranges.length > 1) {
     confirmed = yield call(
       showConfirmation,
       'Multiple ranges will be deleted. Redundant length groups will be removed. Do you wish to continue?'
     );
   }
   if (confirmed) {
-    for (var i = 0; i < selecteds.length; i++) {
-      yield put(deleteRange(selecteds[i]));
+    for (let i = 0; i < ranges.length; i++) {
+      yield put(deleteRange(ranges[i]));
     }
   }
 }

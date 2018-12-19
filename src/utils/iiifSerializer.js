@@ -36,7 +36,7 @@ const IIIF_KEY_ORDER = [
   'annotations',
 ];
 
-const W3CANNOTATION_KEYS = ['body', 'target', 'duration'];
+const W3C_ANNOTATION_KEYS = ['body', 'target', 'duration'];
 
 const TIMELINE_PROPERTIES = [
   `${RDF_NAMESPACE}:backgroundColour`,
@@ -47,7 +47,7 @@ const TIMELINE_PROPERTIES = [
 const LANGUAGES = langs.codes('1');
 
 const KEY_ORDER = IIIF_KEY_ORDER.concat(
-  W3CANNOTATION_KEYS,
+  W3C_ANNOTATION_KEYS,
   TIMELINE_PROPERTIES,
   LANGUAGES
 );

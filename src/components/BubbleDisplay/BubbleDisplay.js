@@ -30,7 +30,7 @@ class BubbleDisplay extends Component {
     onPanStart: () => {},
   };
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps, nextContext) {
     const { width, height, zoom, x, points } = this.props;
     const { nextWidth, nextHeight, nextZoom, nextX, nextPoints } = nextProps;
     return (

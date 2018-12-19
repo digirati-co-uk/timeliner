@@ -61,9 +61,9 @@ export const deleteRange = id => ({
   },
 });
 
-export const deleteRanges = selecteds => ({
+export const deleteRanges = ranges => ({
   type: DELETE_RAGES,
-  selecteds,
+  ranges,
 });
 
 export const deleteRedundantSizes = () => ({

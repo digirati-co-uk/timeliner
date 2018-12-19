@@ -4,17 +4,16 @@ export const immediateDownload = (dataStr, mime_type = 'application/json') => {
     type: mime_type,
   });
 
-  var dlink = document.createElement('a');
-  dlink.download = 'manifest.json';
-  dlink.href = window.URL.createObjectURL(blob);
-  dlink.onclick = function(e) {
+  const downloadLink = document.createElement('a');
+  downloadLink.download = 'manifest.json';
+  downloadLink.href = window.URL.createObjectURL(blob);
+  downloadLink.onclick = function(e) {
     // revokeObjectURL needs a delay to work properly
-    var that = this;
-    setTimeout(function() {
-      window.URL.revokeObjectURL(that.href);
+    setTimeout(() => {
+      window.URL.revokeObjectURL(this.href);
     }, 1500);
   };
-  body.appendChild(dlink);
-  dlink.click();
-  dlink.remove();
+  body.appendChild(downloadLink);
+  downloadLink.click();
+  downloadLink.remove();
 };

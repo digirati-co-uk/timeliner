@@ -22,7 +22,7 @@ const createNewManifest = (manifestDomain, audioUri, duration) => ({
           type: 'AnnotationPage',
           items: [
             {
-              id: `${manifestDomain}/annot/c1-1`,
+              id: `${manifestDomain}/annotation/c1-1`,
               type: 'Annotation',
               motivation: 'painting',
               label: {

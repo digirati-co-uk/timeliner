@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import BEM from '@fesk/bem-js';
 import './Table.scss';
 

@@ -99,7 +99,6 @@ class TimelineScrubber extends Component {
     const {
       currentTime,
       timePoints,
-      theme,
       showTimes,
       x,
       width,
