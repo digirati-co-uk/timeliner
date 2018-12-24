@@ -1,0 +1,47 @@
+---
+name: Volume Slider Compact 
+menu: Components
+---
+
+import { Playground, PropsTable } from 'docz';
+import Component from "@reach/component-component";
+import VolumeSliderCompact from './VolumeSliderCompact';
+
+# Volume Slider component
+This is the compact variation of the volume slider that takes up less room on the bar.
+
+<PropsTable of={VolumeSliderCompact}/>
+
+## Simple example
+
+VolumeSliderDemo component passes the volume to the child components and provides a callback to set the volume.
+<Playground>
+  <Component initialState={{ volume: 70 }}>
+  {({ setState, state }) => (
+    <VolumeSliderCompact 
+      volume={state.volume} 
+      onVolumeChanged={(volume) => {
+        setState({ volume });
+      }}
+    />
+  )}
+  </Component>
+</Playground>
+
+
+## Flipped example
+Example of the icon and slider flipped around.
+
+<Playground>
+  <Component initialState={{ volume: 70 }}>
+  {({ setState, state }) => (
+    <VolumeSliderCompact 
+      flipped
+      volume={state.volume} 
+      onVolumeChanged={(volume) => {
+        setState({ volume });
+      }}
+    />
+  )}
+  </Component>
+</Playground>
