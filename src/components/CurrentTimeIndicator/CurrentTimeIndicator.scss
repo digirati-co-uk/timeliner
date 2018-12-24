@@ -5,4 +5,12 @@
   &--error {
     color: darkred;
   }
+
+  &__current-time {
+    color: #000;
+  }
+
+  &__runtime {
+    font-size: .85em;
+  }
 }
