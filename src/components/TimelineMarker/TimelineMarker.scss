@@ -5,9 +5,10 @@
   display: block;
   border-radius: 50%;
   margin-left: -5px;
-  z-index: 1;
+  z-index: 2;
   margin-top: -5px;
   cursor: ew-resize;
+  background: #000;
 
   &__tooltip {
     position: absolute;
@@ -17,11 +18,11 @@
     color: #777;
     border-radius: 2px;
     font-size: 11px;
-    transform: translate(-50%,0);
+    transform: translate(-50%, 0);
     cursor: ew-resize;
-    text-shadow: -1px -1px 0 #fff, 
-                1px -1px 0 #fff, 
-                -1px 1px 0 #fff,
-                1px 1px 0 #fff;
+    text-shadow: -1px -1px 0 #fff,
+    1px -1px 0 #fff,
+    -1px 1px 0 #fff,
+    1px 1px 0 #fff;
   }
 }
