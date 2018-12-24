@@ -11,6 +11,7 @@ import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import { Grid } from '@material-ui/core';
 
 import './AudioTransportBar.scss';
+import VolumeSliderCompact from "../VolumeSliderCompact/VolumeSliderCompact";
 
 class AudioTransportBar extends Component {
   static propTypes = {
@@ -78,10 +79,6 @@ class AudioTransportBar extends Component {
       <div className="audio-transport-bar">
         <Grid container direction="row" alignItems="center">
           <Grid item xs={4} className="audio-transport-bar__actions">
-            <CurrentTimeIndicator
-              currentTime={this.props.currentTime}
-              runtime={this.props.runTime}
-            />
             <PrimaryButton
               disabled={!this.props.onAddBubble}
               onClick={this.props.onAddBubble}
@@ -121,9 +118,14 @@ class AudioTransportBar extends Component {
             </div>
           </Grid>
           <Grid item xs={4} className="audio-transport-bar__volume">
-            <VolumeSlider
+            <VolumeSliderCompact
+              flipped={true}
               volume={this.props.volume}
               onVolumeChanged={this.props.onVolumeChanged}
+            />
+            <CurrentTimeIndicator
+              currentTime={this.props.currentTime}
+              runtime={this.props.runTime}
             />
           </Grid>
         </Grid>
