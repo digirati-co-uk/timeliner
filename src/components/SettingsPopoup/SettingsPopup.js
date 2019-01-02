@@ -277,6 +277,21 @@ export default class SettingsPopup extends React.Component {
                           label="Stop Playing at the end of the section."
                         />
                       </FormGroup>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={
+                              this.state[PROJECT.START_PLAYING_END_OF_SECTION]
+                            }
+                            onChange={this.handleChange(
+                              PROJECT.START_PLAYING_END_OF_SECTION,
+                              'checkbox'
+                            )}
+                            value={PROJECT.START_PLAYING_END_OF_SECTION}
+                          />
+                        }
+                        label="Loop playback at the end of the section."
+                      />
                     </FormControl>
                   </Grid>
                 </Grid>
