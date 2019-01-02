@@ -40,6 +40,7 @@ const W3C_ANNOTATION_KEYS = ['body', 'target', 'duration'];
 
 const TIMELINE_PROPERTIES = [
   `${RDF_NAMESPACE}:backgroundColour`,
+  `${RDF_NAMESPACE}:textColour`,
   `${RDF_NAMESPACE}:settings`,
   ...PROJECT_SETTINGS_KEYS.map(key => `${RDF_NAMESPACE}:${key}`),
 ];

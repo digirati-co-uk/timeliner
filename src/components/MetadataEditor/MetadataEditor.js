@@ -5,12 +5,15 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 import bem from '@fesk/bem-js';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import ColourSwatchPicker from '../ColourSwatchPicker/ColourSwatchPicker';
 import TimePicker from '../TimePicker/TimePicker';
 
 import './MetadataEditor.scss';
+import { PROJECT } from '../../constants/project';
 
 const metadataEditor = bem.block('metadata-editor');
 
@@ -33,6 +36,8 @@ class MetadataEditor extends Component {
     onCancel: PropTypes.func,
     /** Is new */
     isNew: PropTypes.bool.isRequired,
+    /** White label text */
+    whiteText: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -40,23 +45,25 @@ class MetadataEditor extends Component {
     label: '',
     summary: '',
     colour: 0,
+    whiteText: false,
   };
 
   constructor(props) {
     super(props);
-    const { label, summary, colour, startTime, endTime } = props;
+    const { label, summary, colour, startTime, endTime, whiteText } = props;
     this.state = {
       label,
       summary,
       colour,
       startTime,
       endTime,
+      whiteText,
     };
   }
 
-  handleChange = name => ev => {
+  handleChange = (name, type) => event => {
     this.setState({
-      [name]: ev.target.value,
+      [name]: type === 'checkbox' ? event.target.checked : event.target.value,
     });
   };
 
@@ -71,12 +78,13 @@ class MetadataEditor extends Component {
   };
 
   onSave = () => {
-    const { colour, label, summary } = this.state;
+    const { colour, label, summary, whiteText } = this.state;
     const state = this.state;
     const newValues = {
       colour,
       label,
       summary,
+      whiteText,
     };
     const startTime = state.startTime;
     const endTime = state.endTime;
@@ -109,7 +117,14 @@ class MetadataEditor extends Component {
 
   render() {
     const { onCancel } = this.props;
-    const { label, summary, colour, startTime, endTime } = this.state;
+    const {
+      label,
+      summary,
+      colour,
+      startTime,
+      endTime,
+      whiteText,
+    } = this.state;
     const colours = getSelectedThemeColours();
     return (
       <form className={metadataEditor} onKeyDown={this.handleKeyDown}>
@@ -175,6 +190,18 @@ class MetadataEditor extends Component {
               label="Colour"
               currentColour={colour}
               onSelectColour={this.onSelectColour}
+            />
+          </Grid>
+          <Grid item>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={whiteText}
+                  onChange={this.handleChange('whiteText', 'checkbox')}
+                  value={PROJECT.BLACK_N_WHITE}
+                />
+              }
+              label="White label colour"
             />
           </Grid>
           <Grid
