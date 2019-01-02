@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import BEM from '@fesk/bem-js';
 import './VolumeSliderCompact.scss';
 import PropTypes from 'prop-types';
-import { VolumeUp, VolumeDown, VolumeOff } from '@material-ui/icons';
-import { Slider } from '@material-ui/lab';
+import VolumeUp from '@material-ui/icons/VolumeUp';
+import VolumeDown from '@material-ui/icons/VolumeDown';
+import VolumeOff from '@material-ui/icons/VolumeOff';
+import Slider from '@material-ui/lab/Slider';
 
 const $style = BEM.block('volume-slider-compact');
 

@@ -1,7 +1,9 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { Grid, Typography, IconButton } from '@material-ui/core';
-import { Edit } from '@material-ui/icons';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import Edit from '@material-ui/icons/Edit';
 
 const ProjectMetadataDisplay = props => (
   <div>

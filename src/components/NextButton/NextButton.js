@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TransportBarButton from '../TransportBarButton/TransportBarButton';
-import { SkipNext } from '@material-ui/icons';
+import SkipNext from '@material-ui/icons/SkipNext';
 
 const NextButton = props => (
   <TransportBarButton title="Next Bubble" {...props}>

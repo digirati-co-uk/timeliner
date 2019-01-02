@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Slider } from '@material-ui/lab';
-import { VolumeDown, VolumeUp } from '@material-ui/icons';
+import Slider from '@material-ui/lab/Slider';
+import VolumeDown from '@material-ui/icons/VolumeDown';
+import VolumeUp from '@material-ui/icons/VolumeUp';
 import './VolumeSlider.scss';
 
 const SPEAKER_ICON_SIZE = {

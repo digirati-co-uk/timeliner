@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Typography } from '@material-ui/core';
+import Typography  from '@material-ui/core/Typography';
 
 import MetadataDisplay from '../MetadataDisplay/MetadataDisplay';
 import MetadataEditor from '../MetadataEditor/MetadataEditor';

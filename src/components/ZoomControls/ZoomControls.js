@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { IconButton } from '@material-ui/core';
-import { ZoomIn, ZoomOut, YoutubeSearchedFor } from '@material-ui/icons';
+import IconButton from '@material-ui/core/IconButton';
+import ZoomIn from '@material-ui/icons/ZoomIn';
+import ZoomOut from '@material-ui/icons/ZoomOut';
+import YoutubeSearchedFor from '@material-ui/icons/YoutubeSearchedFor';
 import './ZoomControls.scss';
 
 const ZoomControls = props => (
