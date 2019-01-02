@@ -52,6 +52,8 @@ class TimelineScrubber extends Component {
       selectedPoint: PropTypes.number,
       deltaTime: PropTypes.number,
     }),
+    /** When a point is clicked */
+    onClickPoint: PropTypes.func,
   };
 
   static defaultProps = {
@@ -85,7 +87,7 @@ class TimelineScrubber extends Component {
     if (time > this.props.runTime) {
       return this.timeToLabel(this.props.runTime);
     }
-    if (time <= 0) {
+    if (time < 0) {
       return this.timeToLabel(0);
     }
     const timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
@@ -98,8 +100,15 @@ class TimelineScrubber extends Component {
     return formatDate(date, format);
   };
 
-  handleAddPoint = () => {
-    this.props.onClickPoint(this.state.hoverTime);
+  getClickedTime = ev => {
+    const bounds = ev.currentTarget.getBoundingClientRect();
+    const positionRatio = (ev.pageX - bounds.left) / bounds.width;
+    return positionRatio * this.props.runTime;
+  };
+
+  handleAddPoint = ev => {
+    const time = this.getClickedTime(ev);
+    this.props.onClickPoint(time);
   };
 
   dragStart = element => e => this.props.dragStart(element, e);
@@ -128,6 +137,7 @@ class TimelineScrubber extends Component {
       zoom,
       isPlayheadUpdating,
       playheadX,
+      showTimes,
     } = this.props;
     const { isHovering, hoverTime } = this.state;
 
@@ -153,7 +163,25 @@ class TimelineScrubber extends Component {
             key={`tp-${timePointIndex}`}
             x={this.timeToPercent(this.resolveTime(timePoint, timePointIndex))}
             onMouseDown={this.dragStart}
-          />
+          >
+            {showTimes ? (
+              <span
+                className="timeline-marker__tooltip"
+                style={{
+                  transform:
+                    timePointIndex === 0
+                      ? 'translate(0)'
+                      : timePointIndex === timePoints.length - 1
+                      ? 'translate(-100%)'
+                      : 'translate(-50%)',
+                }}
+              >
+                {this.timeToLabel(this.resolveTime(timePoint, timePointIndex))}
+              </span>
+            ) : (
+              ''
+            )}
+          </TimelineMarker>
         ))}
         <PlayHead
           x={this.timeToPercent(isPlayheadUpdating ? playheadX : currentTime)}
