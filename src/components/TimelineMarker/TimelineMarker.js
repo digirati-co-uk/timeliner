@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withTheme } from '@material-ui/core/styles';
 import './TimelineMarker.scss';
 import BEM from '@fesk/bem-js';
 
@@ -21,13 +20,12 @@ class TimelineMarker extends Component {
   onMouseDown = () => {};
 
   render() {
-    const { x, index, theme, children } = this.props;
+    const { x, index, children } = this.props;
     return (
       <div
         className={$style}
         style={{
           left: `${x}%`,
-          background: `${theme.palette.primary.main}`,
         }}
         onMouseDown={this.props.onMouseDown({ type: 'marker', x, index })}
       >
@@ -37,4 +35,4 @@ class TimelineMarker extends Component {
   }
 }
 
-export default withTheme()(TimelineMarker);
+export default TimelineMarker;

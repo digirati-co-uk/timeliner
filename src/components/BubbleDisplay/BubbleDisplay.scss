@@ -1,4 +1,7 @@
 .bubble-display {
   display: block;
   vertical-align: top;
+  * {
+    transition: all .3s;
+  }
 }

@@ -1,8 +1,14 @@
 .current-time-indicator {
   color: #777;
-  justify-self: flex-start;
-  flex: 1;
   &--error {
     color: darkred;
+  }
+
+  &__current-time {
+    color: #000;
+  }
+
+  &__runtime {
+    font-size: .85em;
   }
 }
