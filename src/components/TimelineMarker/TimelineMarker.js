@@ -11,23 +11,25 @@ class TimelineMarker extends Component {
     x: PropTypes.number.isRequired,
     /** Index of the marker when in a list */
     index: PropTypes.number.isRequired,
+    /** Function that returns a mouse down event handler */
+    onMouseDown: PropTypes.func,
   };
 
   static defaultProps = {
     x: 0,
   };
 
-  onMouseDown = () => {};
-
   render() {
-    const { x, index, children } = this.props;
+    const { x, index, onMouseDown, children } = this.props;
     return (
       <div
         className={$style}
         style={{
           left: `${x}%`,
         }}
-        onMouseDown={this.props.onMouseDown({ type: 'marker', x, index })}
+        onMouseDown={
+          onMouseDown ? onMouseDown({ type: 'marker', x, index }) : null
+        }
       >
         {children}
       </div>
