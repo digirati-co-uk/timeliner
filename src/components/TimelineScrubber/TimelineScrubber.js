@@ -10,6 +10,17 @@ import './TimelineScrubber.scss';
 
 const $style = BEM.block('timeline-scrubber');
 
+function getPalletXPosition(palletW, clientX, windowW, offset = 15) {
+  const halfPalletW = palletW / 2;
+  if (clientX - halfPalletW - offset <= 0) {
+    return offset;
+  }
+  if (clientX + halfPalletW + offset >= windowW) {
+    return windowW - palletW - offset;
+  }
+  return clientX - halfPalletW;
+}
+
 class TimelineScrubber extends Component {
   static propTypes = {
     /** Current time of the audio in milliseconds */
@@ -20,16 +31,12 @@ class TimelineScrubber extends Component {
     zoom: PropTypes.number.isRequired,
     /** Time points */
     timePoints: PropTypes.arrayOf(PropTypes.number),
-    /** Handler for when a point is clicked on the timeline */
-    onClickPoint: PropTypes.func,
     /** Handler for when the currentTime is updated */
     onUpdateTime: PropTypes.func,
     /** Handler for when point position is updated */
     onUpdatePoint: PropTypes.func,
     /** Handler for when time point position is updated */
     onUpdateTimePoint: PropTypes.func,
-    /** Component to render above mouse when hovering */
-    renderTimelineHover: PropTypes.func,
     /** on drag start */
     dragStart: PropTypes.func,
     /** show times */
@@ -48,18 +55,21 @@ class TimelineScrubber extends Component {
   };
 
   static defaultProps = {
-    onClickPoint: () => {},
     onUpdateTime: () => {},
     onUpdatePoint: null, // This changes behaviour depending if null.
     onUpdateTimePoint: null, // This changes behaviour depending if null.
     timePoints: [],
-    renderTimelineHover: () => null,
     zoom: 1.0,
-    dragStart: () => {},
     showTimes: false,
     isPlayheadUpdating: false,
     playheadX: 0,
   };
+
+  state = { isHovering: false, hoverTime: 0 };
+
+  container = React.createRef();
+
+  tooltip = React.createRef();
 
   timeToPercent = time => (time / this.props.runTime) * 100;
 
@@ -72,6 +82,12 @@ class TimelineScrubber extends Component {
   };
 
   timeToLabel = time => {
+    if (time > this.props.runTime) {
+      return this.timeToLabel(this.props.runTime);
+    }
+    if (time <= 0) {
+      return this.timeToLabel(0);
+    }
     const timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
     const date = new Date(time + timezoneOffset);
     if (date.toString() === 'Invalid Date') {
@@ -82,39 +98,48 @@ class TimelineScrubber extends Component {
     return formatDate(date, format);
   };
 
-  getClickedTime = ev => {
-    const bounds = ev.currentTarget.getBoundingClientRect();
-    const positionRatio = (ev.pageX - bounds.left) / bounds.width;
-    return positionRatio * this.props.runTime;
-  };
-
-  handleAddPoint = ev => {
-    const time = this.getClickedTime(ev);
-    this.props.onClickPoint(time);
+  handleAddPoint = () => {
+    this.props.onClickPoint(this.state.hoverTime);
   };
 
   dragStart = element => e => this.props.dragStart(element, e);
+
+  onMouseEnter = () => this.setState({ isHovering: true });
+
+  onMouseLeave = () => this.setState({ isHovering: false });
+
+  onMouseMove = e => {
+    const bounds = this.container.getBoundingClientRect();
+    const positionRatio = (e.pageX - bounds.left) / bounds.width;
+    this.setState({
+      hoverTime: this.timeToLabel(positionRatio * this.props.runTime),
+    });
+
+    const pos = getPalletXPosition(80, e.clientX, bounds.width, 5);
+    this.tooltip.style.left = `${pos}px`;
+  };
 
   render() {
     const {
       currentTime,
       timePoints,
-      showTimes,
       x,
       width,
       zoom,
       isPlayheadUpdating,
       playheadX,
-      markerMovement,
     } = this.props;
-
-    const selectedIndex = markerMovement ? markerMovement.selectedPoint : -1;
+    const { isHovering, hoverTime } = this.state;
 
     return (
       <div
+        ref={ref => (this.container = ref)}
         className={$style}
         onDoubleClick={this.handleAddPoint}
         tabIndex={0}
+        onMouseEnter={this.onMouseEnter}
+        onMouseLeave={this.onMouseLeave}
+        onMouseMove={this.onMouseMove}
         onMouseDown={this.dragStart({ type: 'scrubber' })}
         style={{
           position: 'relative',
@@ -128,30 +153,19 @@ class TimelineScrubber extends Component {
             key={`tp-${timePointIndex}`}
             x={this.timeToPercent(this.resolveTime(timePoint, timePointIndex))}
             onMouseDown={this.dragStart}
-          >
-            {timePointIndex === selectedIndex || showTimes ? (
-              <span
-                className="timeline-marker__tooltip"
-                style={{
-                  transform:
-                    timePointIndex === 0
-                      ? 'translate(0)'
-                      : timePointIndex === timePoints.length - 1
-                      ? 'translate(-100%)'
-                      : 'translate(-50%)',
-                }}
-              >
-                {this.timeToLabel(this.resolveTime(timePoint, timePointIndex))}
-              </span>
-            ) : (
-              ''
-            )}
-          </TimelineMarker>
+          />
         ))}
         <PlayHead
           x={this.timeToPercent(isPlayheadUpdating ? playheadX : currentTime)}
           isUpdating={isPlayheadUpdating}
         />
+        <div
+          className={$style.element('tooltip')}
+          ref={ref => (this.tooltip = ref)}
+          style={{ opacity: isHovering ? 1 : 0 }}
+        >
+          {hoverTime}
+        </div>
       </div>
     );
   }
