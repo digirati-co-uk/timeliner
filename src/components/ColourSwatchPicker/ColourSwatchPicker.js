@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { SketchPicker } from 'react-color';
-import { Button } from '@material-ui/core';
-import { KeyboardArrowDown } from '@material-ui/icons';
+import Button from '@material-ui/core/Button';
+import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
 import './ColourSwatchPicker.scss';
 
 const hexToRgb = hex =>

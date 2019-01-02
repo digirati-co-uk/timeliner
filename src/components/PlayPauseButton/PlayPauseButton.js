@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import PlayCircleOutline from '@material-ui/icons/PlayCircleOutline';
+import PauseCircleOutline from '@material-ui/icons/PauseCircleOutline';
 import TransportBarButton from '../TransportBarButton/TransportBarButton';
-import { PlayCircleOutline, PauseCircleOutline } from '@material-ui/icons';
 
 const PLAY_PAUSE_BUTTON_SIZE = {
   width: 48,

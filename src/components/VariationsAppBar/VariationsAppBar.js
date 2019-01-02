@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Toolbar, Typography, IconButton } from '@material-ui/core';
-import {
-  AddCircle,
-  RestorePage,
-  CloudDownload,
-  Settings,
-} from '@material-ui/icons';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import AddCircle from '@material-ui/icons/AddCircle';
+import RestorePage from '@material-ui/icons/RestorePage';
+import CloudDownload from '@material-ui/icons/CloudDownload';
+import Settings from '@material-ui/icons/Settings';
 import bem from '@fesk/bem-js';
 import './VariationsAppBar.scss';
 

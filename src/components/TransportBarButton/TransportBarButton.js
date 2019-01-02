@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { IconButton } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
 
 class TransportBarButton extends Component {
   static propTypes = {

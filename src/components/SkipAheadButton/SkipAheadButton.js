@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TransportBarButton from '../TransportBarButton/TransportBarButton';
-import { FastForward } from '@material-ui/icons';
+import FastForward from '@material-ui/icons/FastForward';
 
 const SkipAheadButton = props => (
   <TransportBarButton title="Skip forwards" {...props}>

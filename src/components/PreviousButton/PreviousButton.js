@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import TransportBarButton from '../TransportBarButton/TransportBarButton';
-import { SkipPrevious } from '@material-ui/icons';
+import SkipPrevious from '@material-ui/icons/SkipPrevious';
 
 const PreviousButton = props => (
   <TransportBarButton title="Previous Bubble" {...props}>

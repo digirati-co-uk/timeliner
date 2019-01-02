@@ -8,10 +8,10 @@ import SkipAheadButton from '../SkipAheadButton/SkipAheadButton';
 import SkipBackwardsButton from '../SkipBackwardsButton/SkipBackwardsButton';
 import PlayPauseButton from '../PlayPauseButton/PlayPauseButton';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
-import { Grid } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
 
 import './AudioTransportBar.scss';
-import VolumeSliderCompact from "../VolumeSliderCompact/VolumeSliderCompact";
+import VolumeSliderCompact from '../VolumeSliderCompact/VolumeSliderCompact';
 
 class AudioTransportBar extends Component {
   static propTypes = {

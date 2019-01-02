@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextField, Button, Grid } from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
 
 class ProjectMetadataEditor extends Component {
