@@ -9,6 +9,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import importResource from './AudioImporter.Utils';
+import FileUpload from '../FileUpload/FileUpload';
 
 class AudioImporter extends Component {
   static propTypes = {
@@ -28,6 +29,7 @@ class AudioImporter extends Component {
   };
 
   state = {
+    localFile: false,
     error: '',
   };
 
@@ -53,8 +55,23 @@ class AudioImporter extends Component {
     }
   };
 
+  toggleLocalFile = () => {
+    this.setState(s => ({ localFile: !s.localFile }));
+  };
+
+  handleLocalImport = data => {
+    const { onImport } = this.props;
+
+    try {
+      onImport(data, data['@id']);
+    } catch (err) {
+      this.setState({ error: err });
+    }
+  };
+
   render() {
     const { open, onClose } = this.props;
+    const { localFile } = this.state;
     const error = this.state.error || this.props.error;
 
     return (
@@ -66,17 +83,31 @@ class AudioImporter extends Component {
               Please provide a web compatible audio file url or a previously
               saved manifest.
             </DialogContentText>
-            <TextField
-              inputRef={x => (this.importUrlField = x)}
-              autoFocus
-              margin="dense"
-              id="manifestUrl"
-              name="manifestUrl"
-              label="Audio or Manifest url"
-              type="url"
-              onKeyPress={this.onKeyPress}
-              fullWidth
-            />
+            {localFile ? (
+              <FileUpload onChange={this.handleLocalImport} />
+            ) : (
+              <TextField
+                inputRef={x => (this.importUrlField = x)}
+                autoFocus
+                margin="dense"
+                id="manifestUrl"
+                name="manifestUrl"
+                label="Audio or Manifest url"
+                type="url"
+                onKeyPress={this.onKeyPress}
+                fullWidth
+              />
+            )}
+            <div
+              style={{ fontSize: 12, marginTop: 15, cursor: 'pointer' }}
+              onClick={this.toggleLocalFile}
+            >
+              {localFile ? (
+                <span>Go back to URL import</span>
+              ) : (
+                <span>Alternatively, click here to import local file</span>
+              )}
+            </div>
             {error && (
               <Typography variant="body1" color="error">
                 {error}
