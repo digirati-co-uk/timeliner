@@ -88,7 +88,7 @@ class SingleBubble extends Component {
       isSelected,
     } = this.props;
     const x = this.props.x || 0;
-    const cDX = dX || width / 2 - width / 8;
+    const cDX = dX * 2 || width / 2 - width / 8;
 
     const d =
       shape === BUBBLE_STYLES.ROUNDED
