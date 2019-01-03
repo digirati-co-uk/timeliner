@@ -11,9 +11,7 @@ import bem from '@fesk/bem-js';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import ColourSwatchPicker from '../ColourSwatchPicker/ColourSwatchPicker';
 import TimePicker from '../TimePicker/TimePicker';
-
 import './MetadataEditor.scss';
-import { PROJECT } from '../../constants/project';
 
 const metadataEditor = bem.block('metadata-editor');
 
@@ -198,7 +196,6 @@ class MetadataEditor extends Component {
                 <Checkbox
                   checked={whiteText}
                   onChange={this.handleChange('whiteText', 'checkbox')}
-                  value={PROJECT.BLACK_N_WHITE}
                 />
               }
               label="White label colour"
