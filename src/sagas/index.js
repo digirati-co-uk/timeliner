@@ -1,4 +1,12 @@
-import { put, select, takeEvery, race, call, take } from 'redux-saga/effects';
+import {
+  put,
+  select,
+  takeEvery,
+  race,
+  call,
+  take,
+  takeLatest,
+} from 'redux-saga/effects';
 
 import { IMPORT_DOCUMENT, RESET_DOCUMENT } from '../constants/project';
 import { UPDATE_RANGE } from '../constants/range';
@@ -35,6 +43,7 @@ import {
   CONFIRM_NO,
   CONFIRM_YES,
   SAVE_PROJECT_METADATA,
+  SET_CURRENT_TIME,
 } from '../constants/viewState';
 import {
   SELECT_RANGE,
@@ -204,6 +213,63 @@ function* multiDelete({ ranges }) {
   }
 }
 
+function* currentTimeSideEffects() {
+  const selectedBubbles = yield select(getSelectedBubbles);
+  // Nope out early if we've not selected anything.
+  if (!selectedBubbles.length) {
+    return;
+  }
+  const state = yield select(getState);
+  const startPlayingAtEnd = state.project[PROJECT.START_PLAYING_END_OF_SECTION];
+  const stopPlayingAtEnd = state.project[PROJECT.STOP_PLAYING_END_OF_SECTION];
+  const startTime = selectedBubbles[0][RANGE.START_TIME];
+  const endTime = selectedBubbles[selectedBubbles.length - 1][RANGE.END_TIME];
+
+  // Last time stores previous tick time so that we can compare the gap.
+  let lastTime = 0;
+  // Click stores if we have made a jump in this code, so we can skip it
+  // in our checks when trying to identify user clicks.
+  // @todo improvement if we can identify different sources of `SET_CURRENT_TIME` then
+  //   we can more easily know if the jumps in the time are from human clicks or automated.
+  let clicked = false;
+  // We want to listen for every tick of the time.
+  while (true) {
+    const {
+      payload: { currentTime },
+    } = yield take(SET_CURRENT_TIME);
+
+    // This logic is for cancelling the listener to the current time.
+    if (
+      clicked === false &&
+      lastTime &&
+      Math.abs(currentTime - lastTime) >= 1000
+    ) {
+      // If the user skips more than a second
+      break;
+    }
+    // Reset the clicked value if set.
+    if (clicked) {
+      clicked = false;
+    }
+
+    // Set a new last time, since we're done using it.
+    lastTime = currentTime;
+
+    // When the time goes past the end of a section
+    if (currentTime >= endTime) {
+      if (startPlayingAtEnd) {
+        // Set a clicked value so we know to skip the user click check.
+        clicked = true;
+        // Either we start playing from the beginning of the section.
+        yield put(setCurrentTime(startTime));
+      } else if (stopPlayingAtEnd) {
+        // Or we pause.
+        yield put(pause());
+      }
+    }
+  }
+}
+
 export default function* root() {
   yield takeEvery(IMPORT_DOCUMENT, importDocument);
   yield takeEvery(UPDATE_RANGE, saveRange);
@@ -215,4 +281,5 @@ export default function* root() {
   yield takeEvery(SAVE_PROJECT_METADATA, saveProjectMetadata);
   yield takeEvery(DELETE_RAGE, afterDelete);
   yield takeEvery(DELETE_RAGES, multiDelete);
+  yield takeLatest(SELECT_RANGE, currentTimeSideEffects);
 }
