@@ -38,6 +38,7 @@ const groupBubbles = selectedBubbles => {
       [RANGE.SUMMARY]: '',
       [RANGE.COLOUR]: -1,
       [RANGE.IS_SELECTED]: true,
+      [RANGE.WHITE_TEXT]: false,
     }
   );
 };
@@ -189,6 +190,9 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
           },
           [RANGE.COLOUR]: {
             $set: action.payload.colour,
+          },
+          [RANGE.WHITE_TEXT]: {
+            $set: action.payload.whiteText,
           },
         },
       });

@@ -101,6 +101,7 @@ class BubbleDisplay extends Component {
       dX: this.getDx(point, pts, projectionFactor),
       point,
       isSelected: point.isSelected,
+      labelColour: point.whiteText ? '#fff' : '#000',
       shape,
     }));
 

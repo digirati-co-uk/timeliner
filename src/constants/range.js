@@ -6,6 +6,7 @@ export const RANGE = {
   COLOUR: 'colour',
   DEPTH: 'depth',
   IS_SELECTED: 'isSelected',
+  WHITE_TEXT: 'whiteText',
 };
 
 export const DEFAULT_COLOURS = [
@@ -26,6 +27,7 @@ export const DEFAULT_RANGES_STATE = {
     [RANGE.COLOUR]: DEFAULT_COLOURS[0],
     [RANGE.DEPTH]: 1,
     [RANGE.IS_SELECTED]: false,
+    [RANGE.WHITE_TEXT]: false,
   },
 };
 

@@ -6,6 +6,7 @@ import { VIEWSTATE } from '../constants/viewState';
 // Constants
 
 const BACKGROUND_COLOUR_PROPERTY = 'tl:backgroundColour';
+const TEXT_COLOUR_PROPERTY = 'tl:textColour';
 
 // Helpers
 
@@ -154,6 +155,14 @@ const processLevel = structure => {
       [RANGE.END_TIME]: Number.MIN_SAFE_INTEGER,
       [RANGE.DEPTH]: 1,
       [RANGE.COLOUR]: structure[BACKGROUND_COLOUR_PROPERTY],
+      [RANGE.WHITE_TEXT]:
+        [
+          '#fff',
+          '#fffff',
+          'white',
+          'rgb(255, 255, 255)',
+          'rgba(255, 255, 255, 1)',
+        ].indexOf(structure[TEXT_COLOUR_PROPERTY]) !== -1,
       [RANGE.IS_SELECTED]: false,
     };
     const ranges = [];

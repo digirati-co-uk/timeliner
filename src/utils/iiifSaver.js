@@ -25,6 +25,10 @@ const exportLevel = (bubble, parentChildren, canvasId, languageCode) => {
     range[`${RDF_NAMESPACE}:backgroundColour`] = bubble[RANGE.COLOUR];
   }
 
+  if (bubble.hasOwnProperty(RANGE.WHITE_TEXT) && bubble[RANGE.WHITE_TEXT]) {
+    range[`${RDF_NAMESPACE}:textColour`] = '#fff';
+  }
+
   if (bubble.hasOwnProperty('children')) {
     range.items = [];
     bubble.children.forEach(child =>

@@ -33,7 +33,7 @@ export const selectRange = (id, isSelected, deselectOthers = true) => ({
 
 export const updateRange = (
   id,
-  { label, summary, startTime, endTime, colour }
+  { label, summary, startTime, endTime, colour, whiteText }
 ) => ({
   type: UPDATE_RANGE,
   payload: {
@@ -43,6 +43,7 @@ export const updateRange = (
     startTime,
     endTime,
     colour,
+    whiteText,
   },
 });
 
