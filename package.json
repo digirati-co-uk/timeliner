@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "fesk-start",
-    "build": "NODE_ENV=production fesk-build && docz build",
+    "build": "fesk-build && docz build",
     "test": "jest --coverage",
     "docz:dev": "docz dev",
     "docz:build": "docz build",
