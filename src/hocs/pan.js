@@ -30,10 +30,9 @@ export default function pan(WrappedComponent) {
     panMove = ev => {
       clearTextSelection();
       const dX = ev.pageX - this.state.startX;
-      const dXz = dX / this.props.zoom;
       this.setState({
         viewportX: Math.min(
-          Math.max(0, this.state.viewportStartX - dXz),
+          Math.max(0, this.state.viewportStartX - dX),
           this.state.dimensions.width * this.props.zoom -
             this.state.dimensions.width
         ),
