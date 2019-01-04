@@ -26,6 +26,7 @@ import {
   SAVE_PROJECT_METADATA,
   FINISHED_PLAYING,
   LOAD_SOURCE,
+  ZOOM_TO,
 } from '../constants/viewState';
 import invariant from '../utils/invariant';
 
@@ -43,6 +44,11 @@ export const zoomIn = () => ({
 
 export const zoomOut = () => ({
   type: ZOOM_OUT,
+});
+
+export const zoomTo = zoom => ({
+  type: ZOOM_TO,
+  payload: { zoom },
 });
 
 export const resetZoom = () => ({

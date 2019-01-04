@@ -28,7 +28,7 @@ import {
   CANCEL_PROJECT_METADATA_EDITS,
   SAVE_PROJECT_METADATA,
   FINISHED_PLAYING,
-  LOAD_SOURCE,
+  LOAD_SOURCE, ZOOM_TO,
 } from '../constants/viewState';
 
 import { AUDIO_LOADING } from '../constants/canvas';
@@ -63,6 +63,12 @@ const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
       return update(state, {
         [VIEWSTATE.ZOOM]: {
           $set: Math.max(state.zoom * 0.8, 1.0),
+        },
+      });
+    case ZOOM_TO:
+      return update(state, {
+        [VIEWSTATE.ZOOM]: {
+          $set: action.payload.zoom,
         },
       });
     case RESET_ZOOM:

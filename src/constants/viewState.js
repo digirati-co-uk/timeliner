@@ -35,6 +35,7 @@ export const PLAY_AUDIO = 'PLAY_AUDIO';
 export const STOP_AUDIO = 'STOP_AUDIO';
 export const ZOOM_IN = 'ZOOM_IN';
 export const ZOOM_OUT = 'ZOOM_OUT';
+export const ZOOM_TO = 'ZOOM_TO';
 export const RESET_ZOOM = 'RESET_ZOOM';
 export const PAN_TO_POSITION = 'PAN_TO_POSITION';
 export const SHOW_IMPORT_MODAL = 'SHOW_IMPORT_MODAL';

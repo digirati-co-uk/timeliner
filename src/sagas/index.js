@@ -41,6 +41,8 @@ import {
   cancelProjectMetadataEdits,
   loadSource,
   panToPosition,
+  zoomIn,
+  zoomTo,
 } from '../actions/viewState';
 import {
   NEXT_BUBBLE,
@@ -339,18 +341,48 @@ function* zoomSideEffects(action) {
       payload: { currentTime },
     } = yield take(SET_CURRENT_TIME);
 
-    const sliderWidth = window.innerWidth * zoom;
+    const sliderWidth = getViewportWidth() * zoom;
     const percentThrough = currentTime / duration;
-    const pixelThrough = percentThrough * sliderWidth;
+    const pixelThrough = percentThrough * sliderWidth * getErrorMultiplier();
     const isVisible =
-      pixelThrough >= x && pixelThrough <= x + window.innerWidth;
+      pixelThrough >= x && pixelThrough <= x + getViewportWidth();
 
     // If its not visible, pan to the middle.
     if (isVisible === false) {
-      yield put(panToPosition(pixelThrough - window.innerWidth / 2));
+      yield put(panToPosition(pixelThrough - getViewportWidth() / 2));
       return;
     }
   }
+}
+
+function getViewportWidth() {
+  return window.innerWidth;
+}
+
+function getErrorMultiplier() {
+  return (window.innerWidth - 10) / window.innerWidth;
+}
+
+function* zoomToSelection() {
+  const selectedBubbles = yield select(getSelectedBubbles);
+
+  // Only applies when selecting multiple bubbles.
+  if (selectedBubbles.length <= 1) {
+    return;
+  }
+
+  const duration = yield select(getDuration);
+  const startTime = selectedBubbles[0][RANGE.START_TIME];
+  const endTime = selectedBubbles[selectedBubbles.length - 1][RANGE.END_TIME];
+
+  const percentVisible = (endTime - startTime) / duration;
+  const percentStart = startTime / duration;
+  const targetZoom = 1 / percentVisible;
+  const targetPixelStart =
+    percentStart * (getViewportWidth() * targetZoom) * getErrorMultiplier();
+
+  yield put(zoomTo(targetZoom));
+  yield put(panToPosition(targetPixelStart));
 }
 
 export default function* root() {
@@ -372,4 +404,5 @@ export default function* root() {
     [ZOOM_IN, ZOOM_OUT, PAN_TO_POSITION, PLAY_AUDIO],
     zoomSideEffects
   );
+  yield takeLatest(SELECT_RANGE, zoomToSelection);
 }
