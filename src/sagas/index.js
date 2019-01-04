@@ -40,6 +40,7 @@ import {
   pause,
   cancelProjectMetadataEdits,
   loadSource,
+  panToPosition,
 } from '../actions/viewState';
 import {
   NEXT_BUBBLE,
@@ -48,6 +49,10 @@ import {
   CONFIRM_YES,
   SAVE_PROJECT_METADATA,
   SET_CURRENT_TIME,
+  ZOOM_IN,
+  ZOOM_OUT,
+  PAN_TO_POSITION,
+  PLAY_AUDIO,
 } from '../constants/viewState';
 import {
   SELECT_RANGE,
@@ -292,6 +297,7 @@ function* currentTimeSideEffects() {
   }
 }
 
+
 function* selectMarker({ payload: { id } }) {
   const marker = yield select(state => state.markers.list[id]);
   const startPlaying = yield select(
@@ -318,6 +324,35 @@ function* updateSettings({ payload }) {
   }
 }
 
+function* zoomSideEffects(action) {
+  const zoom = yield select(state => state.viewState.zoom);
+  const duration = yield select(getDuration);
+  const x = yield select(state => state.viewState.x);
+  // Nothing to do if we are zoom 1.
+  if (zoom === 1) {
+    return;
+  }
+
+  // We want to react to time changes, to check if its still visible on screen.
+  while (true) {
+    const {
+      payload: { currentTime },
+    } = yield take(SET_CURRENT_TIME);
+
+    const sliderWidth = window.innerWidth * zoom;
+    const percentThrough = currentTime / duration;
+    const pixelThrough = percentThrough * sliderWidth;
+    const isVisible =
+      pixelThrough >= x && pixelThrough <= x + window.innerWidth;
+
+    // If its not visible, pan to the middle.
+    if (isVisible === false) {
+      yield put(panToPosition(pixelThrough - window.innerWidth / 2));
+      return;
+    }
+  }
+}
+
 export default function* root() {
   yield takeEvery(IMPORT_DOCUMENT, importDocument);
   yield takeEvery(UPDATE_RANGE, saveRange);
@@ -333,4 +368,8 @@ export default function* root() {
   yield takeEvery(SELECT_MARKER, selectMarker);
   yield takeEvery(UPDATE_MARKER, updateMarkerTime);
   yield takeEvery(UPDATE_SETTINGS, updateSettings);
+  yield takeLatest(
+    [ZOOM_IN, ZOOM_OUT, PAN_TO_POSITION, PLAY_AUDIO],
+    zoomSideEffects
+  );
 }
