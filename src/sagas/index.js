@@ -343,13 +343,24 @@ function* zoomSideEffects(action) {
 
     const sliderWidth = getViewportWidth() * zoom;
     const percentThrough = currentTime / duration;
-    const pixelThrough = percentThrough * sliderWidth * getErrorMultiplier();
+    const max = sliderWidth * getErrorMultiplier();
+    const maxMiddle = max - getViewportWidth() * getErrorMultiplier();
+    const pixelThrough = percentThrough * max;
     const isVisible =
       pixelThrough >= x && pixelThrough <= x + getViewportWidth();
 
     // If its not visible, pan to the middle.
     if (isVisible === false) {
-      yield put(panToPosition(pixelThrough - getViewportWidth() / 2));
+      const targetPan = pixelThrough - getViewportWidth() / 2;
+      if (targetPan <= 0) {
+        yield put(panToPosition(0));
+        return;
+      }
+      if (targetPan >= maxMiddle) {
+        yield put(panToPosition(maxMiddle));
+        return;
+      }
+      yield put(panToPosition(targetPan));
       return;
     }
   }
