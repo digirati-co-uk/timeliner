@@ -11,11 +11,11 @@ import ProjectMetadataEditor from '../ProjectMetadataEditor/ProjectMetadataEdito
 import './Metadata.scss';
 
 const Meta = posed.div({
-  enter: { y: 0, opacity: 1, delay: 150 },
+  enter: { y: 0, opacity: 1, delay: 250 },
   exit: {
     y: 40,
     opacity: 0,
-    transition: { duration: 200 },
+    transition: { delay: 100, duration: 200 },
   },
 });
 
@@ -31,8 +31,8 @@ const Metadata = props => (
             {props.ranges
               .filter(
                 range =>
-                  range.startTime <= props.currentTime &&
-                  range.endTime > props.currentTime
+                  range.startTime < props.currentTime &&
+                  range.endTime >= props.currentTime
               )
               .sort(
                 (a, b) => b.endTime - b.startTime - (a.endTime - a.startTime)
