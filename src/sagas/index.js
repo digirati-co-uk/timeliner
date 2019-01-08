@@ -14,7 +14,7 @@ import {
   UPDATE_SETTINGS,
 } from '../constants/project';
 import { UPDATE_RANGE } from '../constants/range';
-import { loadProjectState } from '../utils/iiifLoader';
+import { loadProjectState, parseMarkers } from '../utils/iiifLoader';
 import exporter from '../utils/iiifSaver';
 import {
   loadProject,
@@ -59,7 +59,7 @@ import { EXPORT_DOCUMENT, PROJECT } from '../constants/project';
 import { serialize } from '../utils/iiifSerializer';
 import { immediateDownload } from '../utils/fileDownload';
 import { SELECT_MARKER, UPDATE_MARKER } from '../constants/markers';
-import { hideMarkers, showMarkers } from '../actions/markers';
+import { hideMarkers, importMarkers, showMarkers } from '../actions/markers';
 
 const getDuration = state => state.viewState.runTime;
 
@@ -128,6 +128,7 @@ function* importDocument({ manifest, source }) {
     yield put(loadCanvas(loadedState.canvas));
     yield put(loadRanges(loadedState.range));
     yield put(loadViewState(loadedState.viewState));
+    yield put(importMarkers(parseMarkers(manifest)));
   } catch (err) {
     console.error(err);
     yield put(importError(err));
@@ -181,8 +182,12 @@ function* nextBubble() {
 
 function* exportDocument() {
   const state = yield select(getState);
+  const label = yield select(
+    s =>
+      `${s.project[PROJECT.TITLE].replace(/[ ,.'"]/g, '_') || 'manifest'}.json`
+  );
   const outputJSON = exporter(state);
-  immediateDownload(serialize(outputJSON));
+  immediateDownload(label, serialize(outputJSON));
 }
 
 function* selectSideEffects({ payload }) {

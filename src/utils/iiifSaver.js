@@ -47,6 +47,37 @@ const exportLevel = (bubble, parentChildren, canvasId, languageCode) => {
   parentChildren.push(range);
 };
 
+const exportMarkers = (markers, id, lang) =>
+  markers.visible
+    ? [
+        {
+          type: 'AnnotationPage',
+          items: Object.values(markers.list)
+            .sort((a, b) => {
+              return a.time - b.time;
+            })
+            .map(marker => ({
+              id: marker.id,
+              type: 'Annotation',
+              label: { [lang]: [marker.label] },
+              body: {
+                type: 'TextualBody',
+                value: marker.summary || '',
+                format: 'text/plain',
+              },
+              target: {
+                type: 'SpecificResource',
+                source: id,
+                selector: {
+                  type: 'PointSelector',
+                  t: toSeconds(marker.time),
+                },
+              },
+            })),
+        },
+      ]
+    : [];
+
 const exportRanges = (range, canvasId, languageCode) => {
   const bubbles = JSON.parse(JSON.stringify(Object.values(range)))
     // making sure the big
@@ -105,6 +136,11 @@ const exporter = state => {
     ...state.project.loadedJson,
     structures: exportRanges(
       state.range,
+      state.project[PROJECT.LOADED_JSON].items[0].id,
+      state.project[PROJECT.LANGUAGE]
+    ),
+    annotations: exportMarkers(
+      state.markers,
       state.project[PROJECT.LOADED_JSON].items[0].id,
       state.project[PROJECT.LANGUAGE]
     ),

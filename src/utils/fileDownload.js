@@ -1,11 +1,11 @@
-export const immediateDownload = (dataStr, mime_type = 'application/json') => {
+export const immediateDownload = (name, dataStr, mime_type = 'application/json') => {
   const body = document.body;
   const blob = new Blob([dataStr], {
     type: mime_type,
   });
 
   const downloadLink = document.createElement('a');
-  downloadLink.download = 'manifest.json';
+  downloadLink.download = name;
   downloadLink.href = window.URL.createObjectURL(blob);
   downloadLink.onclick = function(e) {
     // revokeObjectURL needs a delay to work properly
