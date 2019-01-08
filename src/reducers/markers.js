@@ -23,7 +23,7 @@ function filterUndefinedSets(acc, [key, change]) {
   return acc;
 }
 
-export default function reducer(state, action) {
+export default function reducer(state = DEFAULT_STATE, action) {
   switch (action.type) {
     case UPDATE_MARKER:
       if (!action.payload.id) {

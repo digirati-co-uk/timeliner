@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import VolumeSlider from '../VolumeSlider/VolumeSlider';
 import CurrentTimeIndicator from '../CurrentTimeIndicator/CurrentTimeIndicator';
 import NextButton from '../NextButton/NextButton';
 import PreviousButton from '../PreviousButton/PreviousButton';
@@ -75,58 +74,73 @@ class AudioTransportBar extends Component {
   }
 
   render() {
+    const {
+      onAddBubble,
+      onGroupBubble,
+      onDeleteBubble,
+      onAddMarker,
+      onPreviousBubble,
+      onScrubBackwards,
+      isPlaying,
+      onPlay,
+      onPause,
+      onScrubAhead,
+      onNextBubble,
+      volume,
+      onVolumeChanged,
+      currentTime,
+      runTime,
+    } = this.props;
+
     return (
       <div className="audio-transport-bar">
         <Grid container direction="row" alignItems="center">
           <Grid item xs={4} className="audio-transport-bar__actions">
-            <PrimaryButton
-              disabled={!this.props.onAddBubble}
-              onClick={this.props.onAddBubble}
-            >
+            <PrimaryButton disabled={!onAddBubble} onClick={onAddBubble}>
               Add
             </PrimaryButton>
             <PrimaryButton
-              disabled={!this.props.onGroupBubble}
-              onClick={this.props.onGroupBubble}
-              style={{
-                marginLeft: 16,
-              }}
+              disabled={!onGroupBubble}
+              onClick={onGroupBubble}
+              style={{ marginLeft: 16 }}
             >
               Group
             </PrimaryButton>
             <PrimaryButton
-              disabled={!this.props.onDeleteBubble}
-              onClick={this.props.onDeleteBubble}
-              style={{
-                marginLeft: 16,
-              }}
+              disabled={!onDeleteBubble}
+              onClick={onDeleteBubble}
+              style={{ marginLeft: 16 }}
             >
               Delete
+            </PrimaryButton>
+            <PrimaryButton
+              disabled={!onAddMarker}
+              onClick={onAddMarker}
+              style={{ marginLeft: 16 }}
+            >
+              Marker
             </PrimaryButton>
           </Grid>
           <Grid item xs={4}>
             <div className="audio-transport-bar__buttons">
-              <PreviousButton onClick={this.props.onPreviousBubble} />
-              <SkipBackwardsButton onClick={this.props.onScrubBackwards} />
+              <PreviousButton onClick={onPreviousBubble} />
+              <SkipBackwardsButton onClick={onScrubBackwards} />
               <PlayPauseButton
-                isPlaying={this.props.isPlaying}
-                onPlay={this.props.onPlay}
-                onPause={this.props.onPause}
+                isPlaying={isPlaying}
+                onPlay={onPlay}
+                onPause={onPause}
               />
-              <SkipAheadButton onClick={this.props.onScrubAhead} />
-              <NextButton onClick={this.props.onNextBubble} />
+              <SkipAheadButton onClick={onScrubAhead} />
+              <NextButton onClick={onNextBubble} />
             </div>
           </Grid>
           <Grid item xs={4} className="audio-transport-bar__volume">
             <VolumeSliderCompact
               flipped={true}
-              volume={this.props.volume}
-              onVolumeChanged={this.props.onVolumeChanged}
+              volume={volume}
+              onVolumeChanged={onVolumeChanged}
             />
-            <CurrentTimeIndicator
-              currentTime={this.props.currentTime}
-              runtime={this.props.runTime}
-            />
+            <CurrentTimeIndicator currentTime={currentTime} runtime={runTime} />
           </Grid>
         </Grid>
       </div>

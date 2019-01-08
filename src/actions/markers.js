@@ -9,6 +9,17 @@ import {
   DESELECT_MARKER,
 } from '../constants/markers';
 
+const generateNewId = () => `marker-${new Date().getTime()}`;
+
+export const addMarkerAtTime = time => {
+  const marker = {
+    id: generateNewId(),
+    label: 'Untitled marker',
+    time,
+  };
+  return importMarkers([marker]);
+};
+
 export const updateMarker = (markerId, { label, summary, time }) => ({
   type: UPDATE_MARKER,
   payload: { id: markerId, label, summary, time },

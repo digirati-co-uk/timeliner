@@ -49,6 +49,7 @@ import {
   cancelProjectMetadataEdits,
   saveProjectMetadata,
 } from '../../actions/viewState';
+import { addMarkerAtTime } from '../../actions/markers';
 
 import './VariationsMainView.scss';
 
@@ -153,6 +154,8 @@ class VariationsMainView extends React.Component {
 
   splitRange = () => this.props.splitRangeAt(this.props.currentTime);
 
+  addMarker = () => this.props.addMarkerAtTime(this.props.currentTime);
+
   render() {
     const _points = this.props.points;
     const {
@@ -189,12 +192,10 @@ class VariationsMainView extends React.Component {
             <BubbleEditor />
             <Audio />
             <AudioTransportBar
-              {...{
-                isPlaying,
-                volume,
-                currentTime,
-                runTime,
-              }}
+              isPlaying={isPlaying}
+              volume={volume}
+              currentTime={currentTime}
+              runTime={runTime}
               onVolumeChanged={this.props.setVolume}
               onPlay={this.props.play}
               onPause={this.props.pause}
@@ -216,15 +217,14 @@ class VariationsMainView extends React.Component {
                   ? this.deleteRanges(selectedBubbles)
                   : null
               }
+              onAddMarker={this.addMarker}
             />
             <div className="variations-app__metadata-editor">
               <ProjectMetadata
-                {...{
-                  currentTime,
-                  runTime,
-                  manifestLabel,
-                  manifestSummary,
-                }}
+                currentTime={currentTime}
+                runTime={runTime}
+                manifestLabel={manifestLabel}
+                manifestSummary={manifestSummary}
                 ranges={_points}
                 onEdit={this.props.editMetadata}
                 rangeToEdit={rangeToEdit}
@@ -296,6 +296,7 @@ VariationsMainView.propTypes = {
   fastReward: PropTypes.func.isRequired,
   importDocument: PropTypes.func.isRequired,
   exportDocument: PropTypes.func.isRequired,
+  addMarkerAtTime: PropTypes.func.isRequired,
   settings: PropTypes.object,
 };
 
@@ -363,6 +364,8 @@ const mapDispatchToProps = {
   groupSelectedRanges,
   deleteRanges,
   updateRange,
+  // markers
+  addMarkerAtTime,
 };
 
 export default connect(
