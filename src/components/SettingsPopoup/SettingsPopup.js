@@ -244,54 +244,41 @@ export default class SettingsPopup extends React.Component {
                     <FormControl component="fieldset">
                       <FormLabel component="legend">Audio Settings</FormLabel>
                       <FormGroup>
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              checked={
-                                this.state[
-                                  PROJECT.START_PLAYING_WHEN_BUBBLES_CLICKED
-                                ]
-                              }
-                              onChange={this.handleChange(
-                                PROJECT.START_PLAYING_WHEN_BUBBLES_CLICKED,
-                                'checkbox'
-                              )}
-                              value={PROJECT.START_PLAYING_WHEN_BUBBLES_CLICKED}
-                            />
-                          }
-                          label="Start playing when bubble is clicked."
-                        />
-                        <FormControlLabel
-                          control={
-                            <Checkbox
-                              checked={
-                                this.state[PROJECT.STOP_PLAYING_END_OF_SECTION]
-                              }
-                              onChange={this.handleChange(
-                                PROJECT.STOP_PLAYING_END_OF_SECTION,
-                                'checkbox'
-                              )}
-                              value={PROJECT.STOP_PLAYING_END_OF_SECTION}
-                            />
-                          }
-                          label="Stop Playing at the end of the section."
-                        />
-                      </FormGroup>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={
-                              this.state[PROJECT.START_PLAYING_END_OF_SECTION]
+                        {[
+                          [
+                            PROJECT.START_PLAYING_WHEN_BUBBLES_CLICKED,
+                            'checkbox',
+                            'Start playing when bubble or marker is clicked.',
+                          ],
+                          [
+                            PROJECT.STOP_PLAYING_END_OF_SECTION,
+                            'checkbox',
+                            'Stop Playing at the end of the section.',
+                          ],
+                          [
+                            PROJECT.START_PLAYING_END_OF_SECTION,
+                            'checkbox',
+                            'Loop playback at the end of the section.',
+                          ],
+                          [
+                            PROJECT.SHOW_MARKERS,
+                            'checkbox',
+                            'Show markers'
+                          ]
+                        ].map(([key, type, label]) => (
+                          <FormControlLabel
+                            key={key}
+                            control={
+                              <Checkbox
+                                checked={this.state[key]}
+                                onChange={this.handleChange(key, type)}
+                                value={key}
+                              />
                             }
-                            onChange={this.handleChange(
-                              PROJECT.START_PLAYING_END_OF_SECTION,
-                              'checkbox'
-                            )}
-                            value={PROJECT.START_PLAYING_END_OF_SECTION}
+                            label={label}
                           />
-                        }
-                        label="Loop playback at the end of the section."
-                      />
+                        ))}
+                      </FormGroup>
                     </FormControl>
                   </Grid>
                 </Grid>

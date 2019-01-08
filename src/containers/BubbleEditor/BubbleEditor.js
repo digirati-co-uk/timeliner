@@ -193,7 +193,7 @@ const mapStateProps = state => ({
   currentTime: state.viewState[VIEWSTATE.CURRENT_TIME],
   runTime: state.viewState[VIEWSTATE.RUNTIME],
   points: state.range,
-  markers: state.markers.list,
+  markers: state.markers.visible ? state.markers.list : {},
   zoom: state.viewState[VIEWSTATE.ZOOM],
   x: state.viewState[VIEWSTATE.X],
   bubbleHeight: state.project[PROJECT.BUBBLE_HEIGHT],
@@ -201,6 +201,7 @@ const mapStateProps = state => ({
   showTimes: state.project[PROJECT.SHOW_TIMES],
   blackAndWhiteMode: state.project[PROJECT.BLACK_N_WHITE],
   backgroundColour: state.project[PROJECT.BACKGROUND_COLOUR],
+  showMarkers: state.project[PROJECT.SHOW_MARKERS],
 });
 
 const mapDispatchToProps = {

@@ -43,7 +43,6 @@ class TimelineMarker extends Component {
         className={$style.modifiers({ bookmark })}
         style={{ left: `${x}%` }}
         onMouseDown={onMouseDown}
-        onClick={() => console.log('click!')}
       >
         {showTooltip ? (
           <span className={$style.element('tooltip')} style={tooltipStyle}>

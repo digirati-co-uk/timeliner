@@ -187,6 +187,15 @@ class TimelineScrubber extends Component {
               index: markerIndex,
               type: 'marker',
             })}
+            showTooltip={showTimes}
+            tooltipStyles={this.getTooltipStyle(markerIndex, timePoints)}
+            tooltip={this.timeToLabel(
+              this.resolveTime(
+                this.props.markerMovement,
+                marker.time,
+                markerIndex
+              )
+            )}
           />
         ))}
         {timePoints.map((timePoint, timePointIndex) => (
@@ -211,7 +220,11 @@ class TimelineScrubber extends Component {
             }
             tooltipStyles={this.getTooltipStyle(timePointIndex, timePoints)}
             tooltip={this.timeToLabel(
-              this.resolveTime(timePoint, timePointIndex)
+              this.resolveTime(
+                this.props.bubbleMarkerMovement,
+                timePoint,
+                timePointIndex
+              )
             )}
           />
         ))}
