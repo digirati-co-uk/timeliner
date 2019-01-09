@@ -64,6 +64,7 @@ const exportMarkers = (markers, id, lang) =>
                 type: 'TextualBody',
                 value: marker.summary || '',
                 format: 'text/plain',
+                language: lang,
               },
               target: {
                 type: 'SpecificResource',
