@@ -187,9 +187,15 @@ function* selectSideEffects({ payload }) {
 }
 
 function* saveProjectMetadata({ metadata }) {
+  const { title, description } = yield select(state => state.project);
   const { manifestLabel, manifestSummary } = metadata;
-  yield put(setTitle(manifestLabel));
-  yield put(setDescription(manifestSummary));
+
+  if (title !== manifestLabel) {
+    yield put(setTitle(manifestLabel));
+  }
+  if (description !== manifestSummary) {
+    yield put(setDescription(manifestSummary));
+  }
   yield put(cancelProjectMetadataEdits());
 }
 

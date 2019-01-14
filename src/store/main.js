@@ -1,7 +1,8 @@
-import { createStore, applyMiddleware, compose} from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware, { END } from 'redux-saga';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import undoMiddleware from './undo';
 import rootReducer from '../reducers/root';
 import rootSaga from '../sagas/index';
 import importResource from '../components/AudioImporter/AudioImporter.Utils';
@@ -22,7 +23,7 @@ export default function configureStore(wAudio, fresh = false) {
   const store = createStore(
     persistedReducer,
     {},
-    composeEnhancers(applyMiddleware(sagaMiddleware))
+    composeEnhancers(applyMiddleware(sagaMiddleware, undoMiddleware))
   );
   const persistor = persistStore(store);
 
