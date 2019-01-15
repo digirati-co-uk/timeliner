@@ -279,14 +279,15 @@ function* currentTimeSideEffects(action) {
 
     // @todo review this logic.
     // // This logic is for cancelling the listener to the current time.
-    // if (
-    //   clicked === false &&
-    //   lastTime &&
-    //   Math.abs(currentTime - lastTime) >= 1000
-    // ) {
-    //   // If the user skips more than a second
-    //   break;
-    // }
+    if (
+      clicked === false &&
+      lastTime &&
+      Math.abs(currentTime - lastTime) >= 1000 &&
+      currentTime - endTime >= 1000
+    ) {
+      // If the user skips more than a second
+      break;
+    }
 
     // Reset the clicked value if set.
     if (clicked) {
