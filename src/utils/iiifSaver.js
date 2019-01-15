@@ -48,7 +48,7 @@ const exportLevel = (bubble, parentChildren, canvasId, languageCode) => {
 };
 
 const exportMarkers = (markers, id, lang) =>
-  markers.visible
+  Object.keys(markers.list).length
     ? [
         {
           type: 'AnnotationPage',
