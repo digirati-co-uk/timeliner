@@ -1,6 +1,7 @@
 import React from 'react';
 import Measure from 'react-measure';
 import { connect } from 'react-redux';
+import compose from 'lodash.flow';
 
 import BubbleDisplay from '../../components/BubbleDisplay/BubbleDisplay';
 import SingleBubble from '../../components/SingleBubble/SingleBubble';
@@ -19,6 +20,11 @@ import { RANGE } from '../../constants/range';
 import { PROJECT } from '../../constants/project';
 import { VIEWSTATE } from '../../constants/viewState';
 import { selectRange, splitRangeAt, movePoint } from '../../actions/range';
+import pan from '../../hocs/pan';
+import dragPlayhead from '../../hocs/dragPlayhead';
+import dragBubbleMarker from '../../hocs/dragBubbleMarker';
+import dragMarker from '../../hocs/dragMarker';
+import { selectMarker, updateMarker } from '../../actions/markers';
 
 const isOSX = navigator.userAgent.indexOf('Mac OS X') !== -1;
 
@@ -30,15 +36,6 @@ class BubbleEditor extends React.Component {
         width: -1,
         height: -1,
       },
-      selectedPoint: -1,
-      startX: 0,
-      deltaX: 0,
-      viewportX: 0,
-      viewportStartX: 0,
-      isPlayheadUpdating: false,
-      playheadX: 0,
-      scrubberBounds: null,
-      markerMovement: null,
     };
   }
 
@@ -56,82 +53,21 @@ class BubbleEditor extends React.Component {
       }, new Set())
     ).sort((p1, p2) => p1 - p2);
 
-  clearTextSelection = () => {
-    if (window.getSelection) {
-      if (window.getSelection().empty) {
-        // Chrome
-        window.getSelection().empty();
-      } else if (window.getSelection().removeAllRanges) {
-        // Firefox
-        window.getSelection().removeAllRanges();
-      }
-    } else if (document.selection) {
-      // IE?
-      document.selection.empty();
-    }
-  };
-
-  dragMovePlayhead = ev => {
-    if (this.state.isPlayheadUpdating) {
-      // in order to smooth drag
-      this.clearTextSelection();
-      const positionRatio =
-        (ev.pageX - this.state.scrubberBounds.left) /
-        this.state.scrubberBounds.width;
-      const time = positionRatio * this.props.runTime;
-      this.setState({
-        playheadX: time,
-      });
-    }
-  };
-
-  dragEndPlayhead = ev => {
-    if (this.state.isPlayheadUpdating) {
-      this.props.onUpdateTime(this.state.playheadX);
-      this.setState({
-        isPlayheadUpdating: false,
-        playheadX: 0,
-      });
-    }
-    document.body.removeEventListener('mousemove', this.dragMovePlayhead);
-    document.body.removeEventListener('mouseup', this.dragEndPlayhead);
-  };
-
-  dragStartMarker = (resource, ev) => {
-    document.body.addEventListener('mousemove', this.dragMoveMarker);
-    document.body.addEventListener('mouseup', this.dragEndMarker);
-    this.setState({
-      markerMovement: {
-        selectedPoint: resource.index,
-        markerX: resource.x,
-        startX: ev.pageX,
-        deltaX: 0,
-        deltaTime: 0,
-      },
-    });
-  };
-
-  dragStartPlayhead = (resource, ev) => {
-    const scrubberBounds = ev.currentTarget.getBoundingClientRect();
-    const positionRatio =
-      (ev.pageX - scrubberBounds.left) / scrubberBounds.width;
-    const time = positionRatio * this.props.runTime;
-
-    document.body.addEventListener('mousemove', this.dragMovePlayhead);
-    document.body.addEventListener('mouseup', this.dragEndPlayhead);
-
-    this.setState({
-      isPlayheadUpdating: true,
-      playheadX: time,
-      scrubberBounds,
-    });
-  };
-
   dragStart = (resource, ev) => {
     ev.preventDefault();
     ev.stopPropagation();
 
+    const {
+      dragStartBubbleMarker,
+      dragStartPlayhead,
+      dragStartMarker,
+    } = this.props;
+
     if (resource.type === 'marker') {
+      return dragStartMarker(resource, ev);
+    }
+
+    if (resource.type === 'time-point') {
       // Return if first or last point.
       if (
         resource.index === 0 ||
@@ -140,110 +76,20 @@ class BubbleEditor extends React.Component {
         return;
       }
 
-      return this.dragStartMarker(resource, ev);
+      return dragStartBubbleMarker(resource, ev);
     }
 
     if (resource.type === 'scrubber') {
-      return this.dragStartPlayhead(resource, ev);
+      return dragStartPlayhead(resource, ev);
     }
   };
 
-  dragMoveMarker = ev => {
-    const { runTime, zoom } = this.props;
-    const { markerMovement, dimensions } = this.state;
-    if (markerMovement.selectedPoint < 0) {
-      return;
+  setDimensions = dimensions => {
+    if (this.props.setDimensions) {
+      this.props.setDimensions(dimensions);
     }
-    // in order to smooth drag
-    this.clearTextSelection();
-    const deltaX = ev.clientX - markerMovement.startX;
-
-    this.setState({
-      markerMovement: {
-        ...markerMovement,
-        deltaX: deltaX,
-        deltaTime: ((deltaX / dimensions.width) * runTime) / zoom,
-      },
-    });
+    this.setState({ dimensions });
   };
-
-  dragEndMarker = ev => {
-    ev.preventDefault();
-    ev.stopPropagation();
-    const { markerMovement } = this.state;
-
-    // Remove events.
-    document.body.removeEventListener('mousemove', this.dragMoveMarker);
-    document.body.removeEventListener('mouseup', this.dragEndMarker);
-
-    // Calculate new time point.
-    const timePoints = this.getTimePoints();
-    const dX =
-      (((ev.pageX - markerMovement.startX) / this.state.dimensions.width) *
-        this.props.runTime) /
-      this.props.zoom;
-
-    this.props.movePoint(
-      Math.min(
-        Math.max(
-          timePoints[markerMovement.selectedPoint] + dX,
-          timePoints[markerMovement.selectedPoint - 1]
-        ),
-        timePoints[markerMovement.selectedPoint + 1]
-      ),
-      timePoints[markerMovement.selectedPoint]
-    );
-
-    this.setState({
-      markerMovement: null,
-    });
-  };
-
-  onPanStart = ev => {
-    document.body.addEventListener('mousemove', this.panMove);
-    document.body.addEventListener('mouseup', this.panEnd);
-
-    this.setState({
-      selectedPoint: -1,
-      startX: ev.pageX,
-      viewportStartX: this.state.viewportX,
-      deltaX: 0,
-    });
-  };
-
-  panMove = ev => {
-    this.clearTextSelection();
-    const dX = ev.pageX - this.state.startX;
-    const dXz = dX / this.props.zoom;
-    this.setState({
-      viewportX: Math.min(
-        Math.max(0, this.state.viewportStartX - dXz),
-        this.state.dimensions.width * this.props.zoom -
-          this.state.dimensions.width
-      ),
-    });
-  };
-
-  panEnd = ev => {
-    document.body.removeEventListener('mousemove', this.panMove);
-    document.body.removeEventListener('mouseup', this.panEnd);
-    if (this.state.viewportStartX !== -1) {
-      this.props.panToPosition(this.state.viewportX);
-    }
-    this.setState({
-      selectedPoint: -1,
-      viewportStartX: -1,
-    });
-  };
-
-  componentWillReceiveProps(nextProps, nextContext) {
-    if (nextProps.x !== this.props.x) {
-      this.setState({
-        viewportX: nextProps.x,
-        viewportStartX: -1,
-      });
-    }
-  }
 
   render() {
     const {
@@ -256,8 +102,16 @@ class BubbleEditor extends React.Component {
       bubbleHeight,
       bubbleStyle,
       blackAndWhiteMode,
+      // Pan hoc
+      onPanStart,
+      viewport,
+      // Drag bubble marker hoc
+      bubbleMarkerMovement,
+      // Drag playhead hoc
+      playhead,
+      // Drag marker
+      markerMovement,
     } = this.props;
-    const { viewportX, viewportStartX } = this.state;
 
     const timePoints = this.getTimePoints();
 
@@ -271,9 +125,7 @@ class BubbleEditor extends React.Component {
         >
           <Measure
             bounds
-            onResize={contentRect => {
-              this.setState({ dimensions: contentRect.bounds });
-            }}
+            onResize={contentRect => this.setDimensions(contentRect.bounds)}
           >
             {({ measureRef }) => (
               <div
@@ -284,11 +136,11 @@ class BubbleEditor extends React.Component {
                   points={this.props.points}
                   width={this.state.dimensions.width}
                   height={200}
-                  x={viewportStartX !== -1 ? viewportX : x}
+                  x={viewport.startX !== -1 ? viewport.x : x}
                   zoom={zoom}
                   bubbleHeight={bubbleHeight}
                   shape={bubbleStyle}
-                  onPanStart={this.onPanStart}
+                  onPanStart={onPanStart}
                 >
                   {points =>
                     points
@@ -310,16 +162,18 @@ class BubbleEditor extends React.Component {
                   runTime={runTime}
                   currentTime={currentTime}
                   zoom={zoom}
-                  x={viewportStartX !== -1 ? viewportX : x}
+                  x={viewport.startX !== -1 ? viewport.x : x}
                   width={this.state.dimensions.width}
                   timePoints={timePoints}
-                  markerMovement={this.state.markerMovement}
+                  markerMovement={markerMovement}
+                  bubbleMarkerMovement={bubbleMarkerMovement}
                   onUpdateTime={onUpdateTime}
                   onClickPoint={splitRange}
                   dragStart={this.dragStart}
                   showTimes={this.props.showTimes}
-                  isPlayheadUpdating={this.state.isPlayheadUpdating}
-                  playheadX={this.state.playheadX}
+                  isPlayheadUpdating={playhead.isUpdating}
+                  playheadX={playhead.x}
+                  markers={this.props.markers}
                 />
               </div>
             )}
@@ -339,6 +193,7 @@ const mapStateProps = state => ({
   currentTime: state.viewState[VIEWSTATE.CURRENT_TIME],
   runTime: state.viewState[VIEWSTATE.RUNTIME],
   points: state.range,
+  markers: state.markers.visible ? state.markers.list : {},
   zoom: state.viewState[VIEWSTATE.ZOOM],
   x: state.viewState[VIEWSTATE.X],
   bubbleHeight: state.project[PROJECT.BUBBLE_HEIGHT],
@@ -346,6 +201,7 @@ const mapStateProps = state => ({
   showTimes: state.project[PROJECT.SHOW_TIMES],
   blackAndWhiteMode: state.project[PROJECT.BLACK_N_WHITE],
   backgroundColour: state.project[PROJECT.BACKGROUND_COLOUR],
+  showMarkers: state.project[PROJECT.SHOW_MARKERS],
 });
 
 const mapDispatchToProps = {
@@ -357,9 +213,17 @@ const mapDispatchToProps = {
   splitRange: splitRangeAt,
   selectRange,
   movePoint,
+  updateMarker,
+  selectMarker,
 };
 
-export default connect(
-  mapStateProps,
-  mapDispatchToProps
+export default compose(
+  pan,
+  dragBubbleMarker,
+  dragPlayhead,
+  dragMarker,
+  connect(
+    mapStateProps,
+    mapDispatchToProps
+  )
 )(BubbleEditor);

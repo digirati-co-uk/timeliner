@@ -47,6 +47,11 @@ class TimelineScrubber extends Component {
     isPlayheadUpdating: PropTypes.bool,
     /** playhead Drag X */
     playheadX: PropTypes.number,
+    /** Current bubble marker and its movement */
+    bubbleMarkerMovement: PropTypes.shape({
+      selectedPoint: PropTypes.number,
+      deltaTime: PropTypes.number,
+    }),
     /** Current marker and its movement */
     markerMovement: PropTypes.shape({
       selectedPoint: PropTypes.number,
@@ -75,10 +80,9 @@ class TimelineScrubber extends Component {
 
   timeToPercent = time => (time / this.props.runTime) * 100;
 
-  resolveTime = (time, markerIndex) => {
-    const { markerMovement } = this.props;
-    if (markerMovement && markerMovement.selectedPoint === markerIndex) {
-      return time + markerMovement.deltaTime;
+  resolveTime = (movement, time, markerIndex) => {
+    if (movement && movement.selectedPoint === markerIndex) {
+      return time + movement.deltaTime;
     }
     return time;
   };
@@ -96,7 +100,7 @@ class TimelineScrubber extends Component {
       return 'Invalid time';
     }
 
-    const format = time >= 3600000 ? 'hh:mm:ss.S' : 'mm:ss.S';
+    const format = time >= 3600000 ? 'hh:mm:ss' : 'mm:ss';
     return formatDate(date, format);
   };
 
@@ -105,6 +109,15 @@ class TimelineScrubber extends Component {
     const positionRatio = (ev.pageX - bounds.left) / bounds.width;
     return positionRatio * this.props.runTime;
   };
+
+  getTooltipStyle = (timePointIndex, timePoints) => ({
+    transform:
+      timePointIndex === 0
+        ? 'translate(0)'
+        : timePointIndex === timePoints.length - 1
+        ? 'translate(-100%)'
+        : 'translate(-50%)',
+  });
 
   handleAddPoint = ev => {
     const time = this.getClickedTime(ev);
@@ -138,6 +151,7 @@ class TimelineScrubber extends Component {
       isPlayheadUpdating,
       playheadX,
       showTimes,
+      markers,
     } = this.props;
     const { isHovering, hoverTime } = this.state;
 
@@ -157,31 +171,62 @@ class TimelineScrubber extends Component {
           width: width * zoom,
         }}
       >
+        {Object.values(markers).map((marker, markerIndex) => (
+          <TimelineMarker
+            key={`marker-${markerIndex}`}
+            bookmark
+            x={this.timeToPercent(
+              this.resolveTime(
+                this.props.markerMovement,
+                marker.time,
+                markerIndex
+              )
+            )}
+            onMouseDown={this.dragStart({
+              ...marker,
+              index: markerIndex,
+              type: 'marker',
+            })}
+            showTooltip={showTimes}
+            tooltipStyles={this.getTooltipStyle(markerIndex, timePoints)}
+            tooltip={this.timeToLabel(
+              this.resolveTime(
+                this.props.markerMovement,
+                marker.time,
+                markerIndex
+              )
+            )}
+          />
+        ))}
         {timePoints.map((timePoint, timePointIndex) => (
           <TimelineMarker
-            index={timePointIndex}
             key={`tp-${timePointIndex}`}
-            x={this.timeToPercent(this.resolveTime(timePoint, timePointIndex))}
-            onMouseDown={this.dragStart}
-          >
-            {showTimes ? (
-              <span
-                className="timeline-marker__tooltip"
-                style={{
-                  transform:
-                    timePointIndex === 0
-                      ? 'translate(0)'
-                      : timePointIndex === timePoints.length - 1
-                      ? 'translate(-100%)'
-                      : 'translate(-50%)',
-                }}
-              >
-                {this.timeToLabel(this.resolveTime(timePoint, timePointIndex))}
-              </span>
-            ) : (
-              ''
+            x={this.timeToPercent(
+              this.resolveTime(
+                this.props.bubbleMarkerMovement,
+                timePoint,
+                timePointIndex
+              )
             )}
-          </TimelineMarker>
+            onMouseDown={this.dragStart({
+              ...timePoint,
+              index: timePointIndex,
+              type: 'time-point',
+            })}
+            showTooltip={
+              showTimes &&
+              timePointIndex !== 0 &&
+              timePointIndex < timePoints.length - 1
+            }
+            tooltipStyles={this.getTooltipStyle(timePointIndex, timePoints)}
+            tooltip={this.timeToLabel(
+              this.resolveTime(
+                this.props.bubbleMarkerMovement,
+                timePoint,
+                timePointIndex
+              )
+            )}
+          />
         ))}
         <PlayHead
           x={this.timeToPercent(isPlayheadUpdating ? playheadX : currentTime)}

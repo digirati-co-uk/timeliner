@@ -8,9 +8,13 @@ import {
   takeLatest,
 } from 'redux-saga/effects';
 
-import { IMPORT_DOCUMENT, RESET_DOCUMENT } from '../constants/project';
+import {
+  IMPORT_DOCUMENT,
+  RESET_DOCUMENT,
+  UPDATE_SETTINGS,
+} from '../constants/project';
 import { UPDATE_RANGE } from '../constants/range';
-import { loadProjectState } from '../utils/iiifLoader';
+import { loadProjectState, parseMarkers } from '../utils/iiifLoader';
 import exporter from '../utils/iiifSaver';
 import {
   loadProject,
@@ -54,6 +58,8 @@ import {
 import { EXPORT_DOCUMENT, PROJECT } from '../constants/project';
 import { serialize } from '../utils/iiifSerializer';
 import { immediateDownload } from '../utils/fileDownload';
+import { SELECT_MARKER, UPDATE_MARKER } from '../constants/markers';
+import { hideMarkers, importMarkers, showMarkers } from '../actions/markers';
 
 const getDuration = state => state.viewState.runTime;
 
@@ -64,7 +70,13 @@ const getPoints = state =>
       markers.add(range.endTime);
       return markers;
     }, new Set([]))
-  ).sort();
+  )
+    .concat(
+      state.markers.visible
+        ? Object.values(state.markers.list).map(marker => marker.time)
+        : []
+    )
+    .sort();
 
 const getNextBubbleStartTime = state => {
   const currentTime = state.viewState.currentTime;
@@ -73,17 +85,22 @@ const getNextBubbleStartTime = state => {
     getPoints(state).filter(point => point > currentTime)
   );
   return {
-    time: result === Infinity ? state.viewState.runTime + 1 : result + 1,
+    time: result === Infinity ? state.viewState.runTime : result,
     doStop: result === Infinity,
   };
 };
 
+const TIME_BEFORE_REVERSE = 1000;
 const getPreviousBubbleStartTime = state => {
   const currentTime = state.viewState.currentTime;
-  const result = getPoints(state)
-    .filter(point => point <= currentTime)
-    .slice(-2, -1)[0];
-  return result || 0;
+  const result = Math.max.apply(
+    null,
+    getPoints(state)
+      .filter(point => point < currentTime - TIME_BEFORE_REVERSE)
+      .reverse()
+  );
+
+  return result === Infinity || result <= 0 ? 0 : result;
 };
 
 const getSelectedBubbles = state =>
@@ -111,6 +128,7 @@ function* importDocument({ manifest, source }) {
     yield put(loadCanvas(loadedState.canvas));
     yield put(loadRanges(loadedState.range));
     yield put(loadViewState(loadedState.viewState));
+    yield put(importMarkers(parseMarkers(manifest)));
   } catch (err) {
     console.error(err);
     yield put(importError(err));
@@ -164,8 +182,12 @@ function* nextBubble() {
 
 function* exportDocument() {
   const state = yield select(getState);
+  const label = yield select(
+    s =>
+      `${s.project[PROJECT.TITLE].replace(/[ ,.'"]/g, '_') || 'manifest'}.json`
+  );
   const outputJSON = exporter(state);
-  immediateDownload(serialize(outputJSON));
+  immediateDownload(label, serialize(outputJSON));
 }
 
 function* selectSideEffects({ payload }) {
@@ -270,6 +292,32 @@ function* currentTimeSideEffects() {
   }
 }
 
+function* selectMarker({ payload: { id } }) {
+  const marker = yield select(state => state.markers.list[id]);
+  const startPlaying = yield select(
+    state => state.project[PROJECT.START_PLAYING_WHEN_BUBBLES_CLICKED]
+  );
+  yield put(setCurrentTime(marker.time));
+
+  if (startPlaying) {
+    yield put(play());
+  }
+}
+
+function* updateMarkerTime({ payload: { id, time } }) {
+  if (time) {
+    yield put(setCurrentTime(time));
+  }
+}
+
+function* updateSettings({ payload }) {
+  if (payload.showMarkers) {
+    yield put(showMarkers());
+  } else {
+    yield put(hideMarkers());
+  }
+}
+
 export default function* root() {
   yield takeEvery(IMPORT_DOCUMENT, importDocument);
   yield takeEvery(UPDATE_RANGE, saveRange);
@@ -282,4 +330,7 @@ export default function* root() {
   yield takeEvery(DELETE_RAGE, afterDelete);
   yield takeEvery(DELETE_RAGES, multiDelete);
   yield takeLatest(SELECT_RANGE, currentTimeSideEffects);
+  yield takeEvery(SELECT_MARKER, selectMarker);
+  yield takeEvery(UPDATE_MARKER, updateMarkerTime);
+  yield takeEvery(UPDATE_SETTINGS, updateSettings);
 }
