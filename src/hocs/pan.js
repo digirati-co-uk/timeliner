@@ -4,10 +4,6 @@ import clearTextSelection from '../utils/clearTextSelection';
 export default function pan(WrappedComponent) {
   return class Pan extends Component {
     state = {
-      dimensions: {
-        width: -1,
-        height: -1,
-      },
       startX: 0,
       selectedPoint: -1,
       viewportX: 0,
@@ -28,13 +24,14 @@ export default function pan(WrappedComponent) {
     };
 
     panMove = ev => {
+      const { viewerWidth, zoom } = this.props;
+      const { viewportStartX, startX } = this.state;
       clearTextSelection();
-      const dX = ev.pageX - this.state.startX;
+      const dX = ev.pageX - startX;
       this.setState({
         viewportX: Math.min(
-          Math.max(0, this.state.viewportStartX - dX),
-          this.state.dimensions.width * this.props.zoom -
-            this.state.dimensions.width
+          Math.max(0, viewportStartX - dX),
+          viewerWidth * zoom - viewerWidth
         ),
       });
     };
@@ -49,13 +46,6 @@ export default function pan(WrappedComponent) {
         selectedPoint: -1,
         viewportStartX: -1,
       });
-    };
-
-    setDimensions = dimensions => {
-      if (this.props.setDimensions) {
-        this.props.setDimensions(dimensions);
-      }
-      this.setState({ dimensions });
     };
 
     componentWillReceiveProps(nextProps, nextContext) {
@@ -75,7 +65,6 @@ export default function pan(WrappedComponent) {
             x: this.state.viewportX,
             startX: this.state.viewportStartX,
           }}
-          setDimensions={this.setDimensions}
           onPanStart={this.onPanStart}
         />
       );

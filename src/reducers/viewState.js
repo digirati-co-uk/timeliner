@@ -28,7 +28,9 @@ import {
   CANCEL_PROJECT_METADATA_EDITS,
   SAVE_PROJECT_METADATA,
   FINISHED_PLAYING,
-  LOAD_SOURCE, ZOOM_TO,
+  LOAD_SOURCE,
+  ZOOM_TO,
+  UPDATE_VIEWER_WIDTH,
 } from '../constants/viewState';
 
 import { AUDIO_LOADING } from '../constants/canvas';
@@ -53,18 +55,6 @@ const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
           $set: false,
         },
       });
-    case ZOOM_IN:
-      return update(state, {
-        [VIEWSTATE.ZOOM]: {
-          $set: state.zoom * 1.2,
-        },
-      });
-    case ZOOM_OUT:
-      return update(state, {
-        [VIEWSTATE.ZOOM]: {
-          $set: Math.max(state.zoom * 0.8, 1.0),
-        },
-      });
     case ZOOM_TO:
       return update(state, {
         [VIEWSTATE.ZOOM]: {
@@ -78,6 +68,12 @@ const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
         },
         [VIEWSTATE.X]: {
           $set: 0.0,
+        },
+      });
+    case UPDATE_VIEWER_WIDTH:
+      return update(state, {
+        [VIEWSTATE.VIEWER_WIDTH]: {
+          $set: action.payload.width,
         },
       });
     case PAN_TO_POSITION:

@@ -70,6 +70,8 @@ import { hideMarkers, importMarkers, showMarkers } from '../actions/markers';
 
 const getDuration = state => state.viewState.runTime;
 
+const getCurrentTime = state => state.viewState.currentTime;
+
 const getPoints = state =>
   Array.from(
     Object.values(state.range).reduce((markers, range) => {
@@ -120,6 +122,8 @@ const getSelectedBubbles = state =>
     );
 
 const getState = state => state;
+
+const getViewerWidth = state => state.viewState.viewerWidth;
 
 function* importDocument({ manifest, source }) {
   const { viewState } = yield select();
@@ -242,17 +246,23 @@ function* multiDelete({ ranges }) {
   }
 }
 
-function* currentTimeSideEffects() {
+function* currentTimeSideEffects(action) {
   const selectedBubbles = yield select(getSelectedBubbles);
   // Nope out early if we've not selected anything.
   if (!selectedBubbles.length) {
     return;
   }
+
   const state = yield select(getState);
+  const time = yield select(getCurrentTime);
   const startPlayingAtEnd = state.project[PROJECT.START_PLAYING_END_OF_SECTION];
   const stopPlayingAtEnd = state.project[PROJECT.STOP_PLAYING_END_OF_SECTION];
   const startTime = selectedBubbles[0][RANGE.START_TIME];
   const endTime = selectedBubbles[selectedBubbles.length - 1][RANGE.END_TIME];
+
+  if ((action.type === PLAY_AUDIO && time <= startTime) || time >= endTime) {
+    return;
+  }
 
   // Last time stores previous tick time so that we can compare the gap.
   let lastTime = 0;
@@ -267,15 +277,17 @@ function* currentTimeSideEffects() {
       payload: { currentTime },
     } = yield take(SET_CURRENT_TIME);
 
-    // This logic is for cancelling the listener to the current time.
-    if (
-      clicked === false &&
-      lastTime &&
-      Math.abs(currentTime - lastTime) >= 1000
-    ) {
-      // If the user skips more than a second
-      break;
-    }
+    // @todo review this logic.
+    // // This logic is for cancelling the listener to the current time.
+    // if (
+    //   clicked === false &&
+    //   lastTime &&
+    //   Math.abs(currentTime - lastTime) >= 1000
+    // ) {
+    //   // If the user skips more than a second
+    //   break;
+    // }
+
     // Reset the clicked value if set.
     if (clicked) {
       clicked = false;
@@ -298,7 +310,6 @@ function* currentTimeSideEffects() {
     }
   }
 }
-
 
 function* selectMarker({ payload: { id } }) {
   const marker = yield select(state => state.markers.list[id]);
@@ -340,18 +351,28 @@ function* zoomSideEffects(action) {
     const {
       payload: { currentTime },
     } = yield take(SET_CURRENT_TIME);
+    const viewportWidth = yield select(getViewerWidth);
 
-    const sliderWidth = getViewportWidth() * zoom;
+    const sliderWidth = viewportWidth * zoom;
     const percentThrough = currentTime / duration;
-    const max = sliderWidth * getErrorMultiplier();
-    const maxMiddle = max - getViewportWidth() * getErrorMultiplier();
-    const pixelThrough = percentThrough * max;
-    const isVisible =
-      pixelThrough >= x && pixelThrough <= x + getViewportWidth();
+    const maxMiddle = sliderWidth - viewportWidth;
+    const pixelThrough = percentThrough * sliderWidth;
+    const from = Math.floor(x) - 20;
+    const to = Math.ceil(x + viewportWidth) + 20;
+    const isVisible = pixelThrough >= from && pixelThrough <= to;
 
     // If its not visible, pan to the middle.
     if (isVisible === false) {
-      const targetPan = pixelThrough - getViewportWidth() / 2;
+      // Let's check a new case.
+      // - currentTime within selected range
+      // - zoom to range instead.
+      const shouldZoomToRange = yield call(timeWithinSelection, currentTime);
+      if (shouldZoomToRange) {
+        yield call(zoomToSelection);
+        return;
+      }
+
+      const targetPan = pixelThrough - viewportWidth / 2;
       if (targetPan <= 0) {
         yield put(panToPosition(0));
         return;
@@ -366,12 +387,18 @@ function* zoomSideEffects(action) {
   }
 }
 
-function getViewportWidth() {
-  return window.innerWidth;
-}
+function* timeWithinSelection(time) {
+  const selectedBubbles = yield select(getSelectedBubbles);
 
-function getErrorMultiplier() {
-  return (window.innerWidth - 10) / window.innerWidth;
+  // Only applies when selecting multiple bubbles.
+  if (selectedBubbles.length <= 1) {
+    return false;
+  }
+
+  const startTime = selectedBubbles[0][RANGE.START_TIME];
+  const endTime = selectedBubbles[selectedBubbles.length - 1][RANGE.END_TIME];
+
+  return time >= startTime && time <= endTime;
 }
 
 function* zoomToSelection() {
@@ -383,17 +410,33 @@ function* zoomToSelection() {
   }
 
   const duration = yield select(getDuration);
+  const viewerWidth = yield select(getViewerWidth);
   const startTime = selectedBubbles[0][RANGE.START_TIME];
   const endTime = selectedBubbles[selectedBubbles.length - 1][RANGE.END_TIME];
 
   const percentVisible = (endTime - startTime) / duration;
   const percentStart = startTime / duration;
   const targetZoom = 1 / percentVisible;
-  const targetPixelStart =
-    percentStart * (getViewportWidth() * targetZoom) * getErrorMultiplier();
+  const targetPixelStart = percentStart * (viewerWidth * targetZoom);
 
   yield put(zoomTo(targetZoom));
   yield put(panToPosition(targetPixelStart));
+}
+
+const getZoom = state => state.viewState.zoom;
+
+function* zoomInOut(action) {
+  const ZOOM_AMOUNT = action.type === ZOOM_IN ? 1.2 : 1 / 1.2;
+  const zoom = yield select(getZoom);
+  const duration = yield select(getDuration);
+  const currentTime = yield select(getCurrentTime);
+  const ZOOM_ORIGIN = currentTime / duration;
+  const viewerWidth = yield select(getViewerWidth);
+  const targetViewerWidth = viewerWidth * zoom * ZOOM_AMOUNT;
+  const viewerOffsetLeft = (targetViewerWidth - viewerWidth) * ZOOM_ORIGIN;
+
+  yield put(zoomTo(zoom * ZOOM_AMOUNT));
+  yield put(panToPosition(viewerOffsetLeft));
 }
 
 export default function* root() {
@@ -407,7 +450,7 @@ export default function* root() {
   yield takeEvery(SAVE_PROJECT_METADATA, saveProjectMetadata);
   yield takeEvery(DELETE_RAGE, afterDelete);
   yield takeEvery(DELETE_RAGES, multiDelete);
-  yield takeLatest(SELECT_RANGE, currentTimeSideEffects);
+  yield takeLatest([SELECT_RANGE, PLAY_AUDIO], currentTimeSideEffects);
   yield takeEvery(SELECT_MARKER, selectMarker);
   yield takeEvery(UPDATE_MARKER, updateMarkerTime);
   yield takeEvery(UPDATE_SETTINGS, updateSettings);
@@ -416,4 +459,5 @@ export default function* root() {
     zoomSideEffects
   );
   yield takeLatest(SELECT_RANGE, zoomToSelection);
+  yield takeEvery([ZOOM_IN, ZOOM_OUT], zoomInOut);
 }

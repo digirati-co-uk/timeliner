@@ -27,6 +27,7 @@ import {
   FINISHED_PLAYING,
   LOAD_SOURCE,
   ZOOM_TO,
+  UPDATE_VIEWER_WIDTH,
 } from '../constants/viewState';
 import invariant from '../utils/invariant';
 
@@ -53,6 +54,11 @@ export const zoomTo = zoom => ({
 
 export const resetZoom = () => ({
   type: RESET_ZOOM,
+});
+
+export const updateViewerWidth = width => ({
+  type: UPDATE_VIEWER_WIDTH,
+  payload: { width },
 });
 
 export const panToPosition = time => ({

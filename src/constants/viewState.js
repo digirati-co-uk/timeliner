@@ -11,6 +11,7 @@ export const VIEWSTATE = {
   PROJECT_METADATA_EDITOR_OPEN: 'projectMetadataEditorOpen',
   VERIFY_DIALOG: 'verifyDialog',
   SOURCE: 'source',
+  VIEWER_WIDTH: 'viewerWidth',
 };
 
 export const DEFAULT_VIEWSTATE_STATE = {
@@ -29,6 +30,7 @@ export const DEFAULT_VIEWSTATE_STATE = {
     open: false,
     title: '',
   },
+  [VIEWSTATE.VIEWER_WIDTH]: 0,
 };
 
 export const PLAY_AUDIO = 'PLAY_AUDIO';
@@ -60,3 +62,4 @@ export const EDIT_PROJECT_METADATA = 'EDIT_PROJECT_METADATA';
 export const CANCEL_PROJECT_METADATA_EDITS = 'CANCEL_PROJECT_METADATA_EDITS';
 export const SAVE_PROJECT_METADATA = 'SAVE_PROJECT_METADATA';
 export const FINISHED_PLAYING = 'FINISHED_PLAYING';
+export const UPDATE_VIEWER_WIDTH = 'UPDATE_VIEWER_WIDTH';

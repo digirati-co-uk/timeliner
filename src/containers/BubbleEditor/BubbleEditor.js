@@ -14,6 +14,7 @@ import {
   resetZoom,
   panToPosition,
   setCurrentTime,
+  updateViewerWidth,
 } from '../../actions/viewState';
 
 import { RANGE } from '../../constants/range';
@@ -31,12 +32,6 @@ const isOSX = navigator.userAgent.indexOf('Mac OS X') !== -1;
 class BubbleEditor extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      dimensions: {
-        width: -1,
-        height: -1,
-      },
-    };
   }
 
   toggleSelects = (point, ev) => {
@@ -85,10 +80,7 @@ class BubbleEditor extends React.Component {
   };
 
   setDimensions = dimensions => {
-    if (this.props.setDimensions) {
-      this.props.setDimensions(dimensions);
-    }
-    this.setState({ dimensions });
+    this.props.updateViewerWidth(dimensions.width);
   };
 
   render() {
@@ -111,6 +103,7 @@ class BubbleEditor extends React.Component {
       playhead,
       // Drag marker
       markerMovement,
+      viewerWidth,
     } = this.props;
 
     const timePoints = this.getTimePoints();
@@ -134,7 +127,7 @@ class BubbleEditor extends React.Component {
               >
                 <BubbleDisplay
                   points={this.props.points}
-                  width={this.state.dimensions.width}
+                  width={viewerWidth}
                   height={200}
                   x={viewport.startX !== -1 ? viewport.x : x}
                   zoom={zoom}
@@ -163,7 +156,7 @@ class BubbleEditor extends React.Component {
                   currentTime={currentTime}
                   zoom={zoom}
                   x={viewport.startX !== -1 ? viewport.x : x}
-                  width={this.state.dimensions.width}
+                  width={viewerWidth}
                   timePoints={timePoints}
                   markerMovement={markerMovement}
                   bubbleMarkerMovement={bubbleMarkerMovement}
@@ -196,6 +189,7 @@ const mapStateProps = state => ({
   markers: state.markers.visible ? state.markers.list : {},
   zoom: state.viewState[VIEWSTATE.ZOOM],
   x: state.viewState[VIEWSTATE.X],
+  viewerWidth: state.viewState[VIEWSTATE.VIEWER_WIDTH],
   bubbleHeight: state.project[PROJECT.BUBBLE_HEIGHT],
   bubbleStyle: state.project[PROJECT.BUBBLE_STYLE],
   showTimes: state.project[PROJECT.SHOW_TIMES],
@@ -215,6 +209,7 @@ const mapDispatchToProps = {
   movePoint,
   updateMarker,
   selectMarker,
+  updateViewerWidth,
 };
 
 export default compose(
