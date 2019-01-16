@@ -12,7 +12,11 @@ import {
   DEFAULT_COLOURS,
   DELETE_REDUNDANT_SIZES,
   UPDATE_DEPTHS_AFTER_DELETE,
+  UPDATE_RANGE_TIME,
+  CREATE_RANGE,
+  DEFAULT_RANGE,
 } from '../constants/range';
+import { internal } from '../utils/internal-action';
 
 const generateNewId = () => `id-${new Date().getTime()}`;
 const groupBubbles = selectedBubbles => {
@@ -62,33 +66,33 @@ const extendAround = (ranges, direction, changes, currentRange) => {
 
 const range = (state = DEFAULT_RANGES_STATE, action) => {
   switch (action.type) {
-    case SPLIT_RANGE_AT:
-      const newId = generateNewId();
-      const splitTime = action.payload.time;
-      const itemToSplit = Object.values(state)
-        .filter(
-          bubble =>
-            splitTime <= bubble[RANGE.END_TIME] &&
-            splitTime >= bubble[RANGE.START_TIME]
-        )
-        .sort((b1, b2) => b1[RANGE.DEPTH] - b2[RANGE.DEPTH])[0];
-      const endTime = itemToSplit[RANGE.END_TIME];
-      return update(state, {
-        [newId]: {
-          $set: {
-            id: newId,
-            [RANGE.START_TIME]: action.payload.time,
-            [RANGE.END_TIME]: endTime,
-            [RANGE.COLOUR]: itemToSplit[RANGE.COLOUR],
-            [RANGE.DEPTH]: itemToSplit[RANGE.DEPTH], //NOTE: this will be always depth 1...
-          },
-        },
-        [itemToSplit.id]: {
-          [RANGE.END_TIME]: {
-            $set: action.payload.time,
-          },
-        },
-      });
+    // case SPLIT_RANGE_AT:
+    //   const newId = generateNewId();
+    //   const splitTime = action.payload.time;
+    //   const itemToSplit = Object.values(state)
+    //     .filter(
+    //       bubble =>
+    //         splitTime <= bubble[RANGE.END_TIME] &&
+    //         splitTime >= bubble[RANGE.START_TIME]
+    //     )
+    //     .sort((b1, b2) => b1[RANGE.DEPTH] - b2[RANGE.DEPTH])[0];
+    //   const endTime = itemToSplit[RANGE.END_TIME];
+    //   return update(state, {
+    //     [newId]: {
+    //       $set: {
+    //         id: newId,
+    //         [RANGE.START_TIME]: action.payload.time,
+    //         [RANGE.END_TIME]: endTime,
+    //         [RANGE.COLOUR]: itemToSplit[RANGE.COLOUR],
+    //         [RANGE.DEPTH]: itemToSplit[RANGE.DEPTH], //NOTE: this will be always depth 1...
+    //       },
+    //     },
+    //     [itemToSplit.id]: {
+    //       [RANGE.END_TIME]: {
+    //         $set: action.payload.time,
+    //       },
+    //     },
+    //   });
     case GROUP_RANGES:
       const selectedBubbles = Object.values(state).filter(
         bubble => bubble[RANGE.IS_SELECTED]
@@ -179,6 +183,45 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
           return updates;
         }, {})
       );
+
+    case internal(UPDATE_RANGE_TIME):
+    case UPDATE_RANGE_TIME:
+      return update(state, {
+        [action.payload.id]: {
+          [RANGE.START_TIME]: {
+            $set:
+              typeof action.payload.startTime !== 'undefined'
+                ? action.payload.startTime
+                : state[action.payload.id].startTime,
+          },
+          [RANGE.END_TIME]: {
+            $set:
+              typeof action.payload.endTime !== 'undefined'
+                ? action.payload.endTime
+                : state[action.payload.id].endTime,
+          },
+        },
+      });
+    case CREATE_RANGE:
+      const id = action.payload.id;
+      const splits = action.payload.splits;
+      const stateWithRange = update(state, {
+        [id]: {
+          $set: {
+            ...DEFAULT_RANGE,
+            ...action.payload,
+          },
+        },
+      });
+
+      if (splits) {
+        return update(stateWithRange, {
+          [splits]: {
+            endTime: { $set: action.payload.startTime },
+          },
+        });
+      }
+      return stateWithRange;
     case UPDATE_RANGE:
       return update(state, {
         [action.payload.id]: {
@@ -193,6 +236,18 @@ const range = (state = DEFAULT_RANGES_STATE, action) => {
           },
           [RANGE.WHITE_TEXT]: {
             $set: action.payload.whiteText,
+          },
+          [RANGE.START_TIME]: {
+            $set:
+              typeof action.payload.startTime !== 'undefined'
+                ? action.payload.startTime
+                : state[action.payload.id].startTime,
+          },
+          [RANGE.END_TIME]: {
+            $set:
+              typeof action.payload.endTime !== 'undefined'
+                ? action.payload.endTime
+                : state[action.payload.id].endTime,
           },
         },
       });

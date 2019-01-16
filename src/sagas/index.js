@@ -7,9 +7,9 @@ import {
   take,
   takeLatest,
 } from 'redux-saga/effects';
-
+import { actions as undoActions } from 'redux-undo-redo';
 import { IMPORT_DOCUMENT, RESET_DOCUMENT } from '../constants/project';
-import { UPDATE_RANGE } from '../constants/range';
+import { CREATE_RANGE, SPLIT_RANGE_AT, UPDATE_RANGE } from '../constants/range';
 import { loadProjectState } from '../utils/iiifLoader';
 import exporter from '../utils/iiifSaver';
 import {
@@ -25,6 +25,9 @@ import {
   deleteRedundantSizes,
   updateDepthsAfterDelete,
   deleteRange,
+  updateRange,
+  updateRangeTime,
+  createRange,
 } from '../actions/range';
 import {
   loadViewState,
@@ -54,6 +57,8 @@ import {
 import { EXPORT_DOCUMENT, PROJECT } from '../constants/project';
 import { serialize } from '../utils/iiifSerializer';
 import { immediateDownload } from '../utils/fileDownload';
+import update from '../reducers/range';
+import generateNewId from '../utils/generateId';
 
 const getDuration = state => state.viewState.runTime;
 
@@ -104,6 +109,8 @@ function* importDocument({ manifest, source }) {
     return;
   }
 
+  yield put(undoActions.clear());
+
   try {
     const loadedState = loadProjectState(manifest);
     yield put(unloadAudio());
@@ -147,6 +154,7 @@ function* resetDocument() {
     'Are you sure you want to delete all ranges?'
   );
   if (confirmed) {
+    yield put(undoActions.clear());
     const duration = yield select(getDuration);
     yield put(loadRanges(duration));
   }
@@ -276,6 +284,48 @@ function* currentTimeSideEffects() {
   }
 }
 
+function* selectBubblesBetween(start, end) {
+  const ranges = yield select(s => s.range);
+
+  return Object.values(ranges).filter(range => {
+    if (range.startTime >= start) {
+      if (range.endTime <= end) {
+        return true;
+      }
+      throw Error('Out of bounds selection - invalid bubble');
+    }
+    return false;
+  });
+}
+
+function* deleteBubble({ payload: { id } }) {
+  // A bubble could be 2 things:
+  // - a grouping bubble, where deleting won't change any other bubbles
+  // - a split bubble, where the bubble to the LEFT of the bubble removed will grow to fill the space.
+}
+
+// function* createRange({ payload: range }) {
+//
+//
+//
+// }
+
+function* splitRange({ payload: { time } }) {
+  const ranges = yield select(s => s.range);
+  const itemToSplit = Object.values(ranges)
+    .filter(
+      bubble =>
+        time <= bubble[RANGE.END_TIME] && time >= bubble[RANGE.START_TIME]
+    )
+    .sort((b1, b2) => b1[RANGE.DEPTH] - b2[RANGE.DEPTH])[0];
+  const endTime = itemToSplit[RANGE.END_TIME];
+
+  // If we wanted to implement split left, so that a new bubble would be created on the left side
+  // yield put(updateRangeTime(itemToSplit.id, { startTime }));
+  // yield put(createRange({ startTime, endTime: time }));
+  yield put(createRange({ startTime: time, endTime, splits: itemToSplit.id }));
+}
+
 export default function* root() {
   yield takeEvery(IMPORT_DOCUMENT, importDocument);
   yield takeEvery(UPDATE_RANGE, saveRange);
@@ -288,4 +338,6 @@ export default function* root() {
   yield takeEvery(DELETE_RAGE, afterDelete);
   yield takeEvery(DELETE_RAGES, multiDelete);
   yield takeLatest(SELECT_RANGE, currentTimeSideEffects);
+  yield takeEvery(SPLIT_RANGE_AT, splitRange);
+  // yield takeEvery(CREATE_RANGE, createRange);
 }

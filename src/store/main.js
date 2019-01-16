@@ -8,7 +8,13 @@ import rootSaga from '../sagas/index';
 import importResource from '../components/AudioImporter/AudioImporter.Utils';
 import { importDocument } from '../actions/project';
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers =
+  typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+        serialize: true,
+        trace: true,
+      })
+    : compose;
 
 export default function configureStore(wAudio, fresh = false) {
   const sagaMiddleware = createSagaMiddleware();

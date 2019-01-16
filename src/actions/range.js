@@ -9,7 +9,11 @@ import {
   LOAD_RANGES,
   DELETE_REDUNDANT_SIZES,
   UPDATE_DEPTHS_AFTER_DELETE,
+  UPDATE_RANGE_TIME,
+  CREATE_RANGE,
 } from '../constants/range';
+import { internal } from '../utils/internal-action';
+import generateId from '../utils/generateId';
 
 export const splitRangeAt = time => ({
   type: SPLIT_RANGE_AT,
@@ -29,6 +33,20 @@ export const selectRange = (id, isSelected, deselectOthers = true) => ({
     isSelected,
     deselectOthers,
   },
+});
+
+export const createRange = ({ startTime, endTime, splits }) => ({
+  type: CREATE_RANGE,
+  payload: { id: generateId(), startTime, endTime, splits },
+});
+
+export const updateRangeTime = (
+  id,
+  { startTime, endTime },
+  undoable = true
+) => ({
+  type: undoable ? UPDATE_RANGE_TIME : internal(UPDATE_RANGE_TIME),
+  payload: { id, startTime, endTime },
 });
 
 export const updateRange = (
