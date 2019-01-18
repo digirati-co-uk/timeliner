@@ -18,7 +18,8 @@ import {
 import { RANGE } from '../../constants/range';
 import { PROJECT } from '../../constants/project';
 import { VIEWSTATE } from '../../constants/viewState';
-import { selectRange, splitRangeAt, movePoint } from '../../actions/range';
+import { splitRangeAt, movePoint } from '../../actions/range';
+import { getRangeList, getSelectedRanges } from '../../reducers/range';
 
 const isOSX = navigator.userAgent.indexOf('Mac OS X') !== -1;
 
@@ -43,8 +44,14 @@ class BubbleEditor extends React.Component {
   }
 
   toggleSelects = (point, ev) => {
+    const { selectedPoints } = this.props;
     const deselectOthers = !(isOSX ? ev.metaKey : ev.ctrlKey);
-    this.props.selectRange(point.id, !point.isSelected, deselectOthers);
+
+    if (selectedPoints.indexOf(point.id) === -1 || deselectOthers) {
+      this.props.selectRange(point.id, deselectOthers);
+    } else {
+      this.props.deselectRange(point.id);
+    }
   };
 
   getTimePoints = () =>
@@ -256,6 +263,7 @@ class BubbleEditor extends React.Component {
       bubbleHeight,
       bubbleStyle,
       blackAndWhiteMode,
+      selectedPoints,
     } = this.props;
     const { viewportX, viewportStartX } = this.state;
 
@@ -301,6 +309,9 @@ class BubbleEditor extends React.Component {
                         <SingleBubble
                           key={`bk-${bubble.point.id}`}
                           {...bubble}
+                          isSelected={
+                            selectedPoints.indexOf(bubble.point.id) !== -1
+                          }
                           onClick={this.toggleSelects}
                         />
                       ))
@@ -338,7 +349,8 @@ class BubbleEditor extends React.Component {
 const mapStateProps = state => ({
   currentTime: state.viewState[VIEWSTATE.CURRENT_TIME],
   runTime: state.viewState[VIEWSTATE.RUNTIME],
-  points: state.range,
+  points: getRangeList(state),
+  selectedPoints: getSelectedRanges(state),
   zoom: state.viewState[VIEWSTATE.ZOOM],
   x: state.viewState[VIEWSTATE.X],
   bubbleHeight: state.project[PROJECT.BUBBLE_HEIGHT],
@@ -355,7 +367,11 @@ const mapDispatchToProps = {
   panToPosition,
   onUpdateTime: setCurrentTime,
   splitRange: splitRangeAt,
-  selectRange,
+  selectRange: (id, deselectOthers) => ({
+    type: 'SELECT_RANGE',
+    payload: { id, deselectOthers },
+  }),
+  deselectRange: id => ({ type: 'DESELECT_RANGE', payload: { id } }),
   movePoint,
 };
 

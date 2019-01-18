@@ -51,6 +51,7 @@ import {
 } from '../../actions/viewState';
 
 import './VariationsMainView.scss';
+import {getRangeList, getSelectedRanges} from "../../reducers/range";
 
 class VariationsMainView extends React.Component {
   constructor(props) {
@@ -111,8 +112,8 @@ class VariationsMainView extends React.Component {
     this.props.deleteRanges(ranges.map(range => range.id));
   };
 
-  isGroupingPossible = selectedBubbles => {
-    const newRangeMinMax = selectedBubbles.reduce(
+  isGroupingPossible = selectedRanges => {
+    const newRangeMinMax = selectedRanges.reduce(
       (newRange, bubble) => {
         newRange.startTime = Math.min(newRange.startTime, bubble.startTime);
         newRange.endTime = Math.max(newRange.endTime, bubble.endTime);
@@ -170,10 +171,8 @@ class VariationsMainView extends React.Component {
       isLoaded,
       rangeToEdit,
       settings,
+      selectedRanges,
     } = this.props;
-    const selectedBubbles = Object.values(this.props.points).filter(
-      bubble => bubble.isSelected
-    );
     return (
       <div className="variations-app">
         <MuiThemeProvider theme={this.theme}>
@@ -204,16 +203,16 @@ class VariationsMainView extends React.Component {
               onScrubBackwards={this.props.fastReward}
               onAddBubble={this.isSplittingPossible() ? this.splitRange : null}
               onGroupBubble={
-                selectedBubbles.length > 1 &&
-                this.isGroupingPossible(selectedBubbles)
+                selectedRanges.length > 1 &&
+                this.isGroupingPossible(selectedRanges)
                   ? this.props.groupSelectedRanges
                   : null
               }
               onDeleteBubble={
-                selectedBubbles.length > 0 &&
+                selectedRanges.length > 0 &&
                 _points.length > 1 &&
-                _points.length - selectedBubbles.length > 0
-                  ? this.deleteRanges(selectedBubbles)
+                _points.length - selectedRanges.length > 0
+                  ? this.deleteRanges(selectedRanges)
                   : null
               }
             />
@@ -308,7 +307,8 @@ const mapStateProps = state => ({
   manifestLabel: state.project.title,
   importError: state.project.error,
   manifestSummary: state.project.description,
-  points: Object.values(state.range),
+  points: Object.values(getRangeList(state)),
+  selectedRanges: getSelectedRanges(state),
   isImportOpen: state.viewState.isImportOpen,
   isSettingsOpen: state.viewState.isSettingsOpen,
   audioUrl: state.canvas.url,

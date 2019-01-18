@@ -9,7 +9,12 @@ import {
 } from 'redux-saga/effects';
 import { actions as undoActions } from 'redux-undo-redo';
 import { IMPORT_DOCUMENT, RESET_DOCUMENT } from '../constants/project';
-import { CREATE_RANGE, SPLIT_RANGE_AT, UPDATE_RANGE } from '../constants/range';
+import {
+  GROUP_RANGES,
+  MOVE_POINT,
+  SPLIT_RANGE_AT,
+  UPDATE_RANGE,
+} from '../constants/range';
 import { loadProjectState } from '../utils/iiifLoader';
 import exporter from '../utils/iiifSaver';
 import {
@@ -25,9 +30,9 @@ import {
   deleteRedundantSizes,
   updateDepthsAfterDelete,
   deleteRange,
-  updateRange,
   updateRangeTime,
   createRange,
+  rangeMutations,
 } from '../actions/range';
 import {
   loadViewState,
@@ -38,7 +43,6 @@ import {
   play,
   pause,
   cancelProjectMetadataEdits,
-  loadSource,
 } from '../actions/viewState';
 import {
   NEXT_BUBBLE,
@@ -57,14 +61,19 @@ import {
 import { EXPORT_DOCUMENT, PROJECT } from '../constants/project';
 import { serialize } from '../utils/iiifSerializer';
 import { immediateDownload } from '../utils/fileDownload';
-import update from '../reducers/range';
-import generateNewId from '../utils/generateId';
+import {
+  getRangeList,
+  getRangesAtPoint,
+  getRangesBetweenTimes,
+  getRangesByIds,
+  getSelectedRanges,
+} from '../reducers/range';
 
 const getDuration = state => state.viewState.runTime;
 
 const getPoints = state =>
   Array.from(
-    Object.values(state.range).reduce((markers, range) => {
+    Object.values(getRangeList(state)).reduce((markers, range) => {
       markers.add(range.startTime);
       markers.add(range.endTime);
       return markers;
@@ -92,7 +101,7 @@ const getPreviousBubbleStartTime = state => {
 };
 
 const getSelectedBubbles = state =>
-  Object.values(state.range)
+  Object.values(getRangeList(state))
     .filter(bubble => bubble.isSelected)
     .sort((bubbleA, bubbleB) =>
       bubbleA[RANGE.START_TIME] === bubbleB[RANGE.START_TIME]
@@ -116,7 +125,11 @@ function* importDocument({ manifest, source }) {
     yield put(unloadAudio());
     yield put(loadProject(loadedState.project));
     yield put(loadCanvas(loadedState.canvas));
-    yield put(loadRanges(loadedState.range));
+    // yield put(loadRanges(loadedState.range));
+    yield put({
+      type: 'IMPORT_RANGES',
+      payload: { ranges: loadedState.range },
+    });
     yield put(loadViewState(loadedState.viewState));
   } catch (err) {
     console.error(err);
@@ -154,9 +167,20 @@ function* resetDocument() {
     'Are you sure you want to delete all ranges?'
   );
   if (confirmed) {
+    const rangeIds = yield select(s => Object.keys(getRangeList(s)));
+
     yield put(undoActions.clear());
     const duration = yield select(getDuration);
-    yield put(loadRanges(duration));
+
+    yield put(
+      rangeMutations([
+        ...rangeIds.map(range => ({
+          type: 'DELETE_RANGE',
+          payload: { id: range },
+        })),
+        createRange({ startTime: 0, endTime: duration }),
+      ])
+    );
   }
 }
 
@@ -178,15 +202,16 @@ function* exportDocument() {
 
 function* selectSideEffects({ payload }) {
   const state = yield select(getState);
+  const ranges = yield select(getRangeList);
   const selectedBubbles = yield select(getSelectedBubbles);
   if (state.project[PROJECT.START_PLAYING_WHEN_BUBBLES_CLICKED]) {
     if (payload.isSelected) {
       if (
         selectedBubbles[0][RANGE.START_TIME] ===
-        state.range[payload.id][RANGE.START_TIME]
+        ranges[payload.id][RANGE.START_TIME]
       ) {
         yield put(play());
-        yield put(setCurrentTime(state.range[payload.id][RANGE.START_TIME]));
+        yield put(setCurrentTime(ranges[payload.id][RANGE.START_TIME]));
       }
     } else {
       yield put(pause());
@@ -208,23 +233,89 @@ function* saveProjectMetadata({ metadata }) {
 }
 
 function* afterDelete() {
-  yield put(deleteRedundantSizes());
-  yield put(updateDepthsAfterDelete());
+  // const removals = [];
+  // const ranges = yield select(getRangeList);
+
+  // Object.values(ranges)
+  //   .sort(
+  //     (a, b) =>
+  //       b[RANGE.END_TIME] -
+  //       b[RANGE.START_TIME] -
+  //       (a[RANGE.END_TIME] - a[RANGE.START_TIME])
+  //   )
+  //   .forEach((item, index, array) => {
+  //     if (index > 0) {
+  //       const previousItem = array[index - 1];
+  //       if (
+  //         previousItem[RANGE.START_TIME] === item[RANGE.START_TIME] &&
+  //         previousItem[RANGE.END_TIME] === item[RANGE.END_TIME]
+  //       ) {
+  //         removals.push({
+  //           type: 'DELETE_RANGE',
+  //           payload: {
+  //             id:
+  //               previousItem[RANGE.DEPTH] > item[RANGE.DEPTH]
+  //                 ? previousItem.id
+  //                 : item.id,
+  //           },
+  //         });
+  //       }
+  //     }
+  //   });
+  /* deleteRedundantSizes
+
+  const removals = {
+        $unset: [],
+      };
+      Object.values(state)
+        .sort(
+          (a, b) =>
+            b[RANGE.END_TIME] -
+            b[RANGE.START_TIME] -
+            (a[RANGE.END_TIME] - a[RANGE.START_TIME])
+        )
+        .forEach((item, index, array) => {
+          if (index > 0) {
+            const previousItem = array[index - 1];
+            if (
+              previousItem[RANGE.START_TIME] === item[RANGE.START_TIME] &&
+              previousItem[RANGE.END_TIME] === item[RANGE.END_TIME]
+            ) {
+              removals.$unset.push(
+                previousItem[RANGE.DEPTH] > item[RANGE.DEPTH]
+                  ? previousItem.id
+                  : item.id
+              );
+            }
+          }
+        });
+      return removals.$unset.length > 0 ? update(state, removals) : state;
+   */
+
+  // @todo
+  // yield put(deleteRedundantSizes());
+  // yield put(updateDepthsAfterDelete());
 }
 
 function* multiDelete({ ranges }) {
-  let confirmed = true;
   if (ranges.length > 1) {
-    confirmed = yield call(
+    // Get a user confirmation
+    const confirmed = yield call(
       showConfirmation,
       'Multiple ranges will be deleted. Redundant length groups will be removed. Do you wish to continue?'
     );
-  }
-  if (confirmed) {
-    for (let i = 0; i < ranges.length; i++) {
-      yield put(deleteRange(ranges[i]));
+    // If user declined..
+    if (confirmed === false) {
+      return;
     }
   }
+  // Remove all ranges.
+  yield put(
+    rangeMutations(
+      ranges.map(id => ({ type: 'DELETE_RANGE', payload: { id } }))
+    )
+  );
+  yield put(rangeMutations(ranges.map(range => deleteRange(range))));
 }
 
 function* currentTimeSideEffects() {
@@ -284,34 +375,8 @@ function* currentTimeSideEffects() {
   }
 }
 
-function* selectBubblesBetween(start, end) {
-  const ranges = yield select(s => s.range);
-
-  return Object.values(ranges).filter(range => {
-    if (range.startTime >= start) {
-      if (range.endTime <= end) {
-        return true;
-      }
-      throw Error('Out of bounds selection - invalid bubble');
-    }
-    return false;
-  });
-}
-
-function* deleteBubble({ payload: { id } }) {
-  // A bubble could be 2 things:
-  // - a grouping bubble, where deleting won't change any other bubbles
-  // - a split bubble, where the bubble to the LEFT of the bubble removed will grow to fill the space.
-}
-
-// function* createRange({ payload: range }) {
-//
-//
-//
-// }
-
 function* splitRange({ payload: { time } }) {
-  const ranges = yield select(s => s.range);
+  const ranges = yield select(getRangeList);
   const itemToSplit = Object.values(ranges)
     .filter(
       bubble =>
@@ -323,7 +388,255 @@ function* splitRange({ payload: { time } }) {
   // If we wanted to implement split left, so that a new bubble would be created on the left side
   // yield put(updateRangeTime(itemToSplit.id, { startTime }));
   // yield put(createRange({ startTime, endTime: time }));
-  yield put(createRange({ startTime: time, endTime, splits: itemToSplit.id }));
+  yield put(
+    rangeMutations([
+      createRange({ startTime: time, endTime }),
+      updateRangeTime(itemToSplit.id, { endTime: time }),
+    ])
+  );
+}
+
+function* groupRanges(action) {
+  // Marks all selection actions as not selected.
+  // Creates new range between them.
+
+  const selectedRangeIds = yield select(getSelectedRanges);
+  if (selectedRangeIds.length < 2) {
+    // We need 2 ranges to group them.
+    return;
+  }
+
+  const selectedRanges = yield select(getRangesByIds(selectedRangeIds));
+  const startTime = selectedRanges.reduce(
+    (cur, next) => (next.startTime <= cur ? next.startTime : cur),
+    Infinity
+  );
+  const endTime = selectedRanges.reduce(
+    (cur, next) => (next.endTime >= cur ? next.endTime : cur),
+    0
+  );
+
+  if (!canMerge(yield select(getRangeList), { startTime, endTime })) {
+    console.log(`We can't merge these bubbles.`);
+    return;
+  }
+
+  const getParentBubbles = child => state => {
+    return Object.values(getRangeList(state))
+      .filter(range => {
+        if (
+          range.startTime >= child.startTime &&
+          range.endTime <= child.endTime
+        ) {
+          return false;
+        }
+
+        if (child.startTime >= range.endTime) {
+          return false;
+        }
+
+        return child.endTime > range.startTime;
+      })
+      .sort(range => {
+        return -(range.startTime - range.endTime);
+      });
+  };
+
+  const rangeBubbles = yield select(state => {
+    return Object.values(getRangeList(state)).filter(range => {
+      return range.startTime >= startTime && range.endTime <= endTime;
+    });
+  });
+  const parentBubbles = yield select(getParentBubbles({ startTime, endTime }));
+  const topLevelParent = parentBubbles[parentBubbles.length - 1];
+
+  const depth = rangeBubbles.reduce((maxDepth, next) => {
+    if (next.depth > maxDepth) {
+      return next.depth;
+    }
+    return maxDepth;
+  }, 1);
+
+  const depthChangeMutations = parentBubbles.map(range => ({
+    type: 'INCREASE_RANGE_DEPTH',
+    payload: { id: range.id, label: range.label },
+  }));
+
+  const deselectMutations = selectedRangeIds.map(id => ({
+    type: 'DESELECT_RANGE',
+    payload: { id },
+  }));
+
+  const newRange = createRange({ startTime, endTime, depth: depth + 1 });
+
+  yield put(
+    rangeMutations([
+      ...deselectMutations,
+      ...depthChangeMutations,
+      newRange,
+      { type: 'SELECT_RANGE', payload: { id: newRange.payload.id } },
+    ])
+  );
+
+  /*
+  const selectedBubbles = Object.values(state).filter(
+        bubble => bubble[RANGE.IS_SELECTED]
+      );
+      if (selectedBubbles.length < 2) {
+        return state;
+      }
+      const unselectBubbles = selectedBubbles.reduce((updates, bubble) => {
+        updates[bubble.id] = {
+          [RANGE.IS_SELECTED]: {
+            $set: false,
+          },
+        };
+        return updates;
+      }, {});
+      const newGroup = groupBubbles(selectedBubbles);
+      newGroup[RANGE.DEPTH] =
+        Object.values(state)
+          .filter(
+            bubble =>
+              newGroup[RANGE.START_TIME] <= bubble[RANGE.START_TIME] &&
+              newGroup[RANGE.END_TIME] >= bubble[RANGE.END_TIME]
+          )
+          .reduce(
+            (maxDepth, bubble) => Math.max(maxDepth, bubble[RANGE.DEPTH]),
+            1
+          ) + 1;
+      newGroup.colour =
+        DEFAULT_COLOURS[newGroup[RANGE.DEPTH] % DEFAULT_COLOURS.length];
+      const newDepths = Object.values(state)
+        .filter(
+          comparedRange =>
+            comparedRange[RANGE.START_TIME] <= newGroup[RANGE.START_TIME] &&
+            comparedRange[RANGE.END_TIME] >= newGroup[RANGE.END_TIME]
+        )
+        .sort(
+          (a, b) =>
+            a[RANGE.END_TIME] -
+            a[RANGE.START_TIME] -
+            (b[RANGE.END_TIME] - b[RANGE.START_TIME])
+        )
+        .reduce((depthChanges, bubble, index) => {
+          const computedDepth = newGroup[RANGE.DEPTH] + index + 1;
+          if (
+            bubble.id !== newGroup.id &&
+            computedDepth > bubble[RANGE.DEPTH]
+          ) {
+            depthChanges[bubble.id] = {
+              [RANGE.DEPTH]: {
+                $set: computedDepth,
+              },
+            };
+            if (DEFAULT_COLOURS.indexOf(bubble[RANGE.COLOUR] !== -1)) {
+              depthChanges[bubble.id][RANGE.COLOUR] = {
+                $set: DEFAULT_COLOURS[computedDepth % DEFAULT_COLOURS.length],
+              };
+            }
+          }
+          return depthChanges;
+        }, {});
+      return update(state, {
+        [newGroup.id]: {
+          $set: newGroup,
+        },
+        ...unselectBubbles,
+        ...newDepths,
+      });
+  */
+}
+
+function* selectRange({ payload: { id, isSelected, deselectOthers } }) {
+  // TEMPORARY, until the API changes.
+  if (isSelected === false) {
+    yield put({ type: 'DESELECT_RANGE', payload: { id } });
+  }
+
+  // Deselection of ranges.
+  if (deselectOthers) {
+    const selected = yield select(getSelectedRanges);
+    yield* (selected || [])
+      .filter(range => range !== id)
+      .map(range => put({ type: 'DESELECT_RANGE', payload: { id: range } }));
+  }
+}
+
+// @todo change DELETE_RANGE to REQUEST_DELETE_RANGE
+function* deleteRangeAction({ payload: { id } }) {
+  // @todo recalculate range depths.
+  yield put({ type: 'DELETE_RANGE', payload: { id } });
+}
+
+function* movePointAction({ payload: { originalX, x } }) {
+  const ranges = yield select(getRangesAtPoint(originalX));
+
+  const updateRangeTimes = ranges.map(range =>
+    range.startTime === originalX
+      ? updateRangeTime(range.id, { startTime: x })
+      : updateRangeTime(range.id, { endTime: x })
+  );
+
+  const toRemove = ranges
+    .filter(range => range.startTime === x && range.endTime === x)
+    .map(range => ({ type: 'DELETE_RANGE', payload: { id: range.id } }));
+
+  yield put(yield rangeMutations([...updateRangeTimes, ...toRemove]));
+
+  /*
+  return update(
+        state,
+        Object.values(state).reduce((changes, bubble) => {
+          if (bubble[RANGE.START_TIME] === action.payload.originalX) {
+            if (!changes[bubble.id]) {
+              changes[bubble.id] = {};
+            }
+            changes[bubble.id][RANGE.START_TIME] = {
+              $set: action.payload.x,
+            };
+          }
+          if (bubble[RANGE.END_TIME] === action.payload.originalX) {
+            if (!changes[bubble.id]) {
+              changes[bubble.id] = {};
+            }
+            changes[bubble.id][RANGE.END_TIME] = {
+              $set: action.payload.x,
+            };
+          }
+          if (
+            changes[bubble.id] &&
+            changes[bubble.id][RANGE.END_TIME] &&
+            changes[bubble.id][RANGE.START_TIME]
+          ) {
+            delete changes[bubble.id];
+            if (!changes.$unset) {
+              changes.$unset = [bubble.id];
+            } else {
+              changes.$unset.push(bubble.id);
+            }
+          }
+          return changes;
+        }, {})
+      );
+   */
+}
+
+function canMerge(points, { startTime, endTime }) {
+  return (
+    Object.values(points)
+      .filter(bubble => bubble.depth > 1)
+      .filter(
+        bubble =>
+          (bubble.startTime < startTime &&
+            startTime < bubble.endTime &&
+            bubble.endTime < endTime) ||
+          (startTime < bubble.startTime &&
+            bubble.startTime < endTime &&
+            endTime < bubble.endTime) ||
+          (bubble.startTime === startTime && bubble.endTime === endTime)
+      ).length === 0
+  );
 }
 
 export default function* root() {
@@ -339,5 +652,9 @@ export default function* root() {
   yield takeEvery(DELETE_RAGES, multiDelete);
   yield takeLatest(SELECT_RANGE, currentTimeSideEffects);
   yield takeEvery(SPLIT_RANGE_AT, splitRange);
+  yield takeEvery(GROUP_RANGES, groupRanges);
+  yield takeEvery(SELECT_RANGE, selectRange);
+  yield takeEvery(DELETE_RAGE, deleteRangeAction);
+  yield takeEvery(MOVE_POINT, movePointAction);
   // yield takeEvery(CREATE_RANGE, createRange);
 }

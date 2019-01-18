@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './BubbleDisplay.scss';
-import { RANGE } from '../../constants/range';
+import { DEFAULT_COLOURS, RANGE } from '../../constants/range';
 
 class BubbleDisplay extends Component {
   static propTypes = {
@@ -95,7 +95,8 @@ class BubbleDisplay extends Component {
       x: point[RANGE.START_TIME] * projectionFactor,
       width:
         (point[RANGE.END_TIME] - point[RANGE.START_TIME]) * projectionFactor,
-      colour: point.colour,
+      colour:
+        point.colour || DEFAULT_COLOURS[point.depth % DEFAULT_COLOURS.length],
       height: point.depth * bubbleHeight,
       label: point.label,
       dX: this.getDx(point, pts, projectionFactor),

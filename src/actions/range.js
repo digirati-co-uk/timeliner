@@ -11,6 +11,7 @@ import {
   UPDATE_DEPTHS_AFTER_DELETE,
   UPDATE_RANGE_TIME,
   CREATE_RANGE,
+  RANGE_MUTATION,
 } from '../constants/range';
 import { internal } from '../utils/internal-action';
 import generateId from '../utils/generateId';
@@ -22,6 +23,14 @@ export const splitRangeAt = time => ({
   },
 });
 
+export const rangeMutations = mutations => ({
+  type: RANGE_MUTATION,
+  payload: { mutations },
+});
+
+/**
+ * @deprecated
+ */
 export const groupSelectedRanges = () => ({
   type: GROUP_RANGES,
 });
@@ -35,9 +44,9 @@ export const selectRange = (id, isSelected, deselectOthers = true) => ({
   },
 });
 
-export const createRange = ({ startTime, endTime, splits }) => ({
+export const createRange = props => ({
   type: CREATE_RANGE,
-  payload: { id: generateId(), startTime, endTime, splits },
+  payload: { id: generateId(), ...props },
 });
 
 export const updateRangeTime = (
@@ -65,6 +74,9 @@ export const updateRange = (
   },
 });
 
+/**
+ * @deprecated
+ */
 export const movePoint = (x, originalX) => ({
   type: MOVE_POINT,
   payload: {
@@ -85,14 +97,23 @@ export const deleteRanges = ranges => ({
   ranges,
 });
 
+/**
+ * @deprecated
+ */
 export const deleteRedundantSizes = () => ({
   type: DELETE_REDUNDANT_SIZES,
 });
 
+/**
+ * @deprecated
+ */
 export const updateDepthsAfterDelete = () => ({
   type: UPDATE_DEPTHS_AFTER_DELETE,
 });
 
+/**
+ * @deprecated
+ */
 export const loadRanges = ranges => ({
   type: LOAD_RANGES,
   ranges,
