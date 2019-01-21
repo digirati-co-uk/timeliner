@@ -10,8 +10,12 @@ import {
 import { actions as undoActions } from 'redux-undo-redo';
 import { IMPORT_DOCUMENT, RESET_DOCUMENT } from '../constants/project';
 import {
+  DECREASE_RANGE_DEPTH,
+  DELETE_RANGE,
   GROUP_RANGES,
   MOVE_POINT,
+  SCHEDULE_DELETE_RANGE,
+  SCHEDULE_DELETE_RANGES,
   SPLIT_RANGE_AT,
   UPDATE_RANGE,
 } from '../constants/range';
@@ -29,10 +33,11 @@ import {
   movePoint,
   deleteRedundantSizes,
   updateDepthsAfterDelete,
-  deleteRange,
+  scheduleDeleteRange,
   updateRangeTime,
   createRange,
   rangeMutations,
+  deleteRange,
 } from '../actions/range';
 import {
   loadViewState,
@@ -52,12 +57,7 @@ import {
   SAVE_PROJECT_METADATA,
   SET_CURRENT_TIME,
 } from '../constants/viewState';
-import {
-  SELECT_RANGE,
-  DELETE_RAGE,
-  DELETE_RAGES,
-  RANGE,
-} from '../constants/range';
+import { SELECT_RANGE, RANGE } from '../constants/range';
 import { EXPORT_DOCUMENT, PROJECT } from '../constants/project';
 import { serialize } from '../utils/iiifSerializer';
 import { immediateDownload } from '../utils/fileDownload';
@@ -232,36 +232,133 @@ function* saveProjectMetadata({ metadata }) {
   yield put(cancelProjectMetadataEdits());
 }
 
-function* afterDelete() {
-  // const removals = [];
-  // const ranges = yield select(getRangeList);
+function*   deleteRangeRequest(ids) {
+  // Deletes ranges that are redundant size
+  const mutations = ids.map(id => deleteRange(id));
+  const ranges = Object.values(yield select(getRangeList))
+    .sort((a, b) => b.endTime - b.startTime - (a.endTime - a.startTime))
+    .filter(range => ids.indexOf(range.id) === -1);
 
-  // Object.values(ranges)
-  //   .sort(
-  //     (a, b) =>
-  //       b[RANGE.END_TIME] -
-  //       b[RANGE.START_TIME] -
-  //       (a[RANGE.END_TIME] - a[RANGE.START_TIME])
-  //   )
-  //   .forEach((item, index, array) => {
-  //     if (index > 0) {
-  //       const previousItem = array[index - 1];
-  //       if (
-  //         previousItem[RANGE.START_TIME] === item[RANGE.START_TIME] &&
-  //         previousItem[RANGE.END_TIME] === item[RANGE.END_TIME]
-  //       ) {
-  //         removals.push({
-  //           type: 'DELETE_RANGE',
-  //           payload: {
-  //             id:
-  //               previousItem[RANGE.DEPTH] > item[RANGE.DEPTH]
-  //                 ? previousItem.id
-  //                 : item.id,
-  //           },
-  //         });
-  //       }
-  //     }
-  //   });
+  const result = ranges.reduce(
+    ({ prev, mutationList, prevDepth }, next) => {
+      if (prev) {
+        if (
+          prev.startTime === next.startTime &&
+          prev.endTime === next.startTime
+        ) {
+          mutationList.push(deleteRange(next.id));
+          return { prev: null, mutationList };
+        }
+
+        if (prev.depth - 1 > next.depth) {
+          mutationList.push({
+            type: DECREASE_RANGE_DEPTH,
+            payload: { id: prev.id },
+          });
+        }
+      }
+
+      return {
+        prev: prev && prev.endTime < next.startTime ? prev : next,
+        mutationList,
+      };
+    },
+    { prev: null, prevDepth: 0, mutationList: mutations }
+  );
+
+  yield put(rangeMutations(result.mutationList));
+
+  /*
+  ranges.forEach((item, index, array) => {
+    if (index > 0) {
+      const previousItem = array[index - 1];
+      if (
+        previousItem.startTime === item.startTime &&
+        previousItem.endTime === item.endTime
+      ) {
+        mutations.push(
+          deleteRange(
+            previousItem[RANGE.DEPTH] > item[RANGE.DEPTH]
+              ? previousItem.id
+              : item.id
+          )
+        );
+      }
+    }
+  });
+
+  // Updates the depths of items after deleting.
+  const maxDepths = [];
+  ranges.forEach((bubble, index) => {
+    if (bubble.depth > 1) {
+      maxDepths[index] = Math.max.apply(
+        null,
+        ranges
+          .slice(0, index)
+          .map((found, idx) =>
+            bubble.startTime <= found.startTime &&
+            bubble.endTime >= found.endTime
+              ? maxDepths[idx] + 1 || 1
+              : 1
+          )
+      );
+    } else {
+      maxDepths[index] = bubble.depth;
+    }
+    if (bubble.depth !== maxDepths[index]) {
+      mutations.push({
+        type: DECREASE_RANGE_DEPTH,
+        payload: { id: bubble.id },
+      });
+    }
+  });
+  */
+
+  /*
+  case UPDATE_DEPTHS_AFTER_DELETE:
+  const rangesSorted = Object.values(state).sort(
+    (a, b) =>
+      a[RANGE.END_TIME] -
+      a.startTime -
+      (b[RANGE.END_TIME] - b[RANGE.START_TIME])
+  );
+  const maxDepths = [];
+  return update(
+    state,
+    rangesSorted.reduce((depthChanges, bubble, index) => {
+      if (bubble[RANGE.DEPTH] > 1) {
+        maxDepths[index] = Math.max.apply(
+          null,
+          rangesSorted
+            .slice(0, index)
+            .map((possibleContainment, idx) =>
+              bubble[RANGE.START_TIME] <=
+                possibleContainment[RANGE.START_TIME] &&
+              bubble[RANGE.END_TIME] >= possibleContainment[RANGE.END_TIME]
+                ? maxDepths[idx] + 1 || 1
+                : 1
+            )
+        );
+      } else {
+        maxDepths[index] = bubble[RANGE.DEPTH];
+      }
+      if (bubble[RANGE.DEPTH] !== maxDepths[index]) {
+        depthChanges[bubble.id] = {
+          [RANGE.DEPTH]: {
+            $set: maxDepths[index],
+          },
+        };
+        if (DEFAULT_COLOURS.indexOf(bubble[RANGE.COLOUR] !== -1)) {
+          depthChanges[bubble.id][RANGE.COLOUR] = {
+            $set:
+              DEFAULT_COLOURS[maxDepths[index] % DEFAULT_COLOURS.length],
+          };
+        }
+      }
+      return depthChanges;
+    }, {})
+  );
+  */
   /* deleteRedundantSizes
 
   const removals = {
@@ -291,13 +388,16 @@ function* afterDelete() {
         });
       return removals.$unset.length > 0 ? update(state, removals) : state;
    */
-
   // @todo
   // yield put(deleteRedundantSizes());
   // yield put(updateDepthsAfterDelete());
 }
 
-function* multiDelete({ ranges }) {
+function* singleDelete({ payload: { id } }) {
+  yield call(deleteRangeRequest, [id]);
+}
+
+function* multiDelete({ payload: { ranges } }) {
   if (ranges.length > 1) {
     // Get a user confirmation
     const confirmed = yield call(
@@ -309,13 +409,8 @@ function* multiDelete({ ranges }) {
       return;
     }
   }
-  // Remove all ranges.
-  yield put(
-    rangeMutations(
-      ranges.map(id => ({ type: 'DELETE_RANGE', payload: { id } }))
-    )
-  );
-  yield put(rangeMutations(ranges.map(range => deleteRange(range))));
+
+  yield call(deleteRangeRequest, ranges);
 }
 
 function* currentTimeSideEffects() {
@@ -457,10 +552,12 @@ function* groupRanges(action) {
     return maxDepth;
   }, 1);
 
-  const depthChangeMutations = parentBubbles.map(range => ({
-    type: 'INCREASE_RANGE_DEPTH',
-    payload: { id: range.id, label: range.label },
-  }));
+  const depthChangeMutations = parentBubbles
+    .map(range => ({
+      type: 'INCREASE_RANGE_DEPTH',
+      payload: { id: range.id, label: range.label },
+    }))
+    .filter(Boolean);
 
   const deselectMutations = selectedRangeIds.map(id => ({
     type: 'DESELECT_RANGE',
@@ -564,10 +661,10 @@ function* selectRange({ payload: { id, isSelected, deselectOthers } }) {
 }
 
 // @todo change DELETE_RANGE to REQUEST_DELETE_RANGE
-function* deleteRangeAction({ payload: { id } }) {
-  // @todo recalculate range depths.
-  yield put({ type: 'DELETE_RANGE', payload: { id } });
-}
+// function* deleteRangeAction({ payload: { id } }) {
+//   // @todo recalculate range depths.
+//   yield put({ type: 'DELETE_RANGE', payload: { id } });
+// }
 
 function* movePointAction({ payload: { originalX, x } }) {
   const ranges = yield select(getRangesAtPoint(originalX));
@@ -640,6 +737,10 @@ function canMerge(points, { startTime, endTime }) {
 }
 
 export default function* root() {
+  // Delete ranges
+  yield takeEvery(SCHEDULE_DELETE_RANGE, singleDelete);
+  yield takeEvery(SCHEDULE_DELETE_RANGES, multiDelete);
+
   yield takeEvery(IMPORT_DOCUMENT, importDocument);
   yield takeEvery(UPDATE_RANGE, saveRange);
   yield takeEvery(RESET_DOCUMENT, resetDocument);
@@ -648,13 +749,11 @@ export default function* root() {
   yield takeEvery(EXPORT_DOCUMENT, exportDocument);
   yield takeEvery(SELECT_RANGE, selectSideEffects);
   yield takeEvery(SAVE_PROJECT_METADATA, saveProjectMetadata);
-  yield takeEvery(DELETE_RAGE, afterDelete);
-  yield takeEvery(DELETE_RAGES, multiDelete);
   yield takeLatest(SELECT_RANGE, currentTimeSideEffects);
   yield takeEvery(SPLIT_RANGE_AT, splitRange);
   yield takeEvery(GROUP_RANGES, groupRanges);
   yield takeEvery(SELECT_RANGE, selectRange);
-  yield takeEvery(DELETE_RAGE, deleteRangeAction);
+  // yield takeEvery(DELETE_RANGE, deleteRangeAction);
   yield takeEvery(MOVE_POINT, movePointAction);
   // yield takeEvery(CREATE_RANGE, createRange);
 }

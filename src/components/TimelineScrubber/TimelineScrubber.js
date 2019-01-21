@@ -118,13 +118,18 @@ class TimelineScrubber extends Component {
   onMouseLeave = () => this.setState({ isHovering: false });
 
   onMouseMove = e => {
-    const bounds = this.container.getBoundingClientRect();
+    const bounds = e.currentTarget.getBoundingClientRect();
     const positionRatio = (e.pageX - bounds.left) / bounds.width;
     this.setState({
       hoverTime: this.timeToLabel(positionRatio * this.props.runTime),
     });
 
-    const pos = getPalletXPosition(80, e.clientX, bounds.width, 5);
+    const pos = getPalletXPosition(
+      80,
+      e.clientX + this.props.x,
+      bounds.width,
+      5
+    );
     this.tooltip.style.left = `${pos}px`;
   };
 

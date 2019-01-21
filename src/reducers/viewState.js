@@ -31,7 +31,9 @@ import {
   LOAD_SOURCE,
 } from '../constants/viewState';
 
-import { AUDIO_LOADING } from '../constants/canvas';
+import {
+  AUDIO_LOADING
+} from '../constants/canvas';
 
 const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
   switch (action.type) {

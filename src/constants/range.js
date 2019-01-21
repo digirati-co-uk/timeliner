@@ -26,7 +26,7 @@ export const DEFAULT_RANGE = {
   [RANGE.DEPTH]: 1,
   [RANGE.IS_SELECTED]: false,
   [RANGE.WHITE_TEXT]: false,
-}
+};
 
 export const DEFAULT_RANGES_STATE = {
   'id-0': {
@@ -41,10 +41,17 @@ export const SELECT_RANGE = 'SELECT_RANGE';
 export const UPDATE_RANGE = 'UPDATE_RANGE';
 export const UPDATE_RANGE_TIME = 'UPDATE_RANGE_TIME';
 export const MOVE_POINT = 'MOVE_POINT';
-export const DELETE_RAGE = 'DELETE_RAGE';
-export const DELETE_RAGES = 'DELETE_RAGES';
+export const DESELECT_RANGE = 'DESELECT_RANGE';
+export const DELETE_RANGE = 'DELETE_RANGE';
+export const SCHEDULE_DELETE_RANGE = 'SCHEDULE_DELETE_RANGE';
+export const IMPORT_RANGES = 'IMPORT_RANGES';
+export const INCREASE_RANGE_DEPTH = 'INCREASE_RANGE_DEPTH';
+export const DECREASE_RANGE_DEPTH = 'DECREASE_RANGE_DEPTH';
+export const SCHEDULE_DELETE_RANGES = 'SCHEDULE_DELETE_RANGES';
 export const LOAD_RANGES = 'LOAD_RANGES';
+/** @deprecated */
 export const DELETE_REDUNDANT_SIZES = 'DELETE_REDUNDANT_SIZES';
+/** @deprecated */
 export const UPDATE_DEPTHS_AFTER_DELETE = 'UPDATE_DEPTHS_AFTER_DELETE';
 export const CREATE_RANGE = 'CREATE_RANGE';
 export const RANGE_MUTATION = 'RANGE_MUTATION';

@@ -18,7 +18,7 @@ import Audio from '../Audio/Audio';
 import {
   splitRangeAt,
   groupSelectedRanges,
-  deleteRanges,
+  scheduleDeleteRanges,
   updateRange,
 } from '../../actions/range';
 import { RANGE } from '../../constants/range';
@@ -109,7 +109,7 @@ class VariationsMainView extends React.Component {
   };
 
   deleteRanges = ranges => () => {
-    this.props.deleteRanges(ranges.map(range => range.id));
+    this.props.deleteRanges(ranges);
   };
 
   isGroupingPossible = selectedRanges => {
@@ -361,7 +361,7 @@ const mapDispatchToProps = {
   //range
   splitRangeAt,
   groupSelectedRanges,
-  deleteRanges,
+  deleteRanges: scheduleDeleteRanges,
   updateRange,
 };
 

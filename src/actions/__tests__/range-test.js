@@ -60,10 +60,10 @@ describe('actions/range', () => {
     });
   });
 
-  test('deleteRange', () => {
-    expect(range.deleteRange('123')).toEqual({
+  test('scheduleDeleteRange', () => {
+    expect(range.scheduleDeleteRange('123')).toEqual({
       payload: { id: '123' },
-      type: 'DELETE_RAGE',
+      type: 'DELETE_RANGE',
     });
   });
 

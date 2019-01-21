@@ -2,8 +2,8 @@ import { createUndoMiddleware } from 'redux-undo-redo';
 import { SAVE_PROJECT_METADATA } from '../constants/viewState';
 import { SET_DESCRIPTION, SET_LANGUAGE, SET_TITLE } from '../constants/project';
 import {
-  DELETE_RAGE,
-  DELETE_RAGES,
+  DELETE_RANGE,
+  DELETE_RANGES,
   GROUP_RANGES,
   MOVE_POINT,
   SPLIT_RANGE_AT,
@@ -15,7 +15,7 @@ import {
 import { setDescription, setLanguage, setTitle } from '../actions/project';
 import {
   createRange,
-  deleteRange,
+  scheduleDeleteRange,
   movePoint,
   updateRange,
   updateRangeTime,
@@ -34,8 +34,8 @@ const undoActions = [
   GROUP_RANGES,
 
   // @todo
-  DELETE_RAGE,
-  DELETE_RAGES,
+  DELETE_RANGE,
+  DELETE_RANGES,
 
   // For consideration.
   SAVE_PROJECT_METADATA,
@@ -66,7 +66,7 @@ export default createUndoMiddleware({
         updateRangeTime(action.payload.id, { startTime, endTime }),
       createArgs: (state, action) => state.range[action.payload.id],
     },
-    [DELETE_RAGE]: {
+    [DELETE_RANGE]: {
       action: (action, range) => {
         return {
           type: CREATE_RANGE,
@@ -94,7 +94,7 @@ export default createUndoMiddleware({
       },
     },
     [CREATE_RANGE]: action => {
-      return deleteRange(action.payload.id);
+      return scheduleDeleteRange(action.payload.id);
     },
   },
 });

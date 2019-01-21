@@ -4,14 +4,14 @@ import {
   SELECT_RANGE,
   UPDATE_RANGE,
   MOVE_POINT,
-  DELETE_RAGE,
-  DELETE_RAGES,
+  DELETE_RANGE,
+  DELETE_RANGES,
   LOAD_RANGES,
   DELETE_REDUNDANT_SIZES,
   UPDATE_DEPTHS_AFTER_DELETE,
   UPDATE_RANGE_TIME,
   CREATE_RANGE,
-  RANGE_MUTATION,
+  RANGE_MUTATION, SCHEDULE_DELETE_RANGES, SCHEDULE_DELETE_RANGE,
 } from '../constants/range';
 import { internal } from '../utils/internal-action';
 import generateId from '../utils/generateId';
@@ -86,15 +86,18 @@ export const movePoint = (x, originalX) => ({
 });
 
 export const deleteRange = id => ({
-  type: DELETE_RAGE,
-  payload: {
-    id,
-  },
+  type: DELETE_RANGE,
+  payload: { id },
 });
 
-export const deleteRanges = ranges => ({
-  type: DELETE_RAGES,
-  ranges,
+export const scheduleDeleteRange = id => ({
+  type: SCHEDULE_DELETE_RANGE,
+  payload: { id },
+});
+
+export const scheduleDeleteRanges = ranges => ({
+  type: SCHEDULE_DELETE_RANGES,
+  payload: { ranges },
 });
 
 /**
