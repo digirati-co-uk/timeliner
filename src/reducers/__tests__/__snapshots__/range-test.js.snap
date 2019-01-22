@@ -98,15 +98,15 @@ exports[`reducers/range simple mutation list 1`] = `
 Object {
   "list": Object {
     "test-1": Object {
-      "colour": undefined,
+      "colour": null,
       "depth": 2,
       "endTime": 0,
       "id": "test-1",
       "isSelected": false,
-      "label": "test label",
+      "label": "Untitled range",
       "startTime": 1000,
-      "summary": undefined,
-      "whiteText": undefined,
+      "summary": "",
+      "whiteText": false,
     },
   },
   "selected": Array [],

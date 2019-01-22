@@ -16,7 +16,6 @@ describe('actions/range', () => {
     expect(range.selectRange('123', true)).toEqual({
       payload: {
         id: '123',
-        isSelected: true,
         deselectOthers: true,
       },
       type: 'SELECT_RANGE',
@@ -24,8 +23,7 @@ describe('actions/range', () => {
     expect(range.selectRange('123', false)).toEqual({
       payload: {
         id: '123',
-        isSelected: false,
-        deselectOthers: true,
+        deselectOthers: false,
       },
       type: 'SELECT_RANGE',
     });
@@ -49,7 +47,7 @@ describe('actions/range', () => {
         startTime: 0,
         summary: 'some summary',
       },
-      type: 'UPDATE_RANGE',
+      type: 'SCHEDULE_UPDATE_RANGE',
     });
   });
 

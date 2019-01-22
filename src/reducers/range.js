@@ -29,9 +29,7 @@ const NEW_DEFAULT_RANGES_STATE = {
 export function undo(prevState, action) {
   if (action.type === RANGE_MUTATION) {
     return rangeMutations(
-      action.payload.mutations
-        .reverse()
-        .map(mutation => undo(prevState, mutation))
+      action.mutations.reverse().map(mutation => undo(prevState, mutation))
     );
   }
 
@@ -66,7 +64,7 @@ export function undo(prevState, action) {
 
 const range = (state = NEW_DEFAULT_RANGES_STATE, action) => {
   if (action.type === RANGE_MUTATION) {
-    return (action.payload.mutations || []).reduce(range, state);
+    return (action.mutations || []).reduce(range, state);
   }
   switch (action.type) {
     case SELECT_RANGE:
@@ -160,18 +158,6 @@ const range = (state = NEW_DEFAULT_RANGES_STATE, action) => {
             [RANGE.WHITE_TEXT]: {
               $set: action.payload.whiteText,
             },
-            [RANGE.START_TIME]: {
-              $set:
-                typeof action.payload.startTime !== 'undefined'
-                  ? action.payload.startTime
-                  : state.list[action.payload.id].startTime,
-            },
-            [RANGE.END_TIME]: {
-              $set:
-                typeof action.payload.endTime !== 'undefined'
-                  ? action.payload.endTime
-                  : state.list[action.payload.id].endTime,
-            },
           },
         },
       });
@@ -217,18 +203,46 @@ export function getRangesByIds(rangeIds) {
     });
 }
 
-export function getRangesAtPoint(time) {
+export function getRangesAtPoint(time, sticky = 50) {
   return state =>
     Object.values(state.range.list).filter(
-      next => next.startTime === time || next.endTime === time
+      next =>
+        Math.abs(next.startTime - time) <= sticky ||
+        Math.abs(next.endTime - time) <= sticky
     );
 }
 
 export function getRangesBetweenTimes(startTime, endTime) {
-  return state =>
-    Object.values(state.range.list).filter(
+  return state => {
+    return Object.values(state.range.list).filter(
       next => next.startTime >= startTime && next.endTime <= endTime
     );
+  };
 }
+
+export const getNextBubbleStartTime = state => {
+  const currentTime = state.viewState.currentTime;
+  const pointsPastNext = getPoints(state).filter(point => point > currentTime);
+  const result = Math.min(...pointsPastNext);
+  return {
+    time: result === Infinity ? state.viewState.runTime + 1 : result + 1,
+    doStop: result === Infinity,
+  };
+};
+
+export const getPreviousBubbleStartTime = state =>
+  getPoints(state)
+    .filter(point => point + 50 <= state.viewState.currentTime)
+    .pop() || 0;
+
+export const getPoints = state =>
+  Array.from(
+    Object.values(getRangeList(state)).reduce((markers, r) => {
+      markers.add(r.startTime);
+      markers.add(r.endTime);
+      return markers;
+    }, new Set([]))
+  ).sort();
+
 
 export default range;

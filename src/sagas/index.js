@@ -1,4 +1,5 @@
 import {
+  all,
   put,
   select,
   takeEvery,
@@ -71,6 +72,7 @@ import {
   getRangesByIds,
   getSelectedRanges,
 } from '../reducers/range';
+import rangeSaga from './range-saga';
 
 const getDuration = state => state.viewState.runTime;
 
@@ -731,23 +733,26 @@ function canMerge(points, { startTime, endTime }) {
 }
 
 export default function* root() {
-  // Delete ranges
-  yield takeEvery(SCHEDULE_DELETE_RANGE, singleDelete);
-  yield takeEvery(SCHEDULE_DELETE_RANGES, multiDelete);
+  yield all([
+    rangeSaga(),
+    // Delete ranges
+    takeEvery(SCHEDULE_DELETE_RANGE, singleDelete),
+    takeEvery(SCHEDULE_DELETE_RANGES, multiDelete),
 
-  yield takeEvery(IMPORT_DOCUMENT, importDocument);
-  yield takeEvery(UPDATE_RANGE, saveRange);
-  yield takeEvery(RESET_DOCUMENT, resetDocument);
-  yield takeEvery(PREVIOUS_BUBBLE, previousBubble);
-  yield takeEvery(NEXT_BUBBLE, nextBubble);
-  yield takeEvery(EXPORT_DOCUMENT, exportDocument);
-  yield takeEvery(SELECT_RANGE, selectSideEffects);
-  yield takeEvery(SAVE_PROJECT_METADATA, saveProjectMetadata);
-  yield takeLatest(SELECT_RANGE, currentTimeSideEffects);
-  yield takeEvery(SPLIT_RANGE_AT, splitRange);
-  yield takeEvery(GROUP_RANGES, groupRanges);
-  yield takeEvery(SELECT_RANGE, selectRange);
-  // yield takeEvery(DELETE_RANGE, deleteRangeAction);
-  yield takeEvery(MOVE_POINT, movePointAction);
-  // yield takeEvery(CREATE_RANGE, createRange);
+    takeEvery(IMPORT_DOCUMENT, importDocument),
+    // takeEvery(UPDATE_RANGE, saveRange),
+    takeEvery(RESET_DOCUMENT, resetDocument),
+    // takeEvery(PREVIOUS_BUBBLE, previousBubble),
+    // takeEvery(NEXT_BUBBLE, nextBubble),
+    takeEvery(EXPORT_DOCUMENT, exportDocument),
+    takeEvery(SAVE_PROJECT_METADATA, saveProjectMetadata),
+    takeEvery(SELECT_RANGE, selectSideEffects),
+    takeLatest(SELECT_RANGE, currentTimeSideEffects),
+    takeEvery(SELECT_RANGE, selectRange),
+    takeEvery(SPLIT_RANGE_AT, splitRange),
+    takeEvery(GROUP_RANGES, groupRanges),
+    // takeEvery(DELETE_RANGE, deleteRangeAction),
+    takeEvery(MOVE_POINT, movePointAction),
+    // takeEvery(CREATE_RANGE, createRange),
+  ]);
 }

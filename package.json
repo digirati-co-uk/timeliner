@@ -16,6 +16,7 @@
   "devDependencies": {
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
     "@fesk/scripts": "^1.1.1",
     "@fesk/webpack-config": "^1.1.1",
     "@reach/component-component": "^0.1.1",
@@ -23,7 +24,8 @@
     "babel-core": "^7.0.0-bridge",
     "babel-jest": "^23.6.0",
     "docz": "0.11.1",
-    "jest": "^23.6.0"
+    "jest": "^23.6.0",
+    "redux-saga-test-plan": "^3.7.0"
   },
   "dependencies": {
     "@fesk/bem-js": "^1.0.1",

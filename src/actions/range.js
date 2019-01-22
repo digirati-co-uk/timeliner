@@ -16,7 +16,7 @@ import {
   SCHEDULE_DELETE_RANGE,
   DESELECT_RANGE,
   INCREASE_RANGE_DEPTH,
-  DECREASE_RANGE_DEPTH, IMPORT_RANGES,
+  DECREASE_RANGE_DEPTH, IMPORT_RANGES, SCHEDULE_UPDATE_RANGE,
 } from '../constants/range';
 import { internal } from '../utils/internal-action';
 import generateId from '../utils/generateId';
@@ -30,7 +30,7 @@ export const splitRangeAt = time => ({
 
 export const rangeMutations = mutations => ({
   type: RANGE_MUTATION,
-  payload: { mutations },
+  mutations,
 });
 
 /**
@@ -83,7 +83,7 @@ export const updateRange = (
   id,
   { label, summary, startTime, endTime, colour, whiteText }
 ) => ({
-  type: UPDATE_RANGE,
+  type: SCHEDULE_UPDATE_RANGE,
   payload: {
     id,
     label,
