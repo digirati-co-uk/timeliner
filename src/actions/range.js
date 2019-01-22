@@ -11,7 +11,12 @@ import {
   UPDATE_DEPTHS_AFTER_DELETE,
   UPDATE_RANGE_TIME,
   CREATE_RANGE,
-  RANGE_MUTATION, SCHEDULE_DELETE_RANGES, SCHEDULE_DELETE_RANGE,
+  RANGE_MUTATION,
+  SCHEDULE_DELETE_RANGES,
+  SCHEDULE_DELETE_RANGE,
+  DESELECT_RANGE,
+  INCREASE_RANGE_DEPTH,
+  DECREASE_RANGE_DEPTH, IMPORT_RANGES,
 } from '../constants/range';
 import { internal } from '../utils/internal-action';
 import generateId from '../utils/generateId';
@@ -35,13 +40,29 @@ export const groupSelectedRanges = () => ({
   type: GROUP_RANGES,
 });
 
-export const selectRange = (id, isSelected, deselectOthers = true) => ({
+export const selectRange = (id, deselectOthers) => ({
   type: SELECT_RANGE,
-  payload: {
-    id,
-    isSelected,
-    deselectOthers,
-  },
+  payload: { id, deselectOthers },
+});
+
+export const increaseRangeDepth = id => ({
+  type: INCREASE_RANGE_DEPTH,
+  payload: { id },
+});
+
+export const decreaseRangeDepth = id => ({
+  type: DECREASE_RANGE_DEPTH,
+  payload: { id },
+});
+
+export const importRanges = ranges => ({
+  type: IMPORT_RANGES,
+  payload: { ranges },
+});
+
+export const deselectRange = id => ({
+  type: DESELECT_RANGE,
+  payload: { id },
 });
 
 export const createRange = props => ({

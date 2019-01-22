@@ -38,6 +38,9 @@ import {
   createRange,
   rangeMutations,
   deleteRange,
+  increaseRangeDepth,
+  decreaseRangeDepth,
+  importRanges,
 } from '../actions/range';
 import {
   loadViewState,
@@ -126,10 +129,7 @@ function* importDocument({ manifest, source }) {
     yield put(loadProject(loadedState.project));
     yield put(loadCanvas(loadedState.canvas));
     // yield put(loadRanges(loadedState.range));
-    yield put({
-      type: 'IMPORT_RANGES',
-      payload: { ranges: loadedState.range },
-    });
+    yield put(importRanges(loadedState.range));
     yield put(loadViewState(loadedState.viewState));
   } catch (err) {
     console.error(err);
@@ -232,7 +232,7 @@ function* saveProjectMetadata({ metadata }) {
   yield put(cancelProjectMetadataEdits());
 }
 
-function*   deleteRangeRequest(ids) {
+function* deleteRangeRequest(ids) {
   // Deletes ranges that are redundant size
   const mutations = ids.map(id => deleteRange(id));
   const ranges = Object.values(yield select(getRangeList))
@@ -251,10 +251,7 @@ function*   deleteRangeRequest(ids) {
         }
 
         if (prev.depth - 1 > next.depth) {
-          mutationList.push({
-            type: DECREASE_RANGE_DEPTH,
-            payload: { id: prev.id },
-          });
+          mutationList.push(decreaseRangeDepth(prev.id));
         }
       }
 
@@ -553,10 +550,7 @@ function* groupRanges(action) {
   }, 1);
 
   const depthChangeMutations = parentBubbles
-    .map(range => ({
-      type: 'INCREASE_RANGE_DEPTH',
-      payload: { id: range.id, label: range.label },
-    }))
+    .map(range => increaseRangeDepth(range.id))
     .filter(Boolean);
 
   const deselectMutations = selectedRangeIds.map(id => ({
@@ -571,7 +565,7 @@ function* groupRanges(action) {
       ...deselectMutations,
       ...depthChangeMutations,
       newRange,
-      { type: 'SELECT_RANGE', payload: { id: newRange.payload.id } },
+      selectRange(newRange.payload.id),
     ])
   );
 

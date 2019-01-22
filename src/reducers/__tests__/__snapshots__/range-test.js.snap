@@ -1,0 +1,114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`reducers/range importing ranges 1`] = `
+Object {
+  "list": Object {
+    "test-1": Object {
+      "depth": 2,
+      "endTime": 1000,
+      "id": "test-1",
+      "startTime": 0,
+    },
+    "test-2": Object {
+      "depth": 1,
+      "endTime": 500,
+      "id": "test-2",
+      "startTime": 0,
+    },
+    "test-3": Object {
+      "depth": 1,
+      "endTime": 1000,
+      "id": "test-3",
+      "startTime": 500,
+    },
+    "test-4": Object {
+      "depth": 1,
+      "endTime": 1500,
+      "id": "test-4",
+      "startTime": 100,
+    },
+  },
+  "selected": Array [],
+}
+`;
+
+exports[`reducers/range importing ranges as array 1`] = `
+Object {
+  "list": Object {
+    "test-1": Object {
+      "depth": 2,
+      "endTime": 1000,
+      "id": "test-1",
+      "startTime": 0,
+    },
+    "test-2": Object {
+      "depth": 1,
+      "endTime": 500,
+      "id": "test-2",
+      "startTime": 0,
+    },
+    "test-3": Object {
+      "depth": 1,
+      "endTime": 1000,
+      "id": "test-3",
+      "startTime": 500,
+    },
+    "test-4": Object {
+      "depth": 1,
+      "endTime": 1500,
+      "id": "test-4",
+      "startTime": 100,
+    },
+  },
+  "selected": Array [],
+}
+`;
+
+exports[`reducers/range removing a range 1`] = `
+Object {
+  "list": Object {
+    "test-1": Object {
+      "colour": null,
+      "depth": 1,
+      "endTime": 1000,
+      "id": "test-1",
+      "isSelected": false,
+      "label": "Untitled range",
+      "startTime": 0,
+      "summary": "",
+      "whiteText": false,
+    },
+    "test-3": Object {
+      "colour": null,
+      "depth": 1,
+      "endTime": 1000,
+      "id": "test-3",
+      "isSelected": false,
+      "label": "Untitled range",
+      "startTime": 500,
+      "summary": "",
+      "whiteText": false,
+    },
+  },
+  "selected": Array [],
+}
+`;
+
+exports[`reducers/range simple mutation list 1`] = `
+Object {
+  "list": Object {
+    "test-1": Object {
+      "colour": undefined,
+      "depth": 2,
+      "endTime": 0,
+      "id": "test-1",
+      "isSelected": false,
+      "label": "test label",
+      "startTime": 1000,
+      "summary": undefined,
+      "whiteText": undefined,
+    },
+  },
+  "selected": Array [],
+}
+`;

@@ -63,7 +63,7 @@ describe('actions/range', () => {
   test('scheduleDeleteRange', () => {
     expect(range.scheduleDeleteRange('123')).toEqual({
       payload: { id: '123' },
-      type: 'DELETE_RANGE',
+      type: 'SCHEDULE_DELETE_RANGE',
     });
   });
 

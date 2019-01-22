@@ -20,7 +20,7 @@ export const DEFAULT_COLOURS = [
 export const DEFAULT_RANGE = {
   [RANGE.START_TIME]: 0,
   [RANGE.END_TIME]: 0,
-  [RANGE.LABEL]: '',
+  [RANGE.LABEL]: 'Untitled range',
   [RANGE.SUMMARY]: '',
   [RANGE.COLOUR]: null,
   [RANGE.DEPTH]: 1,

@@ -18,7 +18,12 @@ import {
 import { RANGE } from '../../constants/range';
 import { PROJECT } from '../../constants/project';
 import { VIEWSTATE } from '../../constants/viewState';
-import { splitRangeAt, movePoint } from '../../actions/range';
+import {
+  splitRangeAt,
+  movePoint,
+  selectRange,
+  deselectRange,
+} from '../../actions/range';
 import { getRangeList, getSelectedRanges } from '../../reducers/range';
 
 const isOSX = navigator.userAgent.indexOf('Mac OS X') !== -1;
@@ -367,11 +372,8 @@ const mapDispatchToProps = {
   panToPosition,
   onUpdateTime: setCurrentTime,
   splitRange: splitRangeAt,
-  selectRange: (id, deselectOthers) => ({
-    type: 'SELECT_RANGE',
-    payload: { id, deselectOthers },
-  }),
-  deselectRange: id => ({ type: 'DESELECT_RANGE', payload: { id } }),
+  selectRange,
+  deselectRange,
   movePoint,
 };
 
