@@ -1092,6 +1092,128 @@ describe('sagas/range-saga', () => {
         .dispatch(scheduleDeleteRange('r2-3'))
         .silentRun();
     });
+
+    test('deleting deeply nested bubble at mid-tier level - side-by-side right', async () => {
+      await expectSaga(rangeSaga)
+        .withState(
+          mockedRangeState([
+            createRange({ id: 'r1', startTime: 0, endTime: 500 }),
+            createRange({ id: 'r2', startTime: 500, endTime: 1000 }),
+            createRange({ id: 'r3', startTime: 1000, endTime: 1500 }),
+            createRange({ id: 'r4', startTime: 1500, endTime: 2000 }),
+            createRange({ id: 'r5', startTime: 2000, endTime: 2500 }),
+            createRange({ id: 'r6', startTime: 2500, endTime: 2000 }),
+            createRange({ id: 'r7', startTime: 3000, endTime: 3500 }),
+
+            // Grouping ranges
+            createRange({
+              id: 'r2-3',
+              startTime: 500,
+              endTime: 1500,
+              depth: 2,
+            }),
+            createRange({
+              id: 'r4-5',
+              startTime: 1500,
+              endTime: 2500,
+              depth: 2,
+            }),
+            createRange({
+              id: 'r2-5',
+              startTime: 500,
+              endTime: 2500,
+              depth: 3,
+            }),
+          ])
+        )
+        .put(rangeMutations([deleteRange('r4-5')]))
+        .dispatch(scheduleDeleteRange('r4-5'))
+        .silentRun();
+    });
+
+    test('deleting deeply nested bubble at mid-tier level - side-by-side left', async () => {
+      await expectSaga(rangeSaga)
+        .withState(
+          mockedRangeState([
+            createRange({ id: 'r1', startTime: 0, endTime: 500 }),
+            createRange({ id: 'r2', startTime: 500, endTime: 1000 }),
+            createRange({ id: 'r3', startTime: 1000, endTime: 1500 }),
+            createRange({ id: 'r4', startTime: 1500, endTime: 2000 }),
+            createRange({ id: 'r5', startTime: 2000, endTime: 2500 }),
+            createRange({ id: 'r6', startTime: 2500, endTime: 2000 }),
+            createRange({ id: 'r7', startTime: 3000, endTime: 3500 }),
+
+            // Grouping ranges
+            createRange({
+              id: 'r2-3',
+              startTime: 500,
+              endTime: 1500,
+              depth: 2,
+            }),
+            createRange({
+              id: 'r4-5',
+              startTime: 1500,
+              endTime: 2500,
+              depth: 2,
+            }),
+            createRange({
+              id: 'r2-5',
+              startTime: 500,
+              endTime: 2500,
+              depth: 3,
+            }),
+          ])
+        )
+        .put(rangeMutations([deleteRange('r2-3')]))
+        .dispatch(scheduleDeleteRange('r2-3'))
+        .silentRun();
+    });
+
+    test('fixture 1 - failing case: delete-nested (left)', async () => {
+      await expectSaga(rangeSaga)
+        .withState(require('../../../state-fixtures/delete-nested'))
+        .put(rangeMutations([deleteRange('id-1548251126620')]))
+        .dispatch(scheduleDeleteRange('id-1548251126620'))
+        .silentRun();
+    });
+    test('fixture 1 - failing case: delete-nested (right)', async () => {
+      await expectSaga(rangeSaga)
+        .withState(require('../../../state-fixtures/delete-nested'))
+        .put(rangeMutations([deleteRange('id-1548251128847')]))
+        .dispatch(scheduleDeleteRange('id-1548251128847'))
+        .silentRun();
+    });
+
+    test('fixture 2 - failing test case: delete nested (right)', async () => {
+      await expectSaga(rangeSaga)
+        .withState(require('../../../state-fixtures/delete-nested-2'))
+        .put(
+          rangeMutations([
+            deleteRange('id-1548252556587'),
+            decreaseRangeDepth('id-1548252559185'),
+            decreaseRangeDepth('id-1548252552391'),
+          ])
+        )
+        .dispatch(scheduleDeleteRange('id-1548252556587'))
+        .silentRun();
+    });
+
+    test('fixture 3 - failing test case: delete nested (collapse)', async () => {
+      await expectSaga(rangeSaga)
+        .withState(require('../../../state-fixtures/delete-nested-3'))
+        .put(
+          rangeMutations([
+            deleteRange('id-1548252950570'),
+            deleteRange('id-1548252958357'),
+            decreaseRangeDepth('id-1548252966435'),
+            decreaseRangeDepth('id-1548252978957'),
+            updateRangeTime('id-1548252948296', { endTime: 37224.52512155592 }),
+            updateRangeTime('id-1548252952405', { endTime: 37224.52512155592 }),
+          ])
+        )
+        .dispatch(scheduleDeleteRange('id-1548252950570'))
+        .silentRun();
+    });
   });
 
   describe('get sticky point delta', () => {

@@ -140,16 +140,88 @@ function* calculateRedundantSizes(toRemoveIds) {
   return allRanges
     .filter(range => toRemoveIds.indexOf(range.id) === -1)
     .filter(filterOnlyGroupingRanges)
+    .sort((a, b) => (a.depth === b.depth ? 0 : a.depth < b.depth ? -1 : 1))
     .reduce((acc, next) => {
-      const childRanges = allRanges.filter(
-        range =>
-          // Not already removed
-          toRemoveIds.indexOf(range.id) === -1 &&
-          // Is within the parent bubble.
-          bubbleIsWithin(next, range)
-      );
+      const filteredChildren = allRanges
+        .filter(
+          range =>
+            // Not already removed
+            acc.indexOf(range.id) === -1 &&
+            // Is within the parent bubble.
+             bubbleIsWithin(next, range)
+        );
+
+      const sortedChildren = filteredChildren.sort((a, b) => {
+        if (b.depth !== a.depth) {
+          return b.depth - a.depth;
+        }
+
+        if (a.endTime < b.endTime) {
+          return -1;
+        }
+        if (a.endTime > b.endTime) {
+          return 1;
+        }
+        return 0;
+      });
+
+      const reducedChildren = sortedChildren.reduce(
+        (ac, n) => {
+          let push = false;
+          if (n.startTime < ac.min) {
+            ac.min = n.startTime;
+            push = true;
+          }
+          if (n.endTime > ac.max) {
+            ac.max = n.endTime;
+            push = true;
+          }
+          if (push) {
+            ac.list.push(n);
+          }
+          return ac;
+        },
+        { min: Infinity, max: 0, list: [] }
+      ).list;
+
+
+
+      // const childRanges = allRanges
+      //   .filter(
+      //     range =>
+      //       // Not already removed
+      //       acc.indexOf(range.id) === -1 &&
+      //       // Is within the parent bubble.
+      //       bubbleIsWithin(next, range)
+      //   )
+      //   .sort((a, b) => {
+      //     if (a.endTime < b.endTime) {
+      //       return 1;
+      //     }
+      //     if (a.endTime === b.endTime) {
+      //       if (a.depth < b.depth) {
+      //         return 1;
+      //       }
+      //       return -1;
+      //     }
+      //     return -1;
+      //   })
+      //   .reduce(
+      //     (ac, n) => {
+      //       if (n.endTime > ac.max) {
+      //         ac.max = n.endTime;
+      //         ac.list.push(n);
+      //       }
+      //       return ac;
+      //     },
+      //     { max: 0, list: [] }
+      //   ).list;
+
+      // if (next.id === 'id-1548252958357') {
+      //   console.log(next);
+      // }
       // If there is only one child, we need to remove it.
-      if (childRanges.length === 1) {
+      if (reducedChildren.length === 1) {
         acc.push(next.id);
       }
       return acc;
@@ -539,119 +611,51 @@ function* deleteRangeRequest(toRemoveIds) {
   // Create new list of bubbles
   // Run through a validation step to ensure they are of the correct level.
   const remainingRanges = rangeArray
-    .filter(range => redundantSizes.indexOf(range.id) === -1)
-    .sort((a, b) => a.endTime - a.startTime - b.endTime - b.startTime);
-  const maxDepths = [];
-  const depthMutations = remainingRanges.reduce(
-    (depthChanges, range, index) => {
-      if (range.depth > 1) {
-        maxDepths[index] = Math.max.apply(
-          null,
-          remainingRanges
-            .slice(0, index)
-            .map((possibleContainment, idx) =>
-              range.startTime <= possibleContainment.startTime &&
-              range.endTime >= possibleContainment.endTime
-                ? maxDepths[idx] + 1 || 1
-                : 1
-            )
-        );
-      } else {
-        maxDepths[index] = range.depth;
-      }
-      if (range.depth !== maxDepths[index]) {
-        if (range.depth < maxDepths[index]) {
-          depthChanges.push(increaseRangeDepth(range.id));
-        } else {
-          depthChanges.push(decreaseRangeDepth(range.id));
-        }
-      }
-      return depthChanges;
-    },
-    []
-  );
+    .filter(range => redundantSizes.indexOf(range.id) === -1 && range.depth > 1)
+    .sort((a, b) => (a.depth === b.depth ? 0 : a.depth < b.depth ? -1 : 1));
 
-  /*
-  const rangesSorted = Object.values(state).sort(
-    (a, b) =>
-      a[RANGE.END_TIME] -
-      a.startTime -
-      (b[RANGE.END_TIME] - b[RANGE.START_TIME])
-  );
-  const maxDepths = [];
-  return update(
-    state,
-    rangesSorted.reduce((depthChanges, bubble, index) => {
-      if (bubble[RANGE.DEPTH] > 1) {
-        maxDepths[index] = Math.max.apply(
-          null,
-          rangesSorted
-            .slice(0, index)
-            .map((possibleContainment, idx) =>
-              bubble[RANGE.START_TIME] <=
-                possibleContainment[RANGE.START_TIME] &&
-              bubble[RANGE.END_TIME] >= possibleContainment[RANGE.END_TIME]
-                ? maxDepths[idx] + 1 || 1
-                : 1
-            )
-        );
-      } else {
-        maxDepths[index] = bubble[RANGE.DEPTH];
-      }
-      if (bubble[RANGE.DEPTH] !== maxDepths[index]) {
-        depthChanges[bubble.id] = {
-          [RANGE.DEPTH]: {
-            $set: maxDepths[index],
-          },
-        };
-        if (DEFAULT_COLOURS.indexOf(bubble[RANGE.COLOUR] !== -1)) {
-          depthChanges[bubble.id][RANGE.COLOUR] = {
-            $set:
-              DEFAULT_COLOURS[maxDepths[index] % DEFAULT_COLOURS.length],
-          };
-        }
-      }
-      return depthChanges;
-    }, {})
+  const depthMutations = [];
+  const newDepthMap = {};
+  for (const parent of remainingRanges) {
+    const rangeChildren = (yield select(
+      getRangesBetweenTimes(parent.startTime, parent.endTime)
+    )).filter(
+      range => range.id !== parent.id && redundantSizes.indexOf(range.id) === -1
+    );
 
-  */
+    // This is an error case, should not happen.
+    if (!rangeChildren.length) continue;
 
-  // const depthMutations = [];
-  // for (let removeId of toRemoveIds) {
-  //   const { startTime, endTime } = yield select(getRangeById(removeId));
-  //   // Get the bubbles inside of the selection.
-  //   const rangeBubbles = yield select(
-  //     getRangesBetweenTimes(startTime, endTime)
-  //   );
-  //
-  //   // Get the parent bubbles for the current range.
-  //   const parentBubbles = yield select(
-  //     getParentBubbles({ startTime, endTime })
-  //   );
-  //
-  //   // Calculate the tallest bubble in the selection
-  //   const depth =
-  //     Math.max(
-  //       ...rangeBubbles
-  //         .filter(range => redundantSizes.indexOf(range.id) !== -1)
-  //         .map(range => range.depth)
-  //     ) || 1;
-  //
-  //   // Calculate any changes to parent bubble depths.
-  //   depthMutations.push(
-  //     yield call(resolveParentDepths, depth, parentBubbles, -1)
-  //   );
-  // }
-  // const flatDepthMutations = depthMutations.reduce(
-  //   (acc, next) => [...acc, ...next],
-  //   []
-  // );
+    const maxDepthOfChildren = Math.max(
+      ...rangeChildren.map(range => newDepthMap[range.id] || range.depth)
+    );
+
+    if (maxDepthOfChildren + 1 === parent.depth) continue;
+
+    if (maxDepthOfChildren + 1 < parent.depth) {
+      newDepthMap[parent.id] = parent.depth - 1;
+      depthMutations.push(decreaseRangeDepth(parent.id));
+    } else {
+      newDepthMap[parent.id] = parent.depth + 1;
+      depthMutations.push(increaseRangeDepth(parent.id));
+    }
+  }
 
   // Make remaining ranges grow right (or left if that's not possible)
   const sizeMutations = [];
 
   for (let deletedId of redundantSizes) {
     const rangeToRemove = rangeList[deletedId];
+
+    // Need to check if this range has children first, children grow inside so
+    // no sibling bubbles will change size in this case.
+    const rangeChildren = (yield select(
+      getRangesBetweenTimes(rangeToRemove.startTime, rangeToRemove.endTime)
+    )).filter(range => range.id !== rangeToRemove.id);
+
+    if (rangeChildren.length) {
+      continue;
+    }
 
     const parentBubbles = yield select(getParentBubbles(rangeToRemove));
     const parentRange = parentBubbles.find(range => {
@@ -752,172 +756,7 @@ function* deleteRangeRequest(toRemoveIds) {
     }
   }
 
-  // 1. Loop through deleted bubbles
-  // 2. look right, check if parents are equal, if so change the right bubble startTime
-  // 3. look left, check if parents are equal, if so change the left bubble endTime
-  // 4. else.. should this happen? Delete the parent?
-
-  // BIG NOTE: this will also have to do the same for redundant bubbles.
-  // Look right = find ALL BUBBLES that end === start
-  // Look left = find ALL BUBBLES that start === end
-  // We could run the move point co-routine (but its fuzzy and does its own deleting)
-
   yield put(rangeMutations([...toRemove, ...depthMutations, ...sizeMutations]));
-
-  return;
-  const ranges = Object.values(yield select(getRangeList))
-    .sort((a, b) => b.endTime - b.startTime - (a.endTime - a.startTime))
-    .filter(range => ids.indexOf(range.id) === -1);
-
-  const result = ranges.reduce(
-    ({ prev, mutationList, prevDepth }, next) => {
-      if (prev) {
-        if (
-          prev.startTime === next.startTime &&
-          prev.endTime === next.startTime
-        ) {
-          mutationList.push(deleteRange(next.id));
-          return { prev: null, mutationList };
-        }
-
-        if (prev.depth - 1 > next.depth) {
-          mutationList.push(decreaseRangeDepth(prev.id));
-        }
-      }
-
-      return {
-        prev: prev && prev.endTime < next.startTime ? prev : next,
-        mutationList,
-      };
-    },
-    { prev: null, prevDepth: 0, mutationList: mutations }
-  );
-
-  yield put(rangeMutations(result.mutationList));
-
-  /*
-  ranges.forEach((item, index, array) => {
-    if (index > 0) {
-      const previousItem = array[index - 1];
-      if (
-        previousItem.startTime === item.startTime &&
-        previousItem.endTime === item.endTime
-      ) {
-        mutations.push(
-          deleteRange(
-            previousItem[RANGE.DEPTH] > item[RANGE.DEPTH]
-              ? previousItem.id
-              : item.id
-          )
-        );
-      }
-    }
-  });
-
-  // Updates the depths of items after deleting.
-  const maxDepths = [];
-  ranges.forEach((bubble, index) => {
-    if (bubble.depth > 1) {
-      maxDepths[index] = Math.max.apply(
-        null,
-        ranges
-          .slice(0, index)
-          .map((found, idx) =>
-            bubble.startTime <= found.startTime &&
-            bubble.endTime >= found.endTime
-              ? maxDepths[idx] + 1 || 1
-              : 1
-          )
-      );
-    } else {
-      maxDepths[index] = bubble.depth;
-    }
-    if (bubble.depth !== maxDepths[index]) {
-      mutations.push({
-        type: DECREASE_RANGE_DEPTH,
-        payload: { id: bubble.id },
-      });
-    }
-  });
-  */
-
-  /*
-  case UPDATE_DEPTHS_AFTER_DELETE:
-  const rangesSorted = Object.values(state).sort(
-    (a, b) =>
-      a[RANGE.END_TIME] -
-      a.startTime -
-      (b[RANGE.END_TIME] - b[RANGE.START_TIME])
-  );
-  const maxDepths = [];
-  return update(
-    state,
-    rangesSorted.reduce((depthChanges, bubble, index) => {
-      if (bubble[RANGE.DEPTH] > 1) {
-        maxDepths[index] = Math.max.apply(
-          null,
-          rangesSorted
-            .slice(0, index)
-            .map((possibleContainment, idx) =>
-              bubble[RANGE.START_TIME] <=
-                possibleContainment[RANGE.START_TIME] &&
-              bubble[RANGE.END_TIME] >= possibleContainment[RANGE.END_TIME]
-                ? maxDepths[idx] + 1 || 1
-                : 1
-            )
-        );
-      } else {
-        maxDepths[index] = bubble[RANGE.DEPTH];
-      }
-      if (bubble[RANGE.DEPTH] !== maxDepths[index]) {
-        depthChanges[bubble.id] = {
-          [RANGE.DEPTH]: {
-            $set: maxDepths[index],
-          },
-        };
-        if (DEFAULT_COLOURS.indexOf(bubble[RANGE.COLOUR] !== -1)) {
-          depthChanges[bubble.id][RANGE.COLOUR] = {
-            $set:
-              DEFAULT_COLOURS[maxDepths[index] % DEFAULT_COLOURS.length],
-          };
-        }
-      }
-      return depthChanges;
-    }, {})
-  );
-  */
-  /* deleteRedundantSizes
-
-  const removals = {
-        $unset: [],
-      };
-      Object.values(state)
-        .sort(
-          (a, b) =>
-            b[RANGE.END_TIME] -
-            b[RANGE.START_TIME] -
-            (a[RANGE.END_TIME] - a[RANGE.START_TIME])
-        )
-        .forEach((item, index, array) => {
-          if (index > 0) {
-            const previousItem = array[index - 1];
-            if (
-              previousItem[RANGE.START_TIME] === item[RANGE.START_TIME] &&
-              previousItem[RANGE.END_TIME] === item[RANGE.END_TIME]
-            ) {
-              removals.$unset.push(
-                previousItem[RANGE.DEPTH] > item[RANGE.DEPTH]
-                  ? previousItem.id
-                  : item.id
-              );
-            }
-          }
-        });
-      return removals.$unset.length > 0 ? update(state, removals) : state;
-   */
-  // @todo
-  // yield put(deleteRedundantSizes());
-  // yield put(updateDepthsAfterDelete());
 }
 
 function* singleDelete({ payload: { id } }) {
