@@ -572,7 +572,7 @@ describe('sagas/range-saga', () => {
             selectRange('range-2'),
           ])
         )
-        .put(deselectRange('range-2'))
+        .put({ ...deselectRange('range-2'), meta: { fromSaga: true }})
         .dispatch(selectRange('range-1', true))
         .silentRun();
     });

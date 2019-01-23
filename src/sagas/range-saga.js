@@ -521,17 +521,18 @@ function* deselectOtherRanges(id) {
 
   yield* (selected || [])
     .filter(range => range !== id)
-    .map(range => put(deselectRange(range)));
+    .map(range => put({ ...deselectRange(range), meta: { fromSaga: true } }));
 }
 
 function* selectRangeSaga({ payload }) {
-  yield call(playWhenBubbleIsClicked, payload.id, true);
   if (payload.deselectOthers) {
     yield call(deselectOtherRanges, payload.id);
   }
+  yield call(playWhenBubbleIsClicked, payload.id, true);
 }
 
-function* deselectRangeSaga({ payload }) {
+function* deselectRangeSaga({ payload, meta }) {
+  if (meta && meta.fromSaga) return;
   yield call(playWhenBubbleIsClicked, payload.id, false);
 }
 

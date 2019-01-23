@@ -16,8 +16,10 @@ const composeEnhancers =
       })
     : compose;
 
+const monitor = typeof window === 'object' && window.__SAGA_MONITOR_EXTENSION__;
+
 export default function configureStore(wAudio, fresh = false) {
-  const sagaMiddleware = createSagaMiddleware();
+  const sagaMiddleware = createSagaMiddleware({ sagaMonitor: monitor });
   const persistedReducer = persistReducer(
     {
       key: 'timeliner-root' + wAudio,
