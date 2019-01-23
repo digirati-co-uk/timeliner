@@ -518,13 +518,10 @@ export function* currentTimeSaga() {
 function* deselectOtherRanges(id) {
   // Deselection of ranges.
   const selected = yield select(getSelectedRanges);
-  yield put(
-    rangeMutations(
-      (selected || [])
-        .filter(range => range !== id)
-        .map(range => deselectRange(range))
-    )
-  );
+
+  yield* (selected || [])
+    .filter(range => range !== id)
+    .map(range => put(deselectRange(range)));
 }
 
 function* selectRangeSaga({ payload }) {

@@ -10,7 +10,7 @@ import {
   UPDATE_RANGE,
   UPDATE_RANGE_TIME,
   CREATE_RANGE,
-  RANGE,
+  RANGE, RANGE_MUTATION,
 } from '../constants/range';
 import { setDescription, setLanguage, setTitle } from '../actions/project';
 import {
@@ -20,6 +20,7 @@ import {
   updateRange,
   updateRangeTime,
 } from '../actions/range';
+import { undo } from '../reducers/range';
 
 const undoActions = [
   // Done
@@ -55,46 +56,13 @@ export default createUndoMiddleware({
       action: (action, language) => setLanguage(language),
       createArgs: state => state.project.language,
     },
-    [MOVE_POINT]: action =>
-      movePoint(action.payload.originalX, action.payload.x),
     [UPDATE_RANGE]: {
       action: (action, range) => updateRange(range.id, range),
       createArgs: (state, action) => state.range[action.payload.id],
     },
-    [UPDATE_RANGE_TIME]: {
-      action: (action, { startTime, endTime }) =>
-        updateRangeTime(action.payload.id, { startTime, endTime }),
-      createArgs: (state, action) => state.range[action.payload.id],
-    },
-    [DELETE_RANGE]: {
-      action: (action, range) => {
-        return {
-          type: CREATE_RANGE,
-          payload: range,
-        };
-      },
-      createArgs: (state, action) => {
-        const oldRange = state.range[action.payload.id];
-        const rangeToSplitAr = Object.values(state.range)
-          .filter(range => {
-            return (
-              range.endTime === oldRange.startTime ||
-              range.startTime === oldRange.endTime
-            );
-          })
-          .sort((b1, b2) => b1[RANGE.DEPTH] - b2[RANGE.DEPTH]);
-        const rangeToSplit = rangeToSplitAr.length
-          ? rangeToSplitAr[0].id
-          : null;
-
-        return {
-          ...state.range[action.payload.id],
-          splits: rangeToSplit,
-        };
-      },
-    },
-    [CREATE_RANGE]: action => {
-      return scheduleDeleteRange(action.payload.id);
+    [RANGE_MUTATION]: {
+      action: (action, undoAction) => undoAction,
+      createArgs: (state, action) => undo(state.range, action),
     },
   },
 });

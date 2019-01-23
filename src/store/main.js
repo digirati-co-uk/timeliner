@@ -29,7 +29,7 @@ export default function configureStore(wAudio, fresh = false) {
   const store = createStore(
     persistedReducer,
     {},
-    composeEnhancers(applyMiddleware(sagaMiddleware, undoMiddleware))
+    composeEnhancers(applyMiddleware(undoMiddleware, sagaMiddleware))
   );
   const persistor = persistStore(store);
 

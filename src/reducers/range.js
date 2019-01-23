@@ -14,7 +14,8 @@ import {
   DECREASE_RANGE_DEPTH,
 } from '../constants/range';
 import {
-  decreaseRangeDepth,
+  createRange,
+  decreaseRangeDepth, deleteRange,
   increaseRangeDepth,
   rangeMutations,
   updateRange,
@@ -33,7 +34,10 @@ export function undo(prevState, action) {
     );
   }
 
-  const prevResource = prevState.list[action.payload.id];
+  const prevResource = action.payload.id
+    ? prevState.list[action.payload.id]
+    : null;
+
   if (action.type === INCREASE_RANGE_DEPTH) {
     return decreaseRangeDepth(action.payload.id);
   }
@@ -58,6 +62,14 @@ export function undo(prevState, action) {
       toRevert.endTime = prevResource.endTime;
     }
     return updateRangeTime(action.payload.id, toRevert);
+  }
+
+  if (action.type === CREATE_RANGE) {
+    return deleteRange(action.payload.id);
+  }
+
+  if (action.type === DELETE_RANGE) {
+    return createRange(prevResource);
   }
   return {};
 }
