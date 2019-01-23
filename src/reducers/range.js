@@ -55,10 +55,10 @@ export function undo(prevState, action) {
   }
   if (action.type === UPDATE_RANGE_TIME) {
     const toRevert = {};
-    if (action.payload.startTime) {
+    if (typeof action.payload.startTime !== 'undefined') {
       toRevert.startTime = prevResource.startTime;
     }
-    if (action.payload.endTime) {
+    if (typeof action.payload.endTime !== 'undefined') {
       toRevert.endTime = prevResource.endTime;
     }
     return updateRangeTime(action.payload.id, toRevert);
