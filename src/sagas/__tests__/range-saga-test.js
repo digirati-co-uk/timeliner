@@ -30,6 +30,7 @@ import {
   setCurrentTime,
 } from '../../actions/viewState';
 import { SET_CURRENT_TIME } from '../../constants/viewState';
+import { updateSettings } from '../../actions/project';
 
 describe('sagas/range-saga', () => {
   function mockedRangeState(actions) {
@@ -564,13 +565,14 @@ describe('sagas/range-saga', () => {
       await expectSaga(rangeSaga)
         .withState(
           mockedRangeState([
+            updateSettings({ startPlayingWhenBubbleIsClicked: false }),
             createRange({ id: 'range-1' }),
             createRange({ id: 'range-2' }),
             createRange({ id: 'range-3' }),
             selectRange('range-2'),
           ])
         )
-        .put(rangeMutations([deselectRange('range-2')]))
+        .put(deselectRange('range-2'))
         .dispatch(selectRange('range-1', true))
         .silentRun();
     });
