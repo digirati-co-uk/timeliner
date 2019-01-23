@@ -123,6 +123,11 @@ const range = (state = NEW_DEFAULT_RANGES_STATE, action) => {
       });
 
     case UPDATE_RANGE_TIME:
+      if (!state.list[action.payload.id]) {
+        console.warn('Cannot update range that does not exist', action);
+        return state;
+      }
+
       return update(state, {
         list: {
           [action.payload.id]: {
@@ -243,6 +248,5 @@ export const getPoints = state =>
       return markers;
     }, new Set([]))
   ).sort();
-
 
 export default range;

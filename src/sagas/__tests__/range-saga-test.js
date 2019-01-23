@@ -1176,6 +1176,7 @@ describe('sagas/range-saga', () => {
         .dispatch(scheduleDeleteRange('id-1548251126620'))
         .silentRun();
     });
+
     test('fixture 1 - failing case: delete-nested (right)', async () => {
       await expectSaga(rangeSaga)
         .withState(require('../../../state-fixtures/delete-nested'))
