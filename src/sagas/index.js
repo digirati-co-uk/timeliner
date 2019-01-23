@@ -150,7 +150,7 @@ function* saveRange({ payload }) {
   yield put(editMetadata(null));
 }
 
-function* showConfirmation(message) {
+export function* showConfirmation(message) {
   yield put(openVerifyDialog(message));
 
   const { yes } = yield race({
@@ -736,8 +736,8 @@ export default function* root() {
   yield all([
     rangeSaga(),
     // Delete ranges
-    takeEvery(SCHEDULE_DELETE_RANGE, singleDelete),
-    takeEvery(SCHEDULE_DELETE_RANGES, multiDelete),
+    // takeEvery(SCHEDULE_DELETE_RANGE, singleDelete),
+    // takeEvery(SCHEDULE_DELETE_RANGES, multiDelete),
 
     takeEvery(IMPORT_DOCUMENT, importDocument),
     // takeEvery(UPDATE_RANGE, saveRange),
@@ -746,13 +746,13 @@ export default function* root() {
     // takeEvery(NEXT_BUBBLE, nextBubble),
     takeEvery(EXPORT_DOCUMENT, exportDocument),
     takeEvery(SAVE_PROJECT_METADATA, saveProjectMetadata),
-    takeEvery(SELECT_RANGE, selectSideEffects),
-    takeLatest(SELECT_RANGE, currentTimeSideEffects),
-    takeEvery(SELECT_RANGE, selectRange),
-    takeEvery(SPLIT_RANGE_AT, splitRange),
-    takeEvery(GROUP_RANGES, groupRanges),
+    // takeEvery(SELECT_RANGE, selectSideEffects),
+    // takeLatest(SELECT_RANGE, currentTimeSideEffects),
+    // takeEvery(SELECT_RANGE, selectRange),
+    // takeEvery(SPLIT_RANGE_AT, splitRange),
+    // takeEvery(GROUP_RANGES, groupRanges),
     // takeEvery(DELETE_RANGE, deleteRangeAction),
-    takeEvery(MOVE_POINT, movePointAction),
+    // takeEvery(MOVE_POINT, movePointAction),
     // takeEvery(CREATE_RANGE, createRange),
   ]);
 }

@@ -4,9 +4,8 @@ module.exports = require('babel-jest').createTransformer({
     [
       require.resolve('@babel/preset-env'),
       {
-        useBuiltIns: 'usage',
         targets: {
-          node: 'current',
+          browsers: 'last 1 chrome versions',
         },
       },
     ],

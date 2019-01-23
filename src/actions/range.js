@@ -33,9 +33,6 @@ export const rangeMutations = mutations => ({
   mutations,
 });
 
-/**
- * @deprecated
- */
 export const groupSelectedRanges = () => ({
   type: GROUP_RANGES,
 });
@@ -45,9 +42,9 @@ export const selectRange = (id, deselectOthers) => ({
   payload: { id, deselectOthers },
 });
 
-export const increaseRangeDepth = id => ({
+export const increaseRangeDepth = (id, factor = 1) => ({
   type: INCREASE_RANGE_DEPTH,
-  payload: { id },
+  payload: { id, factor },
 });
 
 export const decreaseRangeDepth = id => ({

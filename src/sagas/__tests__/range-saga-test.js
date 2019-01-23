@@ -1,15 +1,21 @@
 import { expectSaga, testSaga } from 'redux-saga-test-plan';
+import * as matchers from 'redux-saga-test-plan/matchers';
 import rangeSaga, {
-  currentTimeSideEffects,
+  createRangeAction,
+  currentTimeSaga,
   getStickyPointDelta,
 } from '../range-saga';
 import reducer from '../../reducers/root';
 import {
   createRange,
+  decreaseRangeDepth,
   deleteRange,
   deselectRange,
+  groupSelectedRanges,
+  increaseRangeDepth,
   movePoint,
   rangeMutations,
+  scheduleDeleteRange,
   selectRange,
   updateRange,
   updateRangeTime,
@@ -344,6 +350,42 @@ describe('sagas/range-saga', () => {
         .dispatch(updateAction)
         .silentRun();
     });
+
+    test('when a range is saved with a endTime, it will run through the same move point logic', async () => {
+      // From 1000 to 2000, this will override range with id 2.
+      const updateAction = updateRange('1', {
+        label: 'Testing label',
+        summary: 'Testing summary',
+        endTime: 2000,
+      });
+
+      const {
+        startTime: _1,
+        endTime: _2,
+        ...expectedPayload
+      } = updateAction.payload;
+
+      await expectSaga(rangeSaga)
+        .withState(
+          mockedRangeState([
+            createRange({ id: '1', startTime: 0, endTime: 1000 }),
+            createRange({ id: '2', startTime: 1000, endTime: 2000 }),
+          ])
+        )
+        .put(
+          rangeMutations([
+            {
+              type: 'UPDATE_RANGE',
+              payload: expectedPayload,
+            },
+            updateRangeTime('1', { endTime: 2000 }),
+            deleteRange('2'),
+          ])
+        )
+        .put(editMetadata(null))
+        .dispatch(updateAction)
+        .silentRun();
+    });
   });
 
   describe('select range saga', () => {
@@ -376,9 +418,9 @@ describe('sagas/range-saga', () => {
     });
   });
 
-  describe('current time side-effects', () => {
+  describe('current time saga', () => {
     test('it will not run if there is nothing selected', () => {
-      testSaga(currentTimeSideEffects)
+      testSaga(currentTimeSaga)
         .next()
         .next({
           startPlayingAtEndOfSection: true,
@@ -389,7 +431,7 @@ describe('sagas/range-saga', () => {
     });
 
     test('start playing at the end of section', () => {
-      testSaga(currentTimeSideEffects)
+      testSaga(currentTimeSaga)
         .next()
         .next({
           startPlayingAtEndOfSection: true,
@@ -411,10 +453,15 @@ describe('sagas/range-saga', () => {
         .next(setCurrentTime(1500))
         .take(SET_CURRENT_TIME)
         .next(setCurrentTime(2000))
-        .put(setCurrentTime(0));
+        .put(setCurrentTime(0))
+        .next()
+        .take(SET_CURRENT_TIME)
+        .next(setCurrentTime(0)) // simulate the PUT
+        .take(SET_CURRENT_TIME);
     });
+
     test('stop playing at the end of section', () => {
-      testSaga(currentTimeSideEffects)
+      testSaga(currentTimeSaga)
         .next()
         .next({
           startPlayingAtEndOfSection: false,
@@ -436,9 +483,615 @@ describe('sagas/range-saga', () => {
         .next(setCurrentTime(1500))
         .take(SET_CURRENT_TIME)
         .next(setCurrentTime(2000))
-        .put(pause());
+        .put(pause())
+        .next()
+        .take(SET_CURRENT_TIME);
     });
-    test('neither option', () => {});
+
+    test('neither option', () => {
+      testSaga(currentTimeSaga)
+        .next()
+        .next({
+          startPlayingAtEndOfSection: false,
+          stopPlayingAtTheEndOfSection: false,
+        })
+        .next(['test-1', 'test-2'])
+        .next([
+          { id: 'test-1', startTime: 0, endTime: 1000 },
+          { id: 'test-2', startTime: 1000, endTime: 2000 },
+        ])
+        // In the while loop
+        .take(SET_CURRENT_TIME)
+        .next(setCurrentTime(100))
+        .take(SET_CURRENT_TIME)
+        .next(setCurrentTime(500))
+        .take(SET_CURRENT_TIME)
+        .next(setCurrentTime(1000))
+        .take(SET_CURRENT_TIME)
+        .next(setCurrentTime(1500))
+        .take(SET_CURRENT_TIME)
+        .next(setCurrentTime(2000))
+        .take(SET_CURRENT_TIME);
+    });
+
+    test('if user skips more than 1 second, saga stops', () => {
+      testSaga(currentTimeSaga)
+        .next()
+        .next({
+          startPlayingAtEndOfSection: false,
+          stopPlayingAtTheEndOfSection: false,
+        })
+        .next(['test-1', 'test-2'])
+        .next([
+          { id: 'test-1', startTime: 0, endTime: 1000 },
+          { id: 'test-2', startTime: 1000, endTime: 2000 },
+        ])
+        // In the while loop
+        .take(SET_CURRENT_TIME)
+        .next(setCurrentTime(100))
+        .take(SET_CURRENT_TIME)
+        .next(setCurrentTime(1101))
+        .isDone();
+    });
+
+    test('if user skips backwards more than 1 second, saga stops', () => {
+      testSaga(currentTimeSaga)
+        .next()
+        .next({
+          startPlayingAtEndOfSection: false,
+          stopPlayingAtTheEndOfSection: false,
+        })
+        .next(['test-1', 'test-2'])
+        .next([
+          { id: 'test-1', startTime: 0, endTime: 1000 },
+          { id: 'test-2', startTime: 1000, endTime: 2000 },
+        ])
+        // In the while loop
+        .take(SET_CURRENT_TIME)
+        .next(setCurrentTime(100))
+        .take(SET_CURRENT_TIME)
+        .next(setCurrentTime(500))
+        .take(SET_CURRENT_TIME)
+        .next(setCurrentTime(1100))
+        .take(SET_CURRENT_TIME)
+        .next(setCurrentTime(99))
+        .isDone();
+    });
+  });
+
+  describe('select range', () => {
+    test('it can deselect range', async () => {
+      await expectSaga(rangeSaga)
+        .withState(
+          mockedRangeState([
+            createRange({ id: 'range-1' }),
+            createRange({ id: 'range-2' }),
+            createRange({ id: 'range-3' }),
+            selectRange('range-2'),
+          ])
+        )
+        .put(rangeMutations([deselectRange('range-2')]))
+        .dispatch(selectRange('range-1', true))
+        .silentRun();
+    });
+
+    test('it can still select multiple', async () => {
+      await expectSaga(rangeSaga)
+        .withReducer(reducer)
+        .withState(
+          mockedRangeState([
+            createRange({ id: 'range-1', startTime: 0, endTime: 1000 }),
+            createRange({ id: 'range-2', startTime: 1000, endTime: 2000 }),
+            createRange({ id: 'range-3', startTime: 2000, endTime: 3000 }),
+            selectRange('range-2'),
+          ])
+        )
+        .dispatch(selectRange('range-1', false))
+        .silentRun()
+        .then(result => {
+          expect(result.storeState.range.selected).toEqual([
+            'range-2',
+            'range-1',
+          ]);
+        });
+    });
+  });
+
+  describe('group ranges', () => {
+    const rangeCreatorMock = () => {
+      let i = 0;
+      return {
+        call(effect, next) {
+          // Check for the API call to return fake value
+          if (effect.fn === createRangeAction) {
+            i += 1;
+            return createRange({ ...effect.args[0], id: `mocked-id-${i}` });
+          }
+
+          // Allow Redux Saga to handle other `call` effects
+          return next();
+        },
+      };
+    };
+
+    test('it can group simple ranges', async () => {
+      await expectSaga(rangeSaga)
+        .provide(rangeCreatorMock())
+        .withState(
+          mockedRangeState([
+            createRange({ id: 'r1', startTime: 0, endTime: 1000 }),
+            createRange({ id: 'r2', startTime: 1000, endTime: 2000 }),
+            createRange({ id: 'r3', startTime: 2000, endTime: 3000 }),
+            createRange({ id: 'r4', startTime: 3000, endTime: 4000 }),
+            selectRange('r2', false),
+            selectRange('r3', false),
+          ])
+        )
+        .put(
+          rangeMutations([
+            deselectRange('r2'),
+            deselectRange('r3'),
+            createRange({
+              id: 'mocked-id-1',
+              startTime: 1000,
+              endTime: 3000,
+              depth: 2,
+            }),
+            selectRange('mocked-id-1'),
+          ])
+        )
+        .dispatch(groupSelectedRanges())
+        .silentRun();
+    });
+
+    test('it can group a span of ranges', async () => {
+      await expectSaga(rangeSaga)
+        .provide(rangeCreatorMock())
+        .withState(
+          mockedRangeState([
+            createRange({ id: 'r1', startTime: 0, endTime: 1000 }),
+            createRange({ id: 'r2', startTime: 1000, endTime: 2000 }),
+            createRange({ id: 'r3', startTime: 2000, endTime: 3000 }),
+            createRange({ id: 'r4', startTime: 3000, endTime: 4000 }),
+            selectRange('r2', false),
+            selectRange('r4', false),
+          ])
+        )
+        .put(
+          rangeMutations([
+            deselectRange('r2'),
+            deselectRange('r4'),
+            createRange({
+              id: 'mocked-id-1',
+              startTime: 1000,
+              endTime: 4000,
+              depth: 2,
+            }),
+            selectRange('mocked-id-1'),
+          ])
+        )
+        .dispatch(groupSelectedRanges())
+        .silentRun();
+    });
+
+    test('it can group a range that is nested (left)', async () => {
+      await expectSaga(rangeSaga)
+        .provide(rangeCreatorMock())
+        .withState(
+          mockedRangeState([
+            createRange({ id: 'r1', startTime: 0, endTime: 1000 }),
+            createRange({ id: 'r2', startTime: 1000, endTime: 2000 }),
+            createRange({ id: 'r3', startTime: 2000, endTime: 3000 }),
+            createRange({ id: 'r4', startTime: 1000, endTime: 3000, depth: 2 }),
+            createRange({ id: 'r5', startTime: 3000, endTime: 4000 }),
+            selectRange('r1', false),
+            selectRange('r4', false),
+          ])
+        )
+        .put(
+          rangeMutations([
+            deselectRange('r1'),
+            deselectRange('r4'),
+            createRange({
+              id: 'mocked-id-1',
+              startTime: 0,
+              endTime: 3000,
+              depth: 3,
+            }),
+            selectRange('mocked-id-1'),
+          ])
+        )
+        .dispatch(groupSelectedRanges())
+        .silentRun();
+    });
+
+    test('it can group a range that is nested (right)', async () => {
+      await expectSaga(rangeSaga)
+        .provide(rangeCreatorMock())
+        .withState(
+          mockedRangeState([
+            createRange({ id: 'r1', startTime: 0, endTime: 1000 }),
+            createRange({ id: 'r2', startTime: 1000, endTime: 2000 }),
+            createRange({ id: 'r3', startTime: 2000, endTime: 3000 }),
+            createRange({ id: 'r4', startTime: 1000, endTime: 3000, depth: 2 }),
+            createRange({ id: 'r5', startTime: 3000, endTime: 4000 }),
+            selectRange('r2', false),
+            selectRange('r5', false),
+          ])
+        )
+        .put(
+          rangeMutations([
+            deselectRange('r2'),
+            deselectRange('r5'),
+            createRange({
+              id: 'mocked-id-1',
+              startTime: 1000,
+              endTime: 4000,
+              depth: 3,
+            }),
+            selectRange('mocked-id-1'),
+          ])
+        )
+        .dispatch(groupSelectedRanges())
+        .silentRun();
+    });
+
+    test('it can group a range that is between 2 ranges', async () => {
+      await expectSaga(rangeSaga)
+        .provide(rangeCreatorMock())
+        .withState(
+          mockedRangeState([
+            createRange({ id: 'r0', startTime: 0, endTime: 500 }),
+            createRange({ id: 'r1', startTime: 500, endTime: 1000 }),
+            createRange({ id: 'r2', startTime: 1000, endTime: 2000 }),
+            createRange({ id: 'r3', startTime: 2000, endTime: 3000 }),
+            createRange({ id: 'r4', startTime: 3000, endTime: 4000 }),
+            createRange({
+              id: 'r1-4',
+              startTime: 500,
+              endTime: 4000,
+              depth: 2,
+            }),
+            createRange({ id: 'r5', startTime: 4000, endTime: 5000 }),
+
+            selectRange('r1', false),
+            selectRange('r2', false),
+          ])
+        )
+        .put(
+          rangeMutations([
+            deselectRange('r1'),
+            deselectRange('r2'),
+            increaseRangeDepth('r1-4'),
+            createRange({
+              id: 'mocked-id-1',
+              startTime: 500,
+              endTime: 2000,
+              depth: 2,
+            }),
+            selectRange('mocked-id-1'),
+          ])
+        )
+        .dispatch(groupSelectedRanges())
+        .silentRun();
+    });
+
+    test('it can group a range that is between 2 ranges and beside another', async () => {
+      await expectSaga(rangeSaga)
+        .provide(rangeCreatorMock())
+        .withState(
+          mockedRangeState([
+            createRange({ id: 'r0', startTime: 0, endTime: 500 }),
+            createRange({ id: 'r1', startTime: 500, endTime: 1000 }),
+            createRange({ id: 'r2', startTime: 1000, endTime: 2000 }),
+            createRange({
+              id: 'r1-2',
+              startTime: 500,
+              endTime: 2000,
+              depth: 2,
+            }),
+            createRange({ id: 'r3', startTime: 2000, endTime: 3000 }),
+            createRange({ id: 'r4', startTime: 3000, endTime: 4000 }),
+            createRange({
+              id: 'r1-4',
+              startTime: 500,
+              endTime: 4000,
+              depth: 3,
+            }),
+            createRange({ id: 'r5', startTime: 4000, endTime: 5000 }),
+
+            selectRange('r3', false),
+            selectRange('r4', false),
+          ])
+        )
+        .put(
+          rangeMutations([
+            deselectRange('r3'),
+            deselectRange('r4'),
+            createRange({
+              id: 'mocked-id-1',
+              startTime: 2000,
+              endTime: 4000,
+              depth: 2,
+            }),
+            selectRange('mocked-id-1'),
+          ])
+        )
+        .dispatch(groupSelectedRanges())
+        .silentRun();
+    });
+
+    test('it can group a range that is between deeply nested (edge-case)', async () => {
+      await expectSaga(rangeSaga)
+        .provide(rangeCreatorMock())
+        .withState(
+          mockedRangeState([
+            createRange({ id: 'r1', startTime: 0, endTime: 500 }),
+            createRange({ id: 'r2', startTime: 500, endTime: 1000 }),
+            createRange({ id: 'r3', startTime: 1000, endTime: 1500 }),
+            createRange({ id: 'r4', startTime: 1500, endTime: 2000 }),
+            createRange({ id: 'r5', startTime: 2000, endTime: 2500 }),
+            createRange({ id: 'r6', startTime: 2500, endTime: 3000 }),
+            createRange({ id: 'r7', startTime: 3000, endTime: 3500 }),
+
+            // groupings.
+            createRange({
+              id: 'r2-7',
+              startTime: 500,
+              endTime: 3500,
+              depth: 3,
+            }),
+            createRange({
+              id: 'r2-6',
+              startTime: 500,
+              endTime: 3000,
+              depth: 2,
+            }),
+            selectRange('r5', false),
+            selectRange('r6', false),
+          ])
+        )
+        .put(
+          rangeMutations([
+            deselectRange('r5'),
+            deselectRange('r6'),
+            increaseRangeDepth('r2-6'),
+            increaseRangeDepth('r2-7'),
+            createRange({
+              id: 'mocked-id-1',
+              startTime: 2000,
+              endTime: 3000,
+              depth: 2,
+            }),
+            selectRange('mocked-id-1'),
+          ])
+        )
+        .dispatch(groupSelectedRanges())
+        .silentRun();
+    });
+  });
+
+  describe('delete range saga', () => {
+    test('simple delete - first in row of 3', async () => {
+      await expectSaga(rangeSaga)
+        .withState(
+          mockedRangeState([
+            createRange({ id: 'r1', startTime: 0, endTime: 500 }),
+            createRange({ id: 'r2', startTime: 500, endTime: 1000 }),
+            createRange({ id: 'r3', startTime: 1000, endTime: 1500 }),
+          ])
+        )
+        .put(
+          rangeMutations([
+            deleteRange('r1'),
+            updateRangeTime('r2', { startTime: 0 }),
+          ])
+        )
+        .dispatch(scheduleDeleteRange('r1'))
+        .silentRun();
+    });
+    test('simple delete - second in row of 3', async () => {
+      await expectSaga(rangeSaga)
+        .withState(
+          mockedRangeState([
+            createRange({ id: 'r1', startTime: 0, endTime: 500 }),
+            createRange({ id: 'r2', startTime: 500, endTime: 1000 }),
+            createRange({ id: 'r3', startTime: 1000, endTime: 1500 }),
+          ])
+        )
+        .put(
+          rangeMutations([
+            deleteRange('r2'),
+            updateRangeTime('r1', { endTime: 1000 }),
+          ])
+        )
+        .dispatch(scheduleDeleteRange('r2'))
+        .silentRun();
+    });
+    test('simple delete - third in row of 3', async () => {
+      await expectSaga(rangeSaga)
+        .withState(
+          mockedRangeState([
+            createRange({ id: 'r1', startTime: 0, endTime: 500 }),
+            createRange({ id: 'r2', startTime: 500, endTime: 1000 }),
+            createRange({ id: 'r3', startTime: 1000, endTime: 1500 }),
+          ])
+        )
+        .put(
+          rangeMutations([
+            deleteRange('r3'),
+            updateRangeTime('r2', { endTime: 1500 }),
+          ])
+        )
+        .dispatch(scheduleDeleteRange('r3'))
+        .silentRun();
+    });
+
+    test('deleting a bubble nested inside another (look left)', async () => {
+      await expectSaga(rangeSaga)
+        .withState(
+          mockedRangeState([
+            createRange({ id: 'r1', startTime: 0, endTime: 500 }),
+            createRange({ id: 'r2', startTime: 500, endTime: 1000 }),
+            createRange({ id: 'r3', startTime: 1000, endTime: 1500 }),
+            createRange({ id: 'r4', startTime: 1500, endTime: 2000 }),
+            // Grouping ranges
+            createRange({
+              id: 'r2-4',
+              startTime: 500,
+              endTime: 2000,
+              depth: 2,
+            }),
+          ])
+        )
+        .put(
+          rangeMutations([
+            deleteRange('r4'),
+            updateRangeTime('r3', { endTime: 2000 }),
+          ])
+        )
+        .dispatch(scheduleDeleteRange('r4'))
+        .silentRun();
+    });
+
+    test('deleting a bubble nested inside another (middle)', async () => {
+      await expectSaga(rangeSaga)
+        .withState(
+          mockedRangeState([
+            createRange({ id: 'r1', startTime: 0, endTime: 500 }),
+            createRange({ id: 'r2', startTime: 500, endTime: 1000 }),
+            createRange({ id: 'r3', startTime: 1000, endTime: 1500 }),
+            createRange({ id: 'r4', startTime: 1500, endTime: 2000 }),
+            // Grouping ranges
+            createRange({
+              id: 'r2-4',
+              startTime: 500,
+              endTime: 2000,
+              depth: 2,
+            }),
+          ])
+        )
+        .put(
+          rangeMutations([
+            deleteRange('r3'),
+            updateRangeTime('r2', { endTime: 1500 }),
+          ])
+        )
+        .dispatch(scheduleDeleteRange('r3'))
+        .silentRun();
+    });
+
+    test('deleting a bubble nested inside another (left)', async () => {
+      await expectSaga(rangeSaga)
+        .withState(
+          mockedRangeState([
+            createRange({ id: 'r1', startTime: 0, endTime: 500 }),
+            createRange({ id: 'r2', startTime: 500, endTime: 1000 }),
+            createRange({ id: 'r3', startTime: 1000, endTime: 1500 }),
+            createRange({ id: 'r4', startTime: 1500, endTime: 2000 }),
+            // Grouping ranges
+            createRange({
+              id: 'r2-4',
+              startTime: 500,
+              endTime: 2000,
+              depth: 2,
+            }),
+          ])
+        )
+        .put(
+          rangeMutations([
+            deleteRange('r2'),
+            updateRangeTime('r3', { startTime: 500 }),
+          ])
+        )
+        .dispatch(scheduleDeleteRange('r2'))
+        .silentRun();
+    });
+
+    test('deleting a bubble nested in side a pair (redundant - left)', async () => {
+      await expectSaga(rangeSaga)
+        .withState(
+          mockedRangeState([
+            createRange({ id: 'r1', startTime: 0, endTime: 500 }),
+            createRange({ id: 'r2', startTime: 500, endTime: 1000 }),
+            createRange({ id: 'r3', startTime: 1000, endTime: 1500 }),
+            createRange({ id: 'r4', startTime: 1500, endTime: 2000 }),
+            // Grouping ranges
+            createRange({
+              id: 'r2-3',
+              startTime: 500,
+              endTime: 1500,
+              depth: 2,
+            }),
+          ])
+        )
+        .put(
+          rangeMutations([
+            deleteRange('r2'),
+            deleteRange('r2-3'),
+            updateRangeTime('r3', { startTime: 500 }),
+          ])
+        )
+        .dispatch(scheduleDeleteRange('r2'))
+        .silentRun();
+    });
+
+    test('deleting a bubble nested in side a pair (redundant - right)', async () => {
+      await expectSaga(rangeSaga)
+        .withState(
+          mockedRangeState([
+            createRange({ id: 'r1', startTime: 0, endTime: 500 }),
+            createRange({ id: 'r2', startTime: 500, endTime: 1000 }),
+            createRange({ id: 'r3', startTime: 1000, endTime: 1500 }),
+            createRange({ id: 'r4', startTime: 1500, endTime: 2000 }),
+            // Grouping ranges
+            createRange({
+              id: 'r2-3',
+              startTime: 500,
+              endTime: 1500,
+              depth: 2,
+            }),
+          ])
+        )
+        .put(
+          rangeMutations([
+            deleteRange('r3'),
+            deleteRange('r2-3'),
+            updateRangeTime('r2', { endTime: 1500 }),
+          ])
+        )
+        .dispatch(scheduleDeleteRange('r3'))
+        .silentRun();
+    });
+
+    test('deleting deeply nested bubble at mid-tier level', async () => {
+      await expectSaga(rangeSaga)
+        .withState(
+          mockedRangeState([
+            createRange({ id: 'r1', startTime: 0, endTime: 500 }),
+            createRange({ id: 'r2', startTime: 500, endTime: 1000 }),
+            createRange({ id: 'r3', startTime: 1000, endTime: 1500 }),
+            createRange({ id: 'r4', startTime: 1500, endTime: 2000 }),
+            createRange({ id: 'r5', startTime: 2000, endTime: 2500 }),
+            // Grouping ranges
+            createRange({
+              id: 'r2-3',
+              startTime: 500,
+              endTime: 1500,
+              depth: 2,
+            }),
+            createRange({
+              id: 'r2-4',
+              startTime: 500,
+              endTime: 2000,
+              depth: 3,
+            }),
+          ])
+        )
+        .put(rangeMutations([deleteRange('r2-3'), decreaseRangeDepth('r2-4')]))
+        .dispatch(scheduleDeleteRange('r2-3'))
+        .silentRun();
+    });
   });
 
   describe('get sticky point delta', () => {
