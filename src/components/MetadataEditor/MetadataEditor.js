@@ -87,16 +87,10 @@ class MetadataEditor extends Component {
     const startTime = state.startTime;
     const endTime = state.endTime;
     if (startTime !== this.props.startTime) {
-      newValues.startTime = {
-        x: startTime,
-        originalX: this.props.startTime,
-      };
+      newValues.startTime = startTime;
     }
     if (endTime !== this.props.endTime) {
-      newValues.endTime = {
-        x: endTime,
-        originalX: this.props.endTime,
-      };
+      newValues.endTime = endTime;
     }
     this.props.onSave(this.props.id, newValues);
   };
