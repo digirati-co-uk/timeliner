@@ -22,7 +22,7 @@ import {
   updateRange,
 } from '../../actions/range';
 import { RANGE } from '../../constants/range';
-import { PROJECT } from '../../constants/project';
+import { PROJECT, PROJECT_SETTINGS_KEYS } from '../../constants/project';
 import { VIEWSTATE } from '../../constants/viewState';
 import {
   importDocument,
@@ -49,6 +49,7 @@ import {
   cancelProjectMetadataEdits,
   saveProjectMetadata,
 } from '../../actions/viewState';
+import { addMarkerAtTime } from '../../actions/markers';
 
 import './VariationsMainView.scss';
 import {getRangeList, getSelectedRanges} from "../../reducers/range";
@@ -154,6 +155,8 @@ class VariationsMainView extends React.Component {
 
   splitRange = () => this.props.splitRangeAt(this.props.currentTime);
 
+  addMarker = () => this.props.addMarkerAtTime(this.props.currentTime);
+
   render() {
     const _points = this.props.points;
     const {
@@ -188,12 +191,10 @@ class VariationsMainView extends React.Component {
             <BubbleEditor />
             <Audio />
             <AudioTransportBar
-              {...{
-                isPlaying,
-                volume,
-                currentTime,
-                runTime,
-              }}
+              isPlaying={isPlaying}
+              volume={volume}
+              currentTime={currentTime}
+              runTime={runTime}
               onVolumeChanged={this.props.setVolume}
               onPlay={this.props.play}
               onPause={this.props.pause}
@@ -215,15 +216,14 @@ class VariationsMainView extends React.Component {
                   ? this.deleteRanges(selectedRanges)
                   : null
               }
+              onAddMarker={this.addMarker}
             />
             <div className="variations-app__metadata-editor">
               <ProjectMetadata
-                {...{
-                  currentTime,
-                  runTime,
-                  manifestLabel,
-                  manifestSummary,
-                }}
+                currentTime={currentTime}
+                runTime={runTime}
+                manifestLabel={manifestLabel}
+                manifestSummary={manifestSummary}
                 ranges={_points}
                 onEdit={this.props.editMetadata}
                 rangeToEdit={rangeToEdit}
@@ -295,6 +295,7 @@ VariationsMainView.propTypes = {
   fastReward: PropTypes.func.isRequired,
   importDocument: PropTypes.func.isRequired,
   exportDocument: PropTypes.func.isRequired,
+  addMarkerAtTime: PropTypes.func.isRequired,
   settings: PropTypes.object,
 };
 
@@ -319,19 +320,10 @@ const mapStateProps = state => ({
   verifyDialog: state.viewState.verifyDialog,
   showMetadataEditor: state.viewState[VIEWSTATE.PROJECT_METADATA_EDITOR_OPEN],
   //settings
-  settings: {
-    [PROJECT.BUBBLE_STYLE]: state.project[PROJECT.BUBBLE_STYLE],
-    [PROJECT.BLACK_N_WHITE]: state.project[PROJECT.BLACK_N_WHITE],
-    [PROJECT.SHOW_TIMES]: state.project[PROJECT.SHOW_TIMES],
-    [PROJECT.AUTO_SCALE_HEIGHT]: state.project[PROJECT.AUTO_SCALE_HEIGHT],
-    [PROJECT.START_PLAYING_WHEN_BUBBLES_CLICKED]:
-      state.project[PROJECT.START_PLAYING_WHEN_BUBBLES_CLICKED],
-    [PROJECT.STOP_PLAYING_END_OF_SECTION]:
-      state.project[PROJECT.STOP_PLAYING_END_OF_SECTION],
-    [PROJECT.START_PLAYING_END_OF_SECTION]:
-      state.project[PROJECT.START_PLAYING_END_OF_SECTION],
-    [PROJECT.BUBBLE_HEIGHT]: state.project[PROJECT.BUBBLE_HEIGHT],
-  },
+  settings: PROJECT_SETTINGS_KEYS.reduce((acc, next) => {
+    acc[next] = state.project[next];
+    return acc;
+  }, {}),
 });
 
 const mapDispatchToProps = {
@@ -363,6 +355,8 @@ const mapDispatchToProps = {
   groupSelectedRanges,
   deleteRanges: scheduleDeleteRanges,
   updateRange,
+  // markers
+  addMarkerAtTime,
 };
 
 export default connect(

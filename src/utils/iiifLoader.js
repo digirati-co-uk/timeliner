@@ -67,6 +67,45 @@ const parseTimeRange = rangeStr => {
   };
 };
 
+const getLabel = (t, defaultValue) => {
+  const value = Object.values(t)[0];
+  if (value && value.length) {
+    return value[0] || defaultValue;
+  }
+  return defaultValue;
+};
+
+export const parseMarkers = manifest => {
+  const annotationPages = manifest.annotations;
+  const annotations =
+    annotationPages && annotationPages[0] && annotationPages[0].items
+      ? annotationPages[0].items
+      : null;
+
+  if (!annotations) {
+    return [];
+  }
+
+  return annotations
+    .map(annotation => ({
+      id: annotation.id,
+      time:
+        annotation.target &&
+        annotation.target.selector &&
+        annotation.target.selector.t
+          ? annotation.target.selector.t
+          : null,
+      label: getLabel(annotation.label, 'Untitled marker'),
+      summary:
+        annotation.body && annotation.body.value
+          ? annotation.body.value
+          : annotation.body[0] && annotation.body[0].value
+          ? annotation.body[0].value
+          : '',
+    }))
+    .filter(annotation => annotation.time);
+};
+
 /**
  * @param {Object} canvas - IIIFCanvas javascript object
  * @returns array all audio annotations url, start and end time

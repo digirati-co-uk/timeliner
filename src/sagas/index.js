@@ -1,26 +1,14 @@
-import {
-  all,
-  put,
-  select,
-  takeEvery,
-  race,
-  call,
-  take,
-  takeLatest,
-} from 'redux-saga/effects';
+import { all, put, select, takeEvery, race, call, take } from 'redux-saga/effects';
+import { DELETE_RANGE } from '../constants/range';
+import { loadProjectState, parseMarkers } from '../utils/iiifLoader';
 import { actions as undoActions } from 'redux-undo-redo';
-import { IMPORT_DOCUMENT, RESET_DOCUMENT } from '../constants/project';
 import {
-  DECREASE_RANGE_DEPTH,
-  DELETE_RANGE,
-  GROUP_RANGES,
-  MOVE_POINT,
-  SCHEDULE_DELETE_RANGE,
-  SCHEDULE_DELETE_RANGES,
-  SPLIT_RANGE_AT,
-  UPDATE_RANGE,
-} from '../constants/range';
-import { loadProjectState } from '../utils/iiifLoader';
+  PROJECT,
+  IMPORT_DOCUMENT,
+  RESET_DOCUMENT,
+  EXPORT_DOCUMENT,
+  UPDATE_SETTINGS,
+} from '../constants/project';
 import exporter from '../utils/iiifSaver';
 import {
   loadProject,
@@ -29,36 +17,26 @@ import {
   importError,
 } from '../actions/project';
 import { loadCanvas, unloadAudio } from '../actions/canvas';
-import {
-  loadRanges,
-  movePoint,
-  deleteRedundantSizes,
-  updateDepthsAfterDelete,
-  scheduleDeleteRange,
-  updateRangeTime,
-  createRange,
-  rangeMutations,
-  deleteRange,
-  increaseRangeDepth,
-  decreaseRangeDepth,
-  importRanges,
-} from '../actions/range';
+import { createRange, rangeMutations, importRanges } from '../actions/range';
 import {
   loadViewState,
   openVerifyDialog,
   closeVerifyDialog,
   cancelProjectMetadataEdits,
+  setCurrentTime,
+  play,
 } from '../actions/viewState';
 import {
   CONFIRM_NO,
   CONFIRM_YES,
   SAVE_PROJECT_METADATA,
 } from '../constants/viewState';
-import { EXPORT_DOCUMENT } from '../constants/project';
 import { serialize } from '../utils/iiifSerializer';
 import { immediateDownload } from '../utils/fileDownload';
 import { getRangeList } from '../reducers/range';
 import rangeSaga from './range-saga';
+import { SELECT_MARKER, UPDATE_MARKER } from '../constants/markers';
+import { hideMarkers, importMarkers, showMarkers } from '../actions/markers';
 
 const getDuration = state => state.viewState.runTime;
 
@@ -78,6 +56,7 @@ function* importDocument({ manifest, source }) {
     yield put(loadCanvas(loadedState.canvas));
     yield put(importRanges(loadedState.range));
     yield put(loadViewState(loadedState.viewState));
+    yield put(importMarkers(parseMarkers(manifest)));
   } catch (err) {
     console.error(err);
     yield put(importError(err));
@@ -122,8 +101,12 @@ function* resetDocument() {
 
 function* exportDocument() {
   const state = yield select();
+  const label = yield select(
+    s =>
+      `${s.project[PROJECT.TITLE].replace(/[ ,.'"]/g, '_') || 'manifest'}.json`
+  );
   const outputJSON = exporter(state);
-  immediateDownload(serialize(outputJSON));
+  immediateDownload(label, serialize(outputJSON));
 }
 
 function* saveProjectMetadata({ metadata }) {
@@ -139,6 +122,32 @@ function* saveProjectMetadata({ metadata }) {
   yield put(cancelProjectMetadataEdits());
 }
 
+function* selectMarker({ payload: { id } }) {
+  const marker = yield select(state => state.markers.list[id]);
+  const startPlaying = yield select(
+    state => state.project[PROJECT.START_PLAYING_WHEN_BUBBLES_CLICKED]
+  );
+  yield put(setCurrentTime(marker.time));
+
+  if (startPlaying) {
+    yield put(play());
+  }
+}
+
+function* updateMarkerTime({ payload: { id, time } }) {
+  if (time) {
+    yield put(setCurrentTime(time));
+  }
+}
+
+function* updateSettings({ payload }) {
+  if (payload.showMarkers) {
+    yield put(showMarkers());
+  } else {
+    yield put(hideMarkers());
+  }
+}
+
 export default function* root() {
   yield all([
     rangeSaga(),
@@ -146,5 +155,8 @@ export default function* root() {
     takeEvery(RESET_DOCUMENT, resetDocument),
     takeEvery(EXPORT_DOCUMENT, exportDocument),
     takeEvery(SAVE_PROJECT_METADATA, saveProjectMetadata),
+    takeEvery(SELECT_MARKER, selectMarker),
+    takeEvery(UPDATE_MARKER, updateMarkerTime),
+    takeEvery(UPDATE_SETTINGS, updateSettings),
   ]);
 }
