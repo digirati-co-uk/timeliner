@@ -31,8 +31,8 @@ const Metadata = props => (
             {props.ranges
               .filter(
                 range =>
-                  range.startTime < props.currentTime &&
-                  range.endTime >= props.currentTime
+                  range.startTime <= props.currentTime &&
+                  range.endTime > props.currentTime
               )
               .sort(
                 (a, b) => b.endTime - b.startTime - (a.endTime - a.startTime)
