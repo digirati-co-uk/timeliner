@@ -439,19 +439,19 @@ function* playWhenBubbleIsClicked(id, isSelected) {
   const ranges = yield select(getRangeList);
   const selectedRangeIds = yield select(getSelectedRanges);
   const selectedRanges = yield select(getRangesByIds(selectedRangeIds));
-  if (state.project[PROJECT.START_PLAYING_WHEN_BUBBLES_CLICKED]) {
-    if (isSelected) {
-      if (
-        selectedRanges.length &&
-        selectedRanges[0] &&
-        selectedRanges[0].startTime === ranges[id].startTime
-      ) {
+  if (isSelected) {
+    if (
+      selectedRanges.length &&
+      selectedRanges[0] &&
+      selectedRanges[0].startTime === ranges[id].startTime
+    ) {
+      if (state.project[PROJECT.START_PLAYING_WHEN_BUBBLES_CLICKED]) {
         yield put(play());
-        yield put(setCurrentTime(ranges[id].startTime));
       }
-    } else {
-      yield put(pause());
+      yield put(setCurrentTime(ranges[id].startTime));
     }
+  } else {
+    yield put(pause());
   }
 }
 
