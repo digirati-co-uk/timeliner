@@ -22,7 +22,7 @@ export default function configureStore(wAudio, fresh = false) {
   const sagaMiddleware = createSagaMiddleware({ sagaMonitor: monitor });
   const persistedReducer = persistReducer(
     {
-      key: 'timeliner-root' + wAudio,
+      key: 'timeliner-1.1' + wAudio,
       storage,
     },
     rootReducer
