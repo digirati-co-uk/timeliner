@@ -57,7 +57,7 @@ export default createUndoMiddleware({
       createArgs: state => state.project.language,
     },
     [UPDATE_RANGE]: {
-      action: (action, range) => updateRange(range.id, range),
+      action: (action, range) => ({ type: UPDATE_RANGE, payload: range }),
       createArgs: (state, action) => state.range[action.payload.id],
     },
     [RANGE_MUTATION]: {

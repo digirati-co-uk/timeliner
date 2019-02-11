@@ -30,18 +30,6 @@ class BubbleDisplay extends Component {
     onPanStart: () => {},
   };
 
-  shouldComponentUpdate(nextProps, nextContext) {
-    const { width, height, zoom, x, points } = this.props;
-    const { nextWidth, nextHeight, nextZoom, nextX, nextPoints } = nextProps;
-    return (
-      width !== nextWidth ||
-      height !== nextHeight ||
-      zoom !== nextZoom ||
-      x !== nextX ||
-      JSON.stringify(points) !== JSON.stringify(nextPoints)
-    );
-  }
-
   getDx = (point, pts, projectionFactor) => {
     const firstChild = pts
       .filter(
