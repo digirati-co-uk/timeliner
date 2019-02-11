@@ -9,6 +9,7 @@ import ProjectMetadataDisplay from '../ProjectMetadataDisplay/ProjectMetadataDis
 import ProjectMetadataEditor from '../ProjectMetadataEditor/ProjectMetadataEditor';
 
 import './Metadata.scss';
+import { DEFAULT_COLOURS } from '../../constants/range';
 
 const Meta = posed.div({
   enter: { y: 0, opacity: 1, delay: 250 },
@@ -43,6 +44,10 @@ const Metadata = props => (
                     <MetadataEditor
                       key={`metadata_editor-${range.id}`}
                       {...range}
+                      colour={
+                        range.colour ||
+                        DEFAULT_COLOURS[range.depth % DEFAULT_COLOURS.length]
+                      }
                       onSave={props.onUpdateRange}
                       onDelete={props.onDeleteRange}
                       onCancel={() => {
@@ -56,6 +61,10 @@ const Metadata = props => (
                       key={`metadata_display-${range.id}`}
                       {...range}
                       inset={depth}
+                      colour={
+                        range.colour ||
+                        DEFAULT_COLOURS[range.depth % DEFAULT_COLOURS.length]
+                      }
                       onEditClick={(selectedRange => () =>
                         props.onEdit(selectedRange.id))(range)}
                       blackAndWhiteMode={props.blackAndWhiteMode}
@@ -121,6 +130,7 @@ Metadata.propTypes = {
       summary: PropTypes.string,
       startTime: PropTypes.number.isRequired,
       endTime: PropTypes.number.isRequired,
+      depth: PropTypes.number,
       colour: PropTypes.string,
     }).isRequired
   ).isRequired,
