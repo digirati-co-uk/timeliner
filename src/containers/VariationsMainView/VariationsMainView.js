@@ -52,7 +52,8 @@ import {
 import { addMarkerAtTime } from '../../actions/markers';
 
 import './VariationsMainView.scss';
-import {getRangeList, getSelectedRanges} from "../../reducers/range";
+import { getRangeList, getSelectedRanges } from '../../reducers/range';
+import AuthResource, { AuthCookieService1 } from '../AuthResource/AuthResource';
 
 class VariationsMainView extends React.Component {
   constructor(props) {
@@ -157,6 +158,19 @@ class VariationsMainView extends React.Component {
 
   addMarker = () => this.props.addMarkerAtTime(this.props.currentTime);
 
+  getAuthService = () => {
+    const annotationPages = this.props.annotationPages;
+    if (
+      annotationPages &&
+      annotationPages[0] &&
+      annotationPages[0].items &&
+      annotationPages[0].items[0]
+    ) {
+      const avResource = resolveAvResource(annotationPages[0].items[0]);
+      return avResource.service;
+    }
+  };
+
   render() {
     const _points = this.props.points;
     const {
@@ -188,36 +202,46 @@ class VariationsMainView extends React.Component {
             onTitleChange={() => {}}
           />
           <div className="variations-app__content">
-            <BubbleEditor />
-            <Audio />
-            <AudioTransportBar
-              isPlaying={isPlaying}
-              volume={volume}
-              currentTime={currentTime}
-              runTime={runTime}
-              onVolumeChanged={this.props.setVolume}
-              onPlay={this.props.play}
-              onPause={this.props.pause}
-              onNextBubble={this.props.nextBubble}
-              onPreviousBubble={this.props.previousBubble}
-              onScrubAhead={this.props.fastForward}
-              onScrubBackwards={this.props.fastReward}
-              onAddBubble={this.isSplittingPossible() ? this.splitRange : null}
-              onGroupBubble={
-                selectedRanges.length > 1 &&
-                this.isGroupingPossible(selectedRanges)
-                  ? this.props.groupSelectedRanges
-                  : null
+            <AuthCookieService1
+              service={
+                this.props.authService ? this.props.authService[0] : null
               }
-              onDeleteBubble={
-                selectedRanges.length > 0 &&
-                _points.length > 1 &&
-                _points.length - selectedRanges.length > 0
-                  ? this.deleteRanges(selectedRanges)
-                  : null
-              }
-              onAddMarker={this.addMarker}
-            />
+            >
+              <BubbleEditor key={'bubble--' + this.props.url} />
+              {this.props.url ? (
+                <Audio key={'audio--' + this.props.url} />
+              ) : null}
+              <AudioTransportBar
+                isPlaying={isPlaying}
+                volume={volume}
+                currentTime={currentTime}
+                runTime={runTime}
+                onVolumeChanged={this.props.setVolume}
+                onPlay={this.props.play}
+                onPause={this.props.pause}
+                onNextBubble={this.props.nextBubble}
+                onPreviousBubble={this.props.previousBubble}
+                onScrubAhead={this.props.fastForward}
+                onScrubBackwards={this.props.fastReward}
+                onAddBubble={
+                  this.isSplittingPossible() ? this.splitRange : null
+                }
+                onGroupBubble={
+                  selectedRanges.length > 1 &&
+                  this.isGroupingPossible(selectedRanges)
+                    ? this.props.groupSelectedRanges
+                    : null
+                }
+                onDeleteBubble={
+                  selectedRanges.length > 0 &&
+                  _points.length > 1 &&
+                  _points.length - selectedRanges.length > 0
+                    ? this.deleteRanges(selectedRanges)
+                    : null
+                }
+                onAddMarker={this.addMarker}
+              />
+            </AuthCookieService1>
             <div className="variations-app__metadata-editor">
               <ProjectMetadata
                 currentTime={currentTime}
@@ -303,6 +327,8 @@ const mapStateProps = state => ({
   volume: state.viewState.volume,
   isPlaying: state.viewState.isPlaying,
   currentTime: state.viewState.currentTime,
+  authService: state.canvas.service,
+  annotationPages: state.canvas.items,
   url: state.canvas.url,
   runTime: state.viewState.runTime,
   manifestLabel: state.project.title,

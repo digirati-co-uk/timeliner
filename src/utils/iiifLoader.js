@@ -2,6 +2,7 @@ import { PROJECT, RDF_NAMESPACE } from '../constants/project';
 import { CANVAS } from '../constants/canvas';
 import { RANGE, DEFAULT_COLOURS } from '../constants/range';
 import { VIEWSTATE } from '../constants/viewState';
+import { resolveAvResource } from '../containers/AuthResource/AuthResource';
 
 // Constants
 
@@ -114,6 +115,7 @@ const getAudioAnnotations = canvas => {
   if (!canvas) {
     return [];
   }
+
   const annotations = canvas.items
     ? canvas.items.reduce((acc, annotationPage) => {
         if (annotationPage.items) {
@@ -127,9 +129,10 @@ const getAudioAnnotations = canvas => {
   return annotations
     .filter(
       annotation =>
-        annotation.motivation === 'painting' &&
-        annotation.body &&
-        annotation.body.type === 'Audio'
+        (annotation.motivation === 'painting' &&
+          annotation.body &&
+          annotation.body.type === 'Audio') ||
+        (annotation.body && annotation.body.type === 'Choice')
     )
     .map(annotation => {
       const hashParams = hashParamsToObj(annotation.target);
@@ -137,7 +140,12 @@ const getAudioAnnotations = canvas => {
       if (hashParams.t) {
         Object.assign(audioDescriptor, parseTimeRange(hashParams.t));
       }
-      audioDescriptor.url = annotation.body.id;
+      const body = resolveAvResource(annotation);
+      audioDescriptor.url = body.id || body['@id'];
+      if (body && body.service) {
+        audioDescriptor.service = body.service;
+      }
+
       return audioDescriptor;
     });
 };
@@ -151,9 +159,11 @@ const getAudioAnnotations = canvas => {
  */
 const processCanvas = canvas => {
   const audioAnnotations = getAudioAnnotations(canvas);
+
   return audioAnnotations.length > 0
     ? {
         [CANVAS.URL]: audioAnnotations[0].url,
+        service: audioAnnotations[0].service,
       }
     : {
         [CANVAS.ERROR]: {
