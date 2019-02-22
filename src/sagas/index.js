@@ -1,4 +1,12 @@
-import { all, put, select, takeEvery, race, call, take } from 'redux-saga/effects';
+import {
+  all,
+  put,
+  select,
+  takeEvery,
+  race,
+  call,
+  take,
+} from 'redux-saga/effects';
 import { DELETE_RANGE } from '../constants/range';
 import { loadProjectState, parseMarkers } from '../utils/iiifLoader';
 import { actions as undoActions } from 'redux-undo-redo';
@@ -36,7 +44,12 @@ import { immediateDownload } from '../utils/fileDownload';
 import { getRangeList } from '../reducers/range';
 import rangeSaga from './range-saga';
 import { SELECT_MARKER, UPDATE_MARKER } from '../constants/markers';
-import {clearMarkers, hideMarkers, importMarkers, showMarkers} from '../actions/markers';
+import {
+  clearMarkers,
+  hideMarkers,
+  importMarkers,
+  showMarkers,
+} from '../actions/markers';
 
 const getDuration = state => state.viewState.runTime;
 
@@ -148,28 +161,6 @@ function* updateSettings({ payload }) {
     yield put(hideMarkers());
   }
 }
-
-// Returns true/false if the access token provided correctly authenticates the resource.
-// A true from here would be the end of the saga.
-function isResourceAuthenticated(resourceId, accessToken) {}
-
-// This will fetch a token service
-// Auth service is a service that MAY have children.
-// If one of those children is a token service, then this will try
-// to get an access token from that.
-function* getAccessToken(imageService, authService) {}
-
-
-
-function* iiifAuth() {
-  // First we need a repeatable way to check if the resource is authenticated
-
-
-
-
-}
-
-
 
 export default function* root() {
   yield all([
