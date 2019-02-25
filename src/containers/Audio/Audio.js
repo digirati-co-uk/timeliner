@@ -9,6 +9,7 @@ import { setCurrentTime, finishedPlaying } from '../../actions/viewState';
 import 'mediaelement/standalone';
 import useEventListener from '../../hooks/useEventListener';
 import useInterval from '../../hooks/useInterval';
+import {ERROR_CODES} from "../../constants/canvas";
 
 const { MediaElement } = window;
 
@@ -36,6 +37,10 @@ function Audio({ url, volume, currentTime, isPlaying, ...props }) {
       element.remove();
     };
   }, []);
+
+  useEventListener(audio, 'error', () => {
+    props.audioError('error', ERROR_CODES.MEDIA_ERR_NETWORK);
+  });
 
   // Event listener for when the audio is available to play.
   useEventListener(
