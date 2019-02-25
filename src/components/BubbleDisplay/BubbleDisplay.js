@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './BubbleDisplay.scss';
+import BEM from '@fesk/bem-js';
+
 import { DEFAULT_COLOURS, RANGE } from '../../constants/range';
 
+const $style = BEM.block('bubble-display');
 class BubbleDisplay extends Component {
   static propTypes = {
     /** Map of points @todo custom validator */
@@ -22,6 +25,8 @@ class BubbleDisplay extends Component {
     /** on pan start trigger */
     onPanStart: PropTypes.func,
   };
+
+  state = { mouseDown: false };
 
   static defaultProps = {
     zoom: 1,
@@ -60,6 +65,14 @@ class BubbleDisplay extends Component {
     }
   };
 
+  onMouseDown = () => {
+    this.setState({ mouseDown: true });
+  };
+
+  onMouseUp = () => {
+    this.setState({ mouseDown: false });
+  };
+
   render() {
     const {
       width,
@@ -71,6 +84,7 @@ class BubbleDisplay extends Component {
       shape,
       bubbleHeight,
     } = this.props;
+    const { mouseDown } = this.state;
     const realWidth = width * zoom;
     const computedWidth = Math.max(width, 1);
     const maxWidth = Math.max.apply(
@@ -78,7 +92,7 @@ class BubbleDisplay extends Component {
       Object.values(points).map(point => point.endTime)
     );
     const projectionFactor = realWidth / maxWidth;
-    const viewBox = [x, 0, computedWidth, height].join(' ');
+    const viewBox = [0, 0, computedWidth, height].join(' ');
     const bubbles = Object.values(points).map((point, idx, pts) => ({
       x: point[RANGE.START_TIME] * projectionFactor,
       width:
@@ -106,13 +120,15 @@ class BubbleDisplay extends Component {
         width={computedWidth}
         height={height}
         viewBox={viewBox}
-        className="bubble-display"
+        className={$style.modifiers({ mouseDown })}
         xmlns="http://www.w3.org/2000/svg"
         version="1.1"
+        onMouseDown={this.onMouseDown}
+        onMouseUp={this.onMouseUp}
       >
         <g
           key="bubble_display_main"
-          transform={`translate(0,${height}) scale(1, -1)`}
+          transform={`translate(${Math.floor(-x)},${height}) scale(1, -1)`}
         >
           <rect
             width={computedWidth * zoom}

@@ -7,10 +7,6 @@ export default function dragMarker(WrappedComponent) {
     state = {
       markerMovement: null,
       resource: null,
-      dimensions: {
-        width: -1,
-        height: -1,
-      },
     };
 
     dragStart = (resource, ev) => {
@@ -33,8 +29,8 @@ export default function dragMarker(WrappedComponent) {
     };
 
     dragMove = ev => {
-      const { runTime, zoom } = this.props;
-      const { markerMovement, dimensions } = this.state;
+      const { runTime, zoom, viewerWidth } = this.props;
+      const { markerMovement } = this.state;
       // in order to smooth drag
       clearTextSelection();
       const deltaX = ev.clientX - markerMovement.startX;
@@ -43,7 +39,7 @@ export default function dragMarker(WrappedComponent) {
         markerMovement: {
           ...markerMovement,
           deltaX: deltaX,
-          deltaTime: ((deltaX / dimensions.width) * runTime) / zoom,
+          deltaTime: ((deltaX / viewerWidth) * runTime) / zoom,
         },
       });
     };
@@ -51,7 +47,8 @@ export default function dragMarker(WrappedComponent) {
     dragEnd = ev => {
       ev.preventDefault();
       ev.stopPropagation();
-      const { markerMovement, resource } = this.state;
+      const { viewerWidth, zoom, runTime } = this.props;
+      const { markerMovement, resource, click } = this.state;
 
       // Remove events.
       document.body.removeEventListener('mousemove', this.dragMove);
@@ -60,12 +57,10 @@ export default function dragMarker(WrappedComponent) {
       if (Math.abs(markerMovement.deltaX) > 5 || this.state.click === false) {
         // Calculate new time point.
         const time =
-          (((ev.pageX - markerMovement.startX) / this.state.dimensions.width) *
-            this.props.runTime) /
-          this.props.zoom;
+          (((ev.pageX - markerMovement.startX) / viewerWidth) * runTime) / zoom;
 
         this.props.updateMarker(resource.id, { time: resource.time + time });
-      } else if (this.state.click === true) {
+      } else if (click === true) {
         this.props.selectMarker(resource.id);
       }
 
@@ -75,19 +70,11 @@ export default function dragMarker(WrappedComponent) {
       });
     };
 
-    setDimensions = dimensions => {
-      if (this.props.setDimensions) {
-        this.props.setDimensions(dimensions);
-      }
-      this.setState({ dimensions });
-    };
-
     render() {
       return (
         <WrappedComponent
           {...this.props}
           markerMovement={this.state.markerMovement}
-          setDimensions={this.setDimensions}
           dragStartMarker={this.dragStart}
         />
       );

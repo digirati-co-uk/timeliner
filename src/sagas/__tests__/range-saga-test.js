@@ -443,6 +443,7 @@ describe('sagas/range-saga', () => {
           { id: 'test-1', startTime: 0, endTime: 1000 },
           { id: 'test-2', startTime: 1000, endTime: 2000 },
         ])
+        .next(0)
         // In the while loop
         .take(SET_CURRENT_TIME)
         .next(setCurrentTime(100))
@@ -473,6 +474,7 @@ describe('sagas/range-saga', () => {
           { id: 'test-1', startTime: 0, endTime: 1000 },
           { id: 'test-2', startTime: 1000, endTime: 2000 },
         ])
+        .next(0)
         // In the while loop
         .take(SET_CURRENT_TIME)
         .next(setCurrentTime(100))
@@ -501,6 +503,7 @@ describe('sagas/range-saga', () => {
           { id: 'test-1', startTime: 0, endTime: 1000 },
           { id: 'test-2', startTime: 1000, endTime: 2000 },
         ])
+        .next(0)
         // In the while loop
         .take(SET_CURRENT_TIME)
         .next(setCurrentTime(100))
@@ -527,6 +530,7 @@ describe('sagas/range-saga', () => {
           { id: 'test-1', startTime: 0, endTime: 1000 },
           { id: 'test-2', startTime: 1000, endTime: 2000 },
         ])
+        .next(100)
         // In the while loop
         .take(SET_CURRENT_TIME)
         .next(setCurrentTime(100))
@@ -547,6 +551,7 @@ describe('sagas/range-saga', () => {
           { id: 'test-1', startTime: 0, endTime: 1000 },
           { id: 'test-2', startTime: 1000, endTime: 2000 },
         ])
+        .next(0)
         // In the while loop
         .take(SET_CURRENT_TIME)
         .next(setCurrentTime(100))

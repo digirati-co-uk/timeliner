@@ -8,6 +8,7 @@
   pointer-events: none;
   overflow: visible;
   z-index: -1;
+  transition: width .2s linear;
   &:after {
     transition: border .4s;
     content: '';

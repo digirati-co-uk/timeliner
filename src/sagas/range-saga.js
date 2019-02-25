@@ -24,6 +24,7 @@ import {
 } from '../reducers/range';
 import {
   NEXT_BUBBLE,
+  PLAY_AUDIO,
   PREVIOUS_BUBBLE,
   SET_CURRENT_TIME,
 } from '../constants/viewState';
@@ -31,7 +32,6 @@ import {
   DESELECT_RANGE,
   GROUP_RANGES,
   MOVE_POINT,
-  RANGE,
   SCHEDULE_DELETE_RANGE,
   SCHEDULE_DELETE_RANGES,
   SCHEDULE_UPDATE_RANGE,
@@ -64,6 +64,8 @@ function* nextBubble() {
   const nextBubbleTime = yield select(getNextBubbleStartTime);
   yield put(setCurrentTime(nextBubbleTime.time));
 }
+
+const getCurrentTime = state => state.viewState.currentTime;
 
 /**
  * Can points merge
@@ -455,7 +457,7 @@ function* playWhenBubbleIsClicked(id, isSelected) {
   }
 }
 
-export function* currentTimeSaga() {
+export function* currentTimeSaga({ type } = {}) {
   const state = yield select(s => s.project);
   const startPlayingAtEnd = state.startPlayingAtEndOfSection;
   const stopPlayingAtEnd = state.stopPlayingAtTheEndOfSection;
@@ -469,6 +471,11 @@ export function* currentTimeSaga() {
   const selectedRanges = yield select(getRangesByIds(selectedRangeIds));
   const startTime = selectedRanges[0].startTime;
   const endTime = selectedRanges[selectedRanges.length - 1].endTime;
+  const time = yield select(getCurrentTime);
+
+  if ((type === PLAY_AUDIO && time <= startTime) || time >= endTime) {
+    return;
+  }
 
   // Last time stores previous tick time so that we can compare the gap.
   let lastTime = 0;

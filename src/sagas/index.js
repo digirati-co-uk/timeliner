@@ -1,5 +1,14 @@
-import { all, put, select, takeEvery, race, call, take } from 'redux-saga/effects';
-import { DELETE_RANGE } from '../constants/range';
+import {
+  all,
+  put,
+  select,
+  takeEvery,
+  race,
+  call,
+  take,
+  takeLatest,
+} from 'redux-saga/effects';
+import {DELETE_RANGE, DESELECT_RANGE, SELECT_RANGE} from '../constants/range';
 import { loadProjectState, parseMarkers } from '../utils/iiifLoader';
 import { actions as undoActions } from 'redux-undo-redo';
 import {
@@ -25,20 +34,33 @@ import {
   cancelProjectMetadataEdits,
   setCurrentTime,
   play,
+  zoomTo,
+  panToPosition,
 } from '../actions/viewState';
 import {
   CONFIRM_NO,
   CONFIRM_YES,
+  PAN_TO_POSITION,
+  PLAY_AUDIO,
   SAVE_PROJECT_METADATA,
+  SET_CURRENT_TIME,
+  ZOOM_IN,
+  ZOOM_OUT,
 } from '../constants/viewState';
 import { serialize } from '../utils/iiifSerializer';
 import { immediateDownload } from '../utils/fileDownload';
-import { getRangeList } from '../reducers/range';
+import {
+  getRangeList,
+  getRangesByIds,
+  getSelectedRanges,
+} from '../reducers/range';
 import rangeSaga from './range-saga';
 import { SELECT_MARKER, UPDATE_MARKER } from '../constants/markers';
 import { hideMarkers, importMarkers, showMarkers } from '../actions/markers';
 
 const getDuration = state => state.viewState.runTime;
+
+const getCurrentTime = state => state.viewState.currentTime;
 
 function* importDocument({ manifest, source }) {
   const { viewState } = yield select();
@@ -148,6 +170,112 @@ function* updateSettings({ payload }) {
   }
 }
 
+function* zoomSideEffects() {
+  const zoom = yield select(state => state.viewState.zoom);
+  const duration = yield select(getDuration);
+  const x = yield select(state => state.viewState.x);
+  // Nothing to do if we are zoom 1.
+  if (zoom === 1) {
+    return;
+  }
+
+  // We want to react to time changes, to check if its still visible on screen.
+  while (true) {
+    const {
+      payload: { currentTime },
+    } = yield take(SET_CURRENT_TIME);
+    const viewportWidth = yield select(getViewerWidth);
+
+    const sliderWidth = viewportWidth * zoom;
+    const percentThrough = currentTime / duration;
+    const maxMiddle = sliderWidth - viewportWidth;
+    const pixelThrough = percentThrough * sliderWidth;
+    const from = Math.floor(x) - 20;
+    const to = Math.ceil(x + viewportWidth) + 20;
+    const isVisible = pixelThrough >= from && pixelThrough <= to;
+
+    // If its not visible, pan to the middle.
+    if (isVisible === false) {
+      // Let's check a new case.
+      // - currentTime within selected range
+      // - zoom to range instead.
+      const shouldZoomToRange = yield call(timeWithinSelection, currentTime);
+      if (shouldZoomToRange) {
+        yield call(zoomToSelection);
+        return;
+      }
+
+      const targetPan = pixelThrough - viewportWidth / 2;
+      if (targetPan <= 0) {
+        yield put(panToPosition(0));
+        return;
+      }
+      if (targetPan >= maxMiddle) {
+        yield put(panToPosition(maxMiddle));
+        return;
+      }
+      yield put(panToPosition(targetPan));
+      return;
+    }
+  }
+}
+
+const getViewerWidth = state => state.viewState.viewerWidth;
+
+function* timeWithinSelection(time) {
+  const selectedRangeIds = yield select(getSelectedRanges);
+  // Only applies when selecting multiple bubbles.
+  if (selectedRangeIds.length <= 1) {
+    return false;
+  }
+
+  const selectedRanges = yield select(getRangesByIds(selectedRangeIds));
+
+  const startTime = Math.min(...selectedRanges.map(range => range.startTime));
+  const endTime = Math.max(...selectedRanges.map(range => range.endTime));
+
+  return time >= startTime && time <= endTime;
+}
+
+function* zoomToSelection(action) {
+  const selectedRangeIds = yield select(getSelectedRanges);
+  // Only applies when selecting multiple bubbles.
+  if (selectedRangeIds.length <= 1 || action.payload.deselectOthers) {
+    return false;
+  }
+
+  const selectedRanges = yield select(getRangesByIds(selectedRangeIds));
+
+  const duration = yield select(getDuration);
+  const viewerWidth = yield select(getViewerWidth);
+  const startTime = Math.min(...selectedRanges.map(range => range.startTime));
+  const endTime = Math.max(...selectedRanges.map(range => range.endTime));
+
+  const percentVisible = (endTime - startTime) / duration;
+  const percentStart = startTime / duration;
+  const targetZoom = 1 / percentVisible;
+  const targetPixelStart = percentStart * (viewerWidth * targetZoom);
+
+  yield put(zoomTo(targetZoom));
+  yield put(panToPosition(targetPixelStart));
+}
+
+const getZoom = state => state.viewState.zoom;
+
+function* zoomInOut(action) {
+  const ZOOM_AMOUNT = action.type === ZOOM_IN ? 1.2 : 1 / 1.2;
+  const zoom = yield select(getZoom);
+  const duration = yield select(getDuration);
+  const currentTime = yield select(getCurrentTime);
+  const ZOOM_ORIGIN = currentTime / duration;
+  const viewerWidth = yield select(getViewerWidth);
+  const targetViewerWidth = viewerWidth * zoom * ZOOM_AMOUNT;
+  const viewerOffsetLeft = (targetViewerWidth - viewerWidth) * ZOOM_ORIGIN;
+
+  yield put(zoomTo(zoom * ZOOM_AMOUNT));
+  yield put(panToPosition(viewerOffsetLeft));
+}
+
 export default function* root() {
   yield all([
     rangeSaga(),
@@ -158,5 +286,11 @@ export default function* root() {
     takeEvery(SELECT_MARKER, selectMarker),
     takeEvery(UPDATE_MARKER, updateMarkerTime),
     takeEvery(UPDATE_SETTINGS, updateSettings),
+    takeLatest(
+      [ZOOM_IN, ZOOM_OUT, PAN_TO_POSITION, PLAY_AUDIO],
+      zoomSideEffects
+    ),
+    takeLatest([SELECT_RANGE, DESELECT_RANGE], zoomToSelection),
+    takeEvery([ZOOM_IN, ZOOM_OUT], zoomInOut),
   ]);
 }

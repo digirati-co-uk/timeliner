@@ -4,4 +4,9 @@
   * {
     transition: all .3s;
   }
+  &--mouseDown {
+    * {
+      transition: none;
+    }
+  }
 }

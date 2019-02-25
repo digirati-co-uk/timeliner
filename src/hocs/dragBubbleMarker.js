@@ -6,10 +6,6 @@ export default function dragPlayhead(WrappedComponent) {
   return class DragBubbleMarker extends Component {
     state = {
       markerMovement: null,
-      dimensions: {
-        width: -1,
-        height: -1,
-      },
     };
 
     // @todo move to utility.
@@ -37,8 +33,8 @@ export default function dragPlayhead(WrappedComponent) {
     };
 
     dragMove = ev => {
-      const { runTime, zoom } = this.props;
-      const { markerMovement, dimensions } = this.state;
+      const { runTime, zoom, viewerWidth } = this.props;
+      const { markerMovement } = this.state;
       if (markerMovement.selectedPoint < 0) {
         return;
       }
@@ -50,7 +46,7 @@ export default function dragPlayhead(WrappedComponent) {
         markerMovement: {
           ...markerMovement,
           deltaX: deltaX,
-          deltaTime: ((deltaX / dimensions.width) * runTime) / zoom,
+          deltaTime: ((deltaX / viewerWidth) * runTime) / zoom,
         },
       });
     };
@@ -58,6 +54,7 @@ export default function dragPlayhead(WrappedComponent) {
     dragEnd = ev => {
       ev.preventDefault();
       ev.stopPropagation();
+      const { viewerWidth, runTime, zoom } = this.props;
       const { markerMovement } = this.state;
 
       // Remove events.
@@ -67,9 +64,7 @@ export default function dragPlayhead(WrappedComponent) {
       // Calculate new time point.
       const timePoints = this.getTimePoints();
       const dX =
-        (((ev.pageX - markerMovement.startX) / this.state.dimensions.width) *
-          this.props.runTime) /
-        this.props.zoom;
+        (((ev.pageX - markerMovement.startX) / viewerWidth) * runTime) / zoom;
 
       this.props.movePoint(
         Math.min(
@@ -87,19 +82,11 @@ export default function dragPlayhead(WrappedComponent) {
       });
     };
 
-    setDimensions = dimensions => {
-      if (this.props.setDimensions) {
-        this.props.setDimensions(dimensions);
-      }
-      this.setState({ dimensions });
-    };
-
     render() {
       return (
         <WrappedComponent
           {...this.props}
           bubbleMarkerMovement={this.state.markerMovement}
-          setDimensions={this.setDimensions}
           dragStartBubbleMarker={this.dragStart}
         />
       );
