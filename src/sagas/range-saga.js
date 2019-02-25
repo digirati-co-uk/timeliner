@@ -457,9 +457,8 @@ function* playWhenBubbleIsClicked(id, isSelected) {
   }
 }
 
-export function* currentTimeSaga(action) {
+export function* currentTimeSaga({ type } = {}) {
   const state = yield select(s => s.project);
-  const time = yield select(getCurrentTime);
   const startPlayingAtEnd = state.startPlayingAtEndOfSection;
   const stopPlayingAtEnd = state.stopPlayingAtTheEndOfSection;
 
@@ -472,8 +471,9 @@ export function* currentTimeSaga(action) {
   const selectedRanges = yield select(getRangesByIds(selectedRangeIds));
   const startTime = selectedRanges[0].startTime;
   const endTime = selectedRanges[selectedRanges.length - 1].endTime;
+  const time = yield select(getCurrentTime);
 
-  if ((action.type === PLAY_AUDIO && time <= startTime) || time >= endTime) {
+  if ((type === PLAY_AUDIO && time <= startTime) || time >= endTime) {
     return;
   }
 
@@ -494,9 +494,7 @@ export function* currentTimeSaga(action) {
     if (
       clicked === false &&
       lastTime &&
-      Math.abs(currentTime - lastTime) >= 1000 &&
-      // @todo ensure this is correct and expected.
-      currentTime - endTime >= 1000
+      Math.abs(currentTime - lastTime) >= 1000
     ) {
       // If the user skips more than a second
       break;
