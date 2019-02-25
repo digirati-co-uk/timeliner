@@ -21,7 +21,7 @@ const exportLevel = (bubble, parentChildren, canvasId, languageCode) => {
       [languageCode]: [bubble.summary],
     };
   }
-  if (bubble.hasOwnProperty(RANGE.COLOUR)) {
+  if (bubble.hasOwnProperty(RANGE.COLOUR) && bubble[RANGE.COLOUR]) {
     range[`${RDF_NAMESPACE}:backgroundColour`] = bubble[RANGE.COLOUR];
   }
 
@@ -80,7 +80,7 @@ const exportMarkers = (markers, id, lang) =>
     : [];
 
 const exportRanges = (range, canvasId, languageCode) => {
-  const bubbles = JSON.parse(JSON.stringify(Object.values(range)))
+  const bubbles = JSON.parse(JSON.stringify(Object.values(range.list)))
     // making sure the big
     .sort(
       (a, b) =>

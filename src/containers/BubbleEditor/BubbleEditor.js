@@ -20,7 +20,13 @@ import {
 import { RANGE } from '../../constants/range';
 import { PROJECT } from '../../constants/project';
 import { VIEWSTATE } from '../../constants/viewState';
-import { selectRange, splitRangeAt, movePoint } from '../../actions/range';
+import {
+  splitRangeAt,
+  movePoint,
+  selectRange,
+  deselectRange,
+} from '../../actions/range';
+import { getRangeList, getSelectedRanges } from '../../reducers/range';
 import pan from '../../hocs/pan';
 import dragPlayhead from '../../hocs/dragPlayhead';
 import dragBubbleMarker from '../../hocs/dragBubbleMarker';
@@ -35,8 +41,14 @@ class BubbleEditor extends React.Component {
   }
 
   toggleSelects = (point, ev) => {
+    const { selectedPoints } = this.props;
     const deselectOthers = !(isOSX ? ev.metaKey : ev.ctrlKey);
-    this.props.selectRange(point.id, !point.isSelected, deselectOthers);
+
+    if (selectedPoints.indexOf(point.id) === -1 || deselectOthers) {
+      this.props.selectRange(point.id, deselectOthers);
+    } else {
+      this.props.deselectRange(point.id);
+    }
   };
 
   getTimePoints = () =>
@@ -104,6 +116,7 @@ class BubbleEditor extends React.Component {
       // Drag marker
       markerMovement,
       viewerWidth,
+      selectedPoints,
     } = this.props;
 
     const timePoints = this.getTimePoints();
@@ -146,6 +159,9 @@ class BubbleEditor extends React.Component {
                         <SingleBubble
                           key={`bk-${bubble.point.id}`}
                           {...bubble}
+                          isSelected={
+                            selectedPoints.indexOf(bubble.point.id) !== -1
+                          }
                           onClick={this.toggleSelects}
                         />
                       ))
@@ -185,8 +201,9 @@ class BubbleEditor extends React.Component {
 const mapStateProps = state => ({
   currentTime: state.viewState[VIEWSTATE.CURRENT_TIME],
   runTime: state.viewState[VIEWSTATE.RUNTIME],
-  points: state.range,
   markers: state.markers.visible ? state.markers.list : {},
+  points: getRangeList(state),
+  selectedPoints: getSelectedRanges(state),
   zoom: state.viewState[VIEWSTATE.ZOOM],
   x: state.viewState[VIEWSTATE.X],
   viewerWidth: state.viewState[VIEWSTATE.VIEWER_WIDTH],
@@ -206,6 +223,7 @@ const mapDispatchToProps = {
   onUpdateTime: setCurrentTime,
   splitRange: splitRangeAt,
   selectRange,
+  deselectRange,
   movePoint,
   updateMarker,
   selectMarker,

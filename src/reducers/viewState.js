@@ -33,7 +33,9 @@ import {
   UPDATE_VIEWER_WIDTH,
 } from '../constants/viewState';
 
-import { AUDIO_LOADING } from '../constants/canvas';
+import {
+  AUDIO_LOADING
+} from '../constants/canvas';
 
 const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
   switch (action.type) {
@@ -131,7 +133,7 @@ const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
         },
       });
     case LOAD_VIEW_STATE:
-      return update(DEFAULT_VIEWSTATE_STATE, {
+      return update(state, {
         $merge: action.state,
       });
     case LOAD_SOURCE:

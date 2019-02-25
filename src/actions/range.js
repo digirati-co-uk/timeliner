@@ -4,12 +4,22 @@ import {
   SELECT_RANGE,
   UPDATE_RANGE,
   MOVE_POINT,
-  DELETE_RAGE,
-  DELETE_RAGES,
+  DELETE_RANGE,
+  DELETE_RANGES,
   LOAD_RANGES,
   DELETE_REDUNDANT_SIZES,
   UPDATE_DEPTHS_AFTER_DELETE,
+  UPDATE_RANGE_TIME,
+  CREATE_RANGE,
+  RANGE_MUTATION,
+  SCHEDULE_DELETE_RANGES,
+  SCHEDULE_DELETE_RANGE,
+  DESELECT_RANGE,
+  INCREASE_RANGE_DEPTH,
+  DECREASE_RANGE_DEPTH, IMPORT_RANGES, SCHEDULE_UPDATE_RANGE,
 } from '../constants/range';
+import { internal } from '../utils/internal-action';
+import generateId from '../utils/generateId';
 
 export const splitRangeAt = time => ({
   type: SPLIT_RANGE_AT,
@@ -18,24 +28,59 @@ export const splitRangeAt = time => ({
   },
 });
 
+export const rangeMutations = mutations => ({
+  type: RANGE_MUTATION,
+  mutations,
+});
+
 export const groupSelectedRanges = () => ({
   type: GROUP_RANGES,
 });
 
-export const selectRange = (id, isSelected, deselectOthers = true) => ({
+export const selectRange = (id, deselectOthers) => ({
   type: SELECT_RANGE,
-  payload: {
-    id,
-    isSelected,
-    deselectOthers,
-  },
+  payload: { id, deselectOthers },
+});
+
+export const increaseRangeDepth = (id, factor = 1) => ({
+  type: INCREASE_RANGE_DEPTH,
+  payload: { id, factor },
+});
+
+export const decreaseRangeDepth = id => ({
+  type: DECREASE_RANGE_DEPTH,
+  payload: { id },
+});
+
+export const importRanges = ranges => ({
+  type: IMPORT_RANGES,
+  payload: { ranges },
+});
+
+export const deselectRange = id => ({
+  type: DESELECT_RANGE,
+  payload: { id },
+});
+
+export const createRange = props => ({
+  type: CREATE_RANGE,
+  payload: { id: generateId(), ...props },
+});
+
+export const updateRangeTime = (
+  id,
+  { startTime, endTime },
+  undoable = true
+) => ({
+  type: undoable ? UPDATE_RANGE_TIME : internal(UPDATE_RANGE_TIME),
+  payload: { id, startTime, endTime },
 });
 
 export const updateRange = (
   id,
   { label, summary, startTime, endTime, colour, whiteText }
 ) => ({
-  type: UPDATE_RANGE,
+  type: SCHEDULE_UPDATE_RANGE,
   payload: {
     id,
     label,
@@ -47,6 +92,9 @@ export const updateRange = (
   },
 });
 
+/**
+ * @deprecated
+ */
 export const movePoint = (x, originalX) => ({
   type: MOVE_POINT,
   payload: {
@@ -56,25 +104,37 @@ export const movePoint = (x, originalX) => ({
 });
 
 export const deleteRange = id => ({
-  type: DELETE_RAGE,
-  payload: {
-    id,
-  },
+  type: DELETE_RANGE,
+  payload: { id },
 });
 
-export const deleteRanges = ranges => ({
-  type: DELETE_RAGES,
-  ranges,
+export const scheduleDeleteRange = id => ({
+  type: SCHEDULE_DELETE_RANGE,
+  payload: { id },
 });
 
+export const scheduleDeleteRanges = ranges => ({
+  type: SCHEDULE_DELETE_RANGES,
+  payload: { ranges },
+});
+
+/**
+ * @deprecated
+ */
 export const deleteRedundantSizes = () => ({
   type: DELETE_REDUNDANT_SIZES,
 });
 
+/**
+ * @deprecated
+ */
 export const updateDepthsAfterDelete = () => ({
   type: UPDATE_DEPTHS_AFTER_DELETE,
 });
 
+/**
+ * @deprecated
+ */
 export const loadRanges = ranges => ({
   type: LOAD_RANGES,
   ranges,

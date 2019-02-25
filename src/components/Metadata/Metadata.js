@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Typography  from '@material-ui/core/Typography';
+import Typography from '@material-ui/core/Typography';
+import posed, { PoseGroup } from 'react-pose';
 
 import MetadataDisplay from '../MetadataDisplay/MetadataDisplay';
 import MetadataEditor from '../MetadataEditor/MetadataEditor';
@@ -8,6 +9,16 @@ import ProjectMetadataDisplay from '../ProjectMetadataDisplay/ProjectMetadataDis
 import ProjectMetadataEditor from '../ProjectMetadataEditor/ProjectMetadataEditor';
 
 import './Metadata.scss';
+import { DEFAULT_COLOURS } from '../../constants/range';
+
+const Meta = posed.div({
+  enter: { y: 0, opacity: 1, delay: 250 },
+  exit: {
+    y: 40,
+    opacity: 0,
+    transition: { delay: 100, duration: 200 },
+  },
+});
 
 const Metadata = props => (
   <div className="metadata">
@@ -17,35 +28,51 @@ const Metadata = props => (
           Annotations
         </Typography>
         <div className="metadata__content">
-          {props.ranges
-            .filter(
-              range =>
-                range.startTime <= props.currentTime &&
-                range.endTime > props.currentTime
-            )
-            .sort((a, b) => b.endTime - b.startTime - (a.endTime - a.startTime))
-            .map((range, depth) =>
-              range.id === props.rangeToEdit ? (
-                <MetadataEditor
-                  key={`metadata_editor-${range.id}`}
-                  {...range}
-                  onSave={props.onUpdateRange}
-                  onDelete={props.onDeleteRange}
-                  onCancel={() => {
-                    props.onEdit(null);
-                  }}
-                />
-              ) : (
-                <MetadataDisplay
-                  key={`metadata_display-${range.id}`}
-                  {...range}
-                  inset={depth}
-                  onEditClick={(selectedRange => () =>
-                    props.onEdit(selectedRange.id))(range)}
-                  blackAndWhiteMode={props.blackAndWhiteMode}
-                />
+          <PoseGroup animateOnMount={true}>
+            {props.ranges
+              .filter(
+                range =>
+                  range.startTime <= props.currentTime &&
+                  range.endTime > props.currentTime
               )
-            )}
+              .sort(
+                (a, b) => b.endTime - b.startTime - (a.endTime - a.startTime)
+              )
+              .map((range, depth) =>
+                range.id === props.rangeToEdit ? (
+                  <Meta key={`edit-${range.id}`}>
+                    <MetadataEditor
+                      key={`metadata_editor-${range.id}`}
+                      {...range}
+                      colour={
+                        range.colour ||
+                        DEFAULT_COLOURS[range.depth % DEFAULT_COLOURS.length]
+                      }
+                      onSave={props.onUpdateRange}
+                      onDelete={props.onDeleteRange}
+                      onCancel={() => {
+                        props.onEdit(null);
+                      }}
+                    />
+                  </Meta>
+                ) : (
+                  <Meta key={range.id}>
+                    <MetadataDisplay
+                      key={`metadata_display-${range.id}`}
+                      {...range}
+                      inset={depth}
+                      colour={
+                        range.colour ||
+                        DEFAULT_COLOURS[range.depth % DEFAULT_COLOURS.length]
+                      }
+                      onEditClick={(selectedRange => () =>
+                        props.onEdit(selectedRange.id))(range)}
+                      blackAndWhiteMode={props.blackAndWhiteMode}
+                    />
+                  </Meta>
+                )
+              )}
+          </PoseGroup>
         </div>
       </div>
     </div>
@@ -103,6 +130,7 @@ Metadata.propTypes = {
       summary: PropTypes.string,
       startTime: PropTypes.number.isRequired,
       endTime: PropTypes.number.isRequired,
+      depth: PropTypes.number,
       colour: PropTypes.string,
     }).isRequired
   ).isRequired,

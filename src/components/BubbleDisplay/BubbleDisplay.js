@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './BubbleDisplay.scss';
 import BEM from '@fesk/bem-js';
-import { RANGE } from '../../constants/range';
+
+import { DEFAULT_COLOURS, RANGE } from '../../constants/range';
 
 const $style = BEM.block('bubble-display');
 class BubbleDisplay extends Component {
@@ -33,18 +34,6 @@ class BubbleDisplay extends Component {
     bubbleHeight: 70,
     onPanStart: () => {},
   };
-
-  shouldComponentUpdate(nextProps, nextContext) {
-    const { width, height, zoom, x, points } = this.props;
-    const { nextWidth, nextHeight, nextZoom, nextX, nextPoints } = nextProps;
-    return (
-      width !== nextWidth ||
-      height !== nextHeight ||
-      zoom !== nextZoom ||
-      x !== nextX ||
-      JSON.stringify(points) !== JSON.stringify(nextPoints)
-    );
-  }
 
   getDx = (point, pts, projectionFactor) => {
     const firstChild = pts
@@ -108,7 +97,8 @@ class BubbleDisplay extends Component {
       x: point[RANGE.START_TIME] * projectionFactor,
       width:
         (point[RANGE.END_TIME] - point[RANGE.START_TIME]) * projectionFactor,
-      colour: point.colour,
+      colour:
+        point.colour || DEFAULT_COLOURS[point.depth % DEFAULT_COLOURS.length],
       height: point.depth * bubbleHeight,
       label: point.label,
       dX: this.getDx(point, pts, projectionFactor),

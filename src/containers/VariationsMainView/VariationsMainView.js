@@ -18,7 +18,7 @@ import Audio from '../Audio/Audio';
 import {
   splitRangeAt,
   groupSelectedRanges,
-  deleteRanges,
+  scheduleDeleteRanges,
   updateRange,
 } from '../../actions/range';
 import { RANGE } from '../../constants/range';
@@ -52,6 +52,7 @@ import {
 import { addMarkerAtTime } from '../../actions/markers';
 
 import './VariationsMainView.scss';
+import {getRangeList, getSelectedRanges} from "../../reducers/range";
 
 class VariationsMainView extends React.Component {
   constructor(props) {
@@ -103,11 +104,11 @@ class VariationsMainView extends React.Component {
   };
 
   deleteRanges = ranges => () => {
-    this.props.deleteRanges(ranges.map(range => range.id));
+    this.props.deleteRanges(ranges);
   };
 
-  isGroupingPossible = selectedBubbles => {
-    const newRangeMinMax = selectedBubbles.reduce(
+  isGroupingPossible = selectedRanges => {
+    const newRangeMinMax = selectedRanges.reduce(
       (newRange, bubble) => {
         newRange.startTime = Math.min(newRange.startTime, bubble.startTime);
         newRange.endTime = Math.max(newRange.endTime, bubble.endTime);
@@ -167,10 +168,8 @@ class VariationsMainView extends React.Component {
       isLoaded,
       rangeToEdit,
       settings,
+      selectedRanges,
     } = this.props;
-    const selectedBubbles = Object.values(this.props.points).filter(
-      bubble => bubble.isSelected
-    );
     return (
       <div className="variations-app">
         <MuiThemeProvider theme={this.theme}>
@@ -199,16 +198,16 @@ class VariationsMainView extends React.Component {
               onScrubBackwards={this.props.fastReward}
               onAddBubble={this.isSplittingPossible() ? this.splitRange : null}
               onGroupBubble={
-                selectedBubbles.length > 1 &&
-                this.isGroupingPossible(selectedBubbles)
+                selectedRanges.length > 1 &&
+                this.isGroupingPossible(selectedRanges)
                   ? this.props.groupSelectedRanges
                   : null
               }
               onDeleteBubble={
-                selectedBubbles.length > 0 &&
+                selectedRanges.length > 0 &&
                 _points.length > 1 &&
-                _points.length - selectedBubbles.length > 0
-                  ? this.deleteRanges(selectedBubbles)
+                _points.length - selectedRanges.length > 0
+                  ? this.deleteRanges(selectedRanges)
                   : null
               }
               onAddMarker={this.addMarker}
@@ -303,7 +302,8 @@ const mapStateProps = state => ({
   manifestLabel: state.project.title,
   importError: state.project.error,
   manifestSummary: state.project.description,
-  points: Object.values(state.range),
+  points: Object.values(getRangeList(state)),
+  selectedRanges: getSelectedRanges(state),
   isImportOpen: state.viewState.isImportOpen,
   isSettingsOpen: state.viewState.isSettingsOpen,
   audioUrl: state.canvas.url,
@@ -347,7 +347,7 @@ const mapDispatchToProps = {
   //range
   splitRangeAt,
   groupSelectedRanges,
-  deleteRanges,
+  deleteRanges: scheduleDeleteRanges,
   updateRange,
   // markers
   addMarkerAtTime,

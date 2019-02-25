@@ -11,6 +11,7 @@ import Grid from '@material-ui/core/Grid';
 
 import './AudioTransportBar.scss';
 import VolumeSliderCompact from '../VolumeSliderCompact/VolumeSliderCompact';
+import UndoButtons from "../UndoButtons/UndoButtons";
 
 class AudioTransportBar extends Component {
   static propTypes = {
@@ -120,6 +121,7 @@ class AudioTransportBar extends Component {
             >
               Marker
             </PrimaryButton>
+            <UndoButtons />
           </Grid>
           <Grid item xs={4}>
             <div className="audio-transport-bar__buttons">
