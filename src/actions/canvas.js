@@ -7,17 +7,22 @@ import {
 } from '../constants/canvas';
 import invariant from '../utils/invariant';
 
-export const audioLoading = (bytesLoaded, bytesTotal, duration) =>
+export const audioLoading = (bytesLoaded, bytesTotal, duration) => {
   invariant(
     () => bytesLoaded <= bytesTotal,
     'Bytes loaded cannot be more than the total'
-  ) && {
+  );
+  const percent = parseInt((bytesLoaded / bytesTotal) * 100, 10);
+  const percentLoaded = Number.isNaN(percent) ? 100 : percent;
+
+  return {
     type: AUDIO_LOADING,
     payload: {
-      percentLoaded: parseInt((bytesLoaded / bytesTotal) * 100, 10),
+      percentLoaded,
       duration,
     },
   };
+};
 
 export const audioLoaded = isLoaded => ({
   type: AUDIO_LOADED,

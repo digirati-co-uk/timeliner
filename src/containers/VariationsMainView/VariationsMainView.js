@@ -91,12 +91,6 @@ class VariationsMainView extends React.Component {
         },
       },
     });
-    this.state = {
-      dimensions: {
-        width: -1,
-        height: -1,
-      },
-    };
   }
 
   addRange = selected => () => {

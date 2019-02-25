@@ -12,10 +12,12 @@ import {
   IMPORT_RANGES,
   INCREASE_RANGE_DEPTH,
   DECREASE_RANGE_DEPTH,
+  SCHEDULE_UPDATE_RANGE,
 } from '../constants/range';
 import {
   createRange,
-  decreaseRangeDepth, deleteRange,
+  decreaseRangeDepth,
+  deleteRange,
   increaseRangeDepth,
   rangeMutations,
   updateRange,
@@ -44,7 +46,7 @@ export function undo(prevState, action) {
   if (action.type === DECREASE_RANGE_DEPTH) {
     return increaseRangeDepth(action.payload.id);
   }
-  if (action.type === UPDATE_RANGE) {
+  if (action.type === UPDATE_RANGE || action.type === SCHEDULE_UPDATE_RANGE) {
     return updateRange(
       action.payload.id,
       Object.keys(action.payload).reduce((acc, key) => {

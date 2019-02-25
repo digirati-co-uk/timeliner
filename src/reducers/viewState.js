@@ -29,6 +29,8 @@ import {
   SAVE_PROJECT_METADATA,
   FINISHED_PLAYING,
   LOAD_SOURCE,
+  ZOOM_TO,
+  UPDATE_VIEWER_WIDTH,
 } from '../constants/viewState';
 
 import {
@@ -55,16 +57,10 @@ const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
           $set: false,
         },
       });
-    case ZOOM_IN:
+    case ZOOM_TO:
       return update(state, {
         [VIEWSTATE.ZOOM]: {
-          $set: state.zoom * 1.2,
-        },
-      });
-    case ZOOM_OUT:
-      return update(state, {
-        [VIEWSTATE.ZOOM]: {
-          $set: Math.max(state.zoom * 0.8, 1.0),
+          $set: action.payload.zoom,
         },
       });
     case RESET_ZOOM:
@@ -74,6 +70,12 @@ const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
         },
         [VIEWSTATE.X]: {
           $set: 0.0,
+        },
+      });
+    case UPDATE_VIEWER_WIDTH:
+      return update(state, {
+        [VIEWSTATE.VIEWER_WIDTH]: {
+          $set: action.payload.width,
         },
       });
     case PAN_TO_POSITION:
@@ -131,7 +133,7 @@ const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
         },
       });
     case LOAD_VIEW_STATE:
-      return update(DEFAULT_VIEWSTATE_STATE, {
+      return update(state, {
         $merge: action.state,
       });
     case LOAD_SOURCE:
