@@ -52,7 +52,8 @@ export function undo(prevState, action) {
       Object.keys(action.payload).reduce((acc, key) => {
         acc[key] = prevResource[key];
         return acc;
-      }, {})
+      }, {}),
+      false
     );
   }
   if (action.type === UPDATE_RANGE_TIME) {
@@ -73,6 +74,7 @@ export function undo(prevState, action) {
   if (action.type === DELETE_RANGE) {
     return createRange(prevResource);
   }
+
   return {};
 }
 
@@ -240,19 +242,27 @@ export function getRangesBetweenTimes(startTime, endTime) {
 }
 
 export const getNextBubbleStartTime = state => {
-  const currentTime = state.viewState.currentTime;
-  const pointsPastNext = getPoints(state).filter(point => point > currentTime);
-  const result = Math.min(...pointsPastNext);
+  // const currentTime = state.viewState.currentTime;
+  // const pointsPastNext = getPoints(state).filter(point => point > currentTime);
+  // console.log(pointsPastNext);
+  const result = Math.min(
+    ...getPoints(state).filter(
+      point => point - 250 >= state.viewState.currentTime
+    )
+  );
   return {
     time: result === Infinity ? state.viewState.runTime + 1 : result + 1,
     doStop: result === Infinity,
   };
 };
 
-export const getPreviousBubbleStartTime = state =>
-  getPoints(state)
-    .filter(point => point + 50 <= state.viewState.currentTime)
-    .pop() || 0;
+export const getPreviousBubbleStartTime = state => {
+  return Math.max(
+    ...getPoints(state).filter(
+      point => point + 250 <= state.viewState.currentTime
+    )
+  );
+};
 
 export const getPoints = state =>
   Array.from(

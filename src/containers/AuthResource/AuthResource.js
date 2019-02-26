@@ -1,11 +1,5 @@
-import React, {
-  Component,
-  useCallback,
-  useEffect,
-  useReducer,
-  useRef,
-  useState,
-} from 'react';
+import React, { useEffect, useState } from 'react';
+import AuthModal from '../../components/AuthModal/AuthModal';
 
 function windowOpen(url) {
   return new Promise(resolve => {
@@ -209,7 +203,7 @@ export function AuthCookieService1({ service, children }) {
               setStage(TOKEN_FAILED);
             }
           })
-          .catch(e => {
+          .catch(() => {
             setStage(TOKEN_FAILED);
           });
       }
@@ -244,44 +238,26 @@ export function AuthCookieService1({ service, children }) {
 
   if (currentStage === MODAL_SHOWN) {
     return (
-      <div
-        style={{
-          position: 'absolute',
-          zIndex: 10,
-          top: 0,
-          bottom: 0,
-          left: 0,
-          right: 0,
-          background: 'rgba(0,0,0,.4)',
-        }}
-      >
-        <div
-          style={{
-            position: 'absolute',
-            zIndex: 10,
-            left: '50%',
-            marginLeft: -200,
-            width: 400,
-            top: 100,
-          }}
-        >
-          <div style={{ background: '#fff', width: '400px', padding: 20 }}>
-            <h1>{header}</h1>
-            <p dangerouslySetInnerHTML={{ __html: description }} />
-            <button onClick={dismissModal}>Cancel</button>
-            <button onClick={confirmModal}>{confirmLabel}</button>
-          </div>
-        </div>
-      </div>
+      <AuthModal
+        header={header}
+        description={description}
+        confirmLabel={confirmLabel}
+        onConfirm={confirmModal}
+        onDismiss={dismissModal}
+      />
     );
   }
 
   if (currentStage === TOKEN_FAILED || currentStage === LOGIN_FAILED) {
     return (
-      <div>
-        Error Modal shown
-        <button onClick={dismissErrorModal}>Dismiss</button>
-      </div>
+      <AuthModal
+        header={failureHeader || 'Something went wrong'}
+        description={failureDescription || ''}
+        confirmLabel={'Refresh page'}
+        onConfirm={() => window.location.reload(true)}
+        dismissLabel="Continue without authentication"
+        onDismiss={dismissErrorModal}
+      />
     );
   }
 

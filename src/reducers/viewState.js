@@ -33,9 +33,7 @@ import {
   UPDATE_VIEWER_WIDTH,
 } from '../constants/viewState';
 
-import {
-  AUDIO_LOADING
-} from '../constants/canvas';
+import { AUDIO_LOADING } from '../constants/canvas';
 
 const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
   switch (action.type) {
@@ -115,6 +113,12 @@ const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
         },
       });
     case SET_CURRENT_TIME:
+      if (Number.isFinite(action.payload.currentTime) === false) {
+        return update(state, {
+          [VIEWSTATE.CURRENT_TIME]: 0,
+        });
+      }
+
       return update(state, {
         [VIEWSTATE.CURRENT_TIME]: {
           $set: action.payload.currentTime || 0,

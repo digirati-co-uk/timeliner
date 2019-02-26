@@ -9,7 +9,7 @@ import { setCurrentTime, finishedPlaying } from '../../actions/viewState';
 import 'mediaelement/standalone';
 import useEventListener from '../../hooks/useEventListener';
 import useInterval from '../../hooks/useInterval';
-import {ERROR_CODES} from "../../constants/canvas";
+import { ERROR_CODES } from '../../constants/canvas';
 
 const { MediaElement } = window;
 
@@ -42,33 +42,29 @@ function Audio({ url, volume, currentTime, isPlaying, ...props }) {
     props.audioError('error', ERROR_CODES.MEDIA_ERR_NETWORK);
   });
 
-  // Event listener for when the audio is available to play.
-  useEventListener(
-    player,
-    'canplay',
-    () => {
-      setDuration(player.current.duration * 1000);
-      props.audioLoading(1, 1, player.current.duration * 1000);
-      props.audioLoaded(true);
-    },
-    [url]
-  );
-
   // Loop timer for calculating current time.
-  useInterval(() => {
-    const position = player.current.getCurrentTime();
-    lastTime.current = position * 1000;
-    props.setCurrentTime(position * 1000);
+  useInterval(
+    () => {
+      const position = player.current.getCurrentTime();
+      if (position * 1000 !== lastTime.current) {
+        lastTime.current = position * 1000;
+        props.setCurrentTime(position * 1000);
+      }
 
-    if (player.current.readyState && loaded === false) {
-      props.audioLoaded(true);
-      setLoaded(true);
-    }
+      if (player.current.readyState && loaded === false) {
+        setDuration(player.current.duration * 1000);
+        props.audioLoading(1, 1, player.current.duration * 1000);
+        props.audioLoaded(true);
+        setLoaded(true);
+      }
 
-    if (position === duration) {
-      finishedPlaying();
-    }
-  }, 1000 / 60);
+      if (position === duration) {
+        finishedPlaying();
+      }
+    },
+    1000 / 5,
+    [loaded]
+  );
 
   // Handle play/pause
   useLayoutEffect(

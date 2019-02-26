@@ -53,7 +53,11 @@ import { addMarkerAtTime } from '../../actions/markers';
 
 import './VariationsMainView.scss';
 import { getRangeList, getSelectedRanges } from '../../reducers/range';
-import AuthResource, { AuthCookieService1 } from '../AuthResource/AuthResource';
+import {
+  AuthCookieService1,
+  resolveAvResource,
+} from '../AuthResource/AuthResource';
+import { actions as undoActions } from 'redux-undo-redo';
 
 class VariationsMainView extends React.Component {
   constructor(props) {
@@ -190,9 +194,12 @@ class VariationsMainView extends React.Component {
           <VariationsAppBar
             title={manifestLabel}
             onImportButtonClicked={this.props.showImportModal}
-            onEraseButtonClicked={this.props.resetDocument}
-            onSaveButtonClicked={this.props.exportDocument}
             onSettingsButtonClicked={this.props.showSettingsModal}
+            canUndo={this.props.canUndo}
+            canRedo={this.props.canRedo}
+            onRedo={this.props.onRedo}
+            onUndo={this.props.onUndo}
+            onSave={null}
             onTitleChange={() => {}}
           />
           <div className="variations-app__content">
@@ -250,6 +257,8 @@ class VariationsMainView extends React.Component {
                 projectMetadataEditorOpen={this.props.showMetadataEditor}
                 onEditProjectMetadata={this.props.editProjectMetadata}
                 onSaveProjectMetadata={this.props.saveProjectMetadata}
+                onEraseButtonClicked={this.props.resetDocument}
+                onSaveButtonClicked={this.props.exportDocument}
                 onCancelEditingProjectMetadata={
                   this.props.cancelProjectMetadataEdits
                 }
@@ -339,6 +348,8 @@ const mapStateProps = state => ({
   rangeToEdit: state.viewState.metadataToEdit,
   verifyDialog: state.viewState.verifyDialog,
   showMetadataEditor: state.viewState[VIEWSTATE.PROJECT_METADATA_EDITOR_OPEN],
+  canUndo: state.undoHistory.undoQueue.length > 0,
+  canRedo: state.undoHistory.redoQueue.length > 0,
   //settings
   settings: PROJECT_SETTINGS_KEYS.reduce((acc, next) => {
     acc[next] = state.project[next];
@@ -377,6 +388,9 @@ const mapDispatchToProps = {
   updateRange,
   // markers
   addMarkerAtTime,
+  // Undo
+  onUndo: undoActions.undo,
+  onRedo: undoActions.redo,
 };
 
 export default connect(

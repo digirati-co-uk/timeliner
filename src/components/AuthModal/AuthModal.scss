@@ -1,0 +1,24 @@
+.auth-modal {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, .4);
+
+  &__inner {
+    position: absolute;
+    z-index: 5;
+    left: 50%;
+    margin-left: -200px;
+    width: 400px;
+    top: 100px;
+  }
+
+  &__panel {
+    background: #fff;
+    width: 400px;
+    padding: 20px;
+  }
+}

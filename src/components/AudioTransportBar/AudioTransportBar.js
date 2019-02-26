@@ -11,7 +11,6 @@ import Grid from '@material-ui/core/Grid';
 
 import './AudioTransportBar.scss';
 import VolumeSliderCompact from '../VolumeSliderCompact/VolumeSliderCompact';
-import UndoButtons from "../UndoButtons/UndoButtons";
 
 class AudioTransportBar extends Component {
   static propTypes = {
@@ -97,6 +96,7 @@ class AudioTransportBar extends Component {
       <div className="audio-transport-bar">
         <Grid container direction="row" alignItems="center">
           <Grid item xs={4} className="audio-transport-bar__actions">
+            <CurrentTimeIndicator currentTime={currentTime} runtime={runTime} />
             <PrimaryButton disabled={!onAddBubble} onClick={onAddBubble}>
               Add
             </PrimaryButton>
@@ -121,7 +121,6 @@ class AudioTransportBar extends Component {
             >
               Marker
             </PrimaryButton>
-            <UndoButtons />
           </Grid>
           <Grid item xs={4}>
             <div className="audio-transport-bar__buttons">
@@ -142,7 +141,6 @@ class AudioTransportBar extends Component {
               volume={volume}
               onVolumeChanged={onVolumeChanged}
             />
-            <CurrentTimeIndicator currentTime={currentTime} runtime={runTime} />
           </Grid>
         </Grid>
       </div>
