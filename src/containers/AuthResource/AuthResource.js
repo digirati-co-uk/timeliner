@@ -131,12 +131,13 @@ export function AuthCookieService1({ service, children }) {
   // Open this dialog on click
   const authService = service ? service['@id'] : null;
   // Once we see that the window is closed, open this link
-  const tokenService = service
-    ? (service.service || []).filter(
+  const tokenServiceObject = service
+    ? (service.service || []).find(
         embeddedService =>
           embeddedService.profile === 'http://iiif.io/api/auth/1/token'
       )
     : null;
+  const tokenService = tokenServiceObject ? tokenServiceObject.id || tokenServiceObject['@id'] : null;
 
   // Derived props.
   const separator = tokenService

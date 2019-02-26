@@ -1,8 +1,9 @@
 import { PROJECT, RDF_NAMESPACE } from '../constants/project';
 import { CANVAS } from '../constants/canvas';
-import { RANGE, DEFAULT_COLOURS } from '../constants/range';
+import { RANGE, DEFAULT_COLOURS, DEFAULT_RANGE } from '../constants/range';
 import { VIEWSTATE } from '../constants/viewState';
 import { resolveAvResource } from '../containers/AuthResource/AuthResource';
+import generateId from './generateId';
 
 // Constants
 
@@ -64,7 +65,7 @@ const parseTimeRange = rangeStr => {
   const [startString, endString] = rangeStr.split(',');
   return {
     [RANGE.START_TIME]: sToMs(startString),
-    [RANGE.END_TIME]: sToMs(endString),
+    [RANGE.END_TIME]: endString ? sToMs(endString) : sToMs(startString) + 1,
   };
 };
 
@@ -237,15 +238,40 @@ const processStructures = manifest => {
     processLevel(structure)
   );
 
-  return Array.prototype.concat
-    .apply([], allStructures)
-    .reduce((ranges, range) => {
-      if (range) {
-        range[RANGE.COLOUR] = getColour(range);
-        ranges[range.id] = range;
-      }
-      return ranges;
-    }, {});
+  if (manifest.items.length > 1) {
+    console.warn(
+      'Timeliner does not have full support for multi-canvas elements'
+    );
+  }
+
+  const finalRanges = Array.prototype.concat.apply([], allStructures);
+
+  const startMin = Math.min(...finalRanges.map(range => range.startTime));
+  const endMax = Math.max(...finalRanges.map(range => range.endTime));
+  const canvas = manifest.items[0];
+
+  if (
+    canvas.duration &&
+    (startMin !== 0 || endMax !== canvas.duration * 1000)
+  ) {
+    console.log('Unstable state, ranges must go from start to finish', { startMin, endMax, canvasDuration: canvas.duration });
+    return [
+      {
+        ...DEFAULT_RANGE,
+        id: generateId(),
+        startTime: 0,
+        endTime: canvas.duration * 1000,
+      },
+    ];
+  }
+
+  return finalRanges.reduce((ranges, range) => {
+    if (range) {
+      range[RANGE.COLOUR] = getColour(range);
+      ranges[range.id] = range;
+    }
+    return ranges;
+  }, {});
 };
 
 const mapSettings = iiifSettings =>

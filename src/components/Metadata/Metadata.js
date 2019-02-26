@@ -40,7 +40,6 @@ const Metadata = props => (
               .sort(
                 (a, b) => b.endTime - b.startTime - (a.endTime - a.startTime)
               )
-              .map(range => console.log(range) || range)
               .map((range, depth) =>
                 range.id === props.rangeToEdit ? (
                   <Meta key={`edit-${range.id}`}>

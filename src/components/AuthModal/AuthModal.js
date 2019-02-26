@@ -20,15 +20,15 @@ const AuthModal = ({
       <DialogContent>
         <DialogContentText>
           <span dangerouslySetInnerHTML={{ __html: description }} />
-          <DialogActions>
-            <Button color="primary" onClick={onDismiss}>
-              {dismissLabel}
-            </Button>
-            <Button color="primary" variant="contained" onClick={onConfirm}>
-              {confirmLabel}
-            </Button>
-          </DialogActions>
         </DialogContentText>
+        <DialogActions>
+          <Button color="primary" onClick={onDismiss}>
+            {dismissLabel}
+          </Button>
+          <Button color="primary" variant="contained" onClick={onConfirm}>
+            {confirmLabel}
+          </Button>
+        </DialogActions>
       </DialogContent>
     </Dialog>
   );

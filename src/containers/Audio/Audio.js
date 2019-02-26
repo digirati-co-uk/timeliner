@@ -38,8 +38,11 @@ function Audio({ url, volume, currentTime, isPlaying, ...props }) {
     };
   }, []);
 
-  useEventListener(audio, 'error', () => {
-    props.audioError('error', ERROR_CODES.MEDIA_ERR_NETWORK);
+  useEventListener(player, 'error', event => {
+    if (event && event.type === 'error') {
+      // This will need to be refined.
+      props.audioError('error', ERROR_CODES.MEDIA_ERR_NETWORK);
+    }
   });
 
   // Loop timer for calculating current time.

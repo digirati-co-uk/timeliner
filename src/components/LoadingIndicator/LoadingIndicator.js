@@ -10,9 +10,7 @@ const LoadingIndicator = props => (
         ? props.loadingPercent
         : undefined
     }
-    variant={
-      typeof props.loadingPercent === 'number' ? 'static' : 'indeterminate'
-    }
+    variant="indeterminate"
   />
 );
 

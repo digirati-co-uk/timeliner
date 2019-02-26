@@ -88,7 +88,7 @@ VariationsAppBar.propTypes = {
   canUndo: PropTypes.bool,
   canRedo: PropTypes.bool,
   /** Invokes the save action */
-  onSave: PropTypes.func.isRequired,
+  onSave: PropTypes.func,
   /** Opens the project settings modal */
   onSettingsButtonClicked: PropTypes.func.isRequired,
 };
