@@ -20,7 +20,7 @@ const Meta = posed.div({
   },
 });
 
-const fix = num => parseInt(num.toFixed(0), 10);
+const fix = num => parseInt((num || 0).toFixed(0), 10);
 
 const Metadata = props => (
   <div className="metadata">

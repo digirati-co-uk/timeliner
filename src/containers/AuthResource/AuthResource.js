@@ -131,10 +131,12 @@ export function AuthCookieService1({ service, children }) {
   // Open this dialog on click
   const authService = service ? service['@id'] : null;
   // Once we see that the window is closed, open this link
-  // @todo this hack.
-  const tokenService = service ? service.service[0]['@id'] : null;
-  // Wait for token, save it. Not sure if logout service is needed?
-  // const logoutService = service.services[1]['@id'];
+  const tokenService = service
+    ? (service.service || []).filter(
+        embeddedService =>
+          embeddedService.profile === 'http://iiif.io/api/auth/1/token'
+      )
+    : null;
 
   // Derived props.
   const separator = tokenService
