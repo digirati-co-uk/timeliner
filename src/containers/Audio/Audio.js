@@ -1,84 +1,122 @@
-import React, { Component } from 'react';
-import Sound from 'react-sound';
-import PropTypes from 'prop-types';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 
 import { audioLoading, audioLoaded, audioError } from '../../actions/canvas';
 
-import { ERROR_CODES } from '../../constants/canvas';
-
 import { setCurrentTime, finishedPlaying } from '../../actions/viewState';
 
-class Audio extends Component {
-  static propTypes = {
-    setCurrentTime: PropTypes.func.isRequired,
-    currentTime: PropTypes.number.isRequired,
-  };
+// Media Element
+import 'mediaelement/standalone';
+import useEventListener from '../../hooks/useEventListener';
+import useInterval from '../../hooks/useInterval';
+import { ERROR_CODES } from '../../constants/canvas';
 
-  static defaultProps = {
-    setCurrentTime: () => {},
-    currentTime: 0,
-  };
+const { MediaElement } = window;
 
-  handleSongLoading = params => {
-    const { bytesLoaded, bytesTotal, duration, durationEstimate } = params;
-    this.props.audioLoading(
-      bytesLoaded,
-      bytesTotal,
-      duration || durationEstimate
+function Audio({ url, volume, currentTime, isPlaying, ...props }) {
+  const audio = useRef();
+  const player = useRef();
+  const [duration, setDuration] = useState();
+  const [loaded, setLoaded] = useState();
+  const sources = [{ src: url }];
+  const lastTime = useRef(null);
+
+  // Bootstrap the element.
+  useLayoutEffect(() => {
+    const element = new MediaElement(
+      audio.current,
+      {
+        startVolume: volume / 100,
+        currentTime: currentTime / 1000,
+      },
+      sources
     );
-  };
+    player.current = element;
+    setLoaded(false);
+    return () => {
+      element.remove();
+    };
+  }, []);
 
-  handleSongPlaying = ({ position, duration }) => {
-    this.props.setCurrentTime(position);
-    if (position === duration) {
-      this.props.finishedPlaying();
+  useEventListener(player, 'error', event => {
+    if (event && event.type === 'error') {
+      // This will need to be refined.
+      props.audioError('error', ERROR_CODES.MEDIA_ERR_NETWORK);
     }
-  };
+  });
 
-  handleResumePlaying = ({ position, duration }) => {
-    //this.props.setCurrentTime(position);
-  };
+  // Loop timer for calculating current time.
+  useInterval(
+    () => {
+      const position = player.current.getCurrentTime();
+      if (position * 1000 !== lastTime.current) {
+        lastTime.current = position * 1000;
+        props.setCurrentTime(position * 1000);
+      }
 
-  handleSongFinishedPlaying = () => {
-    // NOTE: we never reach this...
-    this.props.finishedPlaying();
-  };
+      if (player.current.readyState && loaded === false) {
+        setDuration(player.current.duration * 1000);
+        props.audioLoading(1, 1, player.current.duration * 1000);
+        props.audioLoaded(true);
+        setLoaded(true);
+      }
 
-  handleOnLoad = obj => {
-    const { loaded } = obj;
-    this.props.audioLoaded(loaded);
-  };
+      if (position === duration) {
+        finishedPlaying();
+      }
+    },
+    1000 / 5,
+    [loaded]
+  );
 
-  handleError = (errorCode, description) => {
-    this.props.audioError(errorCode, ERROR_CODES[description]);
-  };
+  // Handle play/pause
+  useLayoutEffect(
+    () => {
+      if (player.current) {
+        if (isPlaying) {
+          player.current.play();
+        } else {
+          player.current.pause();
+        }
+      }
+    },
+    [isPlaying, url]
+  );
 
-  render() {
-    const { url, isPlaying, volume, currentTime } = this.props;
-    const playStatus = isPlaying ? Sound.status.PLAYING : Sound.status.PAUSED;
-    if (!url) {
-      return null;
-    }
-    return (
-      <Sound
-        url={url}
-        loop={false}
-        autoLoad={true}
-        volume={volume}
-        playbackRate={1.0}
-        position={currentTime}
-        playStatus={playStatus}
-        onLoading={this.handleSongLoading}
-        onLoad={this.handleOnLoad}
-        onPlaying={this.handleSongPlaying}
-        onFinishedPlaying={this.handleSongFinishedPlaying}
-        onStop={this.handleSongFinishedPlaying}
-        onResume={this.handleResumePlaying}
-        onError={this.handleError}
-      />
-    );
+  // Handle volume change.
+  useLayoutEffect(
+    () => {
+      if (player.current) {
+        player.current.setVolume(volume / 100);
+      }
+    },
+    [volume, url]
+  );
+
+  // Handle user-changed current time.
+  useLayoutEffect(
+    () => {
+      if (player.current && currentTime !== lastTime.current) {
+        lastTime.current = currentTime;
+        player.current.setCurrentTime(currentTime / 1000);
+      }
+    },
+    [currentTime, url]
+  );
+
+  if (!url) {
+    return null;
   }
+
+  return (
+    <div>
+      <audio ref={audio} preload="auto">
+        {sources.map((source, key) => (
+          <source key={key} src={source.src} />
+        ))}
+      </audio>
+    </div>
+  );
 }
 
 const mapStateProps = state => ({

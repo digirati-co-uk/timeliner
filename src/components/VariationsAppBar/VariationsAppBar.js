@@ -4,8 +4,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircle from '@material-ui/icons/AddCircle';
-import RestorePage from '@material-ui/icons/RestorePage';
-import CloudDownload from '@material-ui/icons/CloudDownload';
+import Save from '@material-ui/icons/Save';
+import Undo from '@material-ui/icons/Undo';
+import Redo from '@material-ui/icons/Redo';
 import Settings from '@material-ui/icons/Settings';
 import bem from '@fesk/bem-js';
 import './VariationsAppBar.scss';
@@ -32,7 +33,7 @@ const VariationsAppBar = props => (
             fontWeight: 'normal',
           }}
         >
-          Timeliner&nbsp;
+          Timeliner
         </Typography>
       </div>
       <div>
@@ -45,17 +46,27 @@ const VariationsAppBar = props => (
         </IconButton>
         <IconButton
           color="inherit"
-          onClick={props.onEraseButtonClicked}
-          title="Clear annotation"
+          onClick={props.onSave}
+          disabled={!props.onSave}
+          title={props.onSave ? 'Save project' : 'No backend set up to save'}
         >
-          <RestorePage />
+          <Save />
         </IconButton>
         <IconButton
           color="inherit"
-          onClick={props.onSaveButtonClicked}
-          title="Download project"
+          onClick={props.onUndo}
+          disabled={(props.canUndo || false) === false}
+          title="Undo"
         >
-          <CloudDownload />
+          <Undo />
+        </IconButton>
+        <IconButton
+          color="inherit"
+          onClick={props.onRedo}
+          disabled={(props.canRedo || false) === false}
+          title="Redo"
+        >
+          <Redo />
         </IconButton>
         <IconButton
           color="inherit"
@@ -72,10 +83,12 @@ const VariationsAppBar = props => (
 VariationsAppBar.propTypes = {
   /** action opens the import popup */
   onImportButtonClicked: PropTypes.func.isRequired,
-  /** action erases all previously entered information in the project */
-  onEraseButtonClicked: PropTypes.func.isRequired,
+  onUndo: PropTypes.func.isRequired,
+  onRedo: PropTypes.func.isRequired,
+  canUndo: PropTypes.bool,
+  canRedo: PropTypes.bool,
   /** Invokes the save action */
-  onSaveButtonClicked: PropTypes.func.isRequired,
+  onSave: PropTypes.func,
   /** Opens the project settings modal */
   onSettingsButtonClicked: PropTypes.func.isRequired,
 };

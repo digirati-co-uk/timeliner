@@ -52,7 +52,12 @@ import {
 import { addMarkerAtTime } from '../../actions/markers';
 
 import './VariationsMainView.scss';
-import {getRangeList, getSelectedRanges} from "../../reducers/range";
+import { getRangeList, getSelectedRanges } from '../../reducers/range';
+import {
+  AuthCookieService1,
+  resolveAvResource,
+} from '../AuthResource/AuthResource';
+import { actions as undoActions } from 'redux-undo-redo';
 
 class VariationsMainView extends React.Component {
   constructor(props) {
@@ -151,6 +156,19 @@ class VariationsMainView extends React.Component {
 
   addMarker = () => this.props.addMarkerAtTime(this.props.currentTime);
 
+  getAuthService = () => {
+    const annotationPages = this.props.annotationPages;
+    if (
+      annotationPages &&
+      annotationPages[0] &&
+      annotationPages[0].items &&
+      annotationPages[0].items[0]
+    ) {
+      const avResource = resolveAvResource(annotationPages[0].items[0]);
+      return avResource.service;
+    }
+  };
+
   render() {
     const _points = this.props.points;
     const {
@@ -176,42 +194,55 @@ class VariationsMainView extends React.Component {
           <VariationsAppBar
             title={manifestLabel}
             onImportButtonClicked={this.props.showImportModal}
-            onEraseButtonClicked={this.props.resetDocument}
-            onSaveButtonClicked={this.props.exportDocument}
             onSettingsButtonClicked={this.props.showSettingsModal}
+            canUndo={this.props.canUndo}
+            canRedo={this.props.canRedo}
+            onRedo={this.props.onRedo}
+            onUndo={this.props.onUndo}
+            onSave={null}
             onTitleChange={() => {}}
           />
           <div className="variations-app__content">
-            <BubbleEditor />
-            <Audio />
-            <AudioTransportBar
-              isPlaying={isPlaying}
-              volume={volume}
-              currentTime={currentTime}
-              runTime={runTime}
-              onVolumeChanged={this.props.setVolume}
-              onPlay={this.props.play}
-              onPause={this.props.pause}
-              onNextBubble={this.props.nextBubble}
-              onPreviousBubble={this.props.previousBubble}
-              onScrubAhead={this.props.fastForward}
-              onScrubBackwards={this.props.fastReward}
-              onAddBubble={this.isSplittingPossible() ? this.splitRange : null}
-              onGroupBubble={
-                selectedRanges.length > 1 &&
-                this.isGroupingPossible(selectedRanges)
-                  ? this.props.groupSelectedRanges
-                  : null
+            <AuthCookieService1
+              service={
+                this.props.authService ? this.props.authService[0] : null
               }
-              onDeleteBubble={
-                selectedRanges.length > 0 &&
-                _points.length > 1 &&
-                _points.length - selectedRanges.length > 0
-                  ? this.deleteRanges(selectedRanges)
-                  : null
-              }
-              onAddMarker={this.addMarker}
-            />
+            >
+              <BubbleEditor key={'bubble--' + this.props.url} />
+              {this.props.url ? (
+                <Audio key={'audio--' + this.props.url} />
+              ) : null}
+              <AudioTransportBar
+                isPlaying={isPlaying}
+                volume={volume}
+                currentTime={currentTime}
+                runTime={runTime}
+                onVolumeChanged={this.props.setVolume}
+                onPlay={this.props.play}
+                onPause={this.props.pause}
+                onNextBubble={this.props.nextBubble}
+                onPreviousBubble={this.props.previousBubble}
+                onScrubAhead={this.props.fastForward}
+                onScrubBackwards={this.props.fastReward}
+                onAddBubble={
+                  this.isSplittingPossible() ? this.splitRange : null
+                }
+                onGroupBubble={
+                  selectedRanges.length > 1 &&
+                  this.isGroupingPossible(selectedRanges)
+                    ? this.props.groupSelectedRanges
+                    : null
+                }
+                onDeleteBubble={
+                  selectedRanges.length > 0 &&
+                  _points.length > 1 &&
+                  _points.length - selectedRanges.length > 0
+                    ? this.deleteRanges(selectedRanges)
+                    : null
+                }
+                onAddMarker={this.addMarker}
+              />
+            </AuthCookieService1>
             <div className="variations-app__metadata-editor">
               <ProjectMetadata
                 currentTime={currentTime}
@@ -226,6 +257,8 @@ class VariationsMainView extends React.Component {
                 projectMetadataEditorOpen={this.props.showMetadataEditor}
                 onEditProjectMetadata={this.props.editProjectMetadata}
                 onSaveProjectMetadata={this.props.saveProjectMetadata}
+                onEraseButtonClicked={this.props.resetDocument}
+                onSaveButtonClicked={this.props.exportDocument}
                 onCancelEditingProjectMetadata={
                   this.props.cancelProjectMetadataEdits
                 }
@@ -297,6 +330,8 @@ const mapStateProps = state => ({
   volume: state.viewState.volume,
   isPlaying: state.viewState.isPlaying,
   currentTime: state.viewState.currentTime,
+  authService: state.canvas.service,
+  annotationPages: state.canvas.items,
   url: state.canvas.url,
   runTime: state.viewState.runTime,
   manifestLabel: state.project.title,
@@ -313,6 +348,8 @@ const mapStateProps = state => ({
   rangeToEdit: state.viewState.metadataToEdit,
   verifyDialog: state.viewState.verifyDialog,
   showMetadataEditor: state.viewState[VIEWSTATE.PROJECT_METADATA_EDITOR_OPEN],
+  canUndo: state.undoHistory.undoQueue.length > 0,
+  canRedo: state.undoHistory.redoQueue.length > 0,
   //settings
   settings: PROJECT_SETTINGS_KEYS.reduce((acc, next) => {
     acc[next] = state.project[next];
@@ -351,6 +388,9 @@ const mapDispatchToProps = {
   updateRange,
   // markers
   addMarkerAtTime,
+  // Undo
+  onUndo: undoActions.undo,
+  onRedo: undoActions.redo,
 };
 
 export default connect(

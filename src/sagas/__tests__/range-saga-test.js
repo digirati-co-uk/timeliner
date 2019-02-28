@@ -133,12 +133,12 @@ describe('sagas/range-saga', () => {
         .silentRun();
     });
 
-    it('should still rewind after 50ms', async () => {
+    it('should still rewind after 250ms', async () => {
       await expectSaga(rangeSaga)
         .withState(
           mockedRangeState([
             loadViewState({ runTime: 3000 }),
-            setCurrentTime(2050),
+            setCurrentTime(2250),
             createRange({ id: 'range-1', startTime: 0, endTime: 1000 }),
             createRange({ id: 'range-2', startTime: 1000, endTime: 2000 }),
             createRange({ id: 'range-3', startTime: 2000, endTime: 3000 }),

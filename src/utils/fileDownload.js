@@ -1,4 +1,8 @@
-export const immediateDownload = (name, dataStr, mime_type = 'application/json') => {
+export const immediateDownload = (
+  name,
+  dataStr,
+  mime_type = 'application/json'
+) => {
   const body = document.body;
   const blob = new Blob([dataStr], {
     type: mime_type,

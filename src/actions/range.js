@@ -78,9 +78,10 @@ export const updateRangeTime = (
 
 export const updateRange = (
   id,
-  { label, summary, startTime, endTime, colour, whiteText }
+  { label, summary, startTime, endTime, colour, whiteText },
+  schedule = true
 ) => ({
-  type: SCHEDULE_UPDATE_RANGE,
+  type: schedule ? SCHEDULE_UPDATE_RANGE : UPDATE_RANGE,
   payload: {
     id,
     label,

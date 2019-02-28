@@ -7,6 +7,7 @@ import {
   HIDE_MARKERS,
   SELECT_MARKER,
   DESELECT_MARKER,
+  CLEAR_MARKERS,
 } from '../constants/markers';
 
 const generateNewId = () => `marker-${new Date().getTime()}`;
@@ -33,6 +34,10 @@ export const updateMarkerPosition = (markerId, { x }) => ({
 export const importMarkers = markers => ({
   type: IMPORT_MARKERS,
   payload: { markers },
+});
+
+export const clearMarkers = () => ({
+  type: CLEAR_MARKERS,
 });
 
 export const deleteMarker = markerId => ({

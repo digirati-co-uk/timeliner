@@ -109,7 +109,7 @@ class SingleBubble extends Component {
         <path
           d={d}
           fill={colour}
-          strokeWidth={isSelected ? 2 : 0}
+          strokeWidth={isSelected ? 4 : 0}
           stroke={isSelected ? 'black' : 'transparent'}
           title={label}
         />

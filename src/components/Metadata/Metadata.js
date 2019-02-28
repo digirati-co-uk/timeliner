@@ -20,6 +20,8 @@ const Meta = posed.div({
   },
 });
 
+const fix = num => parseInt((num || 0).toFixed(0), 10);
+
 const Metadata = props => (
   <div className="metadata">
     <div className="metadata__annotations">
@@ -32,8 +34,8 @@ const Metadata = props => (
             {props.ranges
               .filter(
                 range =>
-                  range.startTime <= props.currentTime &&
-                  range.endTime > props.currentTime
+                  fix(range.startTime) <= fix(props.currentTime) &&
+                  fix(range.endTime) > fix(props.currentTime)
               )
               .sort(
                 (a, b) => b.endTime - b.startTime - (a.endTime - a.startTime)
@@ -94,6 +96,8 @@ const Metadata = props => (
               manifestLabel={props.manifestLabel}
               manifestSummary={props.manifestSummary}
               onEditClick={props.onEditProjectMetadata}
+              onSaveButtonClicked={props.onSaveButtonClicked}
+              onEraseButtonClicked={props.onEraseButtonClicked}
               url={props.url}
             />
           )}
@@ -139,6 +143,8 @@ Metadata.propTypes = {
   projectMetadataEditorOpen: PropTypes.bool,
   onEditProjectMetadata: PropTypes.func,
   onSaveProjectMetadata: PropTypes.func,
+  onSaveButtonClicked: PropTypes.func,
+  onEraseButtonClicked: PropTypes.func,
   /** Audio url */
   url: PropTypes.string,
 };

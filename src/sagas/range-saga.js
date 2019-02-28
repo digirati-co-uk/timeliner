@@ -57,7 +57,11 @@ export const STICKY_BUBBLE_MS = 50;
 
 function* previousBubble() {
   const previousBubbleTime = yield select(getPreviousBubbleStartTime);
-  yield put(setCurrentTime(previousBubbleTime));
+  if (Number.isFinite(previousBubbleTime)) {
+    yield put(setCurrentTime(previousBubbleTime));
+  } else {
+    yield put(setCurrentTime(0));
+  }
 }
 
 function* nextBubble() {

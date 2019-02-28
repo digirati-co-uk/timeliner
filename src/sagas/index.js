@@ -8,7 +8,7 @@ import {
   take,
   takeLatest,
 } from 'redux-saga/effects';
-import {DELETE_RANGE, DESELECT_RANGE, SELECT_RANGE} from '../constants/range';
+import { DELETE_RANGE, DESELECT_RANGE, SELECT_RANGE } from '../constants/range';
 import { loadProjectState, parseMarkers } from '../utils/iiifLoader';
 import { actions as undoActions } from 'redux-undo-redo';
 import {
@@ -56,7 +56,12 @@ import {
 } from '../reducers/range';
 import rangeSaga from './range-saga';
 import { SELECT_MARKER, UPDATE_MARKER } from '../constants/markers';
-import { hideMarkers, importMarkers, showMarkers } from '../actions/markers';
+import {
+  clearMarkers,
+  hideMarkers,
+  importMarkers,
+  showMarkers,
+} from '../actions/markers';
 
 const getDuration = state => state.viewState.runTime;
 
@@ -78,6 +83,7 @@ function* importDocument({ manifest, source }) {
     yield put(loadCanvas(loadedState.canvas));
     yield put(importRanges(loadedState.range));
     yield put(loadViewState(loadedState.viewState));
+    yield put(clearMarkers());
     yield put(importMarkers(parseMarkers(manifest)));
   } catch (err) {
     console.error(err);

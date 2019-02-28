@@ -3,6 +3,7 @@ import { PROJECT_SETTINGS_KEYS, RDF_NAMESPACE } from '../constants/project';
 
 const IIIF_KEY_ORDER = [
   '@context',
+  '@none',
   'id',
   '@id',
   'type',
