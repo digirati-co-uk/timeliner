@@ -35,6 +35,9 @@ const IIIF_KEY_ORDER = [
   'items',
   'structures',
   'annotations',
+  'source',
+  'selector',
+  't',
 ];
 
 const W3C_ANNOTATION_KEYS = ['body', 'target', 'duration'];

@@ -224,7 +224,7 @@ export function AuthCookieService1({ service, resource, children }) {
   // Change effect.
   useEffect(
     () => {
-      if (currentStage === INITIAL_LOAD) {
+      if (currentStage === INITIAL_LOAD && resource) {
         log('Probing current resource', resource);
         probeResource(resource)
           .then(() => {

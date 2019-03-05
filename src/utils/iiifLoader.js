@@ -95,7 +95,7 @@ export const parseMarkers = manifest => {
         annotation.target &&
         annotation.target.selector &&
         annotation.target.selector.t
-          ? annotation.target.selector.t
+          ? annotation.target.selector.t * 1000
           : null,
       label: getLabel(annotation.label, 'Untitled marker'),
       summary:

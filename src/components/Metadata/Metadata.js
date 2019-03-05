@@ -33,7 +33,8 @@ function getCurrentRanges(currentTime, ranges) {
     .sort((a, b) => b.endTime - b.startTime - (a.endTime - a.startTime));
 }
 
-const getLastRange = ranges => ranges[ranges.length - 1];
+const getLastRange = ranges =>
+  ranges[ranges.length - 1] || { startTime: -Infinity, endTime: Infinity };
 const getMinStartTime = ranges => Math.min(...ranges.map(r => r.startTime));
 const getMaxEndTime = ranges => Math.max(...ranges.map(r => r.endTime));
 const getMarkers = (markers, min, max) =>
