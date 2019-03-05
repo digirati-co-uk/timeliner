@@ -29,13 +29,13 @@ const MetadataDisplay = props => (
           </Typography>
         </Grid>
         <Grid>
-          <IconButton onClick={props.onEditClick}>
-            <Edit />
+          <IconButton onClick={props.onEditClick} style={{ padding: 5 }}>
+            <Edit fontSize="small" />
           </IconButton>
         </Grid>
       </Grid>
       <Typography
-        variant="body1"
+        variant="subheading"
         component="pre"
         style={{
           whiteSpace: 'pre-line',
