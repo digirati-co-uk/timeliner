@@ -40,7 +40,7 @@ class TimelineMarker extends Component {
 
     return (
       <div
-        className={$style.modifiers({ bookmark })}
+        className={$style.modifiers({ bookmark, marker: !bookmark })}
         style={{ left: `${x}%` }}
         onMouseDown={onMouseDown}
       >
