@@ -68,7 +68,41 @@ class SingleBubble extends Component {
     isSelected: false,
   };
 
-  onBubbleClick = ev => {
+  mouseDownTimeout = null;
+  originalX = 0;
+  isClicked = false;
+  stopClick = false;
+
+  onMouseDown = ev => {
+    ev.persist();
+    this.originalX = ev.pageX;
+    this.isClicked = true;
+    this.mouseDownTimeout = setTimeout(() => {
+      // After 500ms its a pan
+      this.props.onPanStart(ev);
+      this.stopClick = true;
+    }, 500);
+  };
+
+  onMouseMove = ev => {
+    if (
+      this.isClicked &&
+      this.stopClick === false &&
+      Math.abs(this.originalX - ev.pageX) >= 5
+    ) {
+      clearTimeout(this.mouseDownTimeout);
+      this.props.onPanStart(ev);
+      this.stopClick = true;
+    }
+  };
+
+  onMouseUp = ev => {
+    this.isClicked = false;
+    clearInterval(this.mouseDownTimeout);
+    if (this.stopClick) {
+      this.stopClick = false;
+      return;
+    }
     const { onClick } = this.props;
     if (onClick) {
       onClick(this.props.point, ev);
@@ -101,10 +135,10 @@ class SingleBubble extends Component {
     const textWidth = getLabelLengthInPixel(label);
     return (
       <g
-        onClick={this.onBubbleClick}
-        style={{
-          cursor: onClick ? 'pointer' : 'none',
-        }}
+        className="single-bubble"
+        onMouseDown={this.onMouseDown}
+        onMouseMove={this.onMouseMove}
+        onMouseUp={this.onMouseUp}
       >
         <path
           d={d}
