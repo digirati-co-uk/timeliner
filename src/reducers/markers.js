@@ -7,7 +7,8 @@ import {
   HIDE_MARKERS,
   MARKER,
   SELECT_MARKER,
-  DESELECT_MARKER, CLEAR_MARKERS,
+  DESELECT_MARKER,
+  CLEAR_MARKERS,
 } from '../constants/markers';
 
 export const DEFAULT_STATE = {
@@ -42,7 +43,7 @@ export default function reducer(state = DEFAULT_STATE, action) {
     case CLEAR_MARKERS:
       return update(state, {
         list: { $set: [] },
-        selected: { $set: [] }
+        selected: { $set: [] },
       });
     case IMPORT_MARKERS:
       return update(state, {

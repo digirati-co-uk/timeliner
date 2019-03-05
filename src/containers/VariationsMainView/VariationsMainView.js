@@ -49,7 +49,7 @@ import {
   cancelProjectMetadataEdits,
   saveProjectMetadata,
 } from '../../actions/viewState';
-import { addMarkerAtTime } from '../../actions/markers';
+import { addMarkerAtTime, updateMarker } from '../../actions/markers';
 
 import './VariationsMainView.scss';
 import { getRangeList, getSelectedRanges } from '../../reducers/range';
@@ -265,6 +265,8 @@ class VariationsMainView extends React.Component {
                   this.props.cancelProjectMetadataEdits
                 }
                 url={this.props.url}
+                markers={this.props.markers}
+                updateMarker={this.props.updateMarker}
               />
               <Footer />
             </div>
@@ -352,6 +354,7 @@ const mapStateProps = state => ({
   showMetadataEditor: state.viewState[VIEWSTATE.PROJECT_METADATA_EDITOR_OPEN],
   canUndo: state.undoHistory.undoQueue.length > 0,
   canRedo: state.undoHistory.redoQueue.length > 0,
+  markers: state.markers.visible ? state.markers.list : {},
   //settings
   settings: PROJECT_SETTINGS_KEYS.reduce((acc, next) => {
     acc[next] = state.project[next];
@@ -388,6 +391,7 @@ const mapDispatchToProps = {
   groupSelectedRanges,
   deleteRanges: scheduleDeleteRanges,
   updateRange,
+  updateMarker,
   // markers
   addMarkerAtTime,
   // Undo

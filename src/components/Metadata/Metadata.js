@@ -10,6 +10,7 @@ import ProjectMetadataEditor from '../ProjectMetadataEditor/ProjectMetadataEdito
 
 import './Metadata.scss';
 import { DEFAULT_COLOURS } from '../../constants/range';
+import MarkerMetadata from '../MarkerMetadata/MarkerMetadata';
 
 const Meta = posed.div({
   enter: { y: 0, opacity: 1, delay: 250 },
@@ -22,25 +23,50 @@ const Meta = posed.div({
 
 const fix = num => parseInt((num || 0).toFixed(0), 10);
 
-const Metadata = props => (
-  <div className="metadata">
-    <div className="metadata__annotations">
-      <div className="metadata__annotations-content">
-        <Typography variant="subheading" color="textSecondary">
-          Annotations
-        </Typography>
-        <div className="metadata__content">
-          <PoseGroup animateOnMount={true}>
-            {props.ranges
-              .filter(
-                range =>
-                  fix(range.startTime) <= fix(props.currentTime) &&
-                  fix(range.endTime) > fix(props.currentTime)
-              )
-              .sort(
-                (a, b) => b.endTime - b.startTime - (a.endTime - a.startTime)
-              )
-              .map((range, depth) =>
+function getCurrentRanges(currentTime, ranges) {
+  return ranges
+    .filter(
+      range =>
+        fix(range.startTime) <= fix(currentTime) &&
+        fix(range.endTime) > fix(currentTime)
+    )
+    .sort((a, b) => b.endTime - b.startTime - (a.endTime - a.startTime));
+}
+
+const getLastRange = ranges => ranges[ranges.length - 1];
+const getMinStartTime = ranges => Math.min(...ranges.map(r => r.startTime));
+const getMaxEndTime = ranges => Math.max(...ranges.map(r => r.endTime));
+const getMarkers = (markers, min, max) =>
+  Object.values(markers).filter(
+    marker => marker.time >= min && marker.time < max
+  );
+
+const Metadata = props => {
+  const rangesToShow = getCurrentRanges(props.currentTime, props.ranges);
+  const lastRange = getLastRange(rangesToShow);
+
+  // This is a future prop that we can offer to show more markers.
+  // Not active at the moment as it requires a new interface.
+  // Current set of markers are passed to the last item in the range.
+  const min = props.showAllParentMarkers
+    ? getMinStartTime(rangesToShow)
+    : lastRange.startTime;
+  const max = props.showAllParentMarkers
+    ? getMaxEndTime(rangesToShow)
+    : lastRange.endTime;
+
+  const markers = getMarkers(props.markers, min, max);
+
+  return (
+    <div className="metadata">
+      <div className="metadata__annotations">
+        <div className="metadata__annotations-content">
+          <Typography variant="subheading" color="textSecondary">
+            Annotations
+          </Typography>
+          <div className="metadata__content">
+            <PoseGroup animateOnMount={true}>
+              {rangesToShow.map((range, depth) =>
                 range.id === props.rangeToEdit ? (
                   <Meta key={`edit-${range.id}`}>
                     <MetadataEditor
@@ -74,38 +100,59 @@ const Metadata = props => (
                   </Meta>
                 )
               )}
-          </PoseGroup>
+            </PoseGroup>
+          </div>
+          {markers.length ? (
+            <Typography variant="subheading" color="textSecondary">
+              Markers
+            </Typography>
+          ) : null}
+          <div className="metadata__content">
+            <PoseGroup animateOnMount={true}>
+              {markers.map(marker => {
+                return (
+                  <Meta key={marker.id}>
+                    <MarkerMetadata
+                      key={marker.id}
+                      marker={marker}
+                      onSaveMarker={data => props.updateMarker(marker.id, data)}
+                    />
+                  </Meta>
+                );
+              })}
+            </PoseGroup>
+          </div>
+        </div>
+      </div>
+      <div className="metadata__project">
+        <div className="metadata__project-content">
+          <Typography variant="subheading" color="textSecondary">
+            Project
+          </Typography>
+          <div className="metadata__content">
+            {props.projectMetadataEditorOpen ? (
+              <ProjectMetadataEditor
+                manifestLabel={props.manifestLabel}
+                manifestSummary={props.manifestSummary}
+                onSave={props.onSaveProjectMetadata}
+                onCancel={props.onCancelEditingProjectMetadata}
+              />
+            ) : (
+              <ProjectMetadataDisplay
+                manifestLabel={props.manifestLabel}
+                manifestSummary={props.manifestSummary}
+                onEditClick={props.onEditProjectMetadata}
+                onSaveButtonClicked={props.onSaveButtonClicked}
+                onEraseButtonClicked={props.onEraseButtonClicked}
+                url={props.url}
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>
-    <div className="metadata__project">
-      <div className="metadata__project-content">
-        <Typography variant="subheading" color="textSecondary">
-          Project
-        </Typography>
-        <div className="metadata__content">
-          {props.projectMetadataEditorOpen ? (
-            <ProjectMetadataEditor
-              manifestLabel={props.manifestLabel}
-              manifestSummary={props.manifestSummary}
-              onSave={props.onSaveProjectMetadata}
-              onCancel={props.onCancelEditingProjectMetadata}
-            />
-          ) : (
-            <ProjectMetadataDisplay
-              manifestLabel={props.manifestLabel}
-              manifestSummary={props.manifestSummary}
-              onEditClick={props.onEditProjectMetadata}
-              onSaveButtonClicked={props.onSaveButtonClicked}
-              onEraseButtonClicked={props.onEraseButtonClicked}
-              url={props.url}
-            />
-          )}
-        </div>
-      </div>
-    </div>
-  </div>
-);
+  );
+};
 
 Metadata.propTypes = {
   /** Current label of the manifest or range */
@@ -141,6 +188,7 @@ Metadata.propTypes = {
   /** Black and white mode */
   blackAndWhiteMode: PropTypes.bool,
   projectMetadataEditorOpen: PropTypes.bool,
+  showAllParentMarkers: PropTypes.bool,
   onEditProjectMetadata: PropTypes.func,
   onSaveProjectMetadata: PropTypes.func,
   onSaveButtonClicked: PropTypes.func,
@@ -151,6 +199,7 @@ Metadata.propTypes = {
 
 Metadata.defaultProps = {
   blackAndWhiteMode: false,
+  showAllParentMarkers: false,
 };
 
 export default Metadata;
