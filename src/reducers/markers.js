@@ -42,7 +42,7 @@ export default function reducer(state = DEFAULT_STATE, action) {
       });
     case CLEAR_MARKERS:
       return update(state, {
-        list: { $set: [] },
+        list: { $set: {} },
         selected: { $set: [] },
       });
     case IMPORT_MARKERS:
