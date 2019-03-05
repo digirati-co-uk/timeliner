@@ -9,6 +9,7 @@ import {
   SELECT_MARKER,
   DESELECT_MARKER,
   CLEAR_MARKERS,
+  DELETE_MARKERS,
 } from '../constants/markers';
 
 export const DEFAULT_STATE = {
@@ -53,6 +54,10 @@ export default function reducer(state = DEFAULT_STATE, action) {
           }
           return acc;
         }, {}),
+      });
+    case DELETE_MARKERS:
+      return update(state, {
+        list: { $unset: action.payload.ids },
       });
     case DELETE_MARKER:
       return update(state, {

@@ -10,7 +10,9 @@ import {
   UPDATE_RANGE,
   UPDATE_RANGE_TIME,
   CREATE_RANGE,
-  RANGE, RANGE_MUTATION,
+  RANGE,
+  RANGE_MUTATION,
+  IMPORT_RANGES,
 } from '../constants/range';
 import { setDescription, setLanguage, setTitle } from '../actions/project';
 import {
@@ -19,8 +21,22 @@ import {
   movePoint,
   updateRange,
   updateRangeTime,
+  deleteRange,
 } from '../actions/range';
 import { undo } from '../reducers/range';
+import {
+  DELETE_MARKER,
+  DELETE_MARKERS,
+  IMPORT_MARKERS,
+  UPDATE_MARKER,
+  UPDATE_MARKER_POSITION,
+} from '../constants/markers';
+import {
+  deleteMarkers,
+  importMarkers,
+  updateMarker,
+  updateMarkerPosition,
+} from '../actions/markers';
 
 const undoActions = [
   // Done
@@ -63,6 +79,24 @@ export default createUndoMiddleware({
     [RANGE_MUTATION]: {
       action: (action, undoAction) => undoAction,
       createArgs: (state, action) => undo(state.range, action),
+    },
+
+    [IMPORT_MARKERS]: {
+      action: (action, markerIds) => deleteMarkers(markerIds),
+      createArgs: (state, action) => action.payload.markers.map(m => m.id),
+    },
+    [UPDATE_MARKER]: {
+      action: (action, marker) => updateMarker(action.payload.id, marker),
+      createArgs: (state, action) => state.markers.list[action.payload.id],
+    },
+    [DELETE_MARKER]: {
+      action: (action, marker) => importMarkers([marker]),
+      createArgs: (state, action) => state.markers.list[action.payload.id],
+    },
+    [DELETE_MARKERS]: {
+      action: (action, markers) => importMarkers(markers),
+      createArgs: (state, action) =>
+        action.payload.ids.map(markerId => state.markers.list[markerId]),
     },
   },
 });
