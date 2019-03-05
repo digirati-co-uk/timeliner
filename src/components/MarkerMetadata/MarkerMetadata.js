@@ -5,14 +5,23 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Edit from '@material-ui/icons/Edit';
+import Delete from '@material-ui/icons/Delete';
+import Bookmark from '@material-ui/icons/Bookmark';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
 
 function DisplayMarker(props) {
   const { label, summary } = props.marker;
+
+  const onDelete = e => {
+    e.preventDefault();
+    e.stopPropagation();
+    props.onDelete();
+  };
+
   return (
-    <CardContent>
+    <CardContent onClick={props.onEdit} style={{ cursor: 'pointer' }}>
       <Grid
         container
         direction="row"
@@ -21,19 +30,22 @@ function DisplayMarker(props) {
       >
         <Grid item>
           <Typography variant="title" component="h3">
-            {label || 'Unnamed range'}
+            <Bookmark fontSize="inherit" style={{ marginRight: 5 }} />{' '}
+            {label || 'Unnamed marker'}
           </Typography>
         </Grid>
         <Grid>
-          <IconButton onClick={props.onEdit} style={{ padding: 5 }}>
-            <Edit fontSize="small" />
+          <IconButton onClick={onDelete} style={{ padding: 5 }}>
+            <Delete fontSize="small" />
           </IconButton>
         </Grid>
       </Grid>
 
       <Typography variant="subtitle1">
         {summary || (
-          <span style={{ color: '#999' }}>This annotation has no summary</span>
+          <span style={{ color: '#999' }}>
+            This annotation has no summary, click to add one
+          </span>
         )}
       </Typography>
     </CardContent>
@@ -129,7 +141,7 @@ function EditMarker(props) {
 
 export default function MarkerMetadata(props) {
   const [isEditing, setIsEditing] = useState();
-  const { marker, onSaveMarker } = props;
+  const { marker, onSaveMarker, onDeleteMarker } = props;
 
   return (
     <Card
@@ -149,7 +161,11 @@ export default function MarkerMetadata(props) {
           onCancel={() => setIsEditing(false)}
         />
       ) : (
-        <DisplayMarker marker={marker} onEdit={() => setIsEditing(true)} />
+        <DisplayMarker
+          marker={marker}
+          onDelete={props.onDeleteMarker}
+          onEdit={() => setIsEditing(true)}
+        />
       )}
     </Card>
   );

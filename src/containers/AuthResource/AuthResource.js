@@ -228,6 +228,10 @@ export function AuthCookieService1({ service, resource, children }) {
         log('Probing current resource', resource);
         probeResource(resource)
           .then(() => {
+            if (!tokenService) {
+              // Nothing more we can do at this point.
+              return;
+            }
             log('Opening token service', tokenService);
             openTokenService(tokenService)
               .then(data => {
