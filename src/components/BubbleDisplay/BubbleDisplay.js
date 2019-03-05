@@ -131,14 +131,9 @@ class BubbleDisplay extends Component {
           transform={`translate(${Math.floor(-x)},${height}) scale(1, -1)`}
         >
           <rect
+            className="bubble-display__rect"
             width={computedWidth * zoom}
             height={height}
-            style={{
-              fill: 'transparent',
-              strokeWidth: 0,
-              stroke: 'rgb(0,0,0,0)',
-              cursor: 'grab',
-            }}
             onMouseDown={this.props.onPanStart}
           />
           {childrenWithProps}

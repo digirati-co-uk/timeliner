@@ -162,6 +162,7 @@ class BubbleEditor extends React.Component {
                           isSelected={
                             selectedPoints.indexOf(bubble.point.id) !== -1
                           }
+                          onPanStart={onPanStart}
                           onClick={this.toggleSelects}
                         />
                       ))
