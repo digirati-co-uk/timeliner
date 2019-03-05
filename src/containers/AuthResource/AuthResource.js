@@ -1,6 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import AuthModal from '../../components/AuthModal/AuthModal';
 
+function log(...args) {
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(...args);
+  }
+}
+
+function logStage(stage, ...args) {
+  const stages = [
+    // Initial load, nothings happened.
+    'INITIAL_LOAD',
+    // Modal is being shown to user.
+    'MODAL_SHOWN',
+    // User has actioned the modal.
+    'WAITING_FOR_LOGIN',
+    // User has closed popup window.
+    'LOGIN_CONFIRMED',
+    // Waiting for token
+    'WAITING_FOR_TOKEN',
+    // Token success.
+    'AUTHENTICATED',
+
+    // Failures.
+    'TOKEN_FAILED',
+    'LOGIN_FAILED',
+    'USER_OPT_OUT',
+  ];
+  return log(stages[stage], ...args);
+}
+
 function windowOpen(url) {
   return new Promise(resolve => {
     const windowRef = window.open(url);
@@ -137,7 +166,9 @@ export function AuthCookieService1({ service, children }) {
           embeddedService.profile === 'http://iiif.io/api/auth/1/token'
       )
     : null;
-  const tokenService = tokenServiceObject ? tokenServiceObject.id || tokenServiceObject['@id'] : null;
+  const tokenService = tokenServiceObject
+    ? tokenServiceObject.id || tokenServiceObject['@id']
+    : null;
 
   // Derived props.
   const separator = tokenService
@@ -165,23 +196,31 @@ export function AuthCookieService1({ service, children }) {
   const USER_OPT_OUT = 8;
 
   // Hooks.
-  const [currentStage, setStage] = useState(INITIAL_LOAD);
+  const [currentStage, setStageInner] = useState(INITIAL_LOAD);
   const [authToken, setAuthToken] = useState(null);
+
+  const setStage = stage => {
+    logStage(stage, 'setting stage');
+    setStageInner(stage);
+  };
 
   // Change effect.
   useEffect(
     () => {
       if (currentStage === INITIAL_LOAD) {
+        log('Opening token service', tokenService);
         openTokenService(tokenService)
           .then(data => {
             if (data.accessToken) {
               setAuthToken(data.accessToken);
               setStage(AUTHENTICATED);
             } else {
+              log('No access token on token service', data);
               setStage(MODAL_SHOWN);
             }
           })
           .catch(() => {
+            log('Token service errored');
             setStage(MODAL_SHOWN);
           });
       }
@@ -189,6 +228,7 @@ export function AuthCookieService1({ service, children }) {
       if (currentStage === WAITING_FOR_LOGIN) {
         windowOpen(`${authService}${separator}origin=${getOrigin()}`)
           .then(() => {
+            log('Window closed, user should be active.');
             setStage(LOGIN_CONFIRMED);
           })
           .catch(() => {
