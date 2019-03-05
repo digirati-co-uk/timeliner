@@ -7,6 +7,23 @@ function log(...args) {
   }
 }
 
+function probeResource(url) {
+  return new Promise((resolve, reject) => {
+    const http = new XMLHttpRequest();
+    http.open('HEAD', url);
+    http.onreadystatechange = () => {
+      if (http.readyState === http.DONE) {
+        if (http.status >= 300 && http.status <= 499) {
+          reject();
+        } else {
+          resolve();
+        }
+      }
+    };
+    http.send();
+  });
+}
+
 function logStage(stage, ...args) {
   const stages = [
     // Initial load, nothings happened.
@@ -140,7 +157,7 @@ function openTokenService(tokenService) {
   });
 }
 
-export function AuthCookieService1({ service, children }) {
+export function AuthCookieService1({ service, resource, children }) {
   const {
     confirmLabel,
     description,
@@ -208,31 +225,28 @@ export function AuthCookieService1({ service, children }) {
   useEffect(
     () => {
       if (currentStage === INITIAL_LOAD) {
-        log('Opening token service', tokenService);
-        openTokenService(tokenService)
-          .then(data => {
-            if (data.accessToken) {
-              setAuthToken(data.accessToken);
-              setStage(AUTHENTICATED);
-            } else {
-              log('No access token on token service', data);
-              setStage(MODAL_SHOWN);
-            }
-          })
-          .catch(() => {
-            log('Token service errored');
-            setStage(MODAL_SHOWN);
-          });
-      }
-      // When current stage is changed to WAITING FOR LOGIN
-      if (currentStage === WAITING_FOR_LOGIN) {
-        windowOpen(`${authService}${separator}origin=${getOrigin()}`)
+        log('Probing current resource', resource);
+        probeResource(resource)
           .then(() => {
-            log('Window closed, user should be active.');
-            setStage(LOGIN_CONFIRMED);
+            log('Opening token service', tokenService);
+            openTokenService(tokenService)
+              .then(data => {
+                if (data.accessToken) {
+                  setAuthToken(data.accessToken);
+                  setStage(AUTHENTICATED);
+                } else {
+                  log('No access token on token service', data);
+                  setStage(MODAL_SHOWN);
+                }
+              })
+              .catch(() => {
+                log('Token service errored');
+                setStage(MODAL_SHOWN);
+              });
           })
           .catch(() => {
-            setStage(LOGIN_FAILED);
+            log('Probing resource errored');
+            setStage(MODAL_SHOWN);
           });
       }
       if (currentStage === LOGIN_CONFIRMED) {
@@ -259,8 +273,15 @@ export function AuthCookieService1({ service, children }) {
   }
 
   const confirmModal = () => {
-    // Do stuff.
     setStage(WAITING_FOR_LOGIN);
+    windowOpen(`${authService}${separator}origin=${getOrigin()}`)
+      .then(() => {
+        log('Window closed, user should be active.');
+        setStage(LOGIN_CONFIRMED);
+      })
+      .catch(() => {
+        setStage(LOGIN_FAILED);
+      });
   };
 
   const dismissModal = () => {
