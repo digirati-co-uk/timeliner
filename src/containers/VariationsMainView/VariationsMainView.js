@@ -204,7 +204,8 @@ class VariationsMainView extends React.Component {
           />
           <div className="variations-app__content">
             <AuthCookieService1
-              key={this.props.authService}
+              key={this.props.url}
+              resource={this.props.url}
               service={
                 this.props.authService ? this.props.authService[0] : null
               }
