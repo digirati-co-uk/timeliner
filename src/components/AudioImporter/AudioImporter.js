@@ -10,6 +10,9 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import importResource from './AudioImporter.Utils';
 import FileUpload from '../FileUpload/FileUpload';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Paper from '@material-ui/core/Paper';
 
 class AudioImporter extends Component {
   static propTypes = {
@@ -69,6 +72,10 @@ class AudioImporter extends Component {
     }
   };
 
+  handleChange = (e, currentTab) => {
+    this.setState({ localFile: currentTab === 1 });
+  };
+
   render() {
     const { open, onClose } = this.props;
     const { localFile } = this.state;
@@ -76,13 +83,24 @@ class AudioImporter extends Component {
 
     return (
       <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
+        <Paper position="static">
+          <Tabs value={localFile ? 1 : 0} onChange={this.handleChange}>
+            <Tab label="URL" />
+            <Tab label="Local file" />
+          </Tabs>
+        </Paper>
         <DialogTitle>Import Audio/Manifest</DialogTitle>
-        <DialogContent>
+        <DialogContent style={{ width: 400 }}>
           <form onKeyDown={this.handleKeyDown}>
-            <DialogContentText>
-              Please provide a web compatible audio file url or a previously
-              saved manifest.
-            </DialogContentText>
+            {localFile ? (
+              <DialogContentText>
+                Please choose a compatible manifest from your computer
+              </DialogContentText>
+            ) : (
+              <DialogContentText>
+                Please provide a web compatible audio file url
+              </DialogContentText>
+            )}
             {localFile ? (
               <FileUpload onChange={this.handleLocalImport} />
             ) : (
