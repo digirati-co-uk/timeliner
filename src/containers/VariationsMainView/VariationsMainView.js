@@ -49,7 +49,7 @@ import {
   cancelProjectMetadataEdits,
   saveProjectMetadata,
 } from '../../actions/viewState';
-import { addMarkerAtTime, updateMarker } from '../../actions/markers';
+import { addMarkerAtTime, deleteMarker, updateMarker } from '../../actions/markers';
 
 import './VariationsMainView.scss';
 import { getRangeList, getSelectedRanges } from '../../reducers/range';
@@ -267,6 +267,7 @@ class VariationsMainView extends React.Component {
                 url={this.props.url}
                 markers={this.props.markers}
                 updateMarker={this.props.updateMarker}
+                deleteMarker={this.props.deleteMarker}
               />
               <Footer />
             </div>
@@ -392,6 +393,7 @@ const mapDispatchToProps = {
   deleteRanges: scheduleDeleteRanges,
   updateRange,
   updateMarker,
+  deleteMarker,
   // markers
   addMarkerAtTime,
   // Undo

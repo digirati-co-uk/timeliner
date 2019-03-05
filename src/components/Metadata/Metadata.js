@@ -116,6 +116,7 @@ const Metadata = props => {
                     <MarkerMetadata
                       key={marker.id}
                       marker={marker}
+                      onDeleteMarker={() => props.deleteMarker(marker.id)}
                       onSaveMarker={data => props.updateMarker(marker.id, data)}
                     />
                   </Meta>
@@ -194,6 +195,7 @@ Metadata.propTypes = {
   onSaveProjectMetadata: PropTypes.func,
   onSaveButtonClicked: PropTypes.func,
   onEraseButtonClicked: PropTypes.func,
+  deleteMarker: PropTypes.func,
   /** Audio url */
   url: PropTypes.string,
 };
