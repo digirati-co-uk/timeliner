@@ -7,6 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Edit from '@material-ui/icons/Edit';
 import Delete from '@material-ui/icons/Delete';
 import Bookmark from '@material-ui/icons/Bookmark';
+import ArrowForward from '@material-ui/icons/ArrowForward';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
@@ -37,6 +38,16 @@ function DisplayMarker(props) {
         <Grid>
           <IconButton onClick={onDelete} style={{ padding: 5 }}>
             <Delete fontSize="small" />
+          </IconButton>
+          <IconButton
+            onClick={e => {
+              e.preventDefault();
+              e.stopPropagation();
+              props.onGoToMarker();
+            }}
+            style={{ padding: 5 }}
+          >
+            <ArrowForward fontSize="small" />
           </IconButton>
         </Grid>
       </Grid>
@@ -141,14 +152,20 @@ function EditMarker(props) {
 
 export default function MarkerMetadata(props) {
   const [isEditing, setIsEditing] = useState();
-  const { marker, onSaveMarker, onDeleteMarker } = props;
+  const {
+    marker,
+    onSaveMarker,
+    onDeleteMarker,
+    highlight,
+    onGoToMarker,
+  } = props;
 
   return (
     <Card
       style={{
-        borderLeft: `4px solid ${props.colour}`,
         marginLeft: `${props.inset * 24}px`,
         marginBottom: 16,
+        boxShadow: highlight ? '0 0 0 3px rgb(63, 81, 181, .5)' : null,
       }}
     >
       {isEditing ? (
@@ -163,8 +180,9 @@ export default function MarkerMetadata(props) {
       ) : (
         <DisplayMarker
           marker={marker}
-          onDelete={props.onDeleteMarker}
+          onDelete={onDeleteMarker}
           onEdit={() => setIsEditing(true)}
+          onGoToMarker={onGoToMarker}
         />
       )}
     </Card>

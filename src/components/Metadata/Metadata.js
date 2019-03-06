@@ -11,6 +11,7 @@ import ProjectMetadataEditor from '../ProjectMetadataEditor/ProjectMetadataEdito
 import './Metadata.scss';
 import { DEFAULT_COLOURS } from '../../constants/range';
 import MarkerMetadata from '../MarkerMetadata/MarkerMetadata';
+import { setCurrentTime } from '../../actions/viewState';
 
 const Meta = posed.div({
   enter: { y: 0, opacity: 1, delay: 250 },
@@ -38,9 +39,9 @@ const getLastRange = ranges =>
 const getMinStartTime = ranges => Math.min(...ranges.map(r => r.startTime));
 const getMaxEndTime = ranges => Math.max(...ranges.map(r => r.endTime));
 const getMarkers = (markers, min, max) =>
-  Object.values(markers).filter(
-    marker => marker.time >= min && marker.time < max
-  );
+  Object.values(markers)
+    .filter(marker => marker.time >= min && marker.time < max)
+    .sort((a, b) => a.time - b.time);
 
 const Metadata = props => {
   const rangesToShow = getCurrentRanges(props.currentTime, props.ranges);
@@ -57,6 +58,15 @@ const Metadata = props => {
     : lastRange.endTime;
 
   const markers = getMarkers(props.markers, min, max);
+
+  const currentMarker = [...markers]
+    .sort((a, b) => {
+      return (
+        Math.abs(props.currentTime - b.time) -
+        Math.abs(props.currentTime - a.time)
+      );
+    })
+    .pop();
 
   return (
     <div className="metadata">
@@ -115,9 +125,11 @@ const Metadata = props => {
                   <Meta key={marker.id}>
                     <MarkerMetadata
                       key={marker.id}
+                      highlight={marker === currentMarker}
                       marker={marker}
                       onDeleteMarker={() => props.deleteMarker(marker.id)}
                       onSaveMarker={data => props.updateMarker(marker.id, data)}
+                      onGoToMarker={() => props.setCurrentTime(marker.time)}
                     />
                   </Meta>
                 );
