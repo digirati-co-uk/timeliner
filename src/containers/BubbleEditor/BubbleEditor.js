@@ -44,6 +44,38 @@ class BubbleEditor extends React.Component {
     const { selectedPoints } = this.props;
     const deselectOthers = !(isOSX ? ev.metaKey : ev.ctrlKey);
 
+    if (ev.shiftKey) {
+      ev.preventDefault();
+
+      const selectedBubbles = this.props.selectedPoints.map(
+        id => this.props.points[id]
+      );
+
+      const fromMin = Math.min(
+        point.startTime,
+        ...selectedBubbles.map(p => p.startTime)
+      );
+      const toMax = Math.max(
+        point.endTime,
+        ...selectedBubbles.map(p => p.endTime)
+      );
+
+      const newSelectedBubbles = Object.values(this.props.points)
+        .filter(
+          singlePoint =>
+            singlePoint.startTime >= fromMin && singlePoint.endTime <= toMax
+        )
+        .filter(
+          singlePoint =>
+            this.props.selectedPoints.indexOf(singlePoint.id) === -1
+        );
+
+      newSelectedBubbles.forEach(singlePoint => {
+        this.props.selectRange(singlePoint.id, false);
+      });
+      return;
+    }
+
     if (selectedPoints.indexOf(point.id) === -1 || deselectOthers) {
       this.props.selectRange(point.id, deselectOthers);
     } else {

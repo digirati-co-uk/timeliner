@@ -74,6 +74,7 @@ class SingleBubble extends Component {
   stopClick = false;
 
   onMouseDown = ev => {
+    ev.preventDefault();
     ev.persist();
     this.originalX = ev.pageX;
     this.isClicked = true;
