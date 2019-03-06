@@ -29,6 +29,7 @@ import {
   updateSettings,
   resetDocument,
   exportDocument,
+  saveProject,
 } from '../../actions/project';
 import {
   showImportModal,
@@ -49,7 +50,11 @@ import {
   cancelProjectMetadataEdits,
   saveProjectMetadata,
 } from '../../actions/viewState';
-import { addMarkerAtTime, deleteMarker, updateMarker } from '../../actions/markers';
+import {
+  addMarkerAtTime,
+  deleteMarker,
+  updateMarker,
+} from '../../actions/markers';
 
 import './VariationsMainView.scss';
 import { getRangeList, getSelectedRanges } from '../../reducers/range';
@@ -169,6 +174,13 @@ class VariationsMainView extends React.Component {
     }
   };
 
+  getOnSave = () => {
+    if (!this.props.callback) {
+      return null;
+    }
+    return this.props.saveProject;
+  };
+
   render() {
     const _points = this.props.points;
     const {
@@ -187,6 +199,7 @@ class VariationsMainView extends React.Component {
       rangeToEdit,
       settings,
       selectedRanges,
+      hasResource,
     } = this.props;
     return (
       <div className="variations-app">
@@ -199,7 +212,7 @@ class VariationsMainView extends React.Component {
             canRedo={this.props.canRedo}
             onRedo={this.props.onRedo}
             onUndo={this.props.onUndo}
-            onSave={null}
+            onSave={this.getOnSave()}
             onTitleChange={() => {}}
           />
           <div className="variations-app__content">
@@ -278,12 +291,14 @@ class VariationsMainView extends React.Component {
               />
             )}
           </div>
-          <AudioImporter
-            open={isImportOpen}
-            error={this.props.importError}
-            onClose={this.props.url ? this.props.dismissImportModal : null}
-            onImport={this.props.importDocument}
-          />
+          {!hasResource && (
+            <AudioImporter
+              open={isImportOpen}
+              error={this.props.importError}
+              onClose={this.props.url ? this.props.dismissImportModal : null}
+              onImport={this.props.importDocument}
+            />
+          )}
           <SettingsPopup
             open={isSettingsOpen}
             onClose={this.props.dismissSettingsModal}
@@ -328,6 +343,7 @@ VariationsMainView.propTypes = {
   importDocument: PropTypes.func.isRequired,
   exportDocument: PropTypes.func.isRequired,
   addMarkerAtTime: PropTypes.func.isRequired,
+  saveProject: PropTypes.func.isRequired,
   settings: PropTypes.object,
 };
 
@@ -399,6 +415,8 @@ const mapDispatchToProps = {
   // Undo
   onUndo: undoActions.undo,
   onRedo: undoActions.redo,
+  // Export
+  saveProject,
 };
 
 export default connect(

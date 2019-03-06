@@ -30,7 +30,7 @@ import {
   FINISHED_PLAYING,
   LOAD_SOURCE,
   ZOOM_TO,
-  UPDATE_VIEWER_WIDTH,
+  UPDATE_VIEWER_WIDTH, SET_CALLBACK,
 } from '../constants/viewState';
 
 import { AUDIO_LOADING } from '../constants/canvas';
@@ -187,6 +187,12 @@ const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
       return update(state, {
         [VIEWSTATE.IS_PLAYING]: {
           $set: false,
+        },
+      });
+    case SET_CALLBACK:
+      return update(state, {
+        [VIEWSTATE.CALLBACK]: {
+          $set: action.payload.callback,
         },
       });
     case SAVE_PROJECT_METADATA:

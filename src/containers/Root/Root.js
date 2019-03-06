@@ -4,12 +4,12 @@ import { Provider } from 'react-redux';
 import VariationsMainView from '../VariationsMainView/VariationsMainView';
 import { PersistGate } from 'redux-persist/integration/react';
 
-const Root = ({ store, persistor }) => {
+const Root = ({ store, persistor, callback, hasResource }) => {
   try {
     return (
       <Provider store={store}>
         <PersistGate loading="loading..." persistor={persistor}>
-          <VariationsMainView />
+          <VariationsMainView callback={callback} hasResource={hasResource} />
         </PersistGate>
       </Provider>
     );

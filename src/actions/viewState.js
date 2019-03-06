@@ -28,6 +28,7 @@ import {
   LOAD_SOURCE,
   ZOOM_TO,
   UPDATE_VIEWER_WIDTH,
+  SET_CALLBACK,
 } from '../constants/viewState';
 import invariant from '../utils/invariant';
 
@@ -165,4 +166,9 @@ export const confirmNo = () => ({
 
 export const finishedPlaying = () => ({
   type: FINISHED_PLAYING,
+});
+
+export const setCallback = callback => ({
+  type: SET_CALLBACK,
+  payload: { callback },
 });
