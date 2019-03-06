@@ -27,6 +27,9 @@ export const updateMarker = (markerId, { label, summary, time }) => ({
   payload: { id: markerId, label, summary, time },
 });
 
+/**
+ * @deprecated
+ */
 export const updateMarkerPosition = (markerId, { x }) => ({
   type: UPDATE_MARKER_POSITION,
   payload: { markerId, x },

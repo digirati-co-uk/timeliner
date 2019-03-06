@@ -10,11 +10,11 @@ export const RANGE = {
 };
 
 export const DEFAULT_COLOURS = [
-  '#A63993',
-  '#7D3DB0',
-  '#3E3D99',
-  '#417AB0',
-  '#40A6A2',
+  '#D4F4EF',
+  '#F4BCBA',
+  '#FFEE72',
+  '#A1F0C9',
+  '#ACD4E2',
 ];
 
 export const DEFAULT_RANGE = {
