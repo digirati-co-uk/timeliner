@@ -9,14 +9,6 @@ export const RANGE = {
   WHITE_TEXT: 'whiteText',
 };
 
-export const DEFAULT_COLOURS = [
-  '#D4F4EF',
-  '#F4BCBA',
-  '#FFEE72',
-  '#A1F0C9',
-  '#ACD4E2',
-];
-
 export const DEFAULT_RANGE = {
   [RANGE.START_TIME]: 0,
   [RANGE.END_TIME]: 0,

@@ -22,6 +22,7 @@ const BUBBLE_HEIGHT = 'bubbleHeight';
 const LANGUAGE = 'language';
 const BACKGROUND_COLOUR = 'backgroundColour';
 const SHOW_MARKERS = 'showMarkers';
+const COLOUR_PALETTE = 'colourPalette';
 
 export const PROJECT = {
   DESCRIPTION,
@@ -38,6 +39,7 @@ export const PROJECT = {
   BUBBLE_HEIGHT,
   LANGUAGE,
   BACKGROUND_COLOUR,
+  COLOUR_PALETTE,
 };
 
 export const RDF_NAMESPACE = 'tl';
@@ -53,6 +55,7 @@ export const PROJECT_SETTINGS_KEYS = [
   SHOW_MARKERS,
   BUBBLE_HEIGHT,
   BACKGROUND_COLOUR,
+  COLOUR_PALETTE,
 ];
 
 export const SETTINGS_ATTRIBUTE = `${RDF_NAMESPACE}:settings`;
@@ -68,6 +71,7 @@ export const DEFAULT_SETTINGS = {
   [START_PLAYING_END_OF_SECTION]: false,
   [BACKGROUND_COLOUR]: DEFAULT_BACKGROUND_COLOUR,
   [SHOW_MARKERS]: true,
+  [COLOUR_PALETTE]: 'default',
 };
 
 export const DEFAULT_PROJECT_STATE = {
@@ -88,3 +92,5 @@ export const IMPORT_DOCUMENT = 'IMPORT_DOCUMENT';
 export const LOAD_PROJECT = 'LOAD_PROJECT';
 export const IMPORT_ERROR = 'IMPORT_ERROR';
 export const SAVE_PROJECT = 'SAVE_PROJECT';
+export const SET_COLOUR_PALETTE = 'SET_COLOUR_PALETTE';
+

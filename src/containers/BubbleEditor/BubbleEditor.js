@@ -32,6 +32,7 @@ import dragPlayhead from '../../hocs/dragPlayhead';
 import dragBubbleMarker from '../../hocs/dragBubbleMarker';
 import dragMarker from '../../hocs/dragMarker';
 import { selectMarker, updateMarker } from '../../actions/markers';
+import { colourPalettes } from '../../config';
 
 const isOSX = navigator.userAgent.indexOf('Mac OS X') !== -1;
 
@@ -149,6 +150,7 @@ class BubbleEditor extends React.Component {
       markerMovement,
       viewerWidth,
       selectedPoints,
+      colourPalette,
     } = this.props;
 
     const timePoints = this.getTimePoints();
@@ -173,12 +175,15 @@ class BubbleEditor extends React.Component {
                 <BubbleDisplay
                   points={this.props.points}
                   width={viewerWidth}
-                  height={200}
+                  height={window.innerHeight * 0.3}
                   x={viewport.startX !== -1 ? viewport.x : x}
                   zoom={zoom}
-                  bubbleHeight={bubbleHeight}
+                  bubbleHeight={
+                    bubbleHeight * ((window.innerHeight * 0.3) / 300)
+                  }
                   shape={bubbleStyle}
                   onPanStart={onPanStart}
+                  colourPalette={colourPalette}
                 >
                   {points =>
                     points
@@ -246,6 +251,9 @@ const mapStateProps = state => ({
   blackAndWhiteMode: state.project[PROJECT.BLACK_N_WHITE],
   backgroundColour: state.project[PROJECT.BACKGROUND_COLOUR],
   showMarkers: state.project[PROJECT.SHOW_MARKERS],
+  colourPalette:
+    colourPalettes[state.project[PROJECT.COLOUR_PALETTE]] ||
+    colourPalettes.default,
 });
 
 const mapDispatchToProps = {

@@ -9,9 +9,7 @@ import ProjectMetadataDisplay from '../ProjectMetadataDisplay/ProjectMetadataDis
 import ProjectMetadataEditor from '../ProjectMetadataEditor/ProjectMetadataEditor';
 
 import './Metadata.scss';
-import { DEFAULT_COLOURS } from '../../constants/range';
 import MarkerMetadata from '../MarkerMetadata/MarkerMetadata';
-import { setCurrentTime } from '../../actions/viewState';
 
 const Meta = posed.div({
   enter: { y: 0, opacity: 1, delay: 250 },
@@ -68,11 +66,17 @@ const Metadata = props => {
     })
     .pop();
 
+  const colours = props.colourPalette.colours;
+
   return (
     <div className="metadata">
       <div className="metadata__annotations">
         <div className="metadata__annotations-content">
-          <Typography variant="subheading" color="textSecondary" style={{ marginBottom: 20 }}>
+          <Typography
+            variant="subheading"
+            color="textSecondary"
+            style={{ marginBottom: 20 }}
+          >
             Annotations
           </Typography>
           <div className="metadata__content">
@@ -85,7 +89,7 @@ const Metadata = props => {
                       {...range}
                       colour={
                         range.colour ||
-                        DEFAULT_COLOURS[range.depth % DEFAULT_COLOURS.length]
+                        colours[(range.depth - 1) % colours.length]
                       }
                       onSave={props.onUpdateRange}
                       onDelete={props.onDeleteRange}
@@ -102,7 +106,7 @@ const Metadata = props => {
                       inset={depth}
                       colour={
                         range.colour ||
-                        DEFAULT_COLOURS[range.depth % DEFAULT_COLOURS.length]
+                        colours[(range.depth - 1) % colours.length]
                       }
                       onEditClick={(selectedRange => () =>
                         props.onEdit(selectedRange.id))(range)}
