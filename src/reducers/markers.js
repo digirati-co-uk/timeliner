@@ -10,6 +10,7 @@ import {
   DESELECT_MARKER,
   CLEAR_MARKERS,
   DELETE_MARKERS,
+  CREATE_MARKER,
 } from '../constants/markers';
 
 export const DEFAULT_STATE = {
@@ -45,6 +46,12 @@ export default function reducer(state = DEFAULT_STATE, action) {
       return update(state, {
         list: { $set: {} },
         selected: { $set: [] },
+      });
+    case CREATE_MARKER:
+      return update(state, {
+        list: {
+          [action.payload.marker.id]: { $set: action.payload.marker },
+        },
       });
     case IMPORT_MARKERS:
       return update(state, {

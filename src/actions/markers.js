@@ -8,7 +8,7 @@ import {
   SELECT_MARKER,
   DESELECT_MARKER,
   CLEAR_MARKERS,
-  DELETE_MARKERS,
+  DELETE_MARKERS, CREATE_MARKER,
 } from '../constants/markers';
 
 const generateNewId = () => `marker-${new Date().getTime()}`;
@@ -19,7 +19,7 @@ export const addMarkerAtTime = time => {
     label: 'Untitled marker',
     time,
   };
-  return importMarkers([marker]);
+  return createMarker(marker);
 };
 
 export const updateMarker = (markerId, { label, summary, time }) => ({
@@ -38,6 +38,11 @@ export const updateMarkerPosition = (markerId, { x }) => ({
 export const importMarkers = markers => ({
   type: IMPORT_MARKERS,
   payload: { markers },
+});
+
+export const createMarker = marker => ({
+  type: CREATE_MARKER,
+  payload: { marker },
 });
 
 export const clearMarkers = () => ({

@@ -48,7 +48,8 @@ import {
   confirmNo,
   editProjectMetadata,
   cancelProjectMetadataEdits,
-  saveProjectMetadata, setCurrentTime,
+  saveProjectMetadata,
+  setCurrentTime,
 } from '../../actions/viewState';
 import {
   addMarkerAtTime,

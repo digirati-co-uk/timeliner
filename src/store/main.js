@@ -45,6 +45,15 @@ export default function configureStore(wAudio, fresh = false, callback) {
     persistor.purge();
   }
 
+  window.addEventListener('beforeunload', e => {
+    if (store.getState().undoHistory.undoQueue.length) {
+      const warning =
+        'You have unsaved changes, that will be lost if you close the window.';
+      (e || window.event).returnValue = warning;
+      return warning;
+    }
+  });
+
   store.runSaga = sagaMiddleware.run;
   store.close = () => store.dispatch(END);
   store.runSaga(rootSaga);

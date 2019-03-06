@@ -25,6 +25,7 @@ import {
 } from '../actions/range';
 import { undo } from '../reducers/range';
 import {
+  CREATE_MARKER,
   DELETE_MARKER,
   DELETE_MARKERS,
   IMPORT_MARKERS,
@@ -32,6 +33,7 @@ import {
   UPDATE_MARKER_POSITION,
 } from '../constants/markers';
 import {
+  deleteMarker,
   deleteMarkers,
   importMarkers,
   updateMarker,
@@ -81,9 +83,8 @@ export default createUndoMiddleware({
       createArgs: (state, action) => undo(state.range, action),
     },
 
-    [IMPORT_MARKERS]: {
-      action: (action, markerIds) => deleteMarkers(markerIds),
-      createArgs: (state, action) => action.payload.markers.map(m => m.id),
+    [CREATE_MARKER]: {
+      action: action => deleteMarker(action.payload.marker.id),
     },
     [UPDATE_MARKER]: {
       action: (action, marker) => updateMarker(action.payload.id, marker),
