@@ -48,7 +48,7 @@ import {
   confirmNo,
   editProjectMetadata,
   cancelProjectMetadataEdits,
-  saveProjectMetadata,
+  saveProjectMetadata, setCurrentTime,
 } from '../../actions/viewState';
 import {
   addMarkerAtTime,
@@ -281,6 +281,7 @@ class VariationsMainView extends React.Component {
                 markers={this.props.markers}
                 updateMarker={this.props.updateMarker}
                 deleteMarker={this.props.deleteMarker}
+                setCurrentTime={this.props.setCurrentTime}
               />
               <Footer />
             </div>
@@ -403,6 +404,7 @@ const mapDispatchToProps = {
   nextBubble,
   confirmYes,
   confirmNo,
+  setCurrentTime,
   //range
   splitRangeAt,
   groupSelectedRanges,
