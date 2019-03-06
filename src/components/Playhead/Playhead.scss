@@ -1,9 +1,6 @@
 .playhead {
   position: absolute;
   background: #FF4081;
-  &:hover {
-    background: red;
-  }
   left: 0;
   top: 0;
   bottom: 0;
@@ -29,7 +26,7 @@
     position: absolute;
     content: '';
     background: transparent;
-    right: -4px;
+    right: -6px;
     top: -3px;
     border-radius: 50%;
     height: 12px;
