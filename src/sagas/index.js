@@ -303,9 +303,10 @@ function saveResource(url, content) {
 
 function* saveProject() {
   const state = yield select();
-  const callback = yield select(state => state.viewState.callback);
+  const callback = yield select(s => s.viewState.callback);
   const outputJSON = exporter(state);
 
+  yield put(undoActions.clear());
   yield call(saveResource, callback, outputJSON);
 }
 
