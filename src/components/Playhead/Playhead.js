@@ -17,7 +17,6 @@ class Playhead extends Component {
         className="playhead"
         style={{
           width: `${x}%`,
-          background: `#FF4081`,
         }}
       />
     );
