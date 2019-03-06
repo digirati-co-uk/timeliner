@@ -431,6 +431,9 @@ class BubbleDisplay extends React.Component {
   }
 }
 
+/**
+ * @deprecated
+ */
 class BubbleEditor extends React.Component {
   constructor(props) {
     super(props);
