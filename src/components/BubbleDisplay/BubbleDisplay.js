@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './BubbleDisplay.scss';
 import BEM from '@fesk/bem-js';
 
-import { DEFAULT_COLOURS, RANGE } from '../../constants/range';
+import { RANGE } from '../../constants/range';
 
 const $style = BEM.block('bubble-display');
 class BubbleDisplay extends Component {
@@ -61,7 +61,7 @@ class BubbleDisplay extends Component {
     if (dXCandidate === Number.MAX_SAFE_INTEGER) {
       return null;
     } else {
-      return (dXCandidate / 2) * projectionFactor;
+      return (dXCandidate / 1.5) * projectionFactor;
     }
   };
 
@@ -83,6 +83,7 @@ class BubbleDisplay extends Component {
       children,
       shape,
       bubbleHeight,
+      colourPalette,
     } = this.props;
     const { mouseDown } = this.state;
     const realWidth = width * zoom;
@@ -91,14 +92,14 @@ class BubbleDisplay extends Component {
       null,
       Object.values(points).map(point => point.endTime)
     );
+    const colours = colourPalette.colours;
     const projectionFactor = realWidth / maxWidth;
     const viewBox = [0, 0, computedWidth, height].join(' ');
     const bubbles = Object.values(points).map((point, idx, pts) => ({
       x: point[RANGE.START_TIME] * projectionFactor,
       width:
         (point[RANGE.END_TIME] - point[RANGE.START_TIME]) * projectionFactor,
-      colour:
-        point.colour || DEFAULT_COLOURS[point.depth % DEFAULT_COLOURS.length],
+      colour: point.colour || colours[(point.depth - 1) % colours.length],
       height: point.depth * bubbleHeight,
       label: point.label,
       dX: this.getDx(point, pts, projectionFactor),

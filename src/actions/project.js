@@ -7,7 +7,9 @@ import {
   IMPORT_DOCUMENT,
   EXPORT_DOCUMENT,
   LOAD_PROJECT,
-  IMPORT_ERROR, SAVE_PROJECT,
+  IMPORT_ERROR,
+  SAVE_PROJECT,
+  SET_COLOUR_PALETTE,
 } from '../constants/project';
 
 export const updateSettings = form => ({
@@ -62,4 +64,9 @@ export const loadProject = state => ({
 
 export const saveProject = () => ({
   type: SAVE_PROJECT,
+});
+
+export const setcolourPalette = pallet => ({
+  type: SET_COLOUR_PALETTE,
+  payload: { pallet },
 });

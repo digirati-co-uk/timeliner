@@ -1,5 +1,5 @@
 import voca from 'voca';
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -22,6 +22,51 @@ import {
   BUBBLE_STYLES,
 } from '../../constants/project';
 import ColourSwatchPicker from '../ColourSwatchPicker/ColourSwatchPicker';
+import { colourPalettes } from '../../config';
+
+const ColourPaletteSwitcher = ({ currentKey, onChange }) => {
+  const [isOpen, setOpen] = useState(false);
+
+  return (
+    <div
+      onClick={() => setOpen(!isOpen)}
+      style={{ position: 'relative' }}
+      style={{ marginTop: 16 }}
+    >
+      {Object.keys(colourPalettes).map(key => {
+        const pallet = colourPalettes[key];
+        return (
+          <div
+            key={key}
+            onClick={() => onChange(key)}
+            style={{
+              border: key === currentKey ? '1px solid blue' : '1px solid #ddd',
+              marginBottom: 8,
+              padding: 5,
+              borderRadius: 5,
+            }}
+          >
+            <div style={{ fontSize: 14, marginBottom: 8 }}>{pallet.name}</div>
+            {pallet.colours.map(colour => {
+              return (
+                <div
+                  key={colour}
+                  style={{
+                    display: 'inline-block',
+                    margin: 4,
+                    background: colour,
+                    height: 10,
+                    width: 10,
+                  }}
+                />
+              );
+            })}
+          </div>
+        );
+      })}
+    </div>
+  );
+};
 
 export default class SettingsPopup extends React.Component {
   static propTypes = {
@@ -115,11 +160,11 @@ export default class SettingsPopup extends React.Component {
               justify="stretch"
               alignItems="stretch"
               spacing={16}
-              style={{
-                width: 700,
-              }}
+              // style={{
+              //   width: 700,
+              // }}
             >
-              <Grid item md={6} sm={12}>
+              <Grid item md={4} sm={12}>
                 <Grid
                   container
                   direction="column"
@@ -198,7 +243,7 @@ export default class SettingsPopup extends React.Component {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item md={6} sm={12}>
+              <Grid item md={4} sm={12}>
                 <Grid
                   container
                   direction="column"
@@ -260,11 +305,7 @@ export default class SettingsPopup extends React.Component {
                             'checkbox',
                             'Loop playback at the end of the section.',
                           ],
-                          [
-                            PROJECT.SHOW_MARKERS,
-                            'checkbox',
-                            'Show markers'
-                          ]
+                          [PROJECT.SHOW_MARKERS, 'checkbox', 'Show markers'],
                         ].map(([key, type, label]) => (
                           <FormControlLabel
                             key={key}
@@ -280,6 +321,24 @@ export default class SettingsPopup extends React.Component {
                         ))}
                       </FormGroup>
                     </FormControl>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item md={4} sm={12}>
+                <Grid
+                  container
+                  direction="column"
+                  justify="flex-start"
+                  spacing={16}
+                >
+                  <Grid item>
+                    <FormLabel component="legend">Colour palette</FormLabel>
+                    <ColourPaletteSwitcher
+                      currentKey={this.state[PROJECT.COLOUR_PALETTE]}
+                      onChange={key =>
+                        this.setState({ [PROJECT.COLOUR_PALETTE]: key })
+                      }
+                    />
                   </Grid>
                 </Grid>
               </Grid>

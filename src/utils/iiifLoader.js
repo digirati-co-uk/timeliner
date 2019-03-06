@@ -1,6 +1,6 @@
 import { PROJECT, RDF_NAMESPACE } from '../constants/project';
 import { CANVAS } from '../constants/canvas';
-import { RANGE, DEFAULT_COLOURS, DEFAULT_RANGE } from '../constants/range';
+import { RANGE, DEFAULT_RANGE } from '../constants/range';
 import { VIEWSTATE } from '../constants/viewState';
 import { resolveAvResource } from '../containers/AuthResource/AuthResource';
 import generateId from './generateId';
@@ -36,12 +36,7 @@ const getLocalisedResource = (resource, locale = 'en') => {
  * get custom bubble colour
  * @param {Object} range the range may has the background property
  */
-const getColour = range =>
-  range
-    ? range[RANGE.COLOUR] ||
-      DEFAULT_COLOURS[(range[RANGE.DEPTH] - 1) % DEFAULT_COLOURS.length] ||
-      ''
-    : '';
+const getColour = range => (range ? range[RANGE.COLOUR] || '' : '');
 
 /**
  * converts url hash parameters to an object
@@ -274,7 +269,10 @@ const processStructures = manifest => {
 
   return finalRanges.reduce((ranges, range) => {
     if (range) {
-      range[RANGE.COLOUR] = getColour(range);
+      const colour = getColour(range);
+      if (colour) {
+        range[ RANGE.COLOUR ] = colour;
+      }
       ranges[range.id] = range;
     }
     return ranges;

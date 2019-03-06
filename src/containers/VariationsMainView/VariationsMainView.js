@@ -64,6 +64,7 @@ import {
   resolveAvResource,
 } from '../AuthResource/AuthResource';
 import { actions as undoActions } from 'redux-undo-redo';
+import { colourPalettes } from '../../config';
 
 class VariationsMainView extends React.Component {
   constructor(props) {
@@ -201,6 +202,7 @@ class VariationsMainView extends React.Component {
       settings,
       selectedRanges,
       hasResource,
+      colourPalette,
     } = this.props;
     return (
       <div className="variations-app">
@@ -261,6 +263,7 @@ class VariationsMainView extends React.Component {
             </AuthCookieService1>
             <div className="variations-app__metadata-editor">
               <ProjectMetadata
+                colourPalette={colourPalette}
                 currentTime={currentTime}
                 runTime={runTime}
                 manifestLabel={manifestLabel}
@@ -381,6 +384,9 @@ const mapStateProps = state => ({
     acc[next] = state.project[next];
     return acc;
   }, {}),
+  colourPalette:
+    colourPalettes[state.project[PROJECT.COLOUR_PALETTE]] ||
+    colourPalettes.default,
 });
 
 const mapDispatchToProps = {
