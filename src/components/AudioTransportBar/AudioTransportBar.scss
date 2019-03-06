@@ -20,4 +20,8 @@
     flex-direction: row;
     justify-content: flex-end;
   }
+
+  &__tooltip {
+    font-size: 12px !important; // material UI override
+  }
 }
