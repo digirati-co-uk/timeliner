@@ -11,6 +11,11 @@ import Grid from '@material-ui/core/Grid';
 
 import './AudioTransportBar.scss';
 import VolumeSliderCompact from '../VolumeSliderCompact/VolumeSliderCompact';
+import Tooltip from '@material-ui/core/Tooltip';
+import GroupWork from '@material-ui/icons/GroupWork';
+import Delete from '@material-ui/icons/Delete';
+import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
+import Add from '@material-ui/icons/Add';
 
 class AudioTransportBar extends Component {
   static propTypes = {
@@ -97,29 +102,54 @@ class AudioTransportBar extends Component {
         <Grid container direction="row" alignItems="center">
           <Grid item xs={4} className="audio-transport-bar__actions">
             <CurrentTimeIndicator currentTime={currentTime} runtime={runTime} />
-            <PrimaryButton disabled={!onAddBubble} onClick={onAddBubble}>
-              Add
-            </PrimaryButton>
-            <PrimaryButton
-              disabled={!onGroupBubble}
-              onClick={onGroupBubble}
-              style={{ marginLeft: 16 }}
-            >
-              Group
-            </PrimaryButton>
-            <PrimaryButton
-              disabled={!onDeleteBubble}
-              onClick={onDeleteBubble}
-              style={{ marginLeft: 16 }}
-            >
-              Delete
+            <PrimaryButton disabled={!onAddBubble} onClick={onAddBubble} style={{ padding: 4 }}>
+              <Tooltip
+                classes={{ tooltip: 'audio-transport-bar__tooltip' }}
+                title="Split the current bubble at the current time"
+                aria-label="Split the current bubble at the current time"
+              >
+                <Add />
+              </Tooltip>
             </PrimaryButton>
             <PrimaryButton
               disabled={!onAddMarker}
               onClick={onAddMarker}
-              style={{ marginLeft: 16 }}
+              style={{ marginLeft: 16, padding: 4 }}
             >
-              Marker
+              <Tooltip
+                classes={{ tooltip: 'audio-transport-bar__tooltip' }}
+                title="Add new marker at current time"
+                aria-label="Add new marker at current time"
+              >
+                <ArrowDropUp />
+              </Tooltip>
+            </PrimaryButton>
+
+            <PrimaryButton
+              disabled={!onGroupBubble}
+              onClick={onGroupBubble}
+              style={{ marginLeft: 16, padding: 4 }}
+            >
+              <Tooltip
+                classes={{ tooltip: 'audio-transport-bar__tooltip' }}
+                title="Group bubbles together"
+                aria-label="Group bubbles together"
+              >
+                <GroupWork />
+              </Tooltip>
+            </PrimaryButton>
+            <PrimaryButton
+              disabled={!onDeleteBubble}
+              onClick={onDeleteBubble}
+              style={{ marginLeft: 16, padding: 4 }}
+            >
+              <Tooltip
+                classes={{ tooltip: 'audio-transport-bar__tooltip' }}
+                title="Delete bubbles"
+                aria-label="Delete bubbles"
+              >
+                <Delete />
+              </Tooltip>
             </PrimaryButton>
           </Grid>
           <Grid item xs={4}>
