@@ -2,73 +2,76 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
 import CloudDownload from '@material-ui/icons/CloudDownload';
 import RestorePage from '@material-ui/icons/RestorePage';
-import Edit from '@material-ui/icons/Edit';
 import Button from '@material-ui/core/Button';
 
 const ProjectMetadataDisplay = props => (
   <div>
-    <Grid
-      container
-      direction="row"
-      justify="flex-start"
-      alignItems="flex-start"
-    >
-      <Grid item xs={10}>
-        <Typography variant="title" component="h3">
-          {props.manifestLabel || 'Unnamed manifest'}
-        </Typography>
-      </Grid>
-      <Grid item xs={2}>
-        <IconButton onClick={props.onEditClick}>
-          <Edit />
-        </IconButton>
-      </Grid>
-    </Grid>
+    <div onClick={props.onEditClick} style={{ cursor: 'pointer' }}>
+      <Typography variant="title" component="h3" style={{ margin: '10px 0' }}>
+        {props.manifestLabel || 'Unnamed manifest'}
+      </Typography>
+      <Typography
+        variant="body1"
+        component="p"
+        style={{
+          whiteSpace: 'pre-line',
+        }}
+      >
+        {props.manifestSummary || 'Description of manifest'}
+      </Typography>
+    </div>
     <Typography
-      variant="body1"
-      component="p"
-      style={{
-        whiteSpace: 'pre-line',
-      }}
+      variant="subheading"
+      color="textSecondary"
+      style={{ marginTop: 20, marginBottom: 10 }}
     >
-      {props.manifestSummary || 'Description of manifest'}
+      Source
     </Typography>
-    <h5>Source</h5>
     <Typography variant="body1" component="p">
       <a href={props.url}>{props.url}</a>
     </Typography>
-    <hr />
+    <hr
+      style={{
+        background: '#BDBDBD',
+        height: 1,
+        border: 'none',
+        marginTop: 20,
+      }}
+    />
     <Grid
       container
       direction="row"
       justify="flex-start"
       alignItems="flex-start"
     >
-      <Grid item xs={12} style={{ margin: 5 }}>
-        <Button
-          variant="text"
-          color="primary"
-          onClick={props.onSaveButtonClicked}
-          title="Download project"
-        >
-          <CloudDownload nativeColor="#FF4081" style={{ marginRight: 20 }} />
-          Download this project
-        </Button>
-      </Grid>
-      <Grid item xs={12} style={{ margin: 5 }}>
-        <Button
-          variant="text"
-          color="primary"
-          onClick={props.onEraseButtonClicked}
-          title="Start project over"
-        >
-          <RestorePage nativeColor="#303F9F" style={{ marginRight: 20 }} />
-          Start this project over
-        </Button>
-      </Grid>
+      {props.canSave ? (
+        <Grid item xs={12} style={{ margin: 5 }}>
+          <Button
+            variant="text"
+            color="primary"
+            onClick={props.onSaveButtonClicked}
+            title="Download project"
+          >
+            <CloudDownload nativeColor="#FF4081" style={{ marginRight: 20 }} />
+            Download this project
+          </Button>
+        </Grid>
+      ) : null}
+      {props.canErase ? (
+        <Grid item xs={12} style={{ margin: 5 }}>
+          <Button
+            variant="text"
+            color="primary"
+            onClick={props.onEraseButtonClicked}
+            title="Start project over"
+          >
+            <RestorePage nativeColor="#303F9F" style={{ marginRight: 20 }} />
+            Start this project over
+          </Button>
+        </Grid>
+      ) : null}
     </Grid>
   </div>
 );
@@ -80,6 +83,8 @@ ProjectMetadataDisplay.propTypes = {
   onEditClick: PropTypes.func,
   onSaveButtonClicked: PropTypes.func,
   onEraseButtonClicked: PropTypes.func,
+  canErase: PropTypes.bool,
+  canSave: PropTypes.bool,
 };
 
 export default ProjectMetadataDisplay;

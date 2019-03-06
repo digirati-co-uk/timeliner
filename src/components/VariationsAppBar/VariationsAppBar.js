@@ -80,7 +80,7 @@ const VariationsAppBar = props => (
           <IconButton
             color="inherit"
             onClick={props.onImportButtonClicked}
-            title="New project"
+            title="Open audio file"
           >
             <AddCircle />
           </IconButton>

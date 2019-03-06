@@ -274,6 +274,8 @@ class VariationsMainView extends React.Component {
                 onEditProjectMetadata={this.props.editProjectMetadata}
                 onSaveProjectMetadata={this.props.saveProjectMetadata}
                 onEraseButtonClicked={this.props.resetDocument}
+                canSave={!this.props.callback}
+                canErase={!this.props.callback}
                 onSaveButtonClicked={this.props.exportDocument}
                 onCancelEditingProjectMetadata={
                   this.props.cancelProjectMetadataEdits
@@ -293,7 +295,7 @@ class VariationsMainView extends React.Component {
               />
             )}
           </div>
-          {!hasResource && (
+          {(!hasResource || isLoaded) && (
             <AudioImporter
               open={isImportOpen}
               error={this.props.importError}

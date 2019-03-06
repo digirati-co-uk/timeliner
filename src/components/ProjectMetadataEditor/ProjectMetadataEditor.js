@@ -62,7 +62,7 @@ class ProjectMetadataEditor extends Component {
     const { onCancel } = this.props;
     const { manifestLabel, manifestSummary } = this.state;
     return (
-      <form onKeyDown={this.handleKeyDown}>
+      <form onKeyDown={this.handleKeyDown} style={{ paddingRight: 20 }}>
         <TextField
           id="manifestLabel"
           label="Label"

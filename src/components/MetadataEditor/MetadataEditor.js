@@ -127,7 +127,7 @@ class MetadataEditor extends Component {
           InputLabelProps={{
             shrink: true,
           }}
-          placeholder="Unnamed range"
+          placeholder="Untitled section"
           fullWidth
           margin="normal"
           value={label}
@@ -140,7 +140,7 @@ class MetadataEditor extends Component {
           InputLabelProps={{
             shrink: true,
           }}
-          placeholder="Range description"
+          placeholder="Section description"
           fullWidth
           multiline={true}
           margin="normal"

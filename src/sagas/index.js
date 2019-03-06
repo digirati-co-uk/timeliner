@@ -108,7 +108,7 @@ export function* showConfirmation(message) {
 function* resetDocument() {
   const confirmed = yield call(
     showConfirmation,
-    'Are you sure you want to delete all ranges?'
+    'Are you sure you want to delete all sections?'
   );
   if (confirmed) {
     const rangeIds = yield select(s => Object.keys(getRangeList(s)));

@@ -254,11 +254,14 @@ const processStructures = manifest => {
     canvas.duration &&
     (startMin !== 0 || endMax !== canvas.duration * 1000)
   ) {
-    console.log('Unstable state, ranges must go from start to finish', {
-      startMin,
-      endMax,
-      canvasDuration: canvas.duration,
-    });
+    console.log(
+      'Unstable state, sections/ranges must go from start to finish',
+      {
+        startMin,
+        endMax,
+        canvasDuration: canvas.duration,
+      }
+    );
     return [
       {
         ...DEFAULT_RANGE,
