@@ -72,7 +72,7 @@ const Metadata = props => {
     <div className="metadata">
       <div className="metadata__annotations">
         <div className="metadata__annotations-content">
-          <Typography variant="subheading" color="textSecondary">
+          <Typography variant="subheading" color="textSecondary" style={{ marginBottom: 20 }}>
             Annotations
           </Typography>
           <div className="metadata__content">
@@ -113,17 +113,13 @@ const Metadata = props => {
               )}
             </PoseGroup>
           </div>
-          {markers.length ? (
-            <Typography variant="subheading" color="textSecondary">
-              Markers
-            </Typography>
-          ) : null}
           <div className="metadata__content">
             <PoseGroup animateOnMount={true}>
               {markers.map(marker => {
                 return (
                   <Meta key={marker.id}>
                     <MarkerMetadata
+                      inset={rangesToShow.length}
                       key={marker.id}
                       highlight={marker === currentMarker}
                       marker={marker}
@@ -140,8 +136,12 @@ const Metadata = props => {
       </div>
       <div className="metadata__project">
         <div className="metadata__project-content">
-          <Typography variant="subheading" color="textSecondary">
-            Project
+          <Typography
+            variant="subheading"
+            color="textSecondary"
+            style={{ marginBottom: 10 }}
+          >
+            Project information
           </Typography>
           <div className="metadata__content">
             {props.projectMetadataEditorOpen ? (
@@ -159,6 +159,8 @@ const Metadata = props => {
                 onSaveButtonClicked={props.onSaveButtonClicked}
                 onEraseButtonClicked={props.onEraseButtonClicked}
                 url={props.url}
+                canSave={props.canSave}
+                canErase={props.canErase}
               />
             )}
           </div>
@@ -202,6 +204,8 @@ Metadata.propTypes = {
   /** Black and white mode */
   blackAndWhiteMode: PropTypes.bool,
   projectMetadataEditorOpen: PropTypes.bool,
+  canSave: PropTypes.bool,
+  canErase: PropTypes.bool,
   showAllParentMarkers: PropTypes.bool,
   onEditProjectMetadata: PropTypes.func,
   onSaveProjectMetadata: PropTypes.func,

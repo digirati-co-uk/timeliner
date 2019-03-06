@@ -111,7 +111,7 @@ function EditMarker(props) {
       <CustomTextField
         id="label"
         label="Label"
-        placeholder="Unnamed range"
+        placeholder="Untitled marker"
         value={draft.label}
         onChange={updateDraftField('label')}
       />
@@ -165,7 +165,10 @@ export default function MarkerMetadata(props) {
       style={{
         marginLeft: `${props.inset * 24}px`,
         marginBottom: 16,
-        boxShadow: highlight ? '0 0 0 3px rgb(63, 81, 181, .5)' : null,
+        borderLeft: highlight
+          ? '5px solid rgb(63, 81, 181, .5)'
+          : '0px solid transparent',
+        transition: 'border .3s',
       }}
     >
       {isEditing ? (

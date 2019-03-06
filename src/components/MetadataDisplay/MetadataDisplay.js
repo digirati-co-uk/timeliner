@@ -25,7 +25,7 @@ const MetadataDisplay = props => (
       >
         <Grid item>
           <Typography variant="title" component="h3">
-            {props.label || 'Unnamed range'}
+            {props.label || 'Untitled section'}
           </Typography>
         </Grid>
         <Grid>
@@ -41,7 +41,7 @@ const MetadataDisplay = props => (
           whiteSpace: 'pre-line',
         }}
       >
-        {props.summary || 'Range description'}
+        {props.summary || 'Section description'}
       </Typography>
     </CardContent>
   </Card>
@@ -65,7 +65,7 @@ MetadataDisplay.propTypes = {
 };
 
 MetadataDisplay.defaultProps = {
-  label: 'Unnamed Range',
+  label: 'Untitled section',
   summary: '',
   blackAndWhiteMode: false,
 };

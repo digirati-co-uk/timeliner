@@ -83,22 +83,27 @@ class AudioImporter extends Component {
 
     return (
       <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
-        <Paper position="static">
-          <Tabs value={localFile ? 1 : 0} onChange={this.handleChange}>
+        <DialogTitle>Open audio file</DialogTitle>
+        <div style={{ padding: '0 20px' }}>
+          <Tabs
+            value={localFile ? 1 : 0}
+            onChange={this.handleChange}
+            indicatorColor="primary"
+            fullWidth={true}
+          >
             <Tab label="URL" />
             <Tab label="Local file" />
           </Tabs>
-        </Paper>
-        <DialogTitle>Import Audio/Manifest</DialogTitle>
-        <DialogContent style={{ width: 400 }}>
+        </div>
+        <DialogContent style={{ width: 400, padding: 20 }}>
           <form onKeyDown={this.handleKeyDown}>
             {localFile ? (
-              <DialogContentText>
-                Please choose a compatible manifest from your computer
+              <DialogContentText style={{ marginBottom: 10 }}>
+                Open an audio file on your computer (.mp3, .json)
               </DialogContentText>
             ) : (
-              <DialogContentText>
-                Please provide a web compatible audio file url
+              <DialogContentText style={{ marginBottom: 10 }}>
+                Open an audio file (.mp3, .json) from the web
               </DialogContentText>
             )}
             {localFile ? (
@@ -114,18 +119,9 @@ class AudioImporter extends Component {
                 type="url"
                 onKeyPress={this.onKeyPress}
                 fullWidth
+                variant="outlined"
               />
             )}
-            <div
-              style={{ fontSize: 12, marginTop: 15, cursor: 'pointer' }}
-              onClick={this.toggleLocalFile}
-            >
-              {localFile ? (
-                <span>Go back to URL import</span>
-              ) : (
-                <span>Alternatively, click here to import local file</span>
-              )}
-            </div>
             {error && (
               <Typography variant="body1" color="error">
                 {error}
