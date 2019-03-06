@@ -8,7 +8,7 @@ import {
   RESET_DOCUMENT,
   EXPORT_DOCUMENT,
   LOAD_PROJECT,
-  PROJECT, IMPORT_ERROR,
+  PROJECT, IMPORT_ERROR, SAVE_PROJECT,
 } from '../constants/project';
 
 const project = (state = DEFAULT_PROJECT_STATE, action) => {
@@ -55,6 +55,7 @@ const project = (state = DEFAULT_PROJECT_STATE, action) => {
         }
       );
     case EXPORT_DOCUMENT:
+    case SAVE_PROJECT:
     default:
       return state;
   }

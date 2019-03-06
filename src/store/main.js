@@ -7,6 +7,7 @@ import rootReducer from '../reducers/root';
 import rootSaga from '../sagas/index';
 import importResource from '../components/AudioImporter/AudioImporter.Utils';
 import { importDocument } from '../actions/project';
+import { setCallback } from '../actions/viewState';
 
 const composeEnhancers =
   typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
@@ -18,7 +19,7 @@ const composeEnhancers =
 
 const monitor = typeof window === 'object' && window.__SAGA_MONITOR_EXTENSION__;
 
-export default function configureStore(wAudio, fresh = false) {
+export default function configureStore(wAudio, fresh = false, callback) {
   const sagaMiddleware = createSagaMiddleware({ sagaMonitor: monitor });
   const persistedReducer = persistReducer(
     {
@@ -33,6 +34,11 @@ export default function configureStore(wAudio, fresh = false) {
     {},
     composeEnhancers(applyMiddleware(undoMiddleware, sagaMiddleware))
   );
+
+  if (callback) {
+    store.dispatch(setCallback(callback));
+  }
+
   const persistor = persistStore(store);
 
   if (fresh) {

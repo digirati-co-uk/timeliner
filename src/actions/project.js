@@ -7,7 +7,7 @@ import {
   IMPORT_DOCUMENT,
   EXPORT_DOCUMENT,
   LOAD_PROJECT,
-  IMPORT_ERROR,
+  IMPORT_ERROR, SAVE_PROJECT,
 } from '../constants/project';
 
 export const updateSettings = form => ({
@@ -58,4 +58,8 @@ export const exportDocument = () => ({
 export const loadProject = state => ({
   type: LOAD_PROJECT,
   state,
+});
+
+export const saveProject = () => ({
+  type: SAVE_PROJECT,
 });

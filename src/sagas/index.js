@@ -17,6 +17,7 @@ import {
   RESET_DOCUMENT,
   EXPORT_DOCUMENT,
   UPDATE_SETTINGS,
+  SAVE_PROJECT,
 } from '../constants/project';
 import exporter from '../utils/iiifSaver';
 import {
@@ -282,6 +283,32 @@ function* zoomInOut(action) {
   yield put(panToPosition(viewerOffsetLeft));
 }
 
+function saveResource(url, content) {
+  return new Promise((resolve, reject) => {
+    const http = new XMLHttpRequest();
+    http.open('POST', url);
+    http.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+    http.onreadystatechange = () => {
+      if (http.readyState === http.DONE) {
+        if (http.status >= 300 && http.status <= 499) {
+          reject();
+        } else {
+          resolve();
+        }
+      }
+    };
+    http.send(JSON.stringify(content));
+  });
+}
+
+function* saveProject() {
+  const state = yield select();
+  const callback = yield select(state => state.viewState.callback);
+  const outputJSON = exporter(state);
+
+  yield call(saveResource, callback, outputJSON);
+}
+
 export default function* root() {
   yield all([
     rangeSaga(),
@@ -298,5 +325,6 @@ export default function* root() {
     ),
     takeLatest([SELECT_RANGE, DESELECT_RANGE], zoomToSelection),
     takeEvery([ZOOM_IN, ZOOM_OUT], zoomInOut),
+    takeEvery(SAVE_PROJECT, saveProject),
   ]);
 }

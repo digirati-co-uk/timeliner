@@ -12,6 +12,7 @@ export const VIEWSTATE = {
   VERIFY_DIALOG: 'verifyDialog',
   SOURCE: 'source',
   VIEWER_WIDTH: 'viewerWidth',
+  CALLBACK: 'callback',
 };
 
 export const DEFAULT_VIEWSTATE_STATE = {
@@ -31,6 +32,7 @@ export const DEFAULT_VIEWSTATE_STATE = {
     title: '',
   },
   [VIEWSTATE.VIEWER_WIDTH]: 0,
+  [VIEWSTATE.CALLBACK]: null,
 };
 
 export const PLAY_AUDIO = 'PLAY_AUDIO';
@@ -63,3 +65,4 @@ export const CANCEL_PROJECT_METADATA_EDITS = 'CANCEL_PROJECT_METADATA_EDITS';
 export const SAVE_PROJECT_METADATA = 'SAVE_PROJECT_METADATA';
 export const FINISHED_PLAYING = 'FINISHED_PLAYING';
 export const UPDATE_VIEWER_WIDTH = 'UPDATE_VIEWER_WIDTH';
+export const SET_CALLBACK = 'SET_CALLBACK';
