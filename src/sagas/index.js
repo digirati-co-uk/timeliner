@@ -45,6 +45,7 @@ import {
   PLAY_AUDIO,
   SAVE_PROJECT_METADATA,
   SET_CURRENT_TIME,
+  UNDO_ALL,
   ZOOM_IN,
   ZOOM_OUT,
 } from '../constants/viewState';
@@ -310,6 +311,21 @@ function* saveProject() {
   yield call(saveResource, callback, outputJSON);
 }
 
+function* undoAll() {
+  const undoStack = yield select(s => s.undoHistory.undoQueue);
+
+  const yes = yield showConfirmation(
+    'Are you sure you want to revert all your changes?'
+  );
+  if (!yes) {
+    return;
+  }
+
+  for (let i = 0; i < undoStack.length; i++) {
+    yield put(undoActions.undo());
+  }
+}
+
 export default function* root() {
   yield all([
     rangeSaga(),
@@ -327,5 +343,6 @@ export default function* root() {
     takeLatest([SELECT_RANGE, DESELECT_RANGE], zoomToSelection),
     takeEvery([ZOOM_IN, ZOOM_OUT], zoomInOut),
     takeEvery(SAVE_PROJECT, saveProject),
+    takeEvery(UNDO_ALL, undoAll),
   ]);
 }
