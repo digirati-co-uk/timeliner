@@ -3,9 +3,11 @@
   flex-direction: row-reverse;
   align-items: flex-end;
   justify-content: space-evenly;
-  width: 70px;
-  height: 40px;
+  width: 80px;
   margin-right: 8px;
+  margin-top: 13px;
+  border: 2px solid #ccc;
+  padding: 8px;
   &__unit {
     width: 21px;
     border: 0;
