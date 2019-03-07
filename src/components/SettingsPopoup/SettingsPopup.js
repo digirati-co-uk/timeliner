@@ -125,6 +125,10 @@ export default class SettingsPopup extends React.Component {
     }
   };
 
+  componentDidUpdate() {
+    return;
+  }
+
   componentDidMount() {
     document.addEventListener('keydown', this.keyboardListener);
   }

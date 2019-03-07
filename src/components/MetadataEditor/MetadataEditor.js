@@ -15,9 +15,6 @@ import './MetadataEditor.scss';
 
 const metadataEditor = bem.block('metadata-editor');
 
-//TODO: implement themes
-const getSelectedThemeColours = () => ['red', 'blue', 'green'];
-
 class MetadataEditor extends Component {
   static propTypes = {
     /** Current label of the manifest or range */
@@ -48,11 +45,10 @@ class MetadataEditor extends Component {
 
   constructor(props) {
     super(props);
-    const { label, summary, colour, startTime, endTime, whiteText } = props;
+    const { label, summary, startTime, endTime, whiteText } = props;
     this.state = {
       label,
       summary,
-      colour,
       startTime,
       endTime,
       whiteText,
@@ -108,7 +104,7 @@ class MetadataEditor extends Component {
   };
 
   render() {
-    const { onCancel } = this.props;
+    const { swatch, onCancel } = this.props;
     const {
       label,
       summary,
@@ -117,7 +113,6 @@ class MetadataEditor extends Component {
       endTime,
       whiteText,
     } = this.state;
-    const colours = getSelectedThemeColours();
     return (
       <form className={metadataEditor} onKeyDown={this.handleKeyDown}>
         <TextField
@@ -178,9 +173,9 @@ class MetadataEditor extends Component {
           </Grid>
           <Grid item>
             <ColourSwatchPicker
-              swatch={colours}
+              swatch={swatch}
               label="Colour"
-              currentColour={colour}
+              currentColour={colour || this.props.colour}
               onSelectColour={this.onSelectColour}
             />
           </Grid>

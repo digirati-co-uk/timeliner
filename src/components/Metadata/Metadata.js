@@ -74,7 +74,7 @@ const Metadata = props => {
       <div className="metadata__annotations">
         <div className="metadata__annotations-content">
           <Typography
-            variant="subheading"
+            variant="subtitle1"
             color="textSecondary"
             style={{ marginBottom: 20 }}
           >
@@ -94,6 +94,7 @@ const Metadata = props => {
                       }
                       onSave={props.onUpdateRange}
                       onDelete={props.onDeleteRange}
+                      swatch={props.swatch}
                       onCancel={() => {
                         props.onEdit(null);
                       }}
@@ -142,7 +143,7 @@ const Metadata = props => {
       <div className="metadata__project">
         <div className="metadata__project-content">
           <Typography
-            variant="subheading"
+            variant="subtitle1"
             color="textSecondary"
             style={{ marginBottom: 10 }}
           >

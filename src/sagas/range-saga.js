@@ -53,7 +53,7 @@ import { PROJECT } from '../constants/project';
 import invariant from '../utils/invariant';
 import { showConfirmation } from './index';
 
-export const STICKY_BUBBLE_MS = 50;
+export const STICKY_BUBBLE_MS = 500;
 
 function* previousBubble() {
   const previousBubbleTime = yield select(getPreviousBubbleStartTime);

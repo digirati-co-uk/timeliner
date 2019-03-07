@@ -30,7 +30,7 @@ function DisplayMarker(props) {
         alignItems="center"
       >
         <Grid item>
-          <Typography variant="title" component="h3">
+          <Typography variant="h6" component="h3">
             <Bookmark fontSize="inherit" style={{ marginRight: 5 }} />{' '}
             {label || 'Unnamed marker'}
           </Typography>
