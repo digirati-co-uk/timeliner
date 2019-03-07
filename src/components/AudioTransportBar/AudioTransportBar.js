@@ -102,7 +102,16 @@ class AudioTransportBar extends Component {
         <Grid container direction="row" alignItems="center">
           <Grid item xs={4} className="audio-transport-bar__actions">
             <CurrentTimeIndicator currentTime={currentTime} runtime={runTime} />
-            <PrimaryButton disabled={!onAddBubble} onClick={onAddBubble} style={{ padding: 4 }}>
+            <PrimaryButton
+              disabled={!onAddBubble}
+              onClick={onAddBubble}
+              style={{ padding: 4 }}
+              size="small"
+              classes={{
+                root: 'audio-transport-bar__button-text',
+                label: 'audio-transport-bar__button-text',
+              }}
+            >
               <Tooltip
                 classes={{ tooltip: 'audio-transport-bar__tooltip' }}
                 title="Split the current bubble at the current time"
@@ -115,6 +124,11 @@ class AudioTransportBar extends Component {
               disabled={!onAddMarker}
               onClick={onAddMarker}
               style={{ marginLeft: 16, padding: 4 }}
+              size="small"
+              classes={{
+                root: 'audio-transport-bar__button-text',
+                label: 'audio-transport-bar__button-text',
+              }}
             >
               <Tooltip
                 classes={{ tooltip: 'audio-transport-bar__tooltip' }}
@@ -129,6 +143,11 @@ class AudioTransportBar extends Component {
               disabled={!onGroupBubble}
               onClick={onGroupBubble}
               style={{ marginLeft: 16, padding: 4 }}
+              size="small"
+              classes={{
+                root: 'audio-transport-bar__button-text',
+                label: 'audio-transport-bar__button-text',
+              }}
             >
               <Tooltip
                 classes={{ tooltip: 'audio-transport-bar__tooltip' }}
@@ -142,6 +161,11 @@ class AudioTransportBar extends Component {
               disabled={!onDeleteBubble}
               onClick={onDeleteBubble}
               style={{ marginLeft: 16, padding: 4 }}
+              size="small"
+              classes={{
+                root: 'audio-transport-bar__button-text',
+                label: 'audio-transport-bar__button-text',
+              }}
             >
               <Tooltip
                 classes={{ tooltip: 'audio-transport-bar__tooltip' }}

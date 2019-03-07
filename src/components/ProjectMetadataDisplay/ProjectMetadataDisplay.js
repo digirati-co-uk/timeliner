@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import CloudDownload from '@material-ui/icons/CloudDownload';
 import RestorePage from '@material-ui/icons/RestorePage';
 import Button from '@material-ui/core/Button';
+import { undoAll } from '../../actions/viewState';
 
 const ProjectMetadataDisplay = props => (
   <div>
@@ -71,7 +72,23 @@ const ProjectMetadataDisplay = props => (
             Start this project over
           </Button>
         </Grid>
-      ) : null}
+      ) : (
+        <Grid item xs={12} style={{ margin: 5 }}>
+          <Button
+            variant="text"
+            color="primary"
+            onClick={props.undoAll}
+            disabled={!props.undoAll}
+            title="Reset changes to previously saved"
+          >
+            <RestorePage
+              nativeColor={props.undoAll ? '#303F9F' : '#bbb'}
+              style={{ marginRight: 20 }}
+            />
+            Revert changes
+          </Button>
+        </Grid>
+      )}
     </Grid>
   </div>
 );

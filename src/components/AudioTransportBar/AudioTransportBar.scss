@@ -21,7 +21,11 @@
     justify-content: flex-end;
   }
 
-  &__tooltip {
-    font-size: 12px !important; // material UI override
+  // material UI override (funky selectors)
+  div &__tooltip {
+    font-size: 12px;
+  }
+  & &__button-text {
+    min-width: 40px;
   }
 }

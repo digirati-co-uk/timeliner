@@ -50,6 +50,7 @@ import {
   cancelProjectMetadataEdits,
   saveProjectMetadata,
   setCurrentTime,
+  undoAll,
 } from '../../actions/viewState';
 import {
   addMarkerAtTime,
@@ -288,6 +289,7 @@ class VariationsMainView extends React.Component {
                 updateMarker={this.props.updateMarker}
                 deleteMarker={this.props.deleteMarker}
                 setCurrentTime={this.props.setCurrentTime}
+                undoAll={this.props.canUndo ? this.props.undoAll : null}
               />
               <Footer />
             </div>
@@ -426,6 +428,7 @@ const mapDispatchToProps = {
   // Undo
   onUndo: undoActions.undo,
   onRedo: undoActions.redo,
+  undoAll,
   // Export
   saveProject,
 };

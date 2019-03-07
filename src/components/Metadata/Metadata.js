@@ -10,6 +10,7 @@ import ProjectMetadataEditor from '../ProjectMetadataEditor/ProjectMetadataEdito
 
 import './Metadata.scss';
 import MarkerMetadata from '../MarkerMetadata/MarkerMetadata';
+import { undoAll } from '../../actions/viewState';
 
 const Meta = posed.div({
   enter: { y: 0, opacity: 1, delay: 250 },
@@ -165,6 +166,7 @@ const Metadata = props => {
                 url={props.url}
                 canSave={props.canSave}
                 canErase={props.canErase}
+                undoAll={props.undoAll}
               />
             )}
           </div>

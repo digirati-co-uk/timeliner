@@ -28,7 +28,7 @@ import {
   LOAD_SOURCE,
   ZOOM_TO,
   UPDATE_VIEWER_WIDTH,
-  SET_CALLBACK,
+  SET_CALLBACK, UNDO_ALL,
 } from '../constants/viewState';
 import invariant from '../utils/invariant';
 
@@ -67,6 +67,10 @@ export const panToPosition = time => ({
   payload: {
     x: time,
   },
+});
+
+export const undoAll = () => ({
+  type: UNDO_ALL,
 });
 
 export const showImportModal = () => ({
