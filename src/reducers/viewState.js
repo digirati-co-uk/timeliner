@@ -30,14 +30,24 @@ import {
   FINISHED_PLAYING,
   LOAD_SOURCE,
   ZOOM_TO,
-  UPDATE_VIEWER_WIDTH, SET_CALLBACK,
+  UPDATE_VIEWER_WIDTH,
+  SET_CALLBACK,
+  SET_START_TIME,
 } from '../constants/viewState';
 
 import { AUDIO_LOADING } from '../constants/canvas';
 
 const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
   switch (action.type) {
+    case SET_START_TIME:
+      return update(state, {
+        [VIEWSTATE.START_TIME]: { $set: action.payload.startTime },
+      });
     case AUDIO_LOADING:
+      if (state[VIEWSTATE.RUNTIME]) {
+        return state;
+      }
+
       return update(state, {
         [VIEWSTATE.RUNTIME]: {
           $set: action.payload.duration,

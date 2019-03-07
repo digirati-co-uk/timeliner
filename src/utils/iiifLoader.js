@@ -4,6 +4,7 @@ import { RANGE, DEFAULT_RANGE } from '../constants/range';
 import { VIEWSTATE } from '../constants/viewState';
 import { resolveAvResource } from '../containers/AuthResource/AuthResource';
 import generateId from './generateId';
+import * as qs from 'query-string';
 
 // Constants
 
@@ -271,7 +272,7 @@ const processStructures = manifest => {
     if (range) {
       const colour = getColour(range);
       if (colour) {
-        range[ RANGE.COLOUR ] = colour;
+        range[RANGE.COLOUR] = colour;
       }
       ranges[range.id] = range;
     }
@@ -294,6 +295,10 @@ const manifestToProject = manifest => ({
 });
 
 function getDuration(manifest) {
+  if (manifest.items && manifest.items[0] && manifest.items[0].duration) {
+    return sToMs(manifest.items[0].duration);
+  }
+
   return manifest &&
     manifest.items &&
     manifest.items[0] &&
@@ -307,11 +312,41 @@ function getDuration(manifest) {
     : 0;
 }
 
-const manifestToViewState = manifest => ({
-  [VIEWSTATE.RUNTIME]: getDuration(manifest),
-  [VIEWSTATE.IS_IMPORT_OPEN]: false,
-  [VIEWSTATE.IS_SETTINGS_OPEN]: false,
-});
+function getStartTime(manifest) {
+  const selector =
+    manifest &&
+    manifest.items &&
+    manifest.items[0] &&
+    manifest.items[0].items &&
+    manifest.items[0].items[0] &&
+    manifest.items[0].items[0].items &&
+    manifest.items[0].items[0].items[0] &&
+    manifest.items[0].items[0].items[0].body &&
+    manifest.items[0].items[0].items[0].body.id;
+
+  if (selector && selector.indexOf('#') !== -1) {
+    const { t } = qs.parse(selector.split('#')[1]);
+    if (!t) {
+      return 0;
+    }
+    if (t.indexOf(',') === -1) {
+      console.warn('Time points cannot be used as a range for a resource');
+      return 0;
+    }
+    return sToMs(parseFloat(t.split(',')[0]) || 0);
+  }
+  return 0;
+}
+
+const manifestToViewState = manifest => {
+  const startTime = getStartTime(manifest);
+  return {
+    [VIEWSTATE.RUNTIME]: getDuration(manifest),
+    [VIEWSTATE.IS_IMPORT_OPEN]: false,
+    [VIEWSTATE.IS_SETTINGS_OPEN]: false,
+    [VIEWSTATE.START_TIME]: startTime,
+  };
+};
 
 export const loadProjectState = (manifest, source) => ({
   project: manifestToProject(manifest),
