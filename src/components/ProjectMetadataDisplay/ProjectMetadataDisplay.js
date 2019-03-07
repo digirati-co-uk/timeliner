@@ -5,12 +5,11 @@ import Typography from '@material-ui/core/Typography';
 import CloudDownload from '@material-ui/icons/CloudDownload';
 import RestorePage from '@material-ui/icons/RestorePage';
 import Button from '@material-ui/core/Button';
-import { undoAll } from '../../actions/viewState';
 
 const ProjectMetadataDisplay = props => (
   <div>
     <div onClick={props.onEditClick} style={{ cursor: 'pointer' }}>
-      <Typography variant="title" component="h3" style={{ margin: '10px 0' }}>
+      <Typography variant="h6" component="h3" style={{ margin: '10px 0' }}>
         {props.manifestLabel || 'Unnamed manifest'}
       </Typography>
       <Typography
@@ -24,7 +23,7 @@ const ProjectMetadataDisplay = props => (
       </Typography>
     </div>
     <Typography
-      variant="subheading"
+      variant="subtitle1"
       color="textSecondary"
       style={{ marginTop: 20, marginBottom: 10 }}
     >

@@ -96,6 +96,7 @@ class VariationsMainView extends React.Component {
       },
       typography: {
         fontSize: 12,
+        useNextVariants: true,
       },
       mixins: {
         toolbar: {
@@ -290,6 +291,7 @@ class VariationsMainView extends React.Component {
                 deleteMarker={this.props.deleteMarker}
                 setCurrentTime={this.props.setCurrentTime}
                 undoAll={this.props.canUndo ? this.props.undoAll : null}
+                swatch={this.props.colourPalette.colours}
               />
               <Footer />
             </div>

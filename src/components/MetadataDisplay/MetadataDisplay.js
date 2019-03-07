@@ -24,7 +24,7 @@ const MetadataDisplay = props => (
         alignItems="center"
       >
         <Grid item>
-          <Typography variant="title" component="h3">
+          <Typography variant="h6" component="h3">
             {props.label || 'Untitled section'}
           </Typography>
         </Grid>
@@ -35,7 +35,7 @@ const MetadataDisplay = props => (
         </Grid>
       </Grid>
       <Typography
-        variant="subheading"
+        variant="subtitle1"
         component="pre"
         style={{
           whiteSpace: 'pre-line',

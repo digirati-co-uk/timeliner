@@ -42,6 +42,17 @@ const orgbToHex = orgb => {
   return `#${r}${g}${b}`;
 };
 
+function orgbToRgb(colour) {
+  return `rgb(${colour[0]},${colour[1]},${colour[2]})`;
+}
+
+function parseRgbString(currentColour) {
+  const [r, g, b] = currentColour.match(/\d+/g);
+  return { r, g, b, a: 1 };
+}
+
+const superGlobalCache = [];
+
 class ColourSwatchPicker extends Component {
   static propTypes = {
     /** Array of colours to display as choices */
@@ -104,6 +115,16 @@ class ColourSwatchPicker extends Component {
       el = el.parentElement || el.parentNode;
     } while (el !== null && el.nodeType === 1);
 
+    // This doesn't need to force render as its used in the next render.
+    if (
+      this.state.initialColour !== this.props.currentColour &&
+      superGlobalCache.indexOf(orgbToHex(this.state.colour)) === -1
+    ) {
+      superGlobalCache.push(orgbToHex(this.state.colour));
+      if (superGlobalCache.length > 5) {
+        superGlobalCache.shift();
+      }
+    }
     this.closePicker();
   };
 
@@ -125,13 +146,25 @@ class ColourSwatchPicker extends Component {
     ) {
       return {
         colour: rgbToOrgba(hexToRgb(nextProps.currentColour)),
+        initialColour: rgbToOrgba(hexToRgb(nextProps.currentColour)),
+      };
+    }
+    if (
+      nextProps.currentColour &&
+      nextProps.currentColour.startsWith('rgb') &&
+      nextProps.currentColour.replace(/ /g, '') !== orgbToRgb(prevState.colour)
+    ) {
+      return {
+        colour: parseRgbString(nextProps.currentColour),
+        initialColour: parseRgbString(nextProps.currentColour),
       };
     }
     return null;
   }
 
   render() {
-    const { colour, displayColourPicker, swatch } = this.state;
+    const { swatch } = this.props;
+    const { colour, displayColourPicker } = this.state;
 
     const popover = {
       position: 'absolute',
@@ -167,7 +200,7 @@ class ColourSwatchPicker extends Component {
             <div style={cover} onClick={this.closePicker} />
             <SketchPicker
               disableAlpha={true}
-              presetColors={swatch}
+              presetColors={[...swatch, ...superGlobalCache]}
               color={colour}
               onChange={this.handleChange}
             />

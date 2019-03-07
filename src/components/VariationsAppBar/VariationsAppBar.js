@@ -66,7 +66,7 @@ const VariationsAppBar = props => (
         }}
       >
         <Typography
-          variant="title"
+          variant="h6"
           color="inherit"
           style={{
             fontWeight: 'normal',
