@@ -151,6 +151,7 @@ class BubbleEditor extends React.Component {
       viewerWidth,
       selectedPoints,
       colourPalette,
+      startTime,
     } = this.props;
 
     const timePoints = this.getTimePoints();

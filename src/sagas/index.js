@@ -82,9 +82,9 @@ function* importDocument({ manifest, source }) {
     const loadedState = loadProjectState(manifest);
     yield put(unloadAudio());
     yield put(loadProject(loadedState.project));
+    yield put(loadViewState(loadedState.viewState));
     yield put(loadCanvas(loadedState.canvas));
     yield put(importRanges(loadedState.range));
-    yield put(loadViewState(loadedState.viewState));
     yield put(clearMarkers());
     yield put(importMarkers(parseMarkers(manifest)));
   } catch (err) {

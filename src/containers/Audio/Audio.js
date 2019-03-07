@@ -13,13 +13,13 @@ import { ERROR_CODES } from '../../constants/canvas';
 
 const { MediaElement } = window;
 
-function Audio({ url, volume, currentTime, isPlaying, ...props }) {
+function Audio({ url, volume, currentTime, startTime, isPlaying, ...props }) {
   const audio = useRef();
   const player = useRef();
   const [duration, setDuration] = useState();
   const [loaded, setLoaded] = useState();
   const sources = [{ src: url }];
-  const lastTime = useRef(null);
+  const lastTime = useRef(() => startTime - 1);
 
   // Bootstrap the element.
   useLayoutEffect(() => {
@@ -51,17 +51,21 @@ function Audio({ url, volume, currentTime, isPlaying, ...props }) {
       const position = player.current.getCurrentTime();
       if (position * 1000 !== lastTime.current) {
         lastTime.current = position * 1000;
-        props.setCurrentTime(position * 1000);
+        props.setCurrentTime(position * 1000 - startTime);
       }
 
       if (player.current.readyState && loaded === false) {
-        setDuration(player.current.duration * 1000);
-        props.audioLoading(1, 1, player.current.duration * 1000);
+        setDuration(props.runTime || player.current.duration * 1000);
+        props.audioLoading(
+          1,
+          1,
+          props.runTime || player.current.duration * 1000
+        );
         props.audioLoaded(true);
         setLoaded(true);
       }
 
-      if (position === duration) {
+      if (position >= duration) {
         finishedPlaying();
       }
     },
@@ -76,7 +80,9 @@ function Audio({ url, volume, currentTime, isPlaying, ...props }) {
         if (isPlaying) {
           player.current.play();
         } else {
-          player.current.pause();
+          if (player.current.readyState) {
+            player.current.pause();
+          }
         }
       }
     },
@@ -122,8 +128,10 @@ function Audio({ url, volume, currentTime, isPlaying, ...props }) {
 const mapStateProps = state => ({
   url: state.canvas.url,
   isPlaying: state.viewState.isPlaying,
-  currentTime: state.viewState.currentTime,
+  currentTime: state.viewState.currentTime + state.viewState.startTime,
   volume: state.viewState.volume,
+  runTime: state.viewState.runTime,
+  startTime: state.viewState.startTime,
 });
 
 const mapDispatchToProps = {
