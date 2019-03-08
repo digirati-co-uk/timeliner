@@ -1,5 +1,5 @@
 {
-  "name": "timeliner",
+  "name": "iiif-timeliner",
   "version": "1.0.0",
   "main": "index.js",
   "repository": "git@github.com:digirati-co-uk/timeliner.git",
