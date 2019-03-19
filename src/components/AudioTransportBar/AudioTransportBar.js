@@ -8,6 +8,16 @@ import SkipBackwardsButton from '../SkipBackwardsButton/SkipBackwardsButton';
 import PlayPauseButton from '../PlayPauseButton/PlayPauseButton';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import Grid from '@material-ui/core/Grid';
+import { connect } from 'react-redux';
+import compose from 'lodash.flow';
+import ZoomControls from '../ZoomControls/ZoomControls';
+import {
+  zoomIn,
+  zoomOut,
+  resetZoom,
+} from '../../actions/viewState';
+import { VIEWSTATE } from '../../constants/viewState';
+
 
 import './AudioTransportBar.scss';
 import VolumeSliderCompact from '../VolumeSliderCompact/VolumeSliderCompact';
@@ -95,6 +105,10 @@ class AudioTransportBar extends Component {
       onVolumeChanged,
       currentTime,
       runTime,
+      zoom,
+      zoomIn,
+      zoomOut,
+      resetZoom,
     } = this.props;
 
     return (
@@ -189,7 +203,16 @@ class AudioTransportBar extends Component {
               <NextButton onClick={onNextBubble} />
             </div>
           </Grid>
-          <Grid item xs={4} className="audio-transport-bar__volume">
+
+          <Grid item xs={2} className="audio-transport-bar__zoom">
+            <ZoomControls
+              onZoomIn={this.props.zoomIn}
+              onZoomOut={zoom > 1 ? this.props.zoomOut : null}
+              onResetView={zoom !== 1 ? this.props.resetZoom : null}
+            />
+          </Grid>
+
+          <Grid item xs={2} className="audio-transport-bar__volume">
             <VolumeSliderCompact
               flipped={true}
               volume={volume}
@@ -202,4 +225,21 @@ class AudioTransportBar extends Component {
   }
 }
 
-export default AudioTransportBar;
+const mapStateProps = state => ({
+  zoom: state.viewState[VIEWSTATE.ZOOM],
+});
+
+const mapDispatchToProps = {
+  zoomIn,
+  zoomOut,
+  resetZoom,
+};
+
+//export default AudioTransportBar;
+
+export default compose(
+  connect(
+    mapStateProps,
+    mapDispatchToProps
+  )
+)(AudioTransportBar);

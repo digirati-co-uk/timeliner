@@ -9,9 +9,6 @@ import ZoomControls from '../../components/ZoomControls/ZoomControls';
 import TimelineScrubber from '../../components/TimelineScrubber/TimelineScrubber';
 
 import {
-  zoomIn,
-  zoomOut,
-  resetZoom,
   panToPosition,
   setCurrentTime,
   updateViewerWidth,
@@ -226,11 +223,6 @@ class BubbleEditor extends React.Component {
               </div>
             )}
           </Measure>
-          <ZoomControls
-            onZoomIn={this.props.zoomIn}
-            onZoomOut={zoom > 1 ? this.props.zoomOut : null}
-            onResetView={zoom !== 1 ? this.props.resetZoom : null}
-          />
         </div>
       </div>
     );
@@ -258,9 +250,6 @@ const mapStateProps = state => ({
 });
 
 const mapDispatchToProps = {
-  zoomIn,
-  zoomOut,
-  resetZoom,
   panToPosition,
   onUpdateTime: setCurrentTime,
   splitRange: splitRangeAt,
