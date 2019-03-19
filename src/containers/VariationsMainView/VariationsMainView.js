@@ -205,6 +205,7 @@ class VariationsMainView extends React.Component {
       selectedRanges,
       hasResource,
       colourPalette,
+      noFooter,
     } = this.props;
     return (
       <div className="variations-app">
@@ -293,7 +294,7 @@ class VariationsMainView extends React.Component {
                 undoAll={this.props.canUndo ? this.props.undoAll : null}
                 swatch={this.props.colourPalette.colours}
               />
-              <Footer />
+              {!noFooter && <Footer />}
             </div>
             {(audioError.code || !isLoaded) && (
               <ContentOverlay
