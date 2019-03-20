@@ -22,16 +22,24 @@ const ProjectMetadataDisplay = props => (
         {props.manifestSummary || 'Description of manifest'}
       </Typography>
     </div>
-    <Typography
-      variant="subtitle1"
-      color="textSecondary"
-      style={{ marginTop: 20, marginBottom: 10 }}
-    >
-      Source
-    </Typography>
-    <Typography variant="body1" component="p">
-      <a href={props.url}>{props.url}</a>
-    </Typography>
+    {props.homepage && props.homepageLabel ? (
+      <Typography variant="body1" component="p">
+        <a href={props.homepage}>{props.homepageLabel}</a>
+      </Typography>
+    ) : (
+      <div>
+        <Typography
+          variant="subtitle1"
+          color="textSecondary"
+          style={{ marginTop: 20, marginBottom: 10 }}
+        >
+          Source
+        </Typography>
+        <Typography variant="body1" component="p">
+          <a href={props.url}>{props.url}</a>
+        </Typography>
+      </div>
+    )}
     <hr
       style={{
         background: '#BDBDBD',
@@ -96,6 +104,8 @@ ProjectMetadataDisplay.propTypes = {
   manifestLabel: PropTypes.string,
   manifestSummary: PropTypes.string,
   url: PropTypes.string,
+  homepage: PropTypes.string,
+  homepageLabel: PropTypes.string,
   onEditClick: PropTypes.func,
   onSaveButtonClicked: PropTypes.func,
   onEraseButtonClicked: PropTypes.func,
