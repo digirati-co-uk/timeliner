@@ -290,11 +290,23 @@ const mapSettings = iiifSettings =>
 const manifestToProject = manifest => ({
   [PROJECT.DESCRIPTION]: getLocalisedResource(manifest.summary) || '',
   [PROJECT.TITLE]: getLocalisedResource(manifest.label) || '',
-  [PROJECT.HOMEPAGE]: manifest.homepage.id,
-  [PROJECT.HOMEPAGE_LABEL]: getLocalisedResource(manifest.homepage.label),
+  [PROJECT.HOMEPAGE]: getHomepage(manifest),
+  [PROJECT.HOMEPAGE_LABEL]: getHomepageLabel(manifest),
   [PROJECT.LOADED_JSON]: manifest,
   ...mapSettings(manifest[`${RDF_NAMESPACE}:settings`]),
 });
+
+function getHomepage(manifest) {
+  return manifest && manifest.homepage && manifest.homepage.id
+    ? manifest.homepage.id
+    : null;
+}
+
+function getHomepageLabel(manifest) {
+  return manifest && manifest.homepage && manifest.homepage.label
+    ? getLocalisedResource(manifest.homepage.label)
+    : null;
+}
 
 function getDuration(manifest) {
   if (manifest.items && manifest.items[0] && manifest.items[0].duration) {
