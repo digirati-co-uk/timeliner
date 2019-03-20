@@ -49,9 +49,10 @@ function Audio({ url, volume, currentTime, startTime, isPlaying, ...props }) {
   useInterval(
     () => {
       const position = player.current.getCurrentTime();
+      const relPosition = position * 1000 - startTime;
       if (position * 1000 !== lastTime.current) {
         lastTime.current = position * 1000;
-        props.setCurrentTime(position * 1000 - startTime);
+        props.setCurrentTime(relPosition);
       }
 
       if (player.current.readyState && loaded === false) {
@@ -65,8 +66,8 @@ function Audio({ url, volume, currentTime, startTime, isPlaying, ...props }) {
         setLoaded(true);
       }
 
-      if (position >= duration) {
-        finishedPlaying();
+      if (relPosition >= duration && isPlaying) {
+        props.finishedPlaying();
       }
     },
     1000 / 5,
