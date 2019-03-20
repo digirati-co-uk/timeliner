@@ -340,7 +340,6 @@ export default function* root() {
       [ZOOM_IN, ZOOM_OUT, PAN_TO_POSITION, PLAY_AUDIO],
       zoomSideEffects
     ),
-    takeLatest([SELECT_RANGE, DESELECT_RANGE], zoomToSelection),
     takeEvery([ZOOM_IN, ZOOM_OUT], zoomInOut),
     takeEvery(SAVE_PROJECT, saveProject),
     takeEvery(UNDO_ALL, undoAll),
