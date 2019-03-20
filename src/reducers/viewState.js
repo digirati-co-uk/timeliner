@@ -32,6 +32,7 @@ import {
   ZOOM_TO,
   UPDATE_VIEWER_WIDTH,
   SET_CALLBACK,
+  SET_RESOURCE,
   SET_START_TIME,
 } from '../constants/viewState';
 
@@ -203,6 +204,12 @@ const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
       return update(state, {
         [VIEWSTATE.CALLBACK]: {
           $set: action.payload.callback,
+        },
+      });
+    case SET_RESOURCE:
+      return update(state, {
+        [VIEWSTATE.RESOURCE]: {
+          $set: action.payload.resource,
         },
       });
     case SAVE_PROJECT_METADATA:
