@@ -22,7 +22,6 @@ render(
     persistor={persistor}
     callback={callback}
     hasResource={!!resource}
-    resource={resource}
     noFooter={noFooter === 'true'}
     noHeader={noHeader === 'true'}
   />,
