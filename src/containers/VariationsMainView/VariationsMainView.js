@@ -206,6 +206,7 @@ class VariationsMainView extends React.Component {
       hasResource,
       colourPalette,
       noFooter,
+      noHeader,
     } = this.props;
     return (
       <div className="variations-app">
@@ -220,6 +221,7 @@ class VariationsMainView extends React.Component {
             onUndo={this.props.onUndo}
             onSave={this.getOnSave()}
             onTitleChange={() => {}}
+            noHeader={this.props.noHeader}
           />
           <div className="variations-app__content">
             <AuthCookieService1
