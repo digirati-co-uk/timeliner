@@ -29,6 +29,7 @@ import {
   ZOOM_TO,
   UPDATE_VIEWER_WIDTH,
   SET_CALLBACK,
+  SET_RESOURCE,
   UNDO_ALL,
   SET_START_TIME,
 } from '../constants/viewState';
@@ -182,4 +183,9 @@ export const finishedPlaying = () => ({
 export const setCallback = callback => ({
   type: SET_CALLBACK,
   payload: { callback },
+});
+
+export const setResource = resource => ({
+  type: SET_RESOURCE,
+  payload: { resource },
 });

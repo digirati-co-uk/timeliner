@@ -22,6 +22,7 @@ render(
     persistor={persistor}
     callback={callback}
     hasResource={!!resource}
+    resource={resource}
     noFooter={noFooter === 'true'}
   />,
   document.getElementById('app')

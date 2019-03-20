@@ -305,6 +305,15 @@ function saveResource(url, content) {
 function* saveProject() {
   const state = yield select();
   const callback = yield select(s => s.viewState.callback);
+  const resource = yield select(s => s.viewState.resource);
+  if (resource !== callback) {
+    const yes = yield showConfirmation(
+      'This will save the original timeline as a copy. Are you sure?'
+    );
+    if (!yes) {
+      return;
+    }
+  }
   const outputJSON = exporter(state);
 
   yield put(undoActions.clear());

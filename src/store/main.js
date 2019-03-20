@@ -8,6 +8,7 @@ import rootSaga from '../sagas/index';
 import importResource from '../components/AudioImporter/AudioImporter.Utils';
 import { importDocument } from '../actions/project';
 import { setCallback } from '../actions/viewState';
+import { setResource } from '../actions/viewState';
 
 const composeEnhancers =
   typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
@@ -59,6 +60,7 @@ export default function configureStore(wAudio, fresh = false, callback) {
   store.runSaga(rootSaga);
   // @todo move this to saga.
   if (wAudio) {
+    store.dispatch(setResource(wAudio));
     importResource(wAudio).then(manifest => {
       store.dispatch(importDocument(manifest, wAudio));
     });

@@ -14,6 +14,7 @@ export const VIEWSTATE = {
   VIEWER_WIDTH: 'viewerWidth',
   CALLBACK: 'callback',
   START_TIME: 'startTime',
+  RESOURCE: 'resource'
 };
 
 export const DEFAULT_VIEWSTATE_STATE = {
@@ -34,6 +35,7 @@ export const DEFAULT_VIEWSTATE_STATE = {
   },
   [VIEWSTATE.VIEWER_WIDTH]: 0,
   [VIEWSTATE.CALLBACK]: null,
+  [VIEWSTATE.RESOURCE]: null,
   [VIEWSTATE.START_TIME]: 0,
 };
 
@@ -68,5 +70,6 @@ export const SAVE_PROJECT_METADATA = 'SAVE_PROJECT_METADATA';
 export const FINISHED_PLAYING = 'FINISHED_PLAYING';
 export const UPDATE_VIEWER_WIDTH = 'UPDATE_VIEWER_WIDTH';
 export const SET_CALLBACK = 'SET_CALLBACK';
+export const SET_RESOURCE = 'SET_RESOURCE';
 export const UNDO_ALL = 'UNDO_ALL';
 export const SET_START_TIME = 'SET_START_TIME';
