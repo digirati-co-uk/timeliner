@@ -161,6 +161,8 @@ const Metadata = props => {
               <ProjectMetadataDisplay
                 manifestLabel={props.manifestLabel}
                 manifestSummary={props.manifestSummary}
+                homepage={props.homepage}
+                homepageLabel={props.homepageLabel}
                 onEditClick={props.onEditProjectMetadata}
                 onSaveButtonClicked={props.onSaveButtonClicked}
                 onEraseButtonClicked={props.onEraseButtonClicked}
@@ -182,6 +184,8 @@ Metadata.propTypes = {
   manifestLabel: PropTypes.string.isRequired,
   /** Current summary of the manifest or range */
   manifestSummary: PropTypes.string.isRequired,
+  homepage: PropTypes.string,
+  homepageLabel: PropTypes.string,
   /** Total runtime of manifest */
   runTime: PropTypes.number.isRequired,
   /** Current time */

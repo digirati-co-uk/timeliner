@@ -290,6 +290,8 @@ const mapSettings = iiifSettings =>
 const manifestToProject = manifest => ({
   [PROJECT.DESCRIPTION]: getLocalisedResource(manifest.summary) || '',
   [PROJECT.TITLE]: getLocalisedResource(manifest.label) || '',
+  [PROJECT.HOMEPAGE]: manifest.homepage.id,
+  [PROJECT.HOMEPAGE_LABEL]: getLocalisedResource(manifest.homepage.label),
   [PROJECT.LOADED_JSON]: manifest,
   ...mapSettings(manifest[`${RDF_NAMESPACE}:settings`]),
 });

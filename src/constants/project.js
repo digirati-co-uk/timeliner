@@ -10,6 +10,8 @@ const DEFAULT_BACKGROUND_COLOUR = '#fff';
 
 const DESCRIPTION = 'description';
 const TITLE = 'title';
+const HOMEPAGE = 'homepage';
+const HOMEPAGE_LABEL = 'homepageLabel';
 const LOADED_JSON = 'loadedJson';
 const BUBBLE_STYLE = 'bubblesStyle';
 const BLACK_N_WHITE = 'blackAndWhite';
@@ -27,6 +29,8 @@ const COLOUR_PALETTE = 'colourPalette';
 export const PROJECT = {
   DESCRIPTION,
   TITLE,
+  HOMEPAGE,
+  HOMEPAGE_LABEL,
   LOADED_JSON,
   BUBBLE_STYLE,
   BLACK_N_WHITE,
@@ -93,4 +97,3 @@ export const LOAD_PROJECT = 'LOAD_PROJECT';
 export const IMPORT_ERROR = 'IMPORT_ERROR';
 export const SAVE_PROJECT = 'SAVE_PROJECT';
 export const SET_COLOUR_PALETTE = 'SET_COLOUR_PALETTE';
-

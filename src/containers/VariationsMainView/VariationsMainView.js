@@ -195,6 +195,8 @@ class VariationsMainView extends React.Component {
       runTime,
       manifestLabel,
       manifestSummary,
+      homepage,
+      homepageLabel,
       isImportOpen,
       isSettingsOpen,
       audioError,
@@ -273,6 +275,8 @@ class VariationsMainView extends React.Component {
                 runTime={runTime}
                 manifestLabel={manifestLabel}
                 manifestSummary={manifestSummary}
+                homepage={homepage}
+                homepageLabel={homepageLabel}
                 ranges={_points}
                 onEdit={this.props.editMetadata}
                 rangeToEdit={rangeToEdit}
@@ -349,6 +353,8 @@ VariationsMainView.propTypes = {
   runTime: PropTypes.number.isRequired,
   manifestLabel: PropTypes.string.isRequired,
   manifestSummary: PropTypes.string.isRequired,
+  homepage: PropTypes.string,
+  homepageLabel: PropTypes.string,
   points: PropTypes.array,
   isImportOpen: PropTypes.bool.isRequired,
   isSettingsOpen: PropTypes.bool.isRequired,
@@ -372,6 +378,8 @@ const mapStateProps = state => ({
   manifestLabel: state.project.title,
   importError: state.project.error,
   manifestSummary: state.project.description,
+  homepage: state.project.homepage,
+  homepageLabel: state.project.homepageLabel,
   points: Object.values(getRangeList(state)),
   selectedRanges: getSelectedRanges(state),
   isImportOpen: state.viewState.isImportOpen,
