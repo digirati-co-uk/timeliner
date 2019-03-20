@@ -53,7 +53,10 @@ function SaveButton() {
 }
 
 const VariationsAppBar = props => (
-  <div className={$block} position="static">
+  <div
+    className={props.noHeader ? $block + '-no-header' : $block}
+    position="static"
+  >
     <Toolbar>
       <div
         style={{
@@ -65,7 +68,8 @@ const VariationsAppBar = props => (
           marginLeft: 10,
         }}
       >
-        <Typography
+        {props.noHeader ? null : (
+          <Typography
           variant="h6"
           color="inherit"
           style={{
@@ -74,6 +78,7 @@ const VariationsAppBar = props => (
         >
           Timeliner
         </Typography>
+        )}
       </div>
       <div>
         {props.onSave ? null : (
@@ -134,6 +139,7 @@ VariationsAppBar.propTypes = {
   onSave: PropTypes.func,
   /** Opens the project settings modal */
   onSettingsButtonClicked: PropTypes.func.isRequired,
+  noHeader: PropTypes.bool,
 };
 
 export default VariationsAppBar;
