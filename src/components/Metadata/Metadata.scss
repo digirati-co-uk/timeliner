@@ -1,13 +1,13 @@
 .metadata {
   display: flex;
   flex-direction: row;
-  align-items: stretch;  
+  align-items: stretch;
   flex: 1;
   &__annotations {
     flex: 2;
     padding-right: 16px;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
   }
   &__annotations-content {
     background: white;
@@ -23,14 +23,17 @@
     display: flex;
     align-items: stretch;
     justify-content: stretch;
-    flex-direction: row;
+    flex-direction: column;
   }
   &__project-content {
     width: 100%;
     background: white;
     padding: 16px;
     display: flex;
+    flex: 1;
     flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
   &__content {
     //margin: 0 -16px;
