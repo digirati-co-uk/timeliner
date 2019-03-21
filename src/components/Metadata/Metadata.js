@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
-import posed, { PoseGroup } from 'react-pose';
 
 import MetadataDisplay from '../MetadataDisplay/MetadataDisplay';
 import MetadataEditor from '../MetadataEditor/MetadataEditor';
@@ -12,14 +11,6 @@ import './Metadata.scss';
 import MarkerMetadata from '../MarkerMetadata/MarkerMetadata';
 import { undoAll } from '../../actions/viewState';
 
-const Meta = posed.div({
-  enter: { y: 0, opacity: 1, delay: 250 },
-  exit: {
-    y: 40,
-    opacity: 0,
-    transition: { delay: 100, duration: 200 },
-  },
-});
 
 const fix = num => parseInt((num || 0).toFixed(0), 10);
 
@@ -81,10 +72,8 @@ const Metadata = props => {
             Annotations
           </Typography>
           <div className="metadata__content">
-            <PoseGroup animateOnMount={true}>
               {rangesToShow.map((range, depth) =>
                 range.id === props.rangeToEdit ? (
-                  <Meta key={`edit-${range.id}`}>
                     <MetadataEditor
                       key={`metadata_editor-${range.id}`}
                       {...range}
@@ -99,9 +88,7 @@ const Metadata = props => {
                         props.onEdit(null);
                       }}
                     />
-                  </Meta>
                 ) : (
-                  <Meta key={range.id}>
                     <MetadataDisplay
                       key={`metadata_display-${range.id}`}
                       {...range}
@@ -114,16 +101,12 @@ const Metadata = props => {
                         props.onEdit(selectedRange.id))(range)}
                       blackAndWhiteMode={props.blackAndWhiteMode}
                     />
-                  </Meta>
                 )
               )}
-            </PoseGroup>
           </div>
           <div className="metadata__content">
-            <PoseGroup animateOnMount={true}>
               {markers.map(marker => {
                 return (
-                  <Meta key={marker.id}>
                     <MarkerMetadata
                       inset={rangesToShow.length}
                       key={marker.id}
@@ -133,10 +116,8 @@ const Metadata = props => {
                       onSaveMarker={data => props.updateMarker(marker.id, data)}
                       onGoToMarker={() => props.setCurrentTime(marker.time)}
                     />
-                  </Meta>
                 );
               })}
-            </PoseGroup>
           </div>
         </div>
       </div>
