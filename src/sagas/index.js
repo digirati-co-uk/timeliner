@@ -93,8 +93,8 @@ function* importDocument({ manifest, source }) {
   }
 }
 
-export function* showConfirmation(message) {
-  yield put(openVerifyDialog(message));
+export function* showConfirmation(message, doCancel=true) {
+  yield put(openVerifyDialog(message, doCancel));
 
   const { yes } = yield race({
     yes: take(CONFIRM_YES),
@@ -291,10 +291,10 @@ function saveResource(url, content) {
     http.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
     http.onreadystatechange = () => {
       if (http.readyState === http.DONE) {
-        if (http.status >= 300 && http.status <= 499) {
-          reject();
-        } else {
+        if (200 <= http.status && http.status <= 299) {
           resolve();
+        } else {
+          reject(new Error("Save Failed: "+http.status+", "+http.statusText));
         }
       }
     };
@@ -316,8 +316,14 @@ function* saveProject() {
   }
   const outputJSON = exporter(state);
 
-  yield put(undoActions.clear());
-  yield call(saveResource, callback, outputJSON);
+  try {
+    yield call(saveResource, callback, outputJSON)
+    yield showConfirmation('Saved Successfully.', false)
+    yield put(undoActions.clear());
+  }
+  catch (error) {
+    yield showConfirmation(error.message, false)
+  }
 }
 
 function* undoAll() {

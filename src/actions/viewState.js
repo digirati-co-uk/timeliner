@@ -159,9 +159,10 @@ export const saveProjectMetadata = metadata => ({
   metadata,
 });
 
-export const openVerifyDialog = title => ({
+export const openVerifyDialog = (title, doCancel) => ({
   type: OPEN_CONFIRM_DIALOG,
   title,
+  doCancel,
 });
 
 export const closeVerifyDialog = () => ({

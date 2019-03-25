@@ -12,45 +12,8 @@ import Close from '@material-ui/icons/Close';
 import Settings from '@material-ui/icons/Settings';
 import bem from '@fesk/bem-js';
 import './VariationsAppBar.scss';
-import posed, { PoseGroup } from 'react-pose';
 
 const $block = bem.block('variations-app-bar');
-
-const Anim = posed.span({
-  enter: { y: 0 },
-  exit: {
-    y: -40,
-  },
-});
-
-function SaveButton() {
-  const [isSaved, setIsSaved] = useState(false);
-
-  useEffect(
-    () => {
-      if (isSaved) {
-        setTimeout(() => {
-          setIsSaved(false);
-        }, 2000);
-      }
-    },
-    [isSaved]
-  );
-
-  return (
-    <PoseGroup>
-      {isSaved ? (
-        <Anim key="check">
-          <Check style={{ color: 'limegreen' }} />
-        </Anim>
-      ) : (
-        <Anim key="save">
-          <Save onClick={() => setIsSaved(true)} />
-        </Anim>
-      )}
-    </PoseGroup>
-  );
-}
 
 const VariationsAppBar = props => (
   <div
@@ -97,7 +60,7 @@ const VariationsAppBar = props => (
             disabled={!props.canUndo}
             title={props.onSave ? 'Save project' : 'No backend set up to save'}
           >
-            <SaveButton />
+            <Save />
           </IconButton>
         ) : null}
         <IconButton
