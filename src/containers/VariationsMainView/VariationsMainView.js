@@ -326,6 +326,7 @@ class VariationsMainView extends React.Component {
           <VerifyDialog
             open={this.props.verifyDialog.open}
             title={this.props.verifyDialog.title}
+            doCancel={this.props.verifyDialog.doCancel}
             onClose={this.props.confirmNo}
             onProceed={this.props.confirmYes}
           />

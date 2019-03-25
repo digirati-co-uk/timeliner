@@ -172,6 +172,9 @@ const viewState = (state = DEFAULT_VIEWSTATE_STATE, action) => {
           title: {
             $set: action.title,
           },
+          doCancel: {
+            $set: action.doCancel,
+          },
         },
       });
     case CLOSE_CONFIRM_DIALOG:

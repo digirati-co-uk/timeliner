@@ -21,12 +21,14 @@ class VerifyDialog extends React.Component {
     cancelText: PropTypes.string,
     agreeText: PropTypes.string,
     onProceed: PropTypes.func.isRequired,
+    doCancel: PropTypes.bool,
   };
 
   static defaultProps = {
     cancelText: 'Cancel',
     agreeText: 'Ok',
     open: false,
+    doCancel: true,
   };
   render() {
     const {
@@ -37,6 +39,7 @@ class VerifyDialog extends React.Component {
       cancelText,
       agreeText,
       onProceed,
+      doCancel,
     } = this.props;
     return (
       <Dialog
@@ -55,9 +58,11 @@ class VerifyDialog extends React.Component {
           </DialogContent>
         )}
         <DialogActions>
-          <Button onClick={onClose} color="primary">
-            {cancelText}
-          </Button>
+          {doCancel && (
+            <Button onClick={onClose} color="primary">
+              {cancelText}
+            </Button>
+          )}
           <Button onClick={onProceed} color="primary">
             {agreeText}
           </Button>

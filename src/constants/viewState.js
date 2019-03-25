@@ -32,6 +32,7 @@ export const DEFAULT_VIEWSTATE_STATE = {
   [VIEWSTATE.VERIFY_DIALOG]: {
     open: false,
     title: '',
+    doCancel: true,
   },
   [VIEWSTATE.VIEWER_WIDTH]: 0,
   [VIEWSTATE.CALLBACK]: null,
