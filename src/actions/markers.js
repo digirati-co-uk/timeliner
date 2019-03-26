@@ -16,7 +16,7 @@ const generateNewId = () => `marker-${new Date().getTime()}`;
 export const addMarkerAtTime = time => {
   const marker = {
     id: generateNewId(),
-    label: 'Untitled marker',
+    label: '',
     time,
   };
   return createMarker(marker);

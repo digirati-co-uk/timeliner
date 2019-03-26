@@ -65,7 +65,7 @@ MetadataDisplay.propTypes = {
 };
 
 MetadataDisplay.defaultProps = {
-  label: 'Untitled section',
+  label: '',
   summary: '',
   blackAndWhiteMode: false,
 };
