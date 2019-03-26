@@ -66,7 +66,7 @@ function DisplayMarker(props) {
 function CustomTextField(props) {
   return (
     <TextField
-      autoFocus={true}
+      autoFocus={false}
       InputLabelProps={{
         shrink: true,
       }}
@@ -114,6 +114,7 @@ function EditMarker(props) {
         placeholder="Untitled marker"
         value={draft.label}
         onChange={updateDraftField('label')}
+        autoFocus={true}
       />
       <CustomTextField
         id="summary"
