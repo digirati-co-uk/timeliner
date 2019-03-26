@@ -12,7 +12,7 @@ export const RANGE = {
 export const DEFAULT_RANGE = {
   [RANGE.START_TIME]: 0,
   [RANGE.END_TIME]: 0,
-  [RANGE.LABEL]: 'Untitled section',
+  [RANGE.LABEL]: '',
   [RANGE.SUMMARY]: '',
   [RANGE.COLOUR]: null,
   [RANGE.DEPTH]: 1,
