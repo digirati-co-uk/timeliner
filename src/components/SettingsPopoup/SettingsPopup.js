@@ -161,20 +161,57 @@ export default class SettingsPopup extends React.Component {
             <Grid
               container
               direction="row"
-              justify="stretch"
+              justify="space-between"
               alignItems="stretch"
               spacing={16}
               // style={{
               //   width: 700,
               // }}
             >
-              <Grid item md={4} sm={12}>
+              <Grid item md={6} sm={12}>
                 <Grid
                   container
                   direction="column"
                   justify="flex-start"
                   spacing={16}
                 >
+                  <Grid item>
+                    <FormControl component="fieldset">
+                      <FormLabel component="legend">Audio Settings</FormLabel>
+                      <FormGroup>
+                        {[
+                          [
+                            PROJECT.START_PLAYING_WHEN_BUBBLES_CLICKED,
+                            'checkbox',
+                            'Start playing when bubble or marker is clicked.',
+                          ],
+                          [
+                            PROJECT.STOP_PLAYING_END_OF_SECTION,
+                            'checkbox',
+                            'Stop Playing at the end of the section.',
+                          ],
+                          [
+                            PROJECT.START_PLAYING_END_OF_SECTION,
+                            'checkbox',
+                            'Loop playback at the end of the section.',
+                          ],
+                        ].map(([key, type, label]) => (
+                          <FormControlLabel
+                            key={key}
+                            control={
+                              <Checkbox
+                                checked={this.state[key]}
+                                onChange={this.handleChange(key, type)}
+                                value={key}
+                                color='primary'
+                              />
+                            }
+                            label={label}
+                          />
+                        ))}
+                      </FormGroup>
+                    </FormControl>
+                  </Grid>
                   <Grid item>
                     <FormControl component="fieldset">
                       <FormLabel component="legend">
@@ -190,6 +227,7 @@ export default class SettingsPopup extends React.Component {
                                 'checkbox'
                               )}
                               value={PROJECT.SHOW_TIMES}
+                              color='primary'
                             />
                           }
                           label="Show Times"
@@ -197,18 +235,45 @@ export default class SettingsPopup extends React.Component {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={this.state[PROJECT.BLACK_N_WHITE]}
+                              checked={this.state[PROJECT.SHOW_MARKERS]}
                               onChange={this.handleChange(
-                                PROJECT.BLACK_N_WHITE,
+                                PROJECT.SHOW_MARKERS,
                                 'checkbox'
                               )}
-                              value={PROJECT.BLACK_N_WHITE}
+                              value={PROJECT.SHOW_MARKERS}
+                              color='primary'
                             />
                           }
-                          label="Black and White"
+                          label="Show Markers"
                         />
                         <FormControl component="fieldset">
-                          <FormLabel component="legend">Bubble Shape</FormLabel>
+                          <FormLabel
+                            component="legend"
+                            style={{
+                              marginBottom: 14,
+                              paddingTop: 14,
+                            }}
+                          >
+                            Background color
+                          </FormLabel>
+                          <ColourSwatchPicker
+                            swatch={[]}
+                            label="Background colour"
+                            currentColour={
+                              this.state[PROJECT.BACKGROUND_COLOUR]
+                            }
+                            onSelectColour={this.onSelectBackground}
+                          />
+                        </FormControl>
+                        <FormControl component="fieldset">
+                          <FormLabel
+                            component="legend"
+                            style={{
+                              paddingTop: 24,
+                            }}
+                          >
+                            Bubble Shape
+                          </FormLabel>
                           <RadioGroup
                             aria-label="bubble shape"
                             name={PROJECT.BUBBLE_STYLE}
@@ -229,31 +294,9 @@ export default class SettingsPopup extends React.Component {
                             />
                           </RadioGroup>
                         </FormControl>
-                        <FormControl component="fieldset">
-                          <FormLabel component="legend">
-                            Background color
-                          </FormLabel>
-                          <ColourSwatchPicker
-                            swatch={[]}
-                            label="Background colour"
-                            currentColour={
-                              this.state[PROJECT.BACKGROUND_COLOUR]
-                            }
-                            onSelectColour={this.onSelectBackground}
-                          />
-                        </FormControl>
                       </FormGroup>
                     </FormControl>
                   </Grid>
-                </Grid>
-              </Grid>
-              <Grid item md={4} sm={12}>
-                <Grid
-                  container
-                  direction="column"
-                  justify="flex-start"
-                  spacing={16}
-                >
                   <Grid item>
                     <FormControl component="fieldset">
                       <FormLabel component="legend">Bubble Height</FormLabel>
@@ -264,6 +307,9 @@ export default class SettingsPopup extends React.Component {
                           min={48}
                           max={80}
                           step={1}
+                          style={{
+                            marginTop: 14,
+                          }}
                         />
                         <FormControlLabel
                           control={
@@ -289,46 +335,9 @@ export default class SettingsPopup extends React.Component {
                       <FormGroup>TODO: Colour theme editor</FormGroup>
                     </FormControl>
                   </Grid> */}
-                  <Grid item>
-                    <FormControl component="fieldset">
-                      <FormLabel component="legend">Audio Settings</FormLabel>
-                      <FormGroup>
-                        {[
-                          [
-                            PROJECT.START_PLAYING_WHEN_BUBBLES_CLICKED,
-                            'checkbox',
-                            'Start playing when bubble or marker is clicked.',
-                          ],
-                          [
-                            PROJECT.STOP_PLAYING_END_OF_SECTION,
-                            'checkbox',
-                            'Stop Playing at the end of the section.',
-                          ],
-                          [
-                            PROJECT.START_PLAYING_END_OF_SECTION,
-                            'checkbox',
-                            'Loop playback at the end of the section.',
-                          ],
-                          [PROJECT.SHOW_MARKERS, 'checkbox', 'Show markers'],
-                        ].map(([key, type, label]) => (
-                          <FormControlLabel
-                            key={key}
-                            control={
-                              <Checkbox
-                                checked={this.state[key]}
-                                onChange={this.handleChange(key, type)}
-                                value={key}
-                              />
-                            }
-                            label={label}
-                          />
-                        ))}
-                      </FormGroup>
-                    </FormControl>
-                  </Grid>
                 </Grid>
               </Grid>
-              <Grid item md={4} sm={12}>
+              <Grid item md={6} sm={12}>
                 <Grid
                   container
                   direction="column"
