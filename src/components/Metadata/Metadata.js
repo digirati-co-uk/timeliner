@@ -110,7 +110,7 @@ const Metadata = props => {
                     <MarkerMetadata
                       inset={rangesToShow.length}
                       key={marker.id}
-                      highlight={marker === currentMarker}
+                      highlight={false}
                       marker={marker}
                       onDeleteMarker={() => props.deleteMarker(marker.id)}
                       onSaveMarker={data => props.updateMarker(marker.id, data)}
