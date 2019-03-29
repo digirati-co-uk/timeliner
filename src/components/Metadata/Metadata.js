@@ -128,7 +128,7 @@ const Metadata = props => {
             color="textSecondary"
             style={{ marginBottom: 10 }}
           >
-            Project information
+            Timeline information
           </Typography>
           <div className="metadata__content">
             {props.projectMetadataEditorOpen ? (

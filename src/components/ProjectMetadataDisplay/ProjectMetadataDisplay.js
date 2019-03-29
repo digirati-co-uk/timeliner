@@ -19,11 +19,16 @@ const ProjectMetadataDisplay = props => (
           whiteSpace: 'pre-line',
         }}
       >
-        {props.manifestSummary || 'Description of manifest'}
+        {props.manifestSummary || 'Description of timeline'}
       </Typography>
     </div>
     {props.homepage && props.homepageLabel ? (
-      <Typography variant="body1" component="p">
+      <Typography
+        variant="body1"
+        component="p"
+        style={{
+          marginTop: 14,
+        }}>
         <a href={props.homepage}>{props.homepageLabel}</a>
       </Typography>
     ) : (
@@ -60,10 +65,10 @@ const ProjectMetadataDisplay = props => (
             variant="text"
             color="primary"
             onClick={props.onSaveButtonClicked}
-            title="Download project"
+            title="Download timeline"
           >
             <CloudDownload nativeColor="#FF4081" style={{ marginRight: 20 }} />
-            Download this project
+            Download this timeline
           </Button>
         </Grid>
       ) : null}
@@ -73,10 +78,10 @@ const ProjectMetadataDisplay = props => (
             variant="text"
             color="primary"
             onClick={props.onEraseButtonClicked}
-            title="Start project over"
+            title="Start timeline over"
           >
             <RestorePage nativeColor="#303F9F" style={{ marginRight: 20 }} />
-            Start this project over
+            Start this timeline over
           </Button>
         </Grid>
       ) : (
