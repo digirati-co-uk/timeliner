@@ -83,7 +83,7 @@ class ProjectMetadataEditor extends Component {
           InputLabelProps={{
             shrink: true,
           }}
-          placeholder="Description of manifest"
+          placeholder="Description of timeline"
           fullWidth
           multiline={true}
           margin="normal"

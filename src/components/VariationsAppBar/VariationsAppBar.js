@@ -58,7 +58,7 @@ const VariationsAppBar = props => (
             color="inherit"
             onClick={props.onSave}
             disabled={!props.canUndo}
-            title={props.onSave ? 'Save project' : 'No backend set up to save'}
+            title={props.onSave ? 'Save timeline' : 'No backend set up to save'}
           >
             <Save />
           </IconButton>

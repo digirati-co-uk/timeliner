@@ -5,7 +5,7 @@ export const BUBBLE_STYLES = {
 
 const DEFAULT_BUBBLE_HEIGHT = 80;
 const DEFAULT_LANGUAGE_CODE = 'en';
-const DEFAULT_TITLE = 'Untitled Project';
+const DEFAULT_TITLE = 'Untitled Timeline';
 const DEFAULT_BACKGROUND_COLOUR = '#fff';
 
 const DESCRIPTION = 'description';
