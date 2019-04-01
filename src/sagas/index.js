@@ -327,7 +327,7 @@ function* saveProject() {
     yield put(undoActions.clear());
   }
   catch (result) {
-    if result.hasOwnProperty('redirect_location'){
+    if (result.hasOwnProperty('redirect_location')) {
       yield put(undoActions.clear());
       top.window.location = result.redirect_location;
       return;
