@@ -44,7 +44,7 @@ const VariationsAppBar = props => (
         )}
       </div>
       <div>
-        {props.onSave ? null : (
+        {props.onSave || props.hasResource ? null : (
           <IconButton
             color="inherit"
             onClick={props.onImportButtonClicked}
