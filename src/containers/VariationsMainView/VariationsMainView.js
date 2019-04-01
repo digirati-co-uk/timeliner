@@ -224,6 +224,7 @@ class VariationsMainView extends React.Component {
             onUndo={this.props.onUndo}
             onSave={this.getOnSave()}
             onTitleChange={() => {}}
+            hasResource={this.props.hasResource}
             noHeader={this.props.noHeader}
           />
           <div className="variations-app__content">
