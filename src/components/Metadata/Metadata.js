@@ -144,6 +144,7 @@ const Metadata = props => {
                 manifestSummary={props.manifestSummary}
                 homepage={props.homepage}
                 homepageLabel={props.homepageLabel}
+                noSourceLink={props.noSourceLink}
                 onEditClick={props.onEditProjectMetadata}
                 onSaveButtonClicked={props.onSaveButtonClicked}
                 onEraseButtonClicked={props.onEraseButtonClicked}
@@ -167,6 +168,7 @@ Metadata.propTypes = {
   manifestSummary: PropTypes.string.isRequired,
   homepage: PropTypes.string,
   homepageLabel: PropTypes.string,
+  noSourceLink: PropTypes.bool,
   /** Total runtime of manifest */
   runTime: PropTypes.number.isRequired,
   /** Current time */
