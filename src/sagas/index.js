@@ -292,6 +292,11 @@ function saveResource(url, content) {
     http.onreadystatechange = () => {
       if (http.readyState === http.DONE) {
         if (200 <= http.status && http.status <= 299) {
+          // reload parent widow to location of newly created timeline
+          if (document.referrer!=http.getResponseHeader('location')){
+            reject({rediirect_location: http.getResponseHeader('location')})
+            return;
+          }
           resolve();
         } else {
           reject(new Error("Save Failed: "+http.status+", "+http.statusText));
@@ -321,8 +326,13 @@ function* saveProject() {
     yield showConfirmation('Saved Successfully.', false)
     yield put(undoActions.clear());
   }
-  catch (error) {
-    yield showConfirmation(error.message, false)
+  catch (result) {
+    if result.hasOwnProperty('redirect_location'){
+      yield put(undoActions.clear());
+      top.window.location = result.redirect_location;
+      return;
+    }
+    yield showConfirmation(result.message, false)
   }
 }
 
