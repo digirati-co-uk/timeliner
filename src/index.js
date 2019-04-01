@@ -5,10 +5,10 @@ import Root from './containers/Root/Root';
 import configureStore from './store/main';
 import * as qs from 'query-string';
 
-const { resource, save, callback, noFooter, noHeader, ...hash } = qs.parse(location.hash);
+const { resource, save, callback, noFooter, noHeader, noSourceLink, ...hash } = qs.parse(location.hash);
 
 // Set the hash back
-location.hash = qs.stringify({ resource, save, callback, noFooter, noHeader, ...hash });
+location.hash = qs.stringify({ resource, save, callback, noFooter, noHeader, noSourceLink, ...hash });
 
 const { store, persistor } = configureStore(
   resource,
@@ -24,6 +24,7 @@ render(
     hasResource={!!resource}
     noFooter={noFooter === 'true'}
     noHeader={noHeader === 'true'}
+    noSourceLink={noSourceLink === 'true'}
   />,
   document.getElementById('app')
 );

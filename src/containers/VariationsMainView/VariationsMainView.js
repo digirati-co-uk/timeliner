@@ -209,6 +209,7 @@ class VariationsMainView extends React.Component {
       colourPalette,
       noFooter,
       noHeader,
+      noSourceLink,
     } = this.props;
     return (
       <div className="variations-app">
@@ -277,6 +278,7 @@ class VariationsMainView extends React.Component {
                 manifestSummary={manifestSummary}
                 homepage={homepage}
                 homepageLabel={homepageLabel}
+                noSourceLink={noSourceLink}
                 ranges={_points}
                 onEdit={this.props.editMetadata}
                 rangeToEdit={rangeToEdit}

@@ -22,7 +22,7 @@ const ProjectMetadataDisplay = props => (
         {props.manifestSummary || 'Description of timeline'}
       </Typography>
     </div>
-    {props.homepage && props.homepageLabel ? (
+    {!props.noSourceLink && props.homepage && props.homepageLabel &&
       <Typography
         variant="body1"
         component="p"
@@ -31,7 +31,8 @@ const ProjectMetadataDisplay = props => (
         }}>
         <a href={props.homepage}>{props.homepageLabel}</a>
       </Typography>
-    ) : (
+    }
+    {!props.noSourceLink && (!props.homepage || !props.homepageLabel) &&
       <div>
         <Typography
           variant="subtitle1"
@@ -44,7 +45,7 @@ const ProjectMetadataDisplay = props => (
           <a href={props.url}>{props.url}</a>
         </Typography>
       </div>
-    )}
+    }
     <hr
       style={{
         background: '#BDBDBD',
@@ -111,6 +112,7 @@ ProjectMetadataDisplay.propTypes = {
   url: PropTypes.string,
   homepage: PropTypes.string,
   homepageLabel: PropTypes.string,
+  noSourceLink: PropTypes.bool,
   onEditClick: PropTypes.func,
   onSaveButtonClicked: PropTypes.func,
   onEraseButtonClicked: PropTypes.func,

@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import VariationsMainView from '../VariationsMainView/VariationsMainView';
 import { PersistGate } from 'redux-persist/integration/react';
 
-const Root = ({ store, persistor, callback, hasResource, noFooter, noHeader }) => {
+const Root = ({ store, persistor, callback, hasResource, noFooter, noHeader, noSourceLink }) => {
   try {
     return (
       <Provider store={store}>
@@ -14,6 +14,7 @@ const Root = ({ store, persistor, callback, hasResource, noFooter, noHeader }) =
             hasResource={hasResource}
             noFooter={noFooter}
             noHeader={noHeader}
+            noSourceLink={noSourceLink}
           />
         </PersistGate>
       </Provider>
