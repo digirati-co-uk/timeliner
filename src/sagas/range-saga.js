@@ -535,6 +535,20 @@ function* deselectOtherRanges(id) {
     .map(range => put({ ...deselectRange(range), meta: { fromSaga: true } }));
 }
 
+function* deselectAllRangesSaga({ payload }) {
+  const selectedRangeIds = yield select(getSelectedRanges);
+  // Nope out early if we've not selected anything.
+  if (!selectedRangeIds.length) {
+    return;
+  }
+  const selectedRanges = yield select(getRangesByIds(selectedRangeIds));
+  const startTime = selectedRanges[0].startTime;
+  const state = yield select(s => s);
+
+  if (payload.currentTime === startTime && !state.viewState.isPlaying) return;
+  yield call(deselectOtherRanges, null);
+}
+
 function* selectRangeSaga({ payload }) {
   if (payload.deselectOthers) {
     yield call(deselectOtherRanges, payload.id);
@@ -845,5 +859,6 @@ export default function* rangeSaga() {
     takeEvery(SPLIT_RANGE_AT, splitRangeSaga),
     takeEvery(SCHEDULE_DELETE_RANGE, singleDelete),
     takeEvery(SCHEDULE_DELETE_RANGES, multiDelete),
+    takeEvery(SET_CURRENT_TIME, deselectAllRangesSaga),
   ]);
 }
