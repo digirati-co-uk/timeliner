@@ -258,7 +258,7 @@ export default class SettingsPopup extends React.Component {
                           </FormLabel>
                           <ColourSwatchPicker
                             swatch={[]}
-                            label="Background colour"
+                            label="Background color"
                             currentColour={
                               this.state[PROJECT.BACKGROUND_COLOUR]
                             }
@@ -320,6 +320,7 @@ export default class SettingsPopup extends React.Component {
                                 'checkbox'
                               )}
                               value={PROJECT.AUTO_SCALE_HEIGHT}
+                              color="primary"
                             />
                           }
                           label="Auto Scale Height On Resize"
@@ -345,7 +346,7 @@ export default class SettingsPopup extends React.Component {
                   spacing={16}
                 >
                   <Grid item>
-                    <FormLabel component="legend">Colour palette</FormLabel>
+                    <FormLabel component="legend">Color palette</FormLabel>
                     <ColourPaletteSwitcher
                       currentKey={this.state[PROJECT.COLOUR_PALETTE]}
                       onChange={key =>

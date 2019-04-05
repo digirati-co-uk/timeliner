@@ -174,7 +174,7 @@ class MetadataEditor extends Component {
           <Grid item>
             <ColourSwatchPicker
               swatch={swatch}
-              label="Colour"
+              label="Color"
               currentColour={colour || this.props.colour}
               onSelectColour={this.onSelectColour}
             />
@@ -185,9 +185,10 @@ class MetadataEditor extends Component {
                 <Checkbox
                   checked={whiteText}
                   onChange={this.handleChange('whiteText', 'checkbox')}
+                  color="primary"
                 />
               }
-              label="White label colour"
+              label="White label color"
             />
           </Grid>
           <Grid
