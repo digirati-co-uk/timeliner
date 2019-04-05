@@ -152,6 +152,7 @@ const Metadata = props => {
                 canSave={props.canSave}
                 canErase={props.canErase}
                 undoAll={props.undoAll}
+                hasResource={props.hasResource}
               />
             )}
           </div>
@@ -198,6 +199,7 @@ Metadata.propTypes = {
   /** Black and white mode */
   blackAndWhiteMode: PropTypes.bool,
   projectMetadataEditorOpen: PropTypes.bool,
+  hasResource: PropTypes.bool,
   canSave: PropTypes.bool,
   canErase: PropTypes.bool,
   showAllParentMarkers: PropTypes.bool,

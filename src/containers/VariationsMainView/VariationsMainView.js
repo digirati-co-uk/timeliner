@@ -291,6 +291,7 @@ class VariationsMainView extends React.Component {
                 onEraseButtonClicked={this.props.resetDocument}
                 canSave={!this.props.callback}
                 canErase={!this.props.callback}
+                hasResource={this.props.hasResource}
                 onSaveButtonClicked={this.props.exportDocument}
                 onCancelEditingProjectMetadata={
                   this.props.cancelProjectMetadataEdits
