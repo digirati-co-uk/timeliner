@@ -60,7 +60,7 @@ const ProjectMetadataDisplay = props => (
       justify="flex-start"
       alignItems="flex-start"
     >
-      {props.canSave ? (
+      {props.canSave && !props.hasResource ? (
         <Grid item xs={12} style={{ margin: 5 }}>
           <Button
             variant="text"
@@ -73,7 +73,7 @@ const ProjectMetadataDisplay = props => (
           </Button>
         </Grid>
       ) : null}
-      {props.canErase ? (
+      {props.canErase && !props.hasResource ? (
         <Grid item xs={12} style={{ margin: 5 }}>
           <Button
             variant="text"
@@ -92,7 +92,7 @@ const ProjectMetadataDisplay = props => (
             color="primary"
             onClick={props.undoAll}
             disabled={!props.undoAll}
-            title="Reset changes to previously saved"
+            title="Revert changes"
           >
             <RestorePage
               nativeColor={props.undoAll ? '#303F9F' : '#bbb'}
@@ -118,6 +118,7 @@ ProjectMetadataDisplay.propTypes = {
   onEraseButtonClicked: PropTypes.func,
   canErase: PropTypes.bool,
   canSave: PropTypes.bool,
+  hasResource: PropTypes.bool,
 };
 
 export default ProjectMetadataDisplay;
