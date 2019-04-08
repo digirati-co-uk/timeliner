@@ -118,17 +118,6 @@ const VariationsAppBar = props => (
         >
           <Settings />
         </IconButton>
-        {props.onSave ? (
-          <IconButton
-            color="inherit"
-            onClick={() => {
-              window.close();
-            }}
-            title="Close"
-          >
-            <Close />
-          </IconButton>
-        ) : null}
       </div>
     </Toolbar>
   </div>
