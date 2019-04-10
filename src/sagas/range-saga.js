@@ -48,8 +48,9 @@ import {
   rangeMutations,
   selectRange,
   updateRangeTime,
+  unsetRangeColor,
 } from '../actions/range';
-import { PROJECT } from '../constants/project';
+import { PROJECT, CLEAR_CUSTOM_COLORS } from '../constants/project';
 import invariant from '../utils/invariant';
 import { showConfirmation } from './index';
 
@@ -846,6 +847,15 @@ function* multiDelete({ payload: { ranges } }) {
   }
 }
 
+function* clearCustomColorsSaga() {
+  const rangeList = yield select(getRangeList);
+  const rangeIds = Object.keys(rangeList);
+
+  for (let rangeId of rangeIds) {
+    yield put(unsetRangeColor(rangeId));
+  }
+}
+
 export default function* rangeSaga() {
   yield all([
     takeEvery(PREVIOUS_BUBBLE, previousBubble),
@@ -860,5 +870,6 @@ export default function* rangeSaga() {
     takeEvery(SCHEDULE_DELETE_RANGE, singleDelete),
     takeEvery(SCHEDULE_DELETE_RANGES, multiDelete),
     takeEvery(SET_CURRENT_TIME, deselectAllRangesSaga),
+    takeEvery(CLEAR_CUSTOM_COLORS, clearCustomColorsSaga),
   ]);
 }

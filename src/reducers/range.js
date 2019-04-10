@@ -13,6 +13,7 @@ import {
   INCREASE_RANGE_DEPTH,
   DECREASE_RANGE_DEPTH,
   SCHEDULE_UPDATE_RANGE,
+  UNSET_RANGE_COLOR,
 } from '../constants/range';
 import {
   createRange,
@@ -22,6 +23,7 @@ import {
   rangeMutations,
   updateRange,
   updateRangeTime,
+  unsetRangeColor,
 } from '../actions/range';
 
 const NEW_DEFAULT_RANGES_STATE = {
@@ -202,6 +204,15 @@ const range = (state = NEW_DEFAULT_RANGES_STATE, action) => {
 
       return update(state, {
         list: { $set: action.payload.ranges },
+      });
+
+    case UNSET_RANGE_COLOR:
+      return update(state, {
+        list: {
+          [action.payload.id]: {
+            $unset: [RANGE.COLOUR],
+          },
+        },
       });
 
     default:

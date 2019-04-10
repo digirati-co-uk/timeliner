@@ -10,6 +10,7 @@ import {
   IMPORT_ERROR,
   SAVE_PROJECT,
   SET_COLOUR_PALETTE,
+  CLEAR_CUSTOM_COLORS,
 } from '../constants/project';
 
 export const updateSettings = form => ({
@@ -69,4 +70,8 @@ export const saveProject = () => ({
 export const setcolourPalette = pallet => ({
   type: SET_COLOUR_PALETTE,
   payload: { pallet },
+});
+
+export const clearCustomColors = () => ({
+  type: CLEAR_CUSTOM_COLORS,
 });
