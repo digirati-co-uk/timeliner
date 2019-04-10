@@ -15,6 +15,9 @@ import Checkbox from '@material-ui/core/Checkbox';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import Slider from '@material-ui/lab/Slider';
+import { clearCustomColors } from '../../actions/project';
+import { connect } from 'react-redux';
+import compose from 'lodash.flow';
 
 import {
   PROJECT,
@@ -68,7 +71,7 @@ const ColourPaletteSwitcher = ({ currentKey, onChange }) => {
   );
 };
 
-export default class SettingsPopup extends React.Component {
+class SettingsPopup extends React.Component {
   static propTypes = {
     /** Callback for when settings saved */
     onSave: PropTypes.func.isRequired,
@@ -138,6 +141,8 @@ export default class SettingsPopup extends React.Component {
   }
 
   render() {
+    const { clearCustomColors, open, onClose } = this.props;
+
     return (
       <Dialog
         open={this.props.open}
@@ -354,6 +359,9 @@ export default class SettingsPopup extends React.Component {
                       }
                     />
                   </Grid>
+                  <Button onClick={this.props.clearCustomColors}>
+                    Clear all custom bubble colors
+                  </Button>
                 </Grid>
               </Grid>
             </Grid>
@@ -375,3 +383,16 @@ export default class SettingsPopup extends React.Component {
     );
   }
 }
+
+const mapStateProps = state => ({});
+
+const mapDispatchToProps = {
+  clearCustomColors,
+};
+
+export default compose(
+  connect(
+    mapStateProps,
+    mapDispatchToProps
+  )
+)(SettingsPopup);

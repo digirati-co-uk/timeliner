@@ -16,7 +16,10 @@ import {
   SCHEDULE_DELETE_RANGE,
   DESELECT_RANGE,
   INCREASE_RANGE_DEPTH,
-  DECREASE_RANGE_DEPTH, IMPORT_RANGES, SCHEDULE_UPDATE_RANGE,
+  DECREASE_RANGE_DEPTH,
+  IMPORT_RANGES,
+  SCHEDULE_UPDATE_RANGE,
+  UNSET_RANGE_COLOR,
 } from '../constants/range';
 import { internal } from '../utils/internal-action';
 import generateId from '../utils/generateId';
@@ -117,6 +120,11 @@ export const scheduleDeleteRange = id => ({
 export const scheduleDeleteRanges = ranges => ({
   type: SCHEDULE_DELETE_RANGES,
   payload: { ranges },
+});
+
+export const unsetRangeColor = id => ({
+  type: UNSET_RANGE_COLOR,
+  payload: { id },
 });
 
 /**

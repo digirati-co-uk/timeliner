@@ -10,7 +10,8 @@ import {
   LOAD_PROJECT,
   PROJECT,
   IMPORT_ERROR,
-  SAVE_PROJECT, SET_COLOUR_PALETTE,
+  SAVE_PROJECT,
+  SET_COLOUR_PALETTE,
 } from '../constants/project';
 
 const project = (state = DEFAULT_PROJECT_STATE, action) => {
@@ -60,6 +61,7 @@ const project = (state = DEFAULT_PROJECT_STATE, action) => {
       return update(state, {
         [PROJECT.COLOUR_PALETTE]: action.payload.pallet,
       });
+
     case EXPORT_DOCUMENT:
     case SAVE_PROJECT:
     default:
