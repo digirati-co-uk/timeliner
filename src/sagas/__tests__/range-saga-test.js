@@ -400,7 +400,6 @@ describe('sagas/range-saga', () => {
             selectRange('2'),
           ])
         )
-        .put(play())
         .dispatch(selectRange('2'))
         .silentRun();
     });
