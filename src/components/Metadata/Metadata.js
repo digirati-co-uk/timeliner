@@ -11,7 +11,6 @@ import './Metadata.scss';
 import MarkerMetadata from '../MarkerMetadata/MarkerMetadata';
 import { undoAll } from '../../actions/viewState';
 
-
 const fix = num => parseInt((num || 0).toFixed(0), 10);
 
 function getCurrentRanges(currentTime, ranges) {
@@ -67,7 +66,7 @@ const Metadata = props => {
           <Typography
             variant="subtitle1"
             color="textSecondary"
-            style={{ marginBottom: 20 }}
+            style={{ marginBottom: 10 }}
           >
             Annotations
           </Typography>

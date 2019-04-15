@@ -22,7 +22,10 @@ function DisplayMarker(props) {
   };
 
   return (
-    <CardContent onClick={props.onEdit} style={{ cursor: 'pointer' }}>
+    <CardContent
+      onClick={props.onEdit}
+      style={{ cursor: 'pointer', padding: '8px 16px' }}
+    >
       <Grid
         container
         direction="row"
@@ -51,13 +54,13 @@ function DisplayMarker(props) {
         </Grid>
       </Grid>
 
-      <Typography variant="subtitle1">
-        {summary || (
-          <span style={{ color: '#999' }}>
-            This annotation has no summary, click to add one
-          </span>
-        )}
-      </Typography>
+      { summary &&
+         <Typography variant="subtitle1">
+            <span style={{ color: '#999' }}>
+              This annotation has no summary, click to add one
+            </span>
+        </Typography>
+      }
     </CardContent>
   );
 }
@@ -164,7 +167,7 @@ export default function MarkerMetadata(props) {
     <Card
       style={{
         marginLeft: `${props.inset * 24}px`,
-        marginBottom: 16,
+        marginBottom: 8,
         borderLeft: highlight
           ? '5px solid rgb(63, 81, 181, .5)'
           : '0px solid transparent',
