@@ -8,16 +8,7 @@ import SkipBackwardsButton from '../SkipBackwardsButton/SkipBackwardsButton';
 import PlayPauseButton from '../PlayPauseButton/PlayPauseButton';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import Grid from '@material-ui/core/Grid';
-import { connect } from 'react-redux';
-import compose from 'lodash.flow';
 import ZoomControls from '../ZoomControls/ZoomControls';
-import {
-  zoomIn,
-  zoomOut,
-  resetZoom,
-} from '../../actions/viewState';
-import { VIEWSTATE } from '../../constants/viewState';
-
 
 import './AudioTransportBar.scss';
 import VolumeSliderCompact from '../VolumeSliderCompact/VolumeSliderCompact';
@@ -225,21 +216,4 @@ class AudioTransportBar extends Component {
   }
 }
 
-const mapStateProps = state => ({
-  zoom: state.viewState[VIEWSTATE.ZOOM],
-});
-
-const mapDispatchToProps = {
-  zoomIn,
-  zoomOut,
-  resetZoom,
-};
-
-//export default AudioTransportBar;
-
-export default compose(
-  connect(
-    mapStateProps,
-    mapDispatchToProps
-  )
-)(AudioTransportBar);
+export default AudioTransportBar;

@@ -52,6 +52,9 @@ import {
   saveProjectMetadata,
   setCurrentTime,
   undoAll,
+  zoomIn,
+  zoomOut,
+  resetZoom,
 } from '../../actions/viewState';
 import {
   addMarkerAtTime,
@@ -211,6 +214,7 @@ class VariationsMainView extends React.Component {
       noFooter,
       noHeader,
       noSourceLink,
+      zoom,
     } = this.props;
     return (
       <div className="variations-app">
@@ -269,6 +273,10 @@ class VariationsMainView extends React.Component {
                     : null
                 }
                 onAddMarker={this.addMarker}
+                zoom={zoom}
+                zoomIn={this.props.zoomIn}
+                zoomOut={this.props.zoomOut}
+                resetZoom={this.props.resetZoom}
               />
             </AuthCookieService1>
             <div className="variations-app__metadata-editor">
@@ -372,6 +380,7 @@ VariationsMainView.propTypes = {
   addMarkerAtTime: PropTypes.func.isRequired,
   saveProject: PropTypes.func.isRequired,
   settings: PropTypes.object,
+  zoom: PropTypes.number.isRequired,
 };
 
 const mapStateProps = state => ({
@@ -401,6 +410,7 @@ const mapStateProps = state => ({
   canUndo: state.undoHistory.undoQueue.length > 0,
   canRedo: state.undoHistory.redoQueue.length > 0,
   markers: state.markers.visible ? state.markers.list : {},
+  zoom: state.viewState[VIEWSTATE.ZOOM],
   //settings
   settings: PROJECT_SETTINGS_KEYS.reduce((acc, next) => {
     acc[next] = state.project[next];
@@ -437,6 +447,9 @@ const mapDispatchToProps = {
   confirmYes,
   confirmNo,
   setCurrentTime,
+  zoomIn,
+  zoomOut,
+  resetZoom,
   //range
   splitRangeAt,
   groupSelectedRanges,
