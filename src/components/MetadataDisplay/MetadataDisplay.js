@@ -12,11 +12,11 @@ const MetadataDisplay = props => (
     style={{
       borderLeft: `4px solid ${props.colour}`,
       marginLeft: `${props.inset * 24}px`,
-      marginBottom: 16,
+      marginBottom: 8,
       filter: props.blackAndWhiteMode ? 'grayscale(1.0)' : '',
     }}
   >
-    <CardContent>
+    <CardContent style={{ padding: '8px 16px' }}>
       <Grid
         container
         direction="row"
@@ -34,15 +34,17 @@ const MetadataDisplay = props => (
           </IconButton>
         </Grid>
       </Grid>
-      <Typography
-        variant="subtitle1"
-        component="pre"
-        style={{
-          whiteSpace: 'pre-line',
-        }}
-      >
-        {props.summary || 'Section description'}
-      </Typography>
+      { props.summary &&
+        <Typography
+          variant="subtitle1"
+          component="pre"
+          style={{
+            whiteSpace: 'pre-line',
+          }}
+        >
+          {props.summary}
+        </Typography>
+      }
     </CardContent>
   </Card>
 );

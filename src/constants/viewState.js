@@ -14,7 +14,7 @@ export const VIEWSTATE = {
   VIEWER_WIDTH: 'viewerWidth',
   CALLBACK: 'callback',
   START_TIME: 'startTime',
-  RESOURCE: 'resource'
+  RESOURCE: 'resource',
 };
 
 export const DEFAULT_VIEWSTATE_STATE = {

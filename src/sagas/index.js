@@ -313,7 +313,7 @@ function* saveProject() {
   const resource = yield select(s => s.viewState.resource);
   if (resource !== callback) {
     const yes = yield showConfirmation(
-      'This will save the original timeline as a copy. Are you sure?'
+      'This timeline isn’t yours. Saving will create a personal copy of this timeline that includes any changes you’ve made. Proceed?'
     );
     if (!yes) {
       return;
