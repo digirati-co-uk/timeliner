@@ -21,6 +21,7 @@ import {
   scheduleDeleteRanges,
   updateRange,
 } from '../../actions/range';
+import { clearCustomColors } from '../../actions/project';
 import { RANGE } from '../../constants/range';
 import { PROJECT, PROJECT_SETTINGS_KEYS } from '../../constants/project';
 import { VIEWSTATE } from '../../constants/viewState';
@@ -325,6 +326,7 @@ class VariationsMainView extends React.Component {
             open={isSettingsOpen}
             onClose={this.props.dismissSettingsModal}
             onSave={this.props.updateSettings}
+            clearCustomColors={this.props.clearCustomColors}
             settings={settings}
           />
           <VerifyDialog
@@ -418,6 +420,7 @@ const mapDispatchToProps = {
   editProjectMetadata,
   cancelProjectMetadataEdits,
   saveProjectMetadata,
+  clearCustomColors,
   //view state actions
   showImportModal,
   showSettingsModal,
