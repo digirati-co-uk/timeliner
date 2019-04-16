@@ -6,14 +6,14 @@ menu: Containers
 
 The main application view 
 
-import { Playground, PropsTable } from 'docz';
+import { Playground, Props } from 'docz';
 import VariationsMainView from './VariationsMainView';
 import { Provider } from 'react-redux';
 import DEMO_POINTS from '../../components/Metadata/Metadata.Demo';
 import configureStore from '../../store/main';
 import rootReducer from '../../reducers/root';
 
-<PropsTable of={VariationsMainView.WrappedComponent} />
+<Props of={VariationsMainView.WrappedComponent} />
 
 <Playground>
   <Provider store={configureStore("https://incompetech.com/music/royalty-free/mp3-royaltyfree/Egmont%20Overture.mp3")}>

@@ -63,21 +63,21 @@ menu: User stories
 
 ### Components
 
-import { PropsTable } from 'docz';
+import { Props } from 'docz';
 
 #### Metadata Editor
 Allows for the editing of metadata, from either a range or a manifest.
 
 import MetadataEditor from '../../MetadataEditor/MetadataEditor';
 
-<PropsTable of={MetadataEditor} />
+<Props of={MetadataEditor} />
 
 #### Metadata Display
 Displays labels and summaries for ranges and manifests.
 
 import MetadataDisplay from '../../MetadataDisplay/MetadataDisplay';
 
-<PropsTable of={MetadataDisplay} />
+<Props of={MetadataDisplay} />
 
 #### Project Metadata
 Displays all of the metadata for a given at the current timestamp for both the manifest
@@ -85,4 +85,4 @@ and also the ranges.
 
 import Metadata from '../../Metadata/Metadata';
 
-<PropsTable of={Metadata} />
+<Props of={Metadata} />
