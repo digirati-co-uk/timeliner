@@ -25,6 +25,7 @@
     "babel-jest": "^23.6.0",
     "docz": "1.0.3",
     "jest": "^23.6.0",
+    "js-yaml": "3.13.1",
     "redux-saga-test-plan": "^3.7.0"
   },
   "dependencies": {
@@ -67,5 +68,8 @@
       "jest.transform.js",
       ".json"
     ]
+  },
+  "resolutions": {
+    "js-yaml": "3.13.1"
   }
 }
