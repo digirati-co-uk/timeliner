@@ -57,7 +57,7 @@ function DisplayMarker(props) {
       { summary &&
          <Typography variant="subtitle1">
             <span style={{ color: '#999' }}>
-              This annotation has no summary, click to add one
+              { summary }
             </span>
         </Typography>
       }
