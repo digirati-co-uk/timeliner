@@ -11,14 +11,29 @@ import ArrowForward from '@material-ui/icons/ArrowForward';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
+import formatDate from 'date-fns/format';
 
 function DisplayMarker(props) {
-  const { label, summary } = props.marker;
+  const { label, summary, time } = props.marker;
 
   const onDelete = e => {
     e.preventDefault();
     e.stopPropagation();
     props.onDelete();
+  };
+
+  const timeToLabel = timeOffset => {
+    if (timeOffset < 0) {
+      return this.timeToLabel(0);
+    }
+    const timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
+    const date = new Date(timeOffset + timezoneOffset);
+    if (date.toString() === 'Invalid Date') {
+      return 'Invalid time';
+    }
+
+    const format = timeOffset >= 3600000 ? 'hh:mm:ss.SS' : 'mm:ss.SS';
+    return formatDate(date, format);
   };
 
   return (
@@ -33,8 +48,16 @@ function DisplayMarker(props) {
         alignItems="center"
       >
         <Grid item>
-          <Typography variant="h6" component="h3">
+          <Typography inline variant="h6" component="h3">
             {label || 'Unnamed marker'}
+          </Typography>
+          <Typography
+            inline
+            variant="subtitle1"
+            color="textSecondary"
+            style={{ paddingLeft: 8 }}
+          >
+            ({timeToLabel(time)})
           </Typography>
         </Grid>
         <Grid>
@@ -54,13 +77,11 @@ function DisplayMarker(props) {
         </Grid>
       </Grid>
 
-      { summary &&
-         <Typography variant="subtitle1">
-            <span style={{ color: '#999' }}>
-              { summary }
-            </span>
+      {summary && (
+        <Typography variant="subtitle1">
+          <span style={{ color: '#999' }}>{summary}</span>
         </Typography>
-      }
+      )}
     </CardContent>
   );
 }
