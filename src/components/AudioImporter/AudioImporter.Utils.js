@@ -6,6 +6,18 @@ const MANIFEST_DOMAIN = 'http://digirati.com/iiif/v3/temporary';
 // throws 'Invalid manifest'
 const validateManifest = manifest => true;
 
+export const mapImportErrorMessage = error => {
+  if (error.indexOf('SyntaxError') === 0) {
+    return 'File chosen must be a JSON file';
+  }
+
+  if (error.indexOf('TypeError') === 0) {
+    return 'Invalid JSON provided, please use JSON downloaded from this tool';
+  }
+
+  return 'An unknown error occurred while importing.';
+};
+
 const importResource = url => {
   return new Promise((resolve, reject) => {
     const audio = new Audio();
