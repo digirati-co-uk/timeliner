@@ -129,7 +129,7 @@ class BubbleDisplay extends Component {
       >
         <g
           key="bubble_display_main"
-          transform={`translate(${Math.floor(-x)},${height}) scale(1, -1)`}
+          transform={`translate(${Math.round(-x)},${height}) scale(1, -1)`}
         >
           <rect
             className="bubble-display__rect"
