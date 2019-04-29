@@ -1,14 +1,12 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircle from '@material-ui/icons/AddCircle';
 import Save from '@material-ui/icons/Save';
-import Check from '@material-ui/icons/Check';
 import Undo from '@material-ui/icons/Undo';
 import Redo from '@material-ui/icons/Redo';
-import Close from '@material-ui/icons/Close';
 import Settings from '@material-ui/icons/Settings';
 import bem from '@fesk/bem-js';
 import './VariationsAppBar.scss';
@@ -18,7 +16,7 @@ const $block = bem.block('variations-app-bar');
 const VariationsAppBar = props => (
   <div
     className={props.noHeader ? $block + '-no-header' : $block}
-    position="static"
+    style={{ position: 'static' }}
   >
     <Toolbar>
       <div
@@ -33,14 +31,14 @@ const VariationsAppBar = props => (
       >
         {props.noHeader ? null : (
           <Typography
-          variant="h6"
-          color="inherit"
-          style={{
-            fontWeight: 'normal',
-          }}
-        >
-          Timeliner
-        </Typography>
+            variant="h6"
+            color="inherit"
+            style={{
+              fontWeight: 'normal',
+            }}
+          >
+            Timeliner
+          </Typography>
         )}
       </div>
       <div>

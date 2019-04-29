@@ -12,7 +12,6 @@ import importResource from './AudioImporter.Utils';
 import FileUpload from '../FileUpload/FileUpload';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Paper from '@material-ui/core/Paper';
 
 class AudioImporter extends Component {
   static propTypes = {

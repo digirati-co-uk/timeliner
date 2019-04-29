@@ -75,41 +75,32 @@ function Audio({ url, volume, currentTime, startTime, isPlaying, ...props }) {
   );
 
   // Handle play/pause
-  useLayoutEffect(
-    () => {
-      if (player.current) {
-        if (isPlaying) {
-          player.current.play();
-        } else {
-          if (player.current.readyState) {
-            player.current.pause();
-          }
+  useLayoutEffect(() => {
+    if (player.current) {
+      if (isPlaying) {
+        player.current.play();
+      } else {
+        if (player.current.readyState) {
+          player.current.pause();
         }
       }
-    },
-    [isPlaying, url]
-  );
+    }
+  }, [isPlaying, url]);
 
   // Handle volume change.
-  useLayoutEffect(
-    () => {
-      if (player.current) {
-        player.current.setVolume(volume / 100);
-      }
-    },
-    [volume, url]
-  );
+  useLayoutEffect(() => {
+    if (player.current) {
+      player.current.setVolume(volume / 100);
+    }
+  }, [volume, url]);
 
   // Handle user-changed current time.
-  useLayoutEffect(
-    () => {
-      if (player.current && currentTime !== lastTime.current) {
-        lastTime.current = currentTime;
-        player.current.setCurrentTime(currentTime / 1000);
-      }
-    },
-    [currentTime, url]
-  );
+  useLayoutEffect(() => {
+    if (player.current && currentTime !== lastTime.current) {
+      lastTime.current = currentTime;
+      player.current.setCurrentTime(currentTime / 1000);
+    }
+  }, [currentTime, url]);
 
   if (!url) {
     return null;

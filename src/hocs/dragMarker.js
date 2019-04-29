@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { RANGE } from '../constants/range';
 import clearTextSelection from '../utils/clearTextSelection';
 
 export default function dragMarker(WrappedComponent) {

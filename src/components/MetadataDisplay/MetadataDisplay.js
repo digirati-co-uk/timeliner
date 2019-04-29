@@ -34,7 +34,7 @@ const MetadataDisplay = props => (
           </IconButton>
         </Grid>
       </Grid>
-      { props.summary &&
+      {props.summary && (
         <Typography
           variant="subtitle1"
           component="pre"
@@ -44,7 +44,7 @@ const MetadataDisplay = props => (
         >
           {props.summary}
         </Typography>
-      }
+      )}
     </CardContent>
   </Card>
 );
