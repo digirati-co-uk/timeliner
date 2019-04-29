@@ -161,7 +161,7 @@ function EditMarker(props) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'flex-end',
-            flex: 1,
+            flex: '1 1 0px',
           }}
         >
           <Button onClick={props.onCancel}>Cancel</Button>
