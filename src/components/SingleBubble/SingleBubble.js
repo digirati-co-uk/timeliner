@@ -74,7 +74,9 @@ class SingleBubble extends Component {
   stopClick = false;
 
   onMouseDown = ev => {
-    ev.preventDefault();
+    if (!ev.touches) {
+      ev.preventDefault();
+    }
     ev.persist();
     this.originalX = ev.pageX;
     this.isClicked = true;
@@ -137,8 +139,12 @@ class SingleBubble extends Component {
     return (
       <g
         className="single-bubble"
+        onTouchStart={this.onMouseDown}
+        onTouchEnd={this.onMouseUp}
+        onTouchCancel={this.onMouseUp}
         onMouseDown={this.onMouseDown}
         onMouseMove={this.onMouseMove}
+        onTouchMove={this.onMouseMove}
         onMouseUp={this.onMouseUp}
       >
         <path

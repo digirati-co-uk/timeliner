@@ -105,7 +105,7 @@ class AudioTransportBar extends Component {
     return (
       <div className="audio-transport-bar">
         <Grid container direction="row" alignItems="center">
-          <Grid item xs={4} className="audio-transport-bar__actions">
+          <Grid item xs={12} sm={4} className="audio-transport-bar__actions">
             <CurrentTimeIndicator currentTime={currentTime} runtime={runTime} />
             <PrimaryButton
               disabled={!onAddBubble}
@@ -181,7 +181,7 @@ class AudioTransportBar extends Component {
               </Tooltip>
             </PrimaryButton>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={12} sm={4}>
             <div className="audio-transport-bar__buttons">
               <PreviousButton onClick={onPreviousBubble} />
               <SkipBackwardsButton onClick={onScrubBackwards} />
@@ -195,7 +195,7 @@ class AudioTransportBar extends Component {
             </div>
           </Grid>
 
-          <Grid item xs={2} className="audio-transport-bar__zoom">
+          <Grid item xs={6} sm={2} className="audio-transport-bar__zoom">
             <ZoomControls
               onZoomIn={this.props.zoomIn}
               onZoomOut={zoom > 1 ? this.props.zoomOut : null}
@@ -203,7 +203,7 @@ class AudioTransportBar extends Component {
             />
           </Grid>
 
-          <Grid item xs={2} className="audio-transport-bar__volume">
+          <Grid item xs={6} sm={2} className="audio-transport-bar__volume">
             <VolumeSliderCompact
               flipped={true}
               volume={volume}

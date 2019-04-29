@@ -169,6 +169,10 @@ class TimelineScrubber extends Component {
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}
         onMouseMove={this.onMouseMove}
+        onTouchMove={this.onMouseMove}
+        onTouchStart={this.dragStart({ type: 'scrubber' })}
+        onTouchCancel={this.onMouseLeave}
+        onTouchEnd={this.onMouseLeave}
         onMouseDown={this.dragStart({ type: 'scrubber' })}
         style={{
           position: 'relative',
