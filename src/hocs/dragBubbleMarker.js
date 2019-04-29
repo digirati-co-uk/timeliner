@@ -52,8 +52,10 @@ export default function dragPlayhead(WrappedComponent) {
     };
 
     dragEnd = ev => {
-      ev.preventDefault();
-      ev.stopPropagation();
+      if (!ev.passive) {
+        ev.preventDefault();
+        ev.stopPropagation();
+      }
       const { viewerWidth, runTime, zoom } = this.props;
       const { markerMovement } = this.state;
 

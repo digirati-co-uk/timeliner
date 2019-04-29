@@ -7,13 +7,23 @@
     align-items: center;
     flex-direction: row;
     justify-content: flex-start;
+    @media screen and (max-width: 600px) {
+      padding: 20px;
+    }
   }
+
   &__buttons {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    @media screen and (max-width: 980px) {
+      button {
+        padding: 5px;
+      }
+    }
   }
+
   &__volume {
     display: flex;
     align-items: end;
@@ -25,7 +35,15 @@
   div &__tooltip {
     font-size: 12px;
   }
+
   & &__button-text {
     min-width: 40px;
+  }
+
+  @media screen and (max-width: 980px) {
+
+    &__zoom button {
+      padding: 5px;
+    }
   }
 }

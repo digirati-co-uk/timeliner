@@ -124,6 +124,9 @@ class BubbleDisplay extends Component {
         className={$style.modifiers({ mouseDown })}
         xmlns="http://www.w3.org/2000/svg"
         version="1.1"
+        onTouchStart={this.onMouseDown}
+        onTouchEnd={this.onMouseUp}
+        onTouchCancel={this.onMouseUp}
         onMouseDown={this.onMouseDown}
         onMouseUp={this.onMouseUp}
       >
@@ -136,6 +139,7 @@ class BubbleDisplay extends Component {
             width={computedWidth * zoom}
             height={height}
             onMouseDown={this.props.onPanStart}
+            onTouchStart={this.props.onPanStart}
           />
           {childrenWithProps}
         </g>

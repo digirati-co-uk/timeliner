@@ -13,14 +13,23 @@ export default function pan(WrappedComponent) {
 
     onPanStart = ev => {
       document.body.addEventListener('mousemove', this.panMove);
+      document.body.addEventListener('touchmove', this.touchMove);
       document.body.addEventListener('mouseup', this.panEnd);
+
+      const pageX = ev.touches ? ev.touches[0].pageX : ev.pageX;
 
       this.setState({
         selectedPoint: -1,
-        startX: ev.pageX,
+        startX: pageX,
         viewportStartX: this.state.viewportX,
         deltaX: 0,
       });
+    };
+
+    touchMove = ev => {
+      if (ev.touches[0]) {
+        return this.panMove(ev.touches[0]);
+      }
     };
 
     panMove = ev => {
