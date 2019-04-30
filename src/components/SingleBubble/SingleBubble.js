@@ -149,9 +149,7 @@ class SingleBubble extends Component {
           strokeWidth={isSelected ? 4 : 0}
           stroke={isSelected ? 'black' : 'transparent'}
         >
-          <title>
-            {label} - {summary}
-          </title>
+          <title>{label}</title>
         </path>
         <text
           textAnchor="middle"
