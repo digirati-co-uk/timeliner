@@ -8,6 +8,11 @@
     * {
       transition: none;
     }
+
+    // Breaks encapsulation, but avoids passing mouseProps up and over.
+    + .timeline-scrubber {
+      transition: none;
+    }
   }
 
   &__rect {

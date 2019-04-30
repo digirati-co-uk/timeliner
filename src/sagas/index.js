@@ -179,11 +179,10 @@ function* updateSettings({ payload }) {
 }
 
 function* zoomSideEffects() {
-  const zoom = yield select(state => state.viewState.zoom);
+  const zoomA = yield select(state => state.viewState.zoom);
   const duration = yield select(getDuration);
-  const x = yield select(state => state.viewState.x);
   // Nothing to do if we are zoom 1.
-  if (zoom === 1) {
+  if (zoomA === 1) {
     return;
   }
 
@@ -193,6 +192,11 @@ function* zoomSideEffects() {
       payload: { currentTime },
     } = yield take(SET_CURRENT_TIME);
     const viewportWidth = yield select(getViewerWidth);
+    const zoom = yield select(state => state.viewState.zoom);
+    const x = yield select(state => state.viewState.x);
+    if (zoom === 1) {
+      return;
+    }
 
     const sliderWidth = viewportWidth * zoom;
     const percentThrough = currentTime / duration;

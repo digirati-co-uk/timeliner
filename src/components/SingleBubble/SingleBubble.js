@@ -52,6 +52,8 @@ class SingleBubble extends Component {
     onClick: PropTypes.func,
     /** Label for the bubble */
     label: PropTypes.string,
+    /** Summary for the bubble */
+    summary: PropTypes.string,
     /** Bubble style */
     shape: PropTypes.string,
     /** is bubble selected */
@@ -112,12 +114,12 @@ class SingleBubble extends Component {
 
   render() {
     const {
-      onClick,
       height,
       width,
       dX,
       colour,
       label,
+      summary,
       labelColour,
       shape,
       isSelected,
@@ -146,15 +148,16 @@ class SingleBubble extends Component {
           fill={colour}
           strokeWidth={isSelected ? 4 : 0}
           stroke={isSelected ? 'black' : 'transparent'}
-          title={label}
-        />
+        >
+          <title>{label}</title>
+        </path>
         <text
           textAnchor="middle"
           fill={labelColour}
           paintOrder="stroke"
-          x={width / 2 + x || 0}
+          x={0}
           y={0}
-          transform={`scale(1,-1) translate(0,${70 / 2 - height})`}
+          transform={`scale(1,-1) translate(${width / 2 + x || 0},${70 / 2 - height})`}
         >
           {textWidth < width ? label : getAlteredLabel(label, width)}
         </text>

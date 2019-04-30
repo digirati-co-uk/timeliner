@@ -171,7 +171,6 @@ class TimelineScrubber extends Component {
         onMouseMove={this.onMouseMove}
         onMouseDown={this.dragStart({ type: 'scrubber' })}
         style={{
-          position: 'relative',
           marginLeft: -x,
           width: width * zoom,
         }}

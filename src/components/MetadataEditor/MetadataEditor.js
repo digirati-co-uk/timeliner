@@ -75,7 +75,6 @@ class MetadataEditor extends Component {
     const { colour, label, summary, whiteText } = this.state;
     const state = this.state;
     const newValues = {
-      colour,
       label,
       summary,
       whiteText,
@@ -88,6 +87,7 @@ class MetadataEditor extends Component {
     if (endTime !== this.props.endTime) {
       newValues.endTime = endTime;
     }
+    newValues.colour = colour || this.props.colour;
     this.props.onSave(this.props.id, newValues);
   };
 
@@ -197,7 +197,7 @@ class MetadataEditor extends Component {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'flex-end',
-              flex: 1,
+              flex: '1 1 0px',
             }}
           >
             <Button onClick={onCancel}>Cancel</Button>
