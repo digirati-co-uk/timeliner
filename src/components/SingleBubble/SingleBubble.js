@@ -155,9 +155,9 @@ class SingleBubble extends Component {
           textAnchor="middle"
           fill={labelColour}
           paintOrder="stroke"
-          x={width / 2 + x || 0}
+          x={0}
           y={0}
-          transform={`scale(1,-1) translate(0,${70 / 2 - height})`}
+          transform={`scale(1,-1) translate(${width / 2 + x || 0},${70 / 2 - height})`}
         >
           {textWidth < width ? label : getAlteredLabel(label, width)}
         </text>

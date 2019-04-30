@@ -7,7 +7,7 @@
   border-top: 2px solid transparent;
   background: #eeeeee;
   cursor: pointer;
-  transition: width .3s;
+  transition: width .3s, margin-left .3s;
 
   &:focus {
     outline: none; // @todo change.
