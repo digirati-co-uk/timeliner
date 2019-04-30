@@ -103,7 +103,7 @@ class ProjectMetadataEditor extends Component {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'flex-end',
-              flex: 1,
+              flex: '1 1 0px',
             }}
           >
             <Button disabled={!this.props.onCancel} onClick={onCancel}>

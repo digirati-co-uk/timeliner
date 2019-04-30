@@ -8,11 +8,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import importResource from './AudioImporter.Utils';
+import importResource, {mapImportErrorMessage} from './AudioImporter.Utils';
 import FileUpload from '../FileUpload/FileUpload';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Paper from '@material-ui/core/Paper';
 
 class AudioImporter extends Component {
   static propTypes = {
@@ -65,8 +64,21 @@ class AudioImporter extends Component {
   handleLocalImport = data => {
     const { onImport } = this.props;
 
+    if (data && data.error) {
+      return this.setState({
+        error: mapImportErrorMessage(data.error.toString()),
+      });
+    }
+
+    if (!data) {
+      return this.setState({
+        error: mapImportErrorMessage('unknown'),
+      });
+    }
+
     try {
       onImport(data, data['@id']);
+      this.setState({ error: null });
     } catch (err) {
       this.setState({ error: err });
     }
@@ -99,7 +111,7 @@ class AudioImporter extends Component {
           <form onKeyDown={this.handleKeyDown}>
             {localFile ? (
               <DialogContentText style={{ marginBottom: 10 }}>
-                Open an audio file on your computer (.mp3, .json)
+                Open a saved project from your computer (.json)
               </DialogContentText>
             ) : (
               <DialogContentText style={{ marginBottom: 10 }}>

@@ -8,7 +8,8 @@ import {
   SELECT_MARKER,
   DESELECT_MARKER,
   CLEAR_MARKERS,
-  DELETE_MARKERS, CREATE_MARKER,
+  DELETE_MARKERS,
+  CREATE_MARKER,
 } from '../constants/markers';
 
 const generateNewId = () => `marker-${new Date().getTime()}`;

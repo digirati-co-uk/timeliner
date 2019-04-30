@@ -1,4 +1,4 @@
-import reducer, { getRangeList, undo } from '../range';
+import reducer, { undo } from '../range';
 import {
   createRange,
   decreaseRangeDepth,

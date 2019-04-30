@@ -222,55 +222,52 @@ export function AuthCookieService1({ service, resource, children }) {
   };
 
   // Change effect.
-  useEffect(
-    () => {
-      if (currentStage === INITIAL_LOAD && resource) {
-        log('Probing current resource', resource);
-        probeResource(resource)
-          .then(() => {
-            if (!tokenService) {
-              // Nothing more we can do at this point.
-              return;
-            }
-            log('Opening token service', tokenService);
-            openTokenService(tokenService)
-              .then(data => {
-                if (data.accessToken) {
-                  setAuthToken(data.accessToken);
-                  setStage(AUTHENTICATED);
-                } else {
-                  log('No access token on token service', data);
-                  setStage(MODAL_SHOWN);
-                }
-              })
-              .catch(() => {
-                log('Token service errored');
+  useEffect(() => {
+    if (currentStage === INITIAL_LOAD && resource) {
+      log('Probing current resource', resource);
+      probeResource(resource)
+        .then(() => {
+          if (!tokenService) {
+            // Nothing more we can do at this point.
+            return;
+          }
+          log('Opening token service', tokenService);
+          openTokenService(tokenService)
+            .then(data => {
+              if (data.accessToken) {
+                setAuthToken(data.accessToken);
+                setStage(AUTHENTICATED);
+              } else {
+                log('No access token on token service', data);
                 setStage(MODAL_SHOWN);
-              });
-          })
-          .catch(() => {
-            log('Probing resource errored');
-            setStage(MODAL_SHOWN);
-          });
-      }
-      if (currentStage === LOGIN_CONFIRMED) {
-        setStage(WAITING_FOR_TOKEN);
-        openTokenService(tokenService)
-          .then(data => {
-            if (data.accessToken) {
-              setAuthToken(data.accessToken);
-              setStage(AUTHENTICATED);
-            } else {
-              setStage(TOKEN_FAILED);
-            }
-          })
-          .catch(() => {
+              }
+            })
+            .catch(() => {
+              log('Token service errored');
+              setStage(MODAL_SHOWN);
+            });
+        })
+        .catch(() => {
+          log('Probing resource errored');
+          setStage(MODAL_SHOWN);
+        });
+    }
+    if (currentStage === LOGIN_CONFIRMED) {
+      setStage(WAITING_FOR_TOKEN);
+      openTokenService(tokenService)
+        .then(data => {
+          if (data.accessToken) {
+            setAuthToken(data.accessToken);
+            setStage(AUTHENTICATED);
+          } else {
             setStage(TOKEN_FAILED);
-          });
-      }
-    },
-    [currentStage]
-  );
+          }
+        })
+        .catch(() => {
+          setStage(TOKEN_FAILED);
+        });
+    }
+  }, [currentStage]);
 
   if (!service) {
     return children;

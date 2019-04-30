@@ -19,16 +19,21 @@ class FileUpload extends Component {
     const reader = new FileReader();
     reader.readAsText(e.target.files[0]);
     reader.addEventListener('load', ev => {
-      const json = JSON.parse(reader.result.toString());
+      try {
+        const json = JSON.parse(reader.result.toString());
 
-      if (this.props.onChange) {
-        this.props.onChange(json);
+        if (this.props.onChange) {
+          this.props.onChange(json);
+        }
+
+        this.setState({
+          json,
+          loading: false,
+        });
+      } catch (error) {
+        this.props.onChange({ error });
+        this.setState({ loading: false });
       }
-
-      this.setState({
-        json,
-        loading: false,
-      });
     });
   };
 

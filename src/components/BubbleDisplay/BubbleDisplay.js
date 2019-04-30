@@ -102,6 +102,7 @@ class BubbleDisplay extends Component {
       colour: point.colour || colours[(point.depth - 1) % colours.length],
       height: point.depth * bubbleHeight,
       label: point.label,
+      summary: point.summary,
       dX: this.getDx(point, pts, projectionFactor),
       point,
       isSelected: point.isSelected,

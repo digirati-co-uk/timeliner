@@ -8,7 +8,7 @@ import {
   take,
   takeLatest,
 } from 'redux-saga/effects';
-import { DELETE_RANGE, DESELECT_RANGE, SELECT_RANGE } from '../constants/range';
+import { DELETE_RANGE } from '../constants/range';
 import { loadProjectState, parseMarkers } from '../utils/iiifLoader';
 import { actions as undoActions } from 'redux-undo-redo';
 import {
@@ -93,7 +93,7 @@ function* importDocument({ manifest, source }) {
   }
 }
 
-export function* showConfirmation(message, doCancel=true) {
+export function* showConfirmation(message, doCancel = true) {
   yield put(openVerifyDialog(message, doCancel));
 
   const { yes } = yield race({
@@ -297,13 +297,15 @@ function saveResource(url, content) {
       if (http.readyState === http.DONE) {
         if (200 <= http.status && http.status <= 299) {
           // reload parent widow to location of newly created timeline
-          if (document.referrer!=http.getResponseHeader('location')){
-            reject({redirect_location: http.getResponseHeader('location')})
+          if (document.referrer !== http.getResponseHeader('location')) {
+            reject({ redirect_location: http.getResponseHeader('location') });
             return;
           }
           resolve();
         } else {
-          reject(new Error("Save Failed: "+http.status+", "+http.statusText));
+          reject(
+            new Error('Save Failed: ' + http.status + ', ' + http.statusText)
+          );
         }
       }
     };
@@ -326,15 +328,14 @@ function* saveProject() {
   const outputJSON = exporter(state);
 
   try {
-    yield call(saveResource, callback, outputJSON)
-    yield showConfirmation('Saved Successfully.', false)
-  }
-  catch (result) {
+    yield call(saveResource, callback, outputJSON);
+    yield showConfirmation('Saved Successfully.', false);
+  } catch (result) {
     if (result.hasOwnProperty('redirect_location')) {
       top.window.location = result.redirect_location;
       return;
     }
-    yield showConfirmation(result.message, false)
+    yield showConfirmation(result.message, false);
   }
 }
 

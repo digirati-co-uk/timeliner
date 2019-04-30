@@ -4,9 +4,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
-import Edit from '@material-ui/icons/Edit';
 import Delete from '@material-ui/icons/Delete';
-import Bookmark from '@material-ui/icons/Bookmark';
 import ArrowForward from '@material-ui/icons/ArrowForward';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -14,6 +12,7 @@ import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import formatDate from 'date-fns/format';
 
 function DisplayMarker(props) {
+  const { onGoToMarker } = props;
   const { label, summary, time } = props.marker;
 
   const onDelete = e => {
@@ -68,7 +67,7 @@ function DisplayMarker(props) {
             onClick={e => {
               e.preventDefault();
               e.stopPropagation();
-              props.onGoToMarker();
+              onGoToMarker();
             }}
             style={{ padding: 5 }}
           >
@@ -161,7 +160,7 @@ function EditMarker(props) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'flex-end',
-            flex: 1,
+            flex: '1 1 0px',
           }}
         >
           <Button onClick={props.onCancel}>Cancel</Button>
