@@ -1,5 +1,4 @@
 import { expectSaga, testSaga } from 'redux-saga-test-plan';
-import * as matchers from 'redux-saga-test-plan/matchers';
 import rangeSaga, {
   createRangeAction,
   currentTimeSaga,
@@ -25,7 +24,6 @@ import {
   loadViewState,
   nextBubble,
   pause,
-  play,
   previousBubble,
   setCurrentTime,
 } from '../../actions/viewState';
@@ -576,7 +574,7 @@ describe('sagas/range-saga', () => {
             selectRange('range-2'),
           ])
         )
-        .put({ ...deselectRange('range-2'), meta: { fromSaga: true }})
+        .put({ ...deselectRange('range-2'), meta: { fromSaga: true } })
         .dispatch(selectRange('range-1', true))
         .silentRun();
     });

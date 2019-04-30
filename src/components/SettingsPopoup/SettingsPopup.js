@@ -126,10 +126,6 @@ export default class SettingsPopup extends React.Component {
     }
   };
 
-  componentDidUpdate() {
-    return;
-  }
-
   componentDidMount() {
     document.addEventListener('keydown', this.keyboardListener);
   }
@@ -204,7 +200,7 @@ export default class SettingsPopup extends React.Component {
                                 checked={this.state[key]}
                                 onChange={this.handleChange(key, type)}
                                 value={key}
-                                color='primary'
+                                color="primary"
                               />
                             }
                             label={label}
@@ -228,7 +224,7 @@ export default class SettingsPopup extends React.Component {
                                 'checkbox'
                               )}
                               value={PROJECT.SHOW_TIMES}
-                              color='primary'
+                              color="primary"
                             />
                           }
                           label="Show Times"
@@ -242,7 +238,7 @@ export default class SettingsPopup extends React.Component {
                                 'checkbox'
                               )}
                               value={PROJECT.SHOW_MARKERS}
-                              color='primary'
+                              color="primary"
                             />
                           }
                           label="Show Markers"

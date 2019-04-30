@@ -1,5 +1,5 @@
 import React from 'react';
-import { PropTypes } from 'prop-types';
+import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import CloudDownload from '@material-ui/icons/CloudDownload';
@@ -22,17 +22,18 @@ const ProjectMetadataDisplay = props => (
         {props.manifestSummary || 'Description of timeline'}
       </Typography>
     </div>
-    {!props.noSourceLink && props.homepage && props.homepageLabel &&
+    {!props.noSourceLink && props.homepage && props.homepageLabel && (
       <Typography
         variant="body1"
         component="p"
         style={{
           marginTop: 14,
-        }}>
+        }}
+      >
         <a href={props.homepage}>{props.homepageLabel}</a>
       </Typography>
-    }
-    {!props.noSourceLink && (!props.homepage || !props.homepageLabel) &&
+    )}
+    {!props.noSourceLink && (!props.homepage || !props.homepageLabel) && (
       <div>
         <Typography
           variant="subtitle1"
@@ -45,7 +46,7 @@ const ProjectMetadataDisplay = props => (
           <a href={props.url}>{props.url}</a>
         </Typography>
       </div>
-    }
+    )}
     <hr
       style={{
         background: '#BDBDBD',

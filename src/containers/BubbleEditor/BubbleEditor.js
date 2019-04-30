@@ -5,7 +5,6 @@ import compose from 'lodash.flow';
 
 import BubbleDisplay from '../../components/BubbleDisplay/BubbleDisplay';
 import SingleBubble from '../../components/SingleBubble/SingleBubble';
-import ZoomControls from '../../components/ZoomControls/ZoomControls';
 import TimelineScrubber from '../../components/TimelineScrubber/TimelineScrubber';
 
 import {

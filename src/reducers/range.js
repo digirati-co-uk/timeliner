@@ -23,8 +23,7 @@ import {
   rangeMutations,
   updateRange,
   updateRangeTime,
-  unsetRangeColor,
-} from '../actions/range';
+  } from '../actions/range';
 
 const NEW_DEFAULT_RANGES_STATE = {
   selected: [],

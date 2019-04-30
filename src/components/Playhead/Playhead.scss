@@ -10,18 +10,20 @@
   overflow: visible;
   z-index: -1;
   transition: width .2s linear;
+
   &:after {
     transition: all .4s;
     content: '';
     height: 100%;
-    border-bottom: 0px solid #424242;
-    border-left: 0px solid transparent;
-    border-right: 0px solid transparent;
+    border-bottom: 0 solid #424242;
+    border-left: 0 solid transparent;
+    border-right: 0 solid transparent;
     position: absolute;
     right: 0;
     top: 5px;
     cursor: ew-resize;
   }
+
   &:before {
     position: absolute;
     content: '';
@@ -35,11 +37,13 @@
     transition: all .2s;
   }
 }
+
 .timeline-scrubber:hover,
 .timeline-scrubber:active {
   .playhead {
     transition: none;
   }
+
   //.playhead:after {
   //  right: -5px;
   //  border-bottom: 11px solid #424242;

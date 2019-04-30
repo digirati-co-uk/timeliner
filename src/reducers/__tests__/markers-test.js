@@ -38,7 +38,12 @@ describe('reducers/markers', () => {
       Actions.importMarkers([
         { id: 'test-marker-1', time: 100, label: 'Test marker 1', summary: '' },
         { id: 'test-marker-2', time: 200, label: 'Test marker 2', summary: '' },
-        { NOT_ID: 'test-marker-3', time: 200, label: 'Test marker NOT VALID', summary: '' },
+        {
+          NOT_ID: 'test-marker-3',
+          time: 200,
+          label: 'Test marker NOT VALID',
+          summary: '',
+        },
       ]),
     ].reduce(reducer, DEFAULT_STATE);
 

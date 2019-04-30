@@ -12,7 +12,8 @@
     width: 21px;
     border: 0;
     outline: 0;
-    appearance: none;
-    border-radius: 0px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border-radius: 0;
   }
 }

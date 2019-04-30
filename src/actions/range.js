@@ -5,10 +5,7 @@ import {
   UPDATE_RANGE,
   MOVE_POINT,
   DELETE_RANGE,
-  DELETE_RANGES,
   LOAD_RANGES,
-  DELETE_REDUNDANT_SIZES,
-  UPDATE_DEPTHS_AFTER_DELETE,
   UPDATE_RANGE_TIME,
   CREATE_RANGE,
   RANGE_MUTATION,
@@ -125,20 +122,6 @@ export const scheduleDeleteRanges = ranges => ({
 export const unsetRangeColor = id => ({
   type: UNSET_RANGE_COLOR,
   payload: { id },
-});
-
-/**
- * @deprecated
- */
-export const deleteRedundantSizes = () => ({
-  type: DELETE_REDUNDANT_SIZES,
-});
-
-/**
- * @deprecated
- */
-export const updateDepthsAfterDelete = () => ({
-  type: UPDATE_DEPTHS_AFTER_DELETE,
 });
 
 /**

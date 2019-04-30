@@ -9,7 +9,6 @@ import ProjectMetadataEditor from '../ProjectMetadataEditor/ProjectMetadataEdito
 
 import './Metadata.scss';
 import MarkerMetadata from '../MarkerMetadata/MarkerMetadata';
-import { undoAll } from '../../actions/viewState';
 
 const fix = num => parseInt((num || 0).toFixed(0), 10);
 
@@ -71,52 +70,50 @@ const Metadata = props => {
             Annotations
           </Typography>
           <div className="metadata__content">
-              {rangesToShow.map((range, depth) =>
-                range.id === props.rangeToEdit ? (
-                    <MetadataEditor
-                      key={`metadata_editor-${range.id}`}
-                      {...range}
-                      colour={
-                        range.colour ||
-                        colours[(range.depth - 1) % colours.length]
-                      }
-                      onSave={props.onUpdateRange}
-                      onDelete={props.onDeleteRange}
-                      swatch={props.swatch}
-                      onCancel={() => {
-                        props.onEdit(null);
-                      }}
-                    />
-                ) : (
-                    <MetadataDisplay
-                      key={`metadata_display-${range.id}`}
-                      {...range}
-                      inset={depth}
-                      colour={
-                        range.colour ||
-                        colours[(range.depth - 1) % colours.length]
-                      }
-                      onEditClick={(selectedRange => () =>
-                        props.onEdit(selectedRange.id))(range)}
-                      blackAndWhiteMode={props.blackAndWhiteMode}
-                    />
-                )
-              )}
+            {rangesToShow.map((range, depth) =>
+              range.id === props.rangeToEdit ? (
+                <MetadataEditor
+                  key={`metadata_editor-${range.id}`}
+                  {...range}
+                  colour={
+                    range.colour || colours[(range.depth - 1) % colours.length]
+                  }
+                  onSave={props.onUpdateRange}
+                  onDelete={props.onDeleteRange}
+                  swatch={props.swatch}
+                  onCancel={() => {
+                    props.onEdit(null);
+                  }}
+                />
+              ) : (
+                <MetadataDisplay
+                  key={`metadata_display-${range.id}`}
+                  {...range}
+                  inset={depth}
+                  colour={
+                    range.colour || colours[(range.depth - 1) % colours.length]
+                  }
+                  onEditClick={(selectedRange => () =>
+                    props.onEdit(selectedRange.id))(range)}
+                  blackAndWhiteMode={props.blackAndWhiteMode}
+                />
+              )
+            )}
           </div>
           <div className="metadata__content">
-              {markers.map(marker => {
-                return (
-                    <MarkerMetadata
-                      inset={rangesToShow.length}
-                      key={marker.id}
-                      highlight={false}
-                      marker={marker}
-                      onDeleteMarker={() => props.deleteMarker(marker.id)}
-                      onSaveMarker={data => props.updateMarker(marker.id, data)}
-                      onGoToMarker={() => props.setCurrentTime(marker.time)}
-                    />
-                );
-              })}
+            {markers.map(marker => {
+              return (
+                <MarkerMetadata
+                  inset={rangesToShow.length}
+                  key={marker.id}
+                  highlight={false}
+                  marker={marker}
+                  onDeleteMarker={() => props.deleteMarker(marker.id)}
+                  onSaveMarker={data => props.updateMarker(marker.id, data)}
+                  onGoToMarker={() => props.setCurrentTime(marker.time)}
+                />
+              );
+            })}
           </div>
         </div>
       </div>
