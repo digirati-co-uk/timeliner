@@ -272,6 +272,39 @@ function* zoomToSelection(action) {
   yield put(panToPosition(targetPixelStart));
 }
 
+function* zoomTowards(targetZoom) {
+  const selectedRangeIds = yield select(getSelectedRanges);
+  // Only applies when selecting multiple bubbles.
+  if (selectedRangeIds.length <= 1) {
+    return false;
+  }
+
+  const selectedRanges = yield select(getRangesByIds(selectedRangeIds));
+  const zoomIncr = yield select(
+    state => state.project[PROJECT.ZOOM_TO_SECTION_INCREMENTALLY]
+  );
+
+  const duration = yield select(getDuration);
+  const viewerWidth = yield select(getViewerWidth);
+  const startTime = Math.min(...selectedRanges.map(range => range.startTime));
+  const endTime = Math.max(...selectedRanges.map(range => range.endTime));
+
+  const percentStart = startTime / duration;
+  const percentVisible = (endTime - startTime) / duration;
+  const maxZoom = 1 / percentVisible;
+  const zoom = zoomIncr
+    ? targetZoom < maxZoom
+      ? targetZoom
+      : maxZoom
+    : maxZoom;
+  const targetPixelStart = percentStart * (viewerWidth * zoom);
+
+  yield put(zoomTo(maxZoom));
+  yield put(panToPosition(targetPixelStart));
+
+  return true;
+}
+
 const getZoom = state => state.viewState.zoom;
 
 function* zoomInOut(action) {
@@ -284,8 +317,15 @@ function* zoomInOut(action) {
   const targetViewerWidth = viewerWidth * zoom * ZOOM_AMOUNT;
   const viewerOffsetLeft = (targetViewerWidth - viewerWidth) * ZOOM_ORIGIN;
 
-  yield put(zoomTo(zoom * ZOOM_AMOUNT));
-  yield put(panToPosition(viewerOffsetLeft));
+  const didZoom =
+    action.type === ZOOM_IN
+      ? yield call(zoomTowards, zoom * ZOOM_AMOUNT)
+      : false;
+
+  if (!didZoom) {
+    yield put(zoomTo(zoom * ZOOM_AMOUNT));
+    yield put(panToPosition(viewerOffsetLeft));
+  }
 }
 
 function saveResource(url, content) {
