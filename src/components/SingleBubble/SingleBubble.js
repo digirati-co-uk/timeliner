@@ -115,7 +115,6 @@ class SingleBubble extends Component {
   render() {
     const {
       height,
-      width,
       dX,
       colour,
       label,
@@ -124,7 +123,9 @@ class SingleBubble extends Component {
       shape,
       isSelected,
     } = this.props;
-    const x = this.props.x || 0;
+
+    const width = isSelected ? this.props.width - 2 : this.props.width;
+    const x = isSelected ? (this.props.x || 0) + 1 : this.props.x || 0;
     const cDX = dX || width / 2 - width / 8;
 
     const d =
@@ -147,7 +148,7 @@ class SingleBubble extends Component {
           d={d}
           fill={colour}
           strokeWidth={isSelected ? 4 : 0}
-          stroke={isSelected ? 'black' : 'transparent'}
+          stroke={isSelected ? 'rgba(0,0,0,.8)' : 'transparent'}
         >
           <title>{label}</title>
         </path>

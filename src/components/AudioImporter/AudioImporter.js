@@ -98,10 +98,10 @@ class AudioImporter extends Component {
         <DialogTitle>Open audio file</DialogTitle>
         <div style={{ padding: '0 20px' }}>
           <Tabs
+            variant="fullWidth"
             value={localFile ? 1 : 0}
             onChange={this.handleChange}
             indicatorColor="primary"
-            fullWidth={true}
           >
             <Tab label="URL" />
             <Tab label="Local file" />
