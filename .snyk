@@ -1,0 +1,170 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.13.5
+ignore: {}
+# patches apply the minimum changes required to fix a vulnerability
+patch:
+  SNYK-JS-LODASH-450202:
+    - docz-theme-default > docz > docz-core > babel-plugin-export-metadata > @babel/preset-env > @babel/plugin-transform-modules-commonjs > @babel/helper-module-transforms > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - webpack-config > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - redux-undo-redo > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - react-color > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - react-color > reactcss > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > styled-components > babel-plugin-styled-components > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > webpack-bundle-analyzer > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > webpack-manifest-plugin > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > load-cfg > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > styled-components > @babel/helper-module-imports > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > @babel/core > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > babel-plugin-export-metadata > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > docz-utils > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > react-hot-loader > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > rehype-docz > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > source-map-loader > async > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > styled-components > babel-plugin-styled-components > @babel/helper-module-imports > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > babel-plugin-export-metadata > @babel/cli > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > @babel/core > @babel/generator > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > docz-utils > @babel/generator > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > babel-preset-react-app > @babel/core > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > rehype-docz > docz-utils > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > load-cfg > @babel/register > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > react-dev-utils > inquirer > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > react-docgen > @babel/core > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > react-docgen > async > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > webpack-dev-server > http-proxy-middleware > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > babel-preset-react-app > @babel/core > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > babel-plugin-export-metadata > @babel/core > @babel/traverse > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > @babel/core > @babel/traverse > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > docz-utils > @babel/traverse > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > react-docgen-actual-name-handler > react-docgen > async > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > load-cfg > @babel/preset-env > @babel/plugin-transform-block-scoping > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > react-docgen-actual-name-handler > react-docgen > @babel/core > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > rehype-docz > docz-utils > @babel/traverse > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > react-docgen > @babel/core > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > @babel/core > @babel/traverse > @babel/helper-function-name > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > rehype-docz > docz-utils > @babel/traverse > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > babel-preset-react-app > @babel/plugin-transform-react-constant-elements > @babel/helper-annotate-as-pure > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > react-docgen-actual-name-handler > react-docgen > @babel/core > @babel/generator > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > load-cfg > @babel/preset-env > @babel/helper-module-imports > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > docz-utils > @babel/traverse > @babel/helper-function-name > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > react-docgen > @babel/core > @babel/template > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > @mdx-js/loader > @mdx-js/mdx > remark-mdx > @babel/core > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > rehype-docz > docz-utils > @babel/traverse > @babel/helper-function-name > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > @svgr/webpack > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-function-name > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > babel-plugin-export-metadata > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-function-name > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > load-cfg > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-function-name > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > babel-preset-react-app > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-function-name > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > @mdx-js/loader > @mdx-js/mdx > remark-mdx > @babel/core > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > docz-utils > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > react-docgen-actual-name-handler > react-docgen > @babel/core > @babel/template > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > react-docgen > @babel/core > @babel/traverse > @babel/helper-function-name > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > react-docgen > @babel/core > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > @svgr/webpack > @svgr/plugin-jsx > @babel/core > @babel/traverse > @babel/generator > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > load-cfg > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-replace-supers > @babel/traverse > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > babel-preset-react-app > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/template > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > react-docgen-actual-name-handler > react-docgen > @babel/core > @babel/helpers > @babel/traverse > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > babel-plugin-export-metadata > @babel/core > @babel/helpers > @babel/traverse > @babel/generator > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > rehype-docz > docz-utils > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > @mdx-js/loader > @mdx-js/mdx > remark-mdx > @babel/core > @babel/generator > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > @svgr/webpack > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > @babel/generator > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > babel-plugin-export-metadata > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-replace-supers > @babel/traverse > @babel/generator > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > load-cfg > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-replace-supers > @babel/traverse > @babel/generator > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > babel-preset-react-app > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/traverse > @babel/helper-function-name > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > react-docgen-actual-name-handler > react-docgen > @babel/core > @babel/helpers > @babel/traverse > @babel/helper-split-export-declaration > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > @mdx-js/loader > @mdx-js/mdx > remark-mdx > @babel/core > @babel/traverse > @babel/helper-function-name > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > react-docgen > @babel/core > @babel/helpers > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > babel-preset-react-app > @babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > @mdx-js/loader > @mdx-js/mdx > remark-mdx > @babel/core > @babel/traverse > @babel/helper-function-name > @babel/template > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > babel-plugin-export-metadata > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > @svgr/webpack > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > load-cfg > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > react-docgen-actual-name-handler > react-docgen > @babel/core > @babel/helpers > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > @svgr/webpack > @svgr/core > @svgr/plugin-jsx > @babel/core > @babel/helpers > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > load-cfg > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > @babel/helper-function-name > @babel/template > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > babel-preset-react-app > @babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/traverse > @babel/helper-function-name > @babel/template > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > babel-plugin-export-metadata > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/traverse > @babel/helper-function-name > @babel/template > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
+    - docz-theme-default > docz > docz-core > @mdx-js/loader > @mdx-js/mdx > remark-mdx > @babel/core > @babel/helpers > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash:
+        patched: '2019-07-04T03:52:57.535Z'
