@@ -11,7 +11,9 @@
     "test": "jest --coverage",
     "docz:dev": "docz dev",
     "docz:build": "docz build",
-    "watch": "fesk-watch"
+    "watch": "fesk-watch",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
@@ -55,7 +57,8 @@
     "redux-saga": "^0.16.0",
     "redux-undo-redo": "^2.0.0",
     "voca": "^1.4.0",
-    "webpack-config": "^7.5.0"
+    "webpack-config": "^7.5.0",
+    "snyk": "^1.189.0"
   },
   "jest": {
     "transform": {
@@ -73,5 +76,6 @@
     "js-yaml": "3.13.1",
     "mixin-deep": "1.3.2",
     "set-value": "2.0.1"
-  }
+  },
+  "snyk": true
 }
