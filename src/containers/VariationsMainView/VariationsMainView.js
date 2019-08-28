@@ -7,6 +7,7 @@ import VariationsAppBar from '../../components/VariationsAppBar/VariationsAppBar
 import AudioTransportBar from '../../components/AudioTransportBar/AudioTransportBar';
 import ProjectMetadata from '../../components/Metadata/Metadata';
 import AudioImporter from '../../components/AudioImporter/AudioImporter';
+import importResource from '../../components/AudioImporter/AudioImporter.Utils';
 import SettingsPopup from '../../components/SettingsPopoup/SettingsPopup';
 import Footer from '../../components/Footer/Footer';
 import ContentOverlay from '../../components/ContentOverlay/ContentOverlay';
@@ -188,6 +189,14 @@ class VariationsMainView extends React.Component {
     }
     return this.props.saveProject;
   };
+
+  componentDidMount() {
+    const { resourceUri } = this.props;
+
+    importResource(resourceUri).then(manifest =>
+      this.props.importDocument(manifest, resourceUri)
+    );
+  }
 
   render() {
     const _points = this.props.points;
@@ -381,6 +390,7 @@ VariationsMainView.propTypes = {
   saveProject: PropTypes.func.isRequired,
   settings: PropTypes.object,
   zoom: PropTypes.number.isRequired,
+  resourceUri: PropTypes.string.isRequired,
 };
 
 const mapStateProps = state => ({

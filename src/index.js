@@ -32,15 +32,21 @@ const { store, persistor } = configureStore(
   callback
 );
 
-render(
-  <Root
-    store={store}
-    persistor={persistor}
-    callback={callback}
-    hasResource={!!resource}
-    noFooter={noFooter === 'true'}
-    noHeader={noHeader === 'true'}
-    noSourceLink={noSourceLink === 'true'}
-  />,
-  document.getElementById('app')
-);
+const _loadTimeliner = omlTrackUri =>
+  render(
+    <Root
+      store={store}
+      persistor={persistor}
+      callback={callback}
+      hasResource={!!resource}
+      noFooter={noFooter === 'true'}
+      noHeader={noHeader === 'true'}
+      noSourceLink={noSourceLink === 'true'}
+      omlTrackUri={omlTrackUri}
+    />,
+    document.getElementById('app')
+  );
+
+window.beats = window.beats || {};
+window.beats.events = window.beats.events || {};
+window.beats.events.loadTimeliner = _loadTimeliner;

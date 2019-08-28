@@ -12,6 +12,7 @@ const Root = ({
   noFooter,
   noHeader,
   noSourceLink,
+  omlTrackUri,
 }) => {
   try {
     return (
@@ -23,6 +24,7 @@ const Root = ({
             noFooter={noFooter}
             noHeader={noHeader}
             noSourceLink={noSourceLink}
+            resourceUri={omlTrackUri}
           />
         </PersistGate>
       </Provider>
@@ -34,6 +36,7 @@ const Root = ({
 
 Root.propTypes = {
   store: PropTypes.object.isRequired,
+  omlTrackUri: PropTypes.string.isRequired,
 };
 
 export default Root;
