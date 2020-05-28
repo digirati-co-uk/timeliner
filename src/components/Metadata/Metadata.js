@@ -101,7 +101,14 @@ const Metadata = props => {
             )}
           </div>
           <div className="metadata__content">
-            {markers.map(marker => {
+            <MarkersMetadata
+              inset={rangesToShow.length}
+              marker={marker}
+              onDeleteMarker={() => props.deleteMarker(marker.id)}
+              onSaveMarker={data => props.updateMarker(marker.id, data)}
+              onGoToMarker={() => props.setCurrentTime(marker.time)}
+            />
+            {/* {markers.map(marker => {
               return (
                 <MarkerMetadata
                   inset={rangesToShow.length}
@@ -113,7 +120,7 @@ const Metadata = props => {
                   onGoToMarker={() => props.setCurrentTime(marker.time)}
                 />
               );
-            })}
+            })} */}
           </div>
         </div>
       </div>
