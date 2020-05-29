@@ -1,7 +1,5 @@
-/* eslint-disable prettier/prettier */
 import React from 'react';
 import MaterialTable from 'material-table';
-import ArrowForward from '@material-ui/icons/ArrowForward';
 
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -18,6 +16,7 @@ import Remove from '@material-ui/icons/Remove';
 import SaveAlt from '@material-ui/icons/SaveAlt';
 import Search from '@material-ui/icons/Search';
 import ViewColumn from '@material-ui/icons/ViewColumn';
+import ArrowForward from '@material-ui/icons/ArrowForward';
 
 const { forwardRef } = React;
 
@@ -42,32 +41,30 @@ const tableIcons = {
     GotoArrow: forwardRef((props, ref) => <ArrowForward {...props} ref={ref} color='action' />),
   };
 
-
-export default function MarkersMetadata(props) {
-  const {
-    markers,
-    onSaveMarker,
-    onDeleteMarker,
-    onGoToMarker,
-  } = props;
-
+export default function MaterialTableDemo() {
   const { useState } = React;
 
   const [columns, setColumns] = useState([
-    { title: 'Text', field: 'label', editable: 'onUpdate' },
-    { title: 'Type', field: 'summary', editable: 'onUpdate' },
-    { title: 'Start Time', field: 'time', editable: 'never' },
+    { title: 'Name', field: 'name' },
+    { title: 'Surname', field: 'surname', initialEditValue: 'initial edit value' },
+    { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
+    {
+      title: 'Birth Place',
+      field: 'birthCity',
+      lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },
+    },
   ]);
 
-  const [data, setData] = useState(markers);
+  const [data, setData] = useState([
+    { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63, age: 40 },
+    { name: 'Zerya Betül', surname: 'Baran', birthYear: 2017, birthCity: 34, age: 50  },
+  ]);
 
-  console.log("inside MarkersMetadata: markers.size = " + markers.size);
-  console.log("inside MarkersMetadata: markers = " + markers);
 
   return (
     <MaterialTable
       icons={tableIcons}
-      title="Named Entities"
+      title="Editable Preview"
       columns={columns}
       data={data}
       options={{
@@ -82,19 +79,22 @@ export default function MarkersMetadata(props) {
             onGoToMarker(rowData)
           }
         }
-      ]}      
+      ]}
       editable={{
+        // onRowAdd: newData =>
+        //   new Promise((resolve, reject) => {
+        //     setTimeout(() => {
+        //       setData([...data, newData]);
+        //       resolve();
+        //     }, 1000)
+        //   }),
         onRowUpdate: (newData, oldData) =>
           new Promise((resolve, reject) => {
             setTimeout(() => {
               const dataUpdate = [...data];
-              // const index = oldData.tableData.id;
-			        // dataUpdate[index] = newData;
-              oldData.label = newData.label;
-              oldData.summary = newData.summary;			  
-              dataUpdate[index] = oldData;
+              const index = oldData.tableData.id;
+              dataUpdate[index] = newData;
               setData([...dataUpdate]);
-              onSaveMarker(oldData, newData);
               resolve();
             }, 1000)
           }),
@@ -105,11 +105,10 @@ export default function MarkersMetadata(props) {
               const index = oldData.tableData.id;
               dataDelete.splice(index, 1);
               setData([...dataDelete]);
-              onDeleteMarker(oldData.id);
               resolve()
             }, 1000)
           }),
-	    }}
+      }}
     />
   );
 }

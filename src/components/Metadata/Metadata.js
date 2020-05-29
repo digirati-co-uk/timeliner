@@ -10,6 +10,7 @@ import ProjectMetadataEditor from '../ProjectMetadataEditor/ProjectMetadataEdito
 import './Metadata.scss';
 import MarkerMetadata from '../MarkerMetadata/MarkerMetadata';
 import MarkersMetadata from '../MarkerMetadata/MarkersMetadata';
+import MaterialTableDemo from '../MarkerMetadata/MaterialTableDemo';
 
 const fix = num => parseInt((num || 0).toFixed(0), 10);
 
@@ -59,6 +60,9 @@ const Metadata = props => {
 
   const colours = props.colourPalette.colours;
 
+  console.log("inside Metadata: markers.size = " + markers.size);
+  console.log("inside Metadata: markers = " + markers);
+
   return (
     <div className="metadata">
       <div className="metadata__annotations">
@@ -102,13 +106,14 @@ const Metadata = props => {
             )}
           </div>
           <div className="metadata__content">
-            {/* <MarkersMetadata
+            <MaterialTableDemo/>
+            <MarkersMetadata
               inset={rangesToShow.length}
               markers={markers}
               onSaveMarker={(marker, data) => props.updateMarker(marker.id, data)}
               onDeleteMarker={marker => props.deleteMarker(marker.id)}
               onGoToMarker={marker => props.setCurrentTime(marker.time)}
-            /> */}
+            />
             {markers.map(marker => {
               return (
                 <MarkerMetadata
