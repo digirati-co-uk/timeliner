@@ -60,9 +60,6 @@ const Metadata = props => {
 
   const colours = props.colourPalette.colours;
 
-  // alert("inside Metadata: markers.length = " + markers.length);
-  // alert("inside Metadata: markers = " + markers);
-
   return (
     <div className="metadata">
       <div className="metadata__annotations">
@@ -106,29 +103,12 @@ const Metadata = props => {
             )}
           </div>
           <div className="metadata__markers" style={{marginLeft: `${rangesToShow.length * 24}px`,}}> 
-            {/* <div><span>inside Metadata: marker length: {markers.length}</span></div>
-            <div><span>label: {(markers.length>0? markers[0].label : "NO DATA")}</span></div> */}
-            {/* <div><span>label: {markers[0].label} summary: {markers[0].summary} time: {markers[0].time} </span></div> */}
             <MarkersMetadata
               markers={markers}
               onSaveMarker={(marker, data) => props.updateMarker(marker.id, data)}
               onDeleteMarker={marker => props.deleteMarker(marker.id)}
               onGoToMarker={marker => props.setCurrentTime(marker.time)}
             />
-            {/* <MaterialTableDemo/> */}
-            {/* {markers.map(marker => {
-              return (
-                <MarkerMetadata
-                  inset={rangesToShow.length}
-                  key={marker.id}
-                  highlight={false}
-                  marker={marker}
-                  onDeleteMarker={() => props.deleteMarker(marker.id)}
-                  onSaveMarker={data => props.updateMarker(marker.id, data)}
-                  onGoToMarker={() => props.setCurrentTime(marker.time)}
-                />
-              );
-            })} */}
           </div>
         </div>
       </div>

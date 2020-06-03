@@ -75,20 +75,7 @@ export default function MarkersMetadata(props) {
     return formatDate(date, format);
   };
 
-  // let [data, setData] = useState([
-  //   { label: props.markers.length>0 ? props.markers[0].label : 'lab1', summary: 'TextOne', time: props.markers.length>0 ? props.markers[0].time : 0},
-  //   { label: 'Lab2',  summary: 'TextOne'},
-  // ]);
-
-  // alert("inside MarkersMetadata: markers.length = " + markers.length);
-  // alert("inside MarkersMetadata: markers = " + markers);
-
   return (
-    // <div>
-    // <div><span>inside MarkersMetadata: marker length: {markers.length}</span></div>
-    // <div><span>label: {(markers.length>0? markers[0].label : "NO DATA")}</span></div>
-    // <div><span>inside MarkersMetadata: data length: {data.length}</span></div>
-    // <div><span>label: {(data.length>0? data[0].label : "NO DATA")}</span></div>
     <MaterialTable
       icons={tableIcons}
       title="Named Entities"
@@ -114,15 +101,6 @@ export default function MarkersMetadata(props) {
               onSaveMarker(oldData, newData);
               setData([...markers]);
               resolve();
-              // const dataUpdate = [...data];
-              // const index = oldData.tableData.id;
-			        // dataUpdate[index] = newData;
-              // oldData.label = newData.label;
-              // oldData.summary = newData.summary;			  
-              // dataUpdate[index] = oldData;
-              // setData([...dataUpdate]);
-              // onSaveMarker(oldData, newData);
-              // resolve();
             }, 1000)
           }),
         onRowDelete: oldData =>
@@ -131,16 +109,9 @@ export default function MarkersMetadata(props) {
               onDeleteMarker(oldData);
               setData([...markers]);
               resolve()
-              // const dataDelete = [...data];
-              // const index = oldData.tableData.id;
-              // dataDelete.splice(index, 1);
-              // setData([...dataDelete]);
-              // onDeleteMarker(oldData.id);
-              // resolve()
             }, 1000)
           }),
 	    }}
     />
-    // </div>
   );
 }
