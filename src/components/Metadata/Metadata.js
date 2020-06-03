@@ -8,9 +8,8 @@ import ProjectMetadataDisplay from '../ProjectMetadataDisplay/ProjectMetadataDis
 import ProjectMetadataEditor from '../ProjectMetadataEditor/ProjectMetadataEditor';
 
 import './Metadata.scss';
-import MarkerMetadata from '../MarkerMetadata/MarkerMetadata';
 import MarkersMetadata from '../MarkerMetadata/MarkersMetadata';
-import MaterialTableDemo from '../MarkerMetadata/MaterialTableDemo';
+
 
 const fix = num => parseInt((num || 0).toFixed(0), 10);
 
