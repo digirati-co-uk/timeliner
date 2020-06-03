@@ -60,8 +60,8 @@ const Metadata = props => {
 
   const colours = props.colourPalette.colours;
 
-  console.log("inside Metadata: markers.size = " + markers.size);
-  console.log("inside Metadata: markers = " + markers);
+  // alert("inside Metadata: markers.length = " + markers.length);
+  // alert("inside Metadata: markers = " + markers);
 
   return (
     <div className="metadata">
@@ -107,6 +107,9 @@ const Metadata = props => {
           </div>
           <div className="metadata__content">
             <MaterialTableDemo/>
+            <div><span>inside Metadata: marker length: {markers.length}</span></div>
+            <div><span>label: {(markers.length>0? markers[0].label : "NO DATA")}</span></div>
+            {/* <div><span>label: {markers[0].label} summary: {markers[0].summary} time: {markers[0].time} </span></div> */}
             <MarkersMetadata
               inset={rangesToShow.length}
               markers={markers}

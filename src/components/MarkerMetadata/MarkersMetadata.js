@@ -59,17 +59,29 @@ export default function MarkersMetadata(props) {
     { title: 'Start Time', field: 'time', editable: 'never' },
   ]);
 
-  const [data, setData] = useState(markers);
+  // const [data, setData] = useState(markers);
 
-  console.log("inside MarkersMetadata: markers.size = " + markers.size);
-  console.log("inside MarkersMetadata: markers = " + markers);
+  let [data, setData] = useState([
+    { label: props.markers.length>0 ? props.markers[0].label : 'lab1', summary: 'TextOne', time: props.markers.length>0 ? props.markers[0].time : 0},
+    { label: 'Lab2',  summary: 'TextOne'},
+  ]);
+
+  // alert("inside MarkersMetadata: markers.length = " + markers.length);
+  // alert("inside MarkersMetadata: markers = " + markers);
 
   return (
+     <div>
+    <div><span>inside MarkersMetadata: marker length: {markers.length}</span></div>
+    <div><span>label: {(markers.length>0? markers[0].label : "NO DATA")}</span></div>
+    <div><span>inside MarkersMetadata: data length: {data.length}</span></div>
+    <div><span>label: {(data.length>0? data[0].label : "NO DATA")}</span></div>
+
+
     <MaterialTable
       icons={tableIcons}
       title="Named Entities"
       columns={columns}
-      data={data}
+      data={markers}
       options={{
           sorting: true,
           actionsColumnIndex: -1
@@ -111,5 +123,6 @@ export default function MarkersMetadata(props) {
           }),
 	    }}
     />
+    </div>
   );
 }
