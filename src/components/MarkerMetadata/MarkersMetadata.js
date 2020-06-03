@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
+import formatDate from 'date-fns/format';
 import MaterialTable from 'material-table';
 import ArrowForward from '@material-ui/icons/ArrowForward';
 
@@ -56,27 +57,38 @@ export default function MarkersMetadata(props) {
   const [columns, setColumns] = useState([
     { title: 'Text', field: 'label', editable: 'onUpdate' },
     { title: 'Type', field: 'summary', editable: 'onUpdate' },
-    { title: 'Start Time', field: 'time', editable: 'never' },
+    { title: 'Start Time', field: 'time', editable: 'never', render: rowData => timeToLabel(rowData.time) },
   ]);
 
-  // const [data, setData] = useState(markers);
+  const [data, setData] = useState(markers);
 
-  let [data, setData] = useState([
-    { label: props.markers.length>0 ? props.markers[0].label : 'lab1', summary: 'TextOne', time: props.markers.length>0 ? props.markers[0].time : 0},
-    { label: 'Lab2',  summary: 'TextOne'},
-  ]);
+  const timeToLabel = timeOffset => {
+    if (timeOffset < 0) {
+      return this.timeToLabel(0);
+    }
+    const timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
+    const date = new Date(timeOffset + timezoneOffset);
+    if (date.toString() === 'Invalid Date') {
+      return 'Invalid time';
+    }
+    const format = timeOffset >= 3600000 ? 'hh:mm:ss.SS' : 'mm:ss.SS';
+    return formatDate(date, format);
+  };
+
+  // let [data, setData] = useState([
+  //   { label: props.markers.length>0 ? props.markers[0].label : 'lab1', summary: 'TextOne', time: props.markers.length>0 ? props.markers[0].time : 0},
+  //   { label: 'Lab2',  summary: 'TextOne'},
+  // ]);
 
   // alert("inside MarkersMetadata: markers.length = " + markers.length);
   // alert("inside MarkersMetadata: markers = " + markers);
 
   return (
-     <div>
-    <div><span>inside MarkersMetadata: marker length: {markers.length}</span></div>
-    <div><span>label: {(markers.length>0? markers[0].label : "NO DATA")}</span></div>
-    <div><span>inside MarkersMetadata: data length: {data.length}</span></div>
-    <div><span>label: {(data.length>0? data[0].label : "NO DATA")}</span></div>
-
-
+    // <div>
+    // <div><span>inside MarkersMetadata: marker length: {markers.length}</span></div>
+    // <div><span>label: {(markers.length>0? markers[0].label : "NO DATA")}</span></div>
+    // <div><span>inside MarkersMetadata: data length: {data.length}</span></div>
+    // <div><span>label: {(data.length>0? data[0].label : "NO DATA")}</span></div>
     <MaterialTable
       icons={tableIcons}
       title="Named Entities"
@@ -99,30 +111,36 @@ export default function MarkersMetadata(props) {
         onRowUpdate: (newData, oldData) =>
           new Promise((resolve, reject) => {
             setTimeout(() => {
-              const dataUpdate = [...data];
+              onSaveMarker(oldData, newData);
+              setData([...markers]);
+              resolve();
+              // const dataUpdate = [...data];
               // const index = oldData.tableData.id;
 			        // dataUpdate[index] = newData;
-              oldData.label = newData.label;
-              oldData.summary = newData.summary;			  
-              dataUpdate[index] = oldData;
-              setData([...dataUpdate]);
-              onSaveMarker(oldData, newData);
-              resolve();
+              // oldData.label = newData.label;
+              // oldData.summary = newData.summary;			  
+              // dataUpdate[index] = oldData;
+              // setData([...dataUpdate]);
+              // onSaveMarker(oldData, newData);
+              // resolve();
             }, 1000)
           }),
         onRowDelete: oldData =>
           new Promise((resolve, reject) => {
             setTimeout(() => {
-              const dataDelete = [...data];
-              const index = oldData.tableData.id;
-              dataDelete.splice(index, 1);
-              setData([...dataDelete]);
-              onDeleteMarker(oldData.id);
+              onDeleteMarker(oldData);
+              setData([...markers]);
               resolve()
+              // const dataDelete = [...data];
+              // const index = oldData.tableData.id;
+              // dataDelete.splice(index, 1);
+              // setData([...dataDelete]);
+              // onDeleteMarker(oldData.id);
+              // resolve()
             }, 1000)
           }),
 	    }}
     />
-    </div>
+    // </div>
   );
 }
