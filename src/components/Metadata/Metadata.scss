@@ -46,4 +46,10 @@
   &__content {
     padding: 0 8px;
   }
+
+  &__markers {
+    padding: 0 8px;
+    height: 200px; 
+    overflow-y: auto;
+  }
 }

@@ -3,3 +3,5 @@ dist
 .docz
 *.log
 coverage
+/.project
+/package-lock.json

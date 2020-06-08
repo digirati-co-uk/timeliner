@@ -8,7 +8,8 @@ import ProjectMetadataDisplay from '../ProjectMetadataDisplay/ProjectMetadataDis
 import ProjectMetadataEditor from '../ProjectMetadataEditor/ProjectMetadataEditor';
 
 import './Metadata.scss';
-import MarkerMetadata from '../MarkerMetadata/MarkerMetadata';
+import MarkersMetadata from '../MarkerMetadata/MarkersMetadata';
+
 
 const fix = num => parseInt((num || 0).toFixed(0), 10);
 
@@ -100,20 +101,13 @@ const Metadata = props => {
               )
             )}
           </div>
-          <div className="metadata__content">
-            {markers.map(marker => {
-              return (
-                <MarkerMetadata
-                  inset={rangesToShow.length}
-                  key={marker.id}
-                  highlight={false}
-                  marker={marker}
-                  onDeleteMarker={() => props.deleteMarker(marker.id)}
-                  onSaveMarker={data => props.updateMarker(marker.id, data)}
-                  onGoToMarker={() => props.setCurrentTime(marker.time)}
-                />
-              );
-            })}
+          <div className="metadata__markers" style={{marginLeft: `${rangesToShow.length * 24}px`,}}> 
+            <MarkersMetadata
+              markers={markers}
+              onSaveMarker={(marker, data) => props.updateMarker(marker.id, data)}
+              onDeleteMarker={marker => props.deleteMarker(marker.id)}
+              onGoToMarker={marker => props.setCurrentTime(marker.time)}
+            />
           </div>
         </div>
       </div>
