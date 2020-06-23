@@ -272,6 +272,9 @@ class VariationsMainView extends React.Component {
                     ? this.deleteRanges(selectedRanges)
                     : null
                 }
+                onDeleteMarker={
+                  console.log("on delete marker")
+                }
                 onAddMarker={this.addMarker}
                 zoom={zoom}
                 zoomIn={this.props.zoomIn}

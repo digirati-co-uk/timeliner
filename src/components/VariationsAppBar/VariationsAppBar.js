@@ -76,13 +76,13 @@ const VariationsAppBar = props => (
         >
           <Redo />
         </IconButton>
-        <IconButton
+        {/* <IconButton
           color="inherit"
           onClick={props.onSettingsButtonClicked}
           title="Settings"
         >
           <Settings />
-        </IconButton>
+        </IconButton> */}
       </div>
     </Toolbar>
   </div>

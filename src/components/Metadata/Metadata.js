@@ -70,7 +70,7 @@ const Metadata = props => {
           >
             Annotations
           </Typography>
-          <div className="metadata__content">
+          {/* <div className="metadata__content">
             {rangesToShow.map((range, depth) =>
               range.id === props.rangeToEdit ? (
                 <MetadataEditor
@@ -100,7 +100,7 @@ const Metadata = props => {
                 />
               )
             )}
-          </div>
+          </div> */}
           <div className="metadata__markers" style={{marginLeft: `${rangesToShow.length * 24}px`,}}> 
             <MarkersMetadata
               markers={markers}

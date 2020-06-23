@@ -169,7 +169,7 @@ class BubbleEditor extends React.Component {
                 ref={measureRef}
                 style={blackAndWhiteMode ? { filter: 'grayscale(1.0)' } : {}}
               >
-                <BubbleDisplay
+                {/* <BubbleDisplay
                   points={this.props.points}
                   width={viewerWidth}
                   height={window.innerHeight * 0.3}
@@ -201,7 +201,7 @@ class BubbleEditor extends React.Component {
                         />
                       ))
                   }
-                </BubbleDisplay>
+                </BubbleDisplay> */}
                 <TimelineScrubber
                   runTime={runTime}
                   currentTime={currentTime}

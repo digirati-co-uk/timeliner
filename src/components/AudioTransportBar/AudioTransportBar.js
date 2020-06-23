@@ -44,6 +44,8 @@ class AudioTransportBar extends Component {
     onGroupBubble: PropTypes.func,
     /** Deletes the selected bubble */
     onDeleteBubble: PropTypes.func,
+    /** Deletes the selected marker */
+    onDeleteMarker: PropTypes.func,
   };
 
   keyboardListener = e => {
@@ -84,6 +86,7 @@ class AudioTransportBar extends Component {
       onAddBubble,
       onGroupBubble,
       onDeleteBubble,
+      onDeleteMarker,
       onAddMarker,
       onPreviousBubble,
       onScrubBackwards,
@@ -107,7 +110,7 @@ class AudioTransportBar extends Component {
         <Grid container direction="row" alignItems="center">
           <Grid item xs={4} className="audio-transport-bar__actions">
             <CurrentTimeIndicator currentTime={currentTime} runtime={runTime} />
-            <PrimaryButton
+            {/* <PrimaryButton
               disabled={!onAddBubble}
               onClick={onAddBubble}
               style={{ padding: 4 }}
@@ -124,7 +127,8 @@ class AudioTransportBar extends Component {
               >
                 <Add />
               </Tooltip>
-            </PrimaryButton>
+            </PrimaryButton> */}
+            
             <PrimaryButton
               disabled={!onAddMarker}
               onClick={onAddMarker}
@@ -144,7 +148,7 @@ class AudioTransportBar extends Component {
               </Tooltip>
             </PrimaryButton>
 
-            <PrimaryButton
+            {/* <PrimaryButton
               disabled={!onGroupBubble}
               onClick={onGroupBubble}
               style={{ marginLeft: 16, padding: 4 }}
@@ -161,10 +165,11 @@ class AudioTransportBar extends Component {
               >
                 <GroupWork />
               </Tooltip>
-            </PrimaryButton>
+            </PrimaryButton> */}
+
             <PrimaryButton
-              disabled={!onDeleteBubble}
-              onClick={onDeleteBubble}
+              disabled={!onDeleteMarker}
+              onClick={onDeleteMarker}
               style={{ marginLeft: 16, padding: 4 }}
               size="small"
               classes={{
@@ -174,8 +179,8 @@ class AudioTransportBar extends Component {
             >
               <Tooltip
                 classes={{ tooltip: 'audio-transport-bar__tooltip' }}
-                title="Delete bubbles"
-                aria-label="Delete bubbles"
+                title="Delete marker"
+                aria-label="Delete marker"
               >
                 <Delete />
               </Tooltip>
