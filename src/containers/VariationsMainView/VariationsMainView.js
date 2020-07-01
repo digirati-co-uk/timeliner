@@ -14,6 +14,8 @@ import VerifyDialog from '../../components/VerifyDialog/VerifyDialog';
 
 import BubbleEditor from '../BubbleEditor/BubbleEditor';
 import Audio from '../Audio/Audio';
+import MarkerModal from '../../components/MarkerMetadata/MarkerModal';
+
 
 import {
   splitRangeAt,
@@ -58,6 +60,7 @@ import {
 } from '../../actions/viewState';
 import {
   addMarkerAtTime,
+  addMarkerPopulated,
   deleteMarker,
   updateMarker,
 } from '../../actions/markers';
@@ -167,7 +170,17 @@ class VariationsMainView extends React.Component {
 
   splitRange = () => this.props.splitRangeAt(this.props.currentTime);
 
-  addMarker = () => this.props.addMarkerAtTime(this.props.currentTime);
+  // addMarker = () => this.props.addMarkerAtTime(this.props.currentTime);
+
+  // addMarker = () => {
+  //   console.log("Calling MarkerModal");
+
+  //     <MarkerModal
+  //       currentTime={this.props.currentTime}
+  //       addMarkerPopulated={this.props.addMarkerPopulated}
+  //     />
+
+  // };
 
   getAuthService = () => {
     const annotationPages = this.props.annotationPages;
@@ -273,7 +286,7 @@ class VariationsMainView extends React.Component {
                     : null
                 }
                 onDeleteMarker={this.props.deleteMarker}
-                onAddMarker={this.addMarker}
+                onAddMarker={this.props.addMarkerPopulated}
                 zoom={zoom}
                 zoomIn={this.props.zoomIn}
                 zoomOut={this.props.zoomOut}
@@ -379,6 +392,7 @@ VariationsMainView.propTypes = {
   importDocument: PropTypes.func.isRequired,
   exportDocument: PropTypes.func.isRequired,
   addMarkerAtTime: PropTypes.func.isRequired,
+  addMarkerPopulated: PropTypes.func.isRequired,
   saveProject: PropTypes.func.isRequired,
   settings: PropTypes.object,
   zoom: PropTypes.number.isRequired,
@@ -460,6 +474,7 @@ const mapDispatchToProps = {
   deleteMarker,
   // markers
   addMarkerAtTime,
+  addMarkerPopulated,
   // Undo
   onUndo: undoActions.undo,
   onRedo: undoActions.redo,

@@ -18,6 +18,8 @@ import Delete from '@material-ui/icons/Delete';
 import ArrowDropUp from '@material-ui/icons/ArrowDropUp';
 import Add from '@material-ui/icons/Add';
 
+import MarkerModal from '../MarkerMetadata/MarkerModal';
+
 class AudioTransportBar extends Component {
   static propTypes = {
     /** Boolean value for the current playing state */
@@ -105,6 +107,17 @@ class AudioTransportBar extends Component {
       resetZoom,
     } = this.props;
 
+    // const [openMarker, setOpenMarker] = React.useState(false);
+    // const addMarker = () => {
+    //   setOpenMarker(true);
+    // };
+
+    var openMarker = false;
+    const addMarker = () => {
+      openMarker = true;
+      console.log("calling addMarker in AudioTransport, openMarker = " + openMarker);
+    };
+
     return (
       <div className="audio-transport-bar">
         <Grid container direction="row" alignItems="center">
@@ -131,7 +144,7 @@ class AudioTransportBar extends Component {
             
             <PrimaryButton
               disabled={!onAddMarker}
-              onClick={onAddMarker}
+              onClick={addMarker}
               style={{ marginLeft: 16, padding: 4 }}
               size="small"
               classes={{
@@ -147,6 +160,12 @@ class AudioTransportBar extends Component {
                 <ArrowDropUp />
               </Tooltip>
             </PrimaryButton>
+
+            <MarkerModal
+              open={openMarker}
+              currentTime={currentTime}
+              onAddMarker={onAddMarker}
+            />
 
             {/* <PrimaryButton
               disabled={!onGroupBubble}
@@ -167,7 +186,7 @@ class AudioTransportBar extends Component {
               </Tooltip>
             </PrimaryButton> */}
 
-            <PrimaryButton
+            {/* <PrimaryButton
               disabled={!onDeleteMarker}
               onClick={onDeleteMarker}
               style={{ marginLeft: 16, padding: 4 }}
@@ -184,7 +203,7 @@ class AudioTransportBar extends Component {
               >
                 <Delete />
               </Tooltip>
-            </PrimaryButton>
+            </PrimaryButton> */}
           </Grid>
           <Grid item xs={4}>
             <div className="audio-transport-bar__buttons">

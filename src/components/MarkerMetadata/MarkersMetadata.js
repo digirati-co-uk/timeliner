@@ -95,6 +95,14 @@ export default function MarkersMetadata(props) {
         }
       ]}      
       editable={{
+        // onRowAdd: (newData) =>
+        //   new Promise((resolve, reject) => {
+        //     setTimeout(() => {
+        //       onSaveMarker(newData);
+        //       setData([...markers]);
+        //       resolve();
+        //     }, 1000)
+        //   }),
         onRowUpdate: (newData, oldData) =>
           new Promise((resolve, reject) => {
             setTimeout(() => {

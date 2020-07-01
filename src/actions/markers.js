@@ -23,6 +23,16 @@ export const addMarkerAtTime = time => {
   return createMarker(marker);
 };
 
+export const addMarkerPopulated = (label, summary, time) => {
+  const marker = {
+    id: generateNewId(),
+    label,
+    summary,
+    time,
+  };
+  return createMarker(marker);
+};
+
 export const updateMarker = (markerId, { label, summary, time }) => ({
   type: UPDATE_MARKER,
   payload: { id: markerId, label, summary, time },

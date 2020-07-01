@@ -14,6 +14,7 @@ const AuthModal = ({
   onConfirm,
   confirmLabel,
 }) => {
+  console.log("inside AuthModal");
   return (
     <Dialog open={true} aria-labelledby="form-dialog-title">
       <DialogTitle>{header}</DialogTitle>
