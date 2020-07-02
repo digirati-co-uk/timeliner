@@ -50,6 +50,8 @@ class AudioTransportBar extends Component {
     onDeleteMarker: PropTypes.func,
   };
 
+  markerModalVisible = false;
+
   keyboardListener = e => {
     if (
       e.target &&
@@ -83,6 +85,7 @@ class AudioTransportBar extends Component {
     document.removeEventListener('keydown', this.keyboardListener);
   }
 
+
   render() {
     const {
       onAddBubble,
@@ -107,16 +110,17 @@ class AudioTransportBar extends Component {
       resetZoom,
     } = this.props;
 
-    // const [openMarker, setOpenMarker] = React.useState(false);
-    // const addMarker = () => {
-    //   setOpenMarker(true);
-    // };
-
-    var openMarker = false;
-    const addMarker = () => {
-      openMarker = true;
-      console.log("calling addMarker in AudioTransport, openMarker = " + openMarker);
+    const displayMarkerModal = (visible) => {
+      this.markerModalVisible = visible;
+      this.forceUpdate();
+      console.log("calling displayMarkerModal in AudioTransport, markerModalVisible = " + this.markerModalVisible);
     };
+
+    // var markerModalVisible = false;
+    // const openMarkerModal = () => {
+    //   markerModalVisible = true;
+    //   console.log("calling openMarkerModal in AudioTransport, markerModalVisible = " + markerModalVisible);
+    // };
 
     return (
       <div className="audio-transport-bar">
@@ -144,7 +148,7 @@ class AudioTransportBar extends Component {
             
             <PrimaryButton
               disabled={!onAddMarker}
-              onClick={addMarker}
+              onClick={displayMarkerModal(true)}
               style={{ marginLeft: 16, padding: 4 }}
               size="small"
               classes={{
@@ -162,7 +166,8 @@ class AudioTransportBar extends Component {
             </PrimaryButton>
 
             <MarkerModal
-              open={openMarker}
+              visiable={this.markerModalVisible}
+              displayMarkerModal={displayMarkerModal}
               currentTime={currentTime}
               onAddMarker={onAddMarker}
             />
