@@ -57,7 +57,7 @@ export default function MarkersMetadata(props) {
   const [columns, setColumns] = useState([
     { title: 'Text', field: 'label', editable: 'onUpdate' },
     { title: 'Type', field: 'summary', editable: 'onUpdate' },
-    { title: 'Start Time', field: 'time', editable: 'never', render: rowData => timeToLabel(rowData.time) },
+    { title: 'Time', field: 'time', editable: 'never', render: rowData => timeToLabel(rowData.time) },
   ]);
 
   const [data, setData] = useState(markers);
@@ -85,7 +85,22 @@ export default function MarkersMetadata(props) {
           sorting: true,
           actionsColumnIndex: -1,
           pageSize: 10,
-          padding: "dense"
+          padding: "dense",
+          cellStyle: {
+            height: 30,
+            paddingTop: 0,
+            paddingBottom: 0,
+          },
+          headerSytle: {
+            height: 30,
+            paddingTop: 0,
+            paddingBottom: 0,
+          },
+          rowStyle: {
+            height: 30,
+            paddingTop: 0,
+            paddingBottom: 0,
+          },
       }}
       actions={[
         {
