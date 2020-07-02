@@ -50,8 +50,6 @@ class AudioTransportBar extends Component {
     onDeleteMarker: PropTypes.func,
   };
 
-  markerModalVisible = false;
-
   keyboardListener = e => {
     if (
       e.target &&
@@ -85,6 +83,7 @@ class AudioTransportBar extends Component {
     document.removeEventListener('keydown', this.keyboardListener);
   }
 
+  markerModalVisible = false;
 
   render() {
     const {
@@ -115,12 +114,6 @@ class AudioTransportBar extends Component {
       this.forceUpdate();
       console.log("calling displayMarkerModal in AudioTransport, markerModalVisible = " + this.markerModalVisible);
     };
-
-    // var markerModalVisible = false;
-    // const openMarkerModal = () => {
-    //   markerModalVisible = true;
-    //   console.log("calling openMarkerModal in AudioTransport, markerModalVisible = " + markerModalVisible);
-    // };
 
     return (
       <div className="audio-transport-bar">

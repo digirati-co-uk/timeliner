@@ -14,7 +14,6 @@ import VerifyDialog from '../../components/VerifyDialog/VerifyDialog';
 
 import BubbleEditor from '../BubbleEditor/BubbleEditor';
 import Audio from '../Audio/Audio';
-import MarkerModal from '../../components/MarkerMetadata/MarkerModal';
 
 
 import {
@@ -171,16 +170,6 @@ class VariationsMainView extends React.Component {
   splitRange = () => this.props.splitRangeAt(this.props.currentTime);
 
   // addMarker = () => this.props.addMarkerAtTime(this.props.currentTime);
-
-  // addMarker = () => {
-  //   console.log("Calling MarkerModal");
-
-  //     <MarkerModal
-  //       currentTime={this.props.currentTime}
-  //       addMarkerPopulated={this.props.addMarkerPopulated}
-  //     />
-
-  // };
 
   getAuthService = () => {
     const annotationPages = this.props.annotationPages;
