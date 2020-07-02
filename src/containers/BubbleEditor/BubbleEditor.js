@@ -157,7 +157,7 @@ class BubbleEditor extends React.Component {
         <div
           style={{
             position: 'relative',
-            margin: '16px 5px 0 5px',
+            margin: '5px 5px 0 5px',
           }}
         >
           <Measure

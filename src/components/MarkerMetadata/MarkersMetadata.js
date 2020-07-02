@@ -83,7 +83,9 @@ export default function MarkersMetadata(props) {
       data={markers}
       options={{
           sorting: true,
-          actionsColumnIndex: -1
+          actionsColumnIndex: -1,
+          pageSize: 10,
+          padding: "dense"
       }}
       actions={[
         {

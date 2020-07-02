@@ -5,20 +5,21 @@
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: 0px;
-  min-height: 400px;
+  min-height: 500px;
 
   &__annotations {
-    flex: 2;
-    padding-right: 8px;
+    flex: 1;
+    padding-right: 1px;
     display: flex;
     flex-direction: column;
   }
 
   &__annotations-content {
+    width: 100%;
     background: white;
-    padding: 8px 16px;
-    flex: 1 1 0px;
+    padding: 0px 10px;
     display: flex;
+    flex: 1 1 0px;
     flex-direction: column;
     overflow-y: auto;
     overflow-x: hidden;
@@ -35,7 +36,7 @@
   &__project-content {
     width: 100%;
     background: white;
-    padding: 8px 16px;
+    padding: 0px 10px;
     display: flex;
     flex: 1 1 0px;
     flex-direction: column;
@@ -49,7 +50,7 @@
 
   &__markers {
     padding: 0 8px;
-    height: 200px; 
+    height: 600px; 
     overflow-y: auto;
   }
 }

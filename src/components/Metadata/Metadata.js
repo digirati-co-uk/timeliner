@@ -63,13 +63,13 @@ const Metadata = props => {
     <div className="metadata">
       <div className="metadata__annotations">
         <div className="metadata__annotations-content">
-          <Typography
+          {/* <Typography
             variant="subtitle1"
             color="textSecondary"
             style={{ marginBottom: 10 }}
           >
             Annotations
-          </Typography>
+          </Typography> */}
           {/* <div className="metadata__content">
             {rangesToShow.map((range, depth) =>
               range.id === props.rangeToEdit ? (
@@ -101,7 +101,7 @@ const Metadata = props => {
               )
             )}
           </div> */}
-          <div className="metadata__markers" style={{marginLeft: `${rangesToShow.length * 24}px`,}}> 
+          <div className="metadata__markers"> 
             <MarkersMetadata
               markers={markers}
               onSaveMarker={(marker, data) => props.updateMarker(marker.id, data)}
@@ -113,13 +113,13 @@ const Metadata = props => {
       </div>
       <div className="metadata__project">
         <div className="metadata__project-content">
-          <Typography
+          {/* <Typography
             variant="subtitle1"
             color="textSecondary"
             style={{ marginBottom: 10 }}
           >
             Timeline information
-          </Typography>
+          </Typography> */}
           <div className="metadata__content">
             {props.projectMetadataEditorOpen ? (
               <ProjectMetadataEditor

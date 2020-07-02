@@ -1,5 +1,5 @@
 .audio-transport-bar {
-  padding: 8px 30px;
+  padding: 0px 4px;
   background: #fff;
 
   &__actions {
@@ -23,9 +23,9 @@
 
   // material UI override (funky selectors)
   div &__tooltip {
-    font-size: 12px;
+    font-size: 10px;
   }
   & &__button-text {
-    min-width: 40px;
+    min-width: 20px;
   }
 }
