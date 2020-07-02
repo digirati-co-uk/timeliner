@@ -148,7 +148,7 @@ class AudioTransportBar extends Component {
             
             <PrimaryButton
               disabled={!onAddMarker}
-              onClick={displayMarkerModal(true)}
+              onClick={() => displayMarkerModal(true)}
               style={{ marginLeft: 16, padding: 4 }}
               size="small"
               classes={{
@@ -166,7 +166,7 @@ class AudioTransportBar extends Component {
             </PrimaryButton>
 
             <MarkerModal
-              visiable={this.markerModalVisible}
+              visible={this.markerModalVisible}
               displayMarkerModal={displayMarkerModal}
               currentTime={currentTime}
               onAddMarker={onAddMarker}

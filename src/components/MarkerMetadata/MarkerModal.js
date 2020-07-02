@@ -22,13 +22,13 @@ const MarkerModal = ({
   const closeDialog = () => {
     // setOpenDialog(false);
     displayMarkerModal(false);
-    setLabel(null);
-    setSummary(null);
+    // setLabel(null);
+    // setSummary(null);
     console.log("Inside closeDialog after closing, visible = " + visible);
   };
 
   const onConfirm = () => {
-    console.log("Inside onConfirm before closing, visible = " + visible);
+    console.log("Inside onConfirm before closing, visible = " + visible + ", label = " + label + ", summary = " + summary);
     onAddMarker(label, summary, currentTime);
     closeDialog();
     // setOpenDialog(false);
