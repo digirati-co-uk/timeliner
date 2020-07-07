@@ -15,14 +15,14 @@ const MarkerModal = ({
 }) => {  
   console.log("Inside MarkerModal, visible = " + visible + ", currentTime = " + currentTime);
 
-  const [label, setLabel] = React.useState(null);
-  const [summary, setSummary] = React.useState(null);
+  const [label, setLabel] = React.useState('');
+  const [summary, setSummary] = React.useState('');
 
 
   const closeDialog = () => {
     displayMarkerModal(false);
-    setLabel(null);
-    setSummary(null);
+    setLabel('');
+    setSummary('');
     console.log("Inside closeDialog after closing, visible = " + visible);
   };
 
