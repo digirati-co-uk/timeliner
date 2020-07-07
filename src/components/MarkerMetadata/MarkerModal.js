@@ -35,7 +35,7 @@ const MarkerModal = ({
  
   return (
     <Dialog open={visible} onClose={closeDialog} aria-labelledby="form-dialog-title">
-      <DialogTitle>New Named Entity</DialogTitle>
+      <DialogTitle>Create Named Entity</DialogTitle>
       <DialogContent>
         <TextField autoFocus label="Text" value={label} onChange={e => setLabel(e.target.value)}/>
         <TextField label="Type" value={summary} onChange={e => setSummary(e.target.value)} />       

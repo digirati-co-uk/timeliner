@@ -3,6 +3,7 @@ import React from 'react';
 import formatDate from 'date-fns/format';
 import MaterialTable from 'material-table';
 import ArrowForward from '@material-ui/icons/ArrowForward';
+// import { withStyles, makeStyles } from '@material-ui/styles';
 
 import AddBox from '@material-ui/icons/AddBox';
 import ArrowDownward from '@material-ui/icons/ArrowDownward';
@@ -43,6 +44,13 @@ const tableIcons = {
     GotoArrow: forwardRef((props, ref) => <ArrowForward {...props} ref={ref} color='action' />),
   };
 
+// const useStyles = makeStyles(() => ({
+//   root: {
+//     paddingTop: 1,
+//     paddingBottom: 1,
+//     height: 25    
+//   }
+// }));
 
 export default function MarkersMetadata(props) {
   const {
@@ -53,6 +61,8 @@ export default function MarkersMetadata(props) {
   } = props;
 
   const { useState } = React;
+  // const classes = useStyles();
+
 
   const [columns, setColumns] = useState([
     { title: 'Text', field: 'label', editable: 'onUpdate' },
@@ -76,6 +86,7 @@ export default function MarkersMetadata(props) {
   };
 
   return (
+    // <MaterialTable className={classes.root}
     <MaterialTable
       icons={tableIcons}
       title="Named Entities"
@@ -87,17 +98,17 @@ export default function MarkersMetadata(props) {
           pageSize: 10,
           padding: "dense",
           cellStyle: {
-            height: 30,
+            height: '30px !important',
             paddingTop: 0,
             paddingBottom: 0,
           },
           headerSytle: {
-            height: 30,
+            height: '30px !important',
             paddingTop: 0,
             paddingBottom: 0,
           },
           rowStyle: {
-            height: 30,
+            height: '30px !important',
             paddingTop: 0,
             paddingBottom: 0,
           },

@@ -50,10 +50,13 @@
 
   &__markers {
     padding: 0 8px;
+    width: 1200px; 
     height: 600px; 
     overflow-y: auto;
   }
 }
+
+tr[class="MuiTableRow-root-"] { height: 20px !important; }
 
 .MuiTableCell-root {
 height: 10px !important;
